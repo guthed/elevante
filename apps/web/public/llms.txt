@@ -1,0 +1,45 @@
+# Elevante
+
+> Elevante is a Swedish ed-tech platform that records, transcribes, and remembers classroom lessons, so every student gets a private AI tutor that only answers from what their teacher actually said.
+
+Elevante is being piloted at Nacka Gymnasium in 2026. The company is based in Stockholm and all data stays inside the EU (GDPR-first). Raw audio is deleted after transcription. The only AI provider used is Anthropic (Claude). The only transcription provider is KB-Whisper via Berget AI.
+
+## Tagline
+
+Elevante minns allt du lär dig i skolan — "Elevante remembers everything you learn at school."
+
+## What Elevante is
+
+- A mobile app for teachers that records classroom lessons with a single tap.
+- A web app for students that lets them ask text questions about the lesson they attended and receive answers grounded strictly in the transcript of that lesson.
+- A web app for teachers and administrators to manage lessons, materials, statistics and users.
+- A pricing model of 500 SEK / ~€45 per student per year, with all features included.
+
+## What Elevante is not
+
+- Elevante is not a general-purpose AI assistant. It only answers questions from the actual lesson transcripts, with source citations.
+- Elevante is not a video or avatar product (text only in v1).
+- Elevante does not store raw audio beyond the transcription step.
+- Elevante is not available outside the EU in v1.
+
+## Audience
+
+- Gymnasium students (age 16–19) in Sweden and the Nordics.
+- Teachers who want to reduce repetition load without extra admin work.
+- School leadership that wants measurable AI adoption without compliance risk.
+
+## Key pages
+
+- Home: https://elevante.se/sv — company overview (Swedish)
+- Home (English): https://elevante.se/en
+- For schools: https://elevante.se/sv/for-skolor
+- For students: https://elevante.se/sv/for-elever
+- Pricing: https://elevante.se/sv/priser
+- About: https://elevante.se/sv/om-oss
+- Contact: https://elevante.se/sv/kontakt
+
+## Contact
+
+- Email: john@guthed.se
+- Location: Stockholm, Sweden
+- Pilot partner: Nacka Gymnasium (2026)

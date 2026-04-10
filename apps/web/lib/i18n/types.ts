@@ -1,0 +1,119 @@
+type ProblemItem = { title: string; body: string };
+type SolutionStep = { number: string; title: string; body: string };
+type StatItem = { value: string; label: string };
+
+export type Dictionary = {
+  meta: {
+    siteName: string;
+    tagline: string;
+    description: string;
+  };
+  nav: {
+    home: string;
+    forSchools: string;
+    forStudents: string;
+    pricing: string;
+    about: string;
+    contact: string;
+    bookDemo: string;
+    openMenu: string;
+    closeMenu: string;
+    switchLanguage: string;
+  };
+  footer: {
+    rights: string;
+    madeIn: string;
+    navHeader: string;
+    companyHeader: string;
+  };
+  home: {
+    hero: {
+      title: string;
+      subtitle: string;
+      ctaPrimary: string;
+      ctaSecondary: string;
+    };
+    problem: {
+      eyebrow: string;
+      title: string;
+      items: ProblemItem[];
+    };
+    solution: {
+      eyebrow: string;
+      title: string;
+      subtitle: string;
+      steps: SolutionStep[];
+    };
+    audiences: {
+      eyebrow: string;
+      title: string;
+      student: { title: string; body: string; cta: string };
+      teacher: { title: string; body: string; cta: string };
+    };
+    stats: {
+      eyebrow: string;
+      title: string;
+      items: StatItem[];
+    };
+    finalCta: {
+      title: string;
+      subtitle: string;
+      cta: string;
+    };
+  };
+  forSchools: {
+    hero: { eyebrow: string; title: string; subtitle: string; cta: string };
+    benefits: { title: string; items: { title: string; body: string }[] };
+    pricing: { title: string; body: string; cta: string };
+  };
+  forStudents: {
+    hero: { eyebrow: string; title: string; subtitle: string; cta: string };
+    benefits: { title: string; items: { title: string; body: string }[] };
+  };
+  about: {
+    hero: { eyebrow: string; title: string; subtitle: string };
+    mission: { title: string; body: string };
+    values: { title: string; items: { title: string; body: string }[] };
+  };
+  pricing: {
+    hero: { eyebrow: string; title: string; subtitle: string };
+    plan: {
+      name: string;
+      price: string;
+      period: string;
+      features: string[];
+      cta: string;
+    };
+    faq: { title: string; items: { q: string; a: string }[] };
+  };
+  contact: {
+    hero: { eyebrow: string; title: string; subtitle: string };
+    form: {
+      nameLabel: string;
+      namePlaceholder: string;
+      emailLabel: string;
+      emailPlaceholder: string;
+      schoolLabel: string;
+      schoolPlaceholder: string;
+      topicLabel: string;
+      topicOptions: {
+        demo: string;
+        pricing: string;
+        press: string;
+        other: string;
+      };
+      messageLabel: string;
+      messagePlaceholder: string;
+      submit: string;
+      submitting: string;
+      success: string;
+      errorGeneric: string;
+      errorRateLimit: string;
+      errorMissing: string;
+    };
+    alternatives: {
+      title: string;
+      email: string;
+    };
+  };
+};

@@ -1,0 +1,273 @@
+import type { Dictionary } from '../types';
+
+const sv: Dictionary = {
+  meta: {
+    siteName: 'Elevante',
+    tagline: 'Elevante minns allt du lär dig i skolan',
+    description:
+      'Elevante spelar in, transkriberar och minns allt som sägs i klassrummet — så att eleverna kan repetera när det passar dem.',
+  },
+  nav: {
+    home: 'Hem',
+    forSchools: 'För skolor',
+    forStudents: 'För elever',
+    pricing: 'Priser',
+    about: 'Om oss',
+    contact: 'Kontakt',
+    bookDemo: 'Boka demo',
+    openMenu: 'Öppna meny',
+    closeMenu: 'Stäng meny',
+    switchLanguage: 'Byt språk',
+  },
+  footer: {
+    rights: 'Alla rättigheter förbehållna.',
+    madeIn: 'Byggt i Stockholm',
+    navHeader: 'Navigera',
+    companyHeader: 'Företag',
+  },
+  home: {
+    hero: {
+      title: 'Skolan i fickan',
+      subtitle:
+        'Elevante spelar in, transkriberar och minns allt som sägs i klassrummet — så att eleverna kan repetera när det passar dem.',
+      ctaPrimary: 'Boka demo',
+      ctaSecondary: 'Läs mer',
+    },
+    problem: {
+      eyebrow: 'Problemet',
+      title: 'Klassrummet har inte förändrats på femtio år.',
+      items: [
+        {
+          title: 'Elever missar lektioner',
+          body: 'Sjukdom, stress, distraktioner. När något glöms bort finns det ingen väg tillbaka.',
+        },
+        {
+          title: 'Lärare hinner inte med alla',
+          body: 'En lärare, trettio elever. Den som vågar fråga får svar — resten gissar.',
+        },
+        {
+          title: 'Skolan är analog',
+          body: 'Medan resten av världen blir digital är klassrummet fortfarande anteckningsblock och minne.',
+        },
+      ],
+    },
+    solution: {
+      eyebrow: 'Lösningen',
+      title: 'Elevante minns allt du lär dig i skolan',
+      subtitle:
+        'Tre enkla steg. Läraren trycker en knapp. Eleverna får en privat AI-lärare som har varit med på varje lektion.',
+      steps: [
+        {
+          number: '01',
+          title: 'Läraren spelar in',
+          body: 'Ett tryck i appen. Inga kablar, inga installationer, inga möten.',
+        },
+        {
+          number: '02',
+          title: 'AI transkriberar',
+          body: 'Svensk taligenkänning i EU. Råljudet raderas när transkriberingen är klar.',
+        },
+        {
+          number: '03',
+          title: 'Eleven frågar',
+          body: 'Chatta med lektionen. Få svar som bara bygger på det läraren faktiskt sa.',
+        },
+      ],
+    },
+    audiences: {
+      eyebrow: 'För vem',
+      title: 'Byggt för alla i klassrummet',
+      student: {
+        title: 'För elever',
+        body: 'Repetera när du vill, fråga när du vågar, förbered prov utan att gissa.',
+        cta: 'Läs mer för elever',
+      },
+      teacher: {
+        title: 'För lärare',
+        body: 'Släpp pressen att upprepa dig. Fokusera på att undervisa — Elevante sparar resten.',
+        cta: 'Läs mer för lärare',
+      },
+    },
+    stats: {
+      eyebrow: 'Siffrorna',
+      title: 'En tydlig affär för skolor',
+      items: [
+        { value: '500 kr', label: 'per elev och år' },
+        { value: '71,7 %', label: 'driftsmarginal' },
+        { value: 'Nacka Gymnasium', label: 'pilotpartner 2026' },
+      ],
+    },
+    finalCta: {
+      title: 'Redo att modernisera din skola?',
+      subtitle:
+        'Vi visar Elevante på en halvtimme. Inga installationer, inga upphandlingsmappar.',
+      cta: 'Boka demo',
+    },
+  },
+  forSchools: {
+    hero: {
+      eyebrow: 'För skolor',
+      title: 'AI i klassrummet — utan extra arbete för lärarna',
+      subtitle:
+        'Elevante är byggt för att kunna införas på en skola över en eftermiddag. Ingen ny hårdvara, inga långa upphandlingar.',
+      cta: 'Kontakta oss för offert',
+    },
+    benefits: {
+      title: 'Därför väljer skolor Elevante',
+      items: [
+        {
+          title: 'GDPR-säkert från grunden',
+          body: 'All data lagras inom EU. Råljudet raderas efter transkribering. Fullt samtyckesflöde för minderåriga.',
+        },
+        {
+          title: 'Enkelt att komma igång',
+          body: 'Ingen utrustning, inga installationer. Läraren laddar ner appen och trycker på REC.',
+        },
+        {
+          title: 'Statistik för ledningen',
+          body: 'Se vilka kurser som används mest, var eleverna fastnar, och hur Elevante hjälper er verksamhet.',
+        },
+      ],
+    },
+    pricing: {
+      title: 'Enkel prismodell',
+      body: '500 kr per elev och år. Volymrabatter för kommuner och kommunala skolor. Ingen installation, ingen licensadministration.',
+      cta: 'Kontakta oss',
+    },
+  },
+  forStudents: {
+    hero: {
+      eyebrow: 'För elever',
+      title: 'Missa aldrig vad läraren sa',
+      subtitle:
+        'Du är mer än en bra anteckningstagare. Elevante är din privata lärare som minns varje lektion och svarar på det du faktiskt undrar.',
+      cta: 'Be din skola om Elevante',
+    },
+    benefits: {
+      title: 'Vad du kan göra',
+      items: [
+        {
+          title: 'Repetera när det passar',
+          body: 'Kolla igenom gårdagens matte innan provet. Utan att läsa igenom en hel lärobok.',
+        },
+        {
+          title: 'Fråga utan att räcka upp handen',
+          body: 'Skriv på svenska. Elevante svarar utifrån det din lärare sa i klassrummet.',
+        },
+        {
+          title: 'Förbered prov med självförtroende',
+          body: 'Be Elevante sammanfatta kapitlet, förklara ett begrepp, eller göra en övningsfråga åt dig.',
+        },
+      ],
+    },
+  },
+  about: {
+    hero: {
+      eyebrow: 'Om oss',
+      title: 'Vi bygger den skola vi själva hade önskat.',
+      subtitle:
+        'Elevante är ett svenskt team med bakgrund inom utbildning, teknik och produktdesign. Vi byggde Elevante för att vi själva hade önskat det när vi gick i skolan.',
+    },
+    mission: {
+      title: 'Vårt uppdrag',
+      body: 'Vi tror att en god utbildning inte ska bero på hur mycket du vågar fråga, hur bra din dagsform är, eller hur många privatlektioner dina föräldrar har råd med. Elevante är verktyget som gör att varje elev kan ställa sina frågor — utan att känna sig dum, utan att störa någon annan, och utan att behöva vänta tills nästa lektion.',
+    },
+    values: {
+      title: 'Det vi bryr oss om',
+      items: [
+        {
+          title: 'GDPR är inte en checkruta',
+          body: 'All data stannar i EU. Råljud raderas. Samtycke för minderåriga är inbyggt från dag ett.',
+        },
+        {
+          title: 'Strikt källhänvisning',
+          body: 'Elevante svarar bara på det som faktiskt sagts i klassrummet. Vi hittar inte på.',
+        },
+        {
+          title: 'Lärarens tid är helig',
+          body: 'Vi lägger inte till uppgifter på lärarens redan fulla dag. Ett tryck, inget mer.',
+        },
+      ],
+    },
+  },
+  pricing: {
+    hero: {
+      eyebrow: 'Priser',
+      title: 'En rak affär. Inga överraskningar.',
+      subtitle:
+        '500 kronor per elev och år. Allt ingår. Inga installationer, ingen licensadministration, ingen upphandlingscirkus.',
+    },
+    plan: {
+      name: 'Skolabonnemang',
+      price: '500 kr',
+      period: 'per elev och år',
+      features: [
+        'Obegränsat antal lektioner och frågor',
+        'Svensk taligenkänning (KB-Whisper, EU)',
+        'GDPR-säker lagring inom EU',
+        'Elev-, lärare- och adminvy',
+        'Statistik för ledningen',
+        'Support och onboarding ingår',
+      ],
+      cta: 'Kontakta oss',
+    },
+    faq: {
+      title: 'Vanliga frågor',
+      items: [
+        {
+          q: 'Vad ingår i priset?',
+          a: 'Allt. Obegränsat antal lektioner, obegränsat antal frågor, alla tre vyer (elev, lärare, admin), support och onboarding. Inga tilläggsavgifter.',
+        },
+        {
+          q: 'Finns det bindningstid?',
+          a: 'Ett år i taget, uppsägningsbart med 3 månaders varsel. Vi vill att ni stannar för att vi levererar — inte för att vi bundit er.',
+        },
+        {
+          q: 'Hur hanterar ni GDPR?',
+          a: 'All data stannar i EU. Råljudet raderas efter transkribering. Vi har samtyckesflöde för minderåriga och ett fullständigt personuppgiftsbiträdesavtal redo.',
+        },
+        {
+          q: 'Hur fungerar det för små skolor?',
+          a: 'Samma pris, samma produkt. Vi har ingen minimigräns. Vill ni börja med en klass innan ni rullar ut det på hela skolan går det också bra.',
+        },
+      ],
+    },
+  },
+  contact: {
+    hero: {
+      eyebrow: 'Kontakt',
+      title: 'Hör av dig.',
+      subtitle:
+        'Skriv några rader så bokar vi in en halvtimme. Vi visar Elevante live och svarar på allt ni undrar.',
+    },
+    form: {
+      nameLabel: 'Namn',
+      namePlaceholder: 'Anna Andersson',
+      emailLabel: 'E-post',
+      emailPlaceholder: 'anna@skolan.se',
+      schoolLabel: 'Skola eller organisation',
+      schoolPlaceholder: 'Nacka Gymnasium',
+      topicLabel: 'Ämne',
+      topicOptions: {
+        demo: 'Jag vill boka demo',
+        pricing: 'Jag har frågor om pris',
+        press: 'Press eller investerare',
+        other: 'Något annat',
+      },
+      messageLabel: 'Meddelande',
+      messagePlaceholder: 'Berätta kort vad du undrar…',
+      submit: 'Skicka',
+      submitting: 'Skickar…',
+      success: 'Tack! Vi hör av oss inom kort.',
+      errorGeneric: 'Något gick fel. Försök igen eller mejla john@guthed.se direkt.',
+      errorRateLimit: 'För många försök. Vänta en minut och testa igen.',
+      errorMissing: 'Fyll i alla fält innan du skickar.',
+    },
+    alternatives: {
+      title: 'Eller maila oss direkt',
+      email: 'john@guthed.se',
+    },
+  },
+};
+
+export default sv;
