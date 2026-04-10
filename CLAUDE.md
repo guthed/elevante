@@ -149,7 +149,8 @@ elevante/
 Next.js 16 + Tailwind v4 i `apps/web/`. Svenska + engelska via `[locale]` och `proxy.ts`. 6 sidor × 2 locales = 12 SSG-rutter. Resend Server Action (graceful fallback). JSON-LD, sitemap, robots, llms.txt, dynamiska OG/favicon via `next/og`. Push till `guthed/elevante`. Vercel-länkning + domänkoppling ligger som separata uppgifter.
 ### Fas 1 — Design System & Skelett: KLAR (2026-04-11)
 Baskomponenter i `apps/web/components/ui/` (Button, Input, Textarea, Select, Field, Card, Badge, Avatar, Spinner, Divider, Modal, Toast, EmptyState, LoadingScreen). Layoutkomponenter i `apps/web/components/app/` (AppShell, Sidebar, Topbar, PageWrapper). Publika sajten flyttad till route group `(public)/` så appen kan ha egen layout. `/app/[role]/` med dynamic role-segment (student/teacher/admin) och mockad auth. 26/26 sidor statiskt genererade. Noindex på alla /app/-rutter.
-### Fas 2 — Auth & Schemahantering: EJ STARTAD
+### Fas 2 — Auth & Schemahantering: KLAR (2026-04-11)
+Supabase Auth via @supabase/ssr i `apps/web/lib/supabase/`. Databas delas med Bokmässan-projektet i eget `elevante`-schema (free-tier). RLS på alla tabeller, helpers via security definer. Login/signup/signOut Server Actions. `proxy.ts` refreshar session + skyddar `/app/*`. Role-baserad redirect i `/app/page.tsx`. Admin CSV-upload för timeslots + `GET /api/schedule`. 30 rutter totalt.
 ### Fas 3 — Lärarens webbvy: EJ STARTAD
 ### Fas 4 — Elevens chattgränssnitt: EJ STARTAD
 ### Fas 5 — Mobilapp: EJ STARTAD
