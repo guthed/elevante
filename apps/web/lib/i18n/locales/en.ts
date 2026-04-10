@@ -268,6 +268,76 @@ const en: Dictionary = {
       email: 'john@guthed.se',
     },
   },
+  app: {
+    landing: {
+      title: 'Pick a view',
+      subtitle:
+        'Development role switcher. Once authentication is in place in Phase 2, the role will be picked automatically based on your account.',
+      open: 'Open',
+    },
+    roleTitles: {
+      student: 'Student',
+      teacher: 'Teacher',
+      admin: 'Administrator',
+    },
+    topbar: {
+      search: 'Search lessons…',
+      notifications: 'Notifications',
+      userMenu: 'Your profile',
+      signOut: 'Sign out',
+    },
+    sidebar: {
+      student: {
+        overview: 'Overview',
+        lessons: 'My lessons',
+        chat: 'Ask Elevante',
+        library: 'Library',
+      },
+      teacher: {
+        overview: 'Overview',
+        classes: 'My classes',
+        lessons: 'Lessons',
+        materials: 'Materials',
+      },
+      admin: {
+        overview: 'Overview',
+        schools: 'Schools',
+        users: 'Users',
+        schedule: 'Schedule',
+        stats: 'Statistics',
+      },
+    },
+    pages: {
+      student: {
+        overview: {
+          title: 'Welcome back',
+          subtitle: 'All the lessons you have attended show up here as soon as your teacher uploads them.',
+          emptyTitle: 'No lessons yet',
+          emptyBody: 'The moment your teacher taps REC, Elevante starts saving for you. Come back tomorrow.',
+        },
+      },
+      teacher: {
+        overview: {
+          title: 'Your classes',
+          subtitle: 'An overview of your courses, lessons and materials.',
+          emptyTitle: 'No classes linked yet',
+          emptyBody: 'The admin team is linking your schedule. Your classes will appear here as soon as it is ready.',
+        },
+      },
+      admin: {
+        overview: {
+          title: 'Administration',
+          subtitle: 'Manage schools, users, schedules and statistics.',
+          emptyTitle: 'No schools added',
+          emptyBody: 'Start by adding a school and uploading its schedule.',
+        },
+      },
+    },
+    common: {
+      comingSoon: 'Coming in the next phase',
+      loading: 'Loading…',
+    },
+  },
 };
 
 export default en;

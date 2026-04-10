@@ -116,4 +116,73 @@ export type Dictionary = {
       email: string;
     };
   };
+  app: {
+    landing: {
+      title: string;
+      subtitle: string;
+      open: string;
+    };
+    roleTitles: {
+      student: string;
+      teacher: string;
+      admin: string;
+    };
+    topbar: {
+      search: string;
+      notifications: string;
+      userMenu: string;
+      signOut: string;
+    };
+    sidebar: {
+      student: {
+        overview: string;
+        lessons: string;
+        chat: string;
+        library: string;
+      };
+      teacher: {
+        overview: string;
+        classes: string;
+        lessons: string;
+        materials: string;
+      };
+      admin: {
+        overview: string;
+        schools: string;
+        users: string;
+        schedule: string;
+        stats: string;
+      };
+    };
+    pages: {
+      student: {
+        overview: {
+          title: string;
+          subtitle: string;
+          emptyTitle: string;
+          emptyBody: string;
+        };
+      };
+      teacher: {
+        overview: {
+          title: string;
+          subtitle: string;
+          emptyTitle: string;
+          emptyBody: string;
+        };
+      };
+      admin: {
+        overview: {
+          title: string;
+          subtitle: string;
+          emptyTitle: string;
+          emptyBody: string;
+        };
+      };
+    };
+    common: {
+      comingSoon: string;
+      loading: string;
+    };
+  };
 };

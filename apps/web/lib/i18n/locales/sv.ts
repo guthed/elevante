@@ -268,6 +268,76 @@ const sv: Dictionary = {
       email: 'john@guthed.se',
     },
   },
+  app: {
+    landing: {
+      title: 'Välj vy',
+      subtitle:
+        'Rollväxlare för utveckling. När autentisering är på plats i Fas 2 väljs rollen automatiskt utifrån ditt konto.',
+      open: 'Öppna',
+    },
+    roleTitles: {
+      student: 'Elev',
+      teacher: 'Lärare',
+      admin: 'Administratör',
+    },
+    topbar: {
+      search: 'Sök i lektioner…',
+      notifications: 'Notifikationer',
+      userMenu: 'Din profil',
+      signOut: 'Logga ut',
+    },
+    sidebar: {
+      student: {
+        overview: 'Översikt',
+        lessons: 'Mina lektioner',
+        chat: 'Fråga Elevante',
+        library: 'Bibliotek',
+      },
+      teacher: {
+        overview: 'Översikt',
+        classes: 'Mina klasser',
+        lessons: 'Lektioner',
+        materials: 'Material',
+      },
+      admin: {
+        overview: 'Översikt',
+        schools: 'Skolor',
+        users: 'Användare',
+        schedule: 'Schema',
+        stats: 'Statistik',
+      },
+    },
+    pages: {
+      student: {
+        overview: {
+          title: 'Välkommen tillbaka',
+          subtitle: 'Här hamnar alla lektioner du varit med på — så fort läraren laddat upp dem.',
+          emptyTitle: 'Inga lektioner ännu',
+          emptyBody: 'Så fort din lärare trycker REC börjar Elevante spara åt dig. Kom tillbaka imorgon.',
+        },
+      },
+      teacher: {
+        overview: {
+          title: 'Dina klasser',
+          subtitle: 'Översikt över dina kurser, lektioner och material.',
+          emptyTitle: 'Inga klasser kopplade ännu',
+          emptyBody: 'Admin-teamet kopplar ditt schema. Så fort det är klart dyker dina klasser upp här.',
+        },
+      },
+      admin: {
+        overview: {
+          title: 'Administration',
+          subtitle: 'Hantera skolor, användare, scheman och statistik.',
+          emptyTitle: 'Inga skolor tillagda',
+          emptyBody: 'Börja med att lägga till en skola och ladda upp dess schema.',
+        },
+      },
+    },
+    common: {
+      comingSoon: 'Kommer i nästa fas',
+      loading: 'Laddar…',
+    },
+  },
 };
 
 export default sv;
