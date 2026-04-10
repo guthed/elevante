@@ -145,7 +145,8 @@ elevante/
 
 ## Fasminne
 
-### Fas 0 — Publik sajt: EJ STARTAD
+### Fas 0 — Publik sajt: KLAR (2026-04-11)
+Next.js 16 + Tailwind v4 i `apps/web/`. Svenska + engelska via `[locale]` och `proxy.ts`. 6 sidor × 2 locales = 12 SSG-rutter. Resend Server Action (graceful fallback). JSON-LD, sitemap, robots, llms.txt, dynamiska OG/favicon via `next/og`. Push till `guthed/elevante`. Vercel-länkning + domänkoppling ligger som separata uppgifter.
 ### Fas 1 — Design System & Skelett: EJ STARTAD
 ### Fas 2 — Auth & Schemahantering: EJ STARTAD
 ### Fas 3 — Lärarens webbvy: EJ STARTAD
