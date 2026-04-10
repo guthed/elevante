@@ -1,0 +1,174 @@
+// Handskrivna typer för elevante-schemat.
+// Automatisk generering via Supabase CLI returnerar bara public-schemat
+// i Bokmassan-databasen, så vi håller dessa synkade manuellt med
+// migrationerna tills vi flyttar till ett eget projekt.
+
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
+
+export type UserRole = 'student' | 'teacher' | 'admin';
+
+export type DayOfWeek =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
+
+export type TranscriptStatus = 'pending' | 'processing' | 'ready' | 'failed';
+
+export type School = {
+  id: string;
+  name: string;
+  slug: string;
+  country: string;
+  created_at: string;
+};
+
+export type Profile = {
+  id: string;
+  school_id: string | null;
+  role: UserRole;
+  full_name: string | null;
+  email: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Course = {
+  id: string;
+  school_id: string;
+  code: string;
+  name: string;
+  created_at: string;
+};
+
+export type Class = {
+  id: string;
+  school_id: string;
+  name: string;
+  year: number | null;
+  created_at: string;
+};
+
+export type Timeslot = {
+  id: string;
+  school_id: string;
+  course_id: string;
+  class_id: string;
+  teacher_id: string | null;
+  day: DayOfWeek;
+  start_time: string;
+  end_time: string;
+  room: string | null;
+  valid_from: string;
+  valid_until: string | null;
+  created_at: string;
+};
+
+export type Lesson = {
+  id: string;
+  school_id: string;
+  course_id: string;
+  class_id: string;
+  teacher_id: string | null;
+  timeslot_id: string | null;
+  title: string | null;
+  recorded_at: string | null;
+  transcript_status: TranscriptStatus;
+  created_at: string;
+};
+
+type TableDef<R, I> = {
+  Row: R;
+  Insert: I;
+  Update: Partial<I>;
+  Relationships: [];
+};
+
+type SchoolInsert = {
+  name: string;
+  slug: string;
+  country?: string;
+  id?: string;
+  created_at?: string;
+};
+
+type ProfileInsert = {
+  id: string;
+  school_id?: string | null;
+  role?: UserRole;
+  full_name?: string | null;
+  email?: string | null;
+};
+
+type CourseInsert = {
+  school_id: string;
+  code: string;
+  name: string;
+  id?: string;
+  created_at?: string;
+};
+
+type ClassInsert = {
+  school_id: string;
+  name: string;
+  year?: number | null;
+  id?: string;
+  created_at?: string;
+};
+
+type TimeslotInsert = {
+  school_id: string;
+  course_id: string;
+  class_id: string;
+  day: DayOfWeek;
+  start_time: string;
+  end_time: string;
+  teacher_id?: string | null;
+  room?: string | null;
+  valid_from?: string;
+  valid_until?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
+type LessonInsert = {
+  school_id: string;
+  course_id: string;
+  class_id: string;
+  teacher_id?: string | null;
+  timeslot_id?: string | null;
+  title?: string | null;
+  recorded_at?: string | null;
+  transcript_status?: TranscriptStatus;
+  id?: string;
+  created_at?: string;
+};
+
+export type Database = {
+  elevante: {
+    Tables: {
+      schools: TableDef<School, SchoolInsert>;
+      profiles: TableDef<Profile, ProfileInsert>;
+      courses: TableDef<Course, CourseInsert>;
+      classes: TableDef<Class, ClassInsert>;
+      timeslots: TableDef<Timeslot, TimeslotInsert>;
+      lessons: TableDef<Lesson, LessonInsert>;
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: {
+      user_role: UserRole;
+      day_of_week: DayOfWeek;
+    };
+    CompositeTypes: Record<string, never>;
+  };
+};

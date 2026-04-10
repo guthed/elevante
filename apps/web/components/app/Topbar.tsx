@@ -3,22 +3,27 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
+import { signOut } from '@/app/actions/auth';
 
 type Props = {
   locale: Locale;
   role: Role;
   dict: Dictionary;
+  user: {
+    fullName: string | null;
+    email: string | null;
+  } | null;
 };
 
-// Placeholder-användare tills auth kopplas in i Fas 2.
-const mockUsers: Record<Role, { name: string; email: string }> = {
-  student: { name: 'Elin Student', email: 'elin@nackagymnasium.se' },
-  teacher: { name: 'Tomas Lärare', email: 'tomas@nackagymnasium.se' },
-  admin: { name: 'Anders Admin', email: 'anders@nackagymnasium.se' },
-};
+export function Topbar({ locale, role, dict, user }: Props) {
+  const displayName = user?.fullName ?? user?.email ?? dict.app.roleTitles[role];
+  const displayEmail = user?.email ?? '';
 
-export function Topbar({ locale, role, dict }: Props) {
-  const user = mockUsers[role];
+  const signOutWithLocale = async () => {
+    'use server';
+    await signOut(locale);
+  };
+
   return (
     <header className="flex h-16 items-center justify-between border-b border-[var(--color-border)] bg-white px-6">
       <div className="flex items-center gap-3">
@@ -51,16 +56,26 @@ export function Topbar({ locale, role, dict }: Props) {
           </span>
         </button>
         <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-3 py-1.5">
-          <Avatar name={user.name} size="sm" />
+          <Avatar name={displayName} size="sm" />
           <div className="hidden text-left md:block">
             <div className="text-xs font-medium text-[var(--color-primary)]">
-              {user.name}
+              {displayName}
             </div>
-            <div className="text-[10px] text-[var(--color-ink-subtle)]">
-              {user.email}
-            </div>
+            {displayEmail ? (
+              <div className="text-[10px] text-[var(--color-ink-subtle)]">
+                {displayEmail}
+              </div>
+            ) : null}
           </div>
         </div>
+        <form action={signOutWithLocale}>
+          <button
+            type="submit"
+            className="text-sm text-[var(--color-ink-subtle)] hover:text-[var(--color-primary)]"
+          >
+            {dict.auth.signOut}
+          </button>
+        </form>
       </div>
     </header>
   );
