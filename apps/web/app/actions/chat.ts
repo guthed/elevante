@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
 import type { ChatScope, ChatSource } from '@/lib/supabase/database';
+import { anthropicIsConfigured, answerWithRag, type RagChunk } from '@/lib/ai/anthropic';
+import { bergetIsConfigured, embedTexts } from '@/lib/ai/berget';
 
 export type SendMessageState =
   | { status: 'idle' }
@@ -11,14 +13,90 @@ export type SendMessageState =
   | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
 
 /**
- * Mockad RAG-funktion. Riktig version i Fas 6 kommer:
- * 1. Hämta embeddings för användarens fråga via Berget AI
- * 2. Vector-search mot lesson-chunks
- * 3. Skicka top-k chunks + fråga till Claude API med strikt RAG-prompt
- * 4. Returnera Claude-svar + källor
- *
- * Just nu: returnera ett mockat svar med en fake källa, så UI:t kan
- * utvecklas och testas utan att vara beroende av Berget AI.
+ * Riktig RAG via Berget AI (embeddings) + Anthropic (svar).
+ * Returnerar null om någon del saknas så anroparen faller tillbaka
+ * till mockedAnswer.
+ */
+async function ragAnswer(
+  question: string,
+  scopeContext: { scope: ChatScope; lessonId: string | null; courseId: string | null },
+): Promise<{ content: string; sources: ChatSource[] } | null> {
+  if (!bergetIsConfigured() || !anthropicIsConfigured()) return null;
+
+  const supabase = await createSupabaseServerClient();
+
+  // Steg 1: embedda användarens fråga
+  const embeddings = await embedTexts([question]);
+  if (!embeddings || embeddings.length === 0) return null;
+  const queryEmbedding = embeddings[0]!;
+
+  // Steg 2: vector-search via en av match_*_chunks RPC:erna
+  type MatchRow = {
+    id: string;
+    lesson_id?: string;
+    content: string;
+    similarity: number;
+  };
+  // Cast supabase till any för RPC-anropen — match_*_chunks finns i schemat
+  // men deklareras inte i Database-typen (se kommentar i database.ts).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rpcClient = supabase as unknown as { rpc: (name: string, args: Record<string, unknown>) => Promise<{ data: MatchRow[] | null }> };
+  let matches: MatchRow[] = [];
+  if (scopeContext.scope === 'lesson' && scopeContext.lessonId) {
+    const { data } = await rpcClient.rpc('match_lesson_chunks', {
+      query_embedding: queryEmbedding,
+      lesson_id_filter: scopeContext.lessonId,
+      top_k: 5,
+    });
+    matches = (data ?? []).map((m) => ({
+      ...m,
+      lesson_id: scopeContext.lessonId ?? undefined,
+    }));
+  } else if (scopeContext.scope === 'course' && scopeContext.courseId) {
+    const { data } = await rpcClient.rpc('match_course_chunks', {
+      query_embedding: queryEmbedding,
+      course_id_filter: scopeContext.courseId,
+      top_k: 8,
+    });
+    matches = data ?? [];
+  }
+
+  if (matches.length === 0) {
+    return {
+      content: 'Det togs inte upp på den här lektionen.',
+      sources: [],
+    };
+  }
+
+  // Steg 3: hämta lessons-titlar för citaten
+  const lessonIds = Array.from(
+    new Set(matches.map((m) => m.lesson_id).filter((id): id is string => !!id)),
+  );
+  const { data: lessonRows } = await supabase
+    .from('lessons')
+    .select('id, title')
+    .in('id', lessonIds);
+  const titleById = new Map(
+    ((lessonRows ?? []) as { id: string; title: string | null }[]).map((l) => [
+      l.id,
+      l.title,
+    ]),
+  );
+
+  const chunks: RagChunk[] = matches.map((m) => ({
+    lessonId: m.lesson_id ?? scopeContext.lessonId ?? '',
+    lessonTitle: m.lesson_id ? (titleById.get(m.lesson_id) ?? null) : null,
+    content: m.content,
+  }));
+
+  // Steg 4: Claude-svar med strikt RAG-prompt
+  const answer = await answerWithRag(question, chunks);
+  return answer;
+}
+
+/**
+ * Mockat fallback-svar när Berget AI eller Anthropic inte är konfigurerade.
+ * Behålls i kodbasen så lokal utveckling fungerar utan keys.
  */
 async function mockedAnswer(
   question: string,
@@ -118,11 +196,14 @@ export async function startChat(input: StartChatInput) {
     content: input.question,
   });
 
-  const answer = await mockedAnswer(input.question, {
+  const scopeContext = {
     scope: input.scope,
     lessonId: input.lessonId ?? null,
     courseId: input.courseId ?? null,
-  });
+  };
+  const answer =
+    (await ragAnswer(input.question, scopeContext)) ??
+    (await mockedAnswer(input.question, scopeContext));
 
   await supabase.from('chat_messages').insert({
     chat_id: chat.id,
@@ -159,11 +240,14 @@ export async function sendMessage(
     .from('chat_messages')
     .insert({ chat_id: chatId, role: 'user', content: question });
 
-  const answer = await mockedAnswer(question, {
+  const scopeContext = {
     scope: chat.scope,
     lessonId: chat.lesson_id,
     courseId: chat.course_id,
-  });
+  };
+  const answer =
+    (await ragAnswer(question, scopeContext)) ??
+    (await mockedAnswer(question, scopeContext));
 
   const { error: insertError } = await supabase.from('chat_messages').insert({
     chat_id: chatId,

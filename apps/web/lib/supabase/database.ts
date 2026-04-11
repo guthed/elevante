@@ -236,6 +236,31 @@ type ChatMessageInsert = {
   created_at?: string;
 };
 
+type MatchLessonChunkArgs = {
+  query_embedding: number[];
+  lesson_id_filter: string;
+  top_k?: number;
+};
+
+type MatchCourseChunkArgs = {
+  query_embedding: number[];
+  course_id_filter: string;
+  top_k?: number;
+};
+
+type LessonChunkMatch = {
+  id: string;
+  content: string;
+  similarity: number;
+};
+
+type CourseChunkMatch = {
+  id: string;
+  lesson_id: string;
+  content: string;
+  similarity: number;
+};
+
 export type Database = {
   elevante: {
     Tables: {
@@ -250,6 +275,10 @@ export type Database = {
       chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
     };
     Views: Record<string, never>;
+    // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
+    // men vi castar dem manuellt i app/actions/chat.ts. Att deklarera dem
+    // här triggar Supabase JS att kräva fullständiga Relationships på alla
+    // tabeller, vilket vi inte vill göra för hand.
     Functions: Record<string, never>;
     Enums: {
       user_role: UserRole;

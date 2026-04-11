@@ -62,7 +62,7 @@ export async function getStudentOverview(
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(50);
 
-  const lessonRows: StudentLessonRow[] = ((lessons ?? []) as LessonJoin[]).map(
+  const lessonRows: StudentLessonRow[] = ((lessons ?? []) as unknown as LessonJoin[]).map(
     (row) => ({
       id: row.id,
       title: row.title,
@@ -129,7 +129,7 @@ export async function getStudentLibrary(
   };
 
   const { data } = await query;
-  return ((data ?? []) as LessonJoin[]).map((row) => ({
+  return ((data ?? []) as unknown as LessonJoin[]).map((row) => ({
     id: row.id,
     title: row.title,
     recordedAt: row.recorded_at,
@@ -187,7 +187,7 @@ export async function getStudentLessonDetail(
     courses: { id: string; code: string; name: string } | null;
     profiles: { id: string; full_name: string | null } | null;
   };
-  const typed = lesson as LessonRow;
+  const typed = lesson as unknown as LessonRow;
 
   return {
     id: typed.id,
