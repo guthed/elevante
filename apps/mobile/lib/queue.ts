@@ -97,6 +97,17 @@ export async function uploadJob(
       return { ok: false, error: updateError.message };
     }
 
+    // Trigga transcribe-lesson Edge Function. Vi väntar inte på svar
+    // (transkribering tar tid) — funktionen uppdaterar lessons.transcript_status
+    // åt oss och webben pollar / uppdaterar via realtime senare.
+    try {
+      await supabase.functions.invoke('transcribe-lesson', {
+        body: { lesson_id: job.lessonId },
+      });
+    } catch {
+      // Ignorera fel — pipelinen kan triggas manuellt från webben senare
+    }
+
     // Städa upp lokal fil och queue-entry
     try {
       await FileSystem.deleteAsync(job.filePath, { idempotent: true });

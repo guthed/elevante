@@ -50,9 +50,17 @@ export default async function PublicLayout({ children, params }: Props) {
   return (
     <>
       <JsonLd data={[orgSchema, websiteSchema]} />
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[var(--color-primary)] focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+      >
+        {locale === 'sv' ? 'Hoppa till innehåll' : 'Skip to content'}
+      </a>
       <div className="flex min-h-screen flex-col">
         <Header locale={locale} pathname={pathname} dict={dict} />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
         <Footer locale={locale} pathname={pathname} dict={dict} />
       </div>
     </>
