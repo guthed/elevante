@@ -308,6 +308,16 @@ export type Dictionary = {
           subtitle: string;
           emptyTitle: string;
           emptyBody: string;
+          schoolsLabel: string;
+          studentsLabel: string;
+          teachersLabel: string;
+          lessonsLabel: string;
+          transcribedLabel: string;
+          recentLessonsHeading: string;
+          quickActionsHeading: string;
+          uploadSchedule: string;
+          manageUsers: string;
+          manageSchools: string;
         };
         schedule: {
           title: string;
@@ -320,6 +330,40 @@ export type Dictionary = {
           errorInvalid: string;
           errorGeneric: string;
           tableEmpty: string;
+        };
+        users: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          nameColumn: string;
+          emailColumn: string;
+          roleColumn: string;
+          updateRole: string;
+          updating: string;
+          updateSuccess: string;
+          updateError: string;
+        };
+        schools: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          createTitle: string;
+          nameLabel: string;
+          slugLabel: string;
+          countryLabel: string;
+          createSubmit: string;
+          creating: string;
+          createSuccess: string;
+          createError: string;
+          createdLabel: string;
+        };
+        stats: {
+          title: string;
+          subtitle: string;
+          weeklyHeading: string;
+          statusHeading: string;
+          activityHeading: string;
+          noData: string;
         };
       };
     };
