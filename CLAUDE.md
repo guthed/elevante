@@ -159,7 +159,8 @@ Migration `elevante_chat_history` lägger till `chats` + `chat_messages` med str
 `apps/mobile/` med Expo SDK 52 + Expo Router 4 + RN 0.76 + React 19. Migration `elevante_audio_recordings` med privat audio-bucket (RLS bara teacher/admin). Supabase-klient med SecureStore-adapter (Keychain/Keystore). AsyncStorage upload-queue med base64 → Storage. Skärmar: login (KeyboardAvoidingView), schedule (dagens lektioner från timeslots, pull-to-refresh, pending-banner), record (mörk bakgrund, REC/STOP, expo-audio HIGH_QUALITY, mm:ss timer). pnpm.overrides på @types/react för att hålla webb och mobil i sync. Manuell test i Expo Go ligger som separat uppgift.
 ### Fas 6 — Transkription & RAG: DELVIS KLAR (2026-04-11)
 Migration `elevante_lesson_chunks_pgvector` aktiverar `vector`-extensionen och skapar `lesson_chunks` (1024-dim, IVFFLAT-index) + RPC `match_lesson_chunks` / `match_course_chunks` (security definer). AI-adaptrar i `lib/ai/`: `anthropic.ts` med `@anthropic-ai/sdk` direkt + strikt RAG-system-prompt, `berget.ts` med OpenAI-kompatibelt API antaget. `app/actions/chat.ts` försöker `ragAnswer` först och faller tillbaka till `mockedAnswer` när keys saknas. **BLOCKERAT** (separata Notion-uppgifter): Berget AI API-key + verifierat API-format för KB-Whisper, embedding-leverantör inom EU, Anthropic API-key + GDPR-DPA-granskning, end-to-end audio→transcript-pipeline.
-### Fas 7 — Admin & Statistik: EJ STARTAD
+### Fas 7 — Admin & Statistik: KLAR (2026-04-11)
+Data-layer i `lib/data/admin.ts` (overview, users, schools, stats med 7-dagars-bucket). Server Actions: `updateUserRole`, `createSchool`. Vyer: `/admin` översikt med 5 stat-tiles, `/admin/anvandare` med inline `UserRoleForm`, `/admin/skolor` med `CreateSchoolForm`, `/admin/statistik` med weekly bar chart (div-bars utan dep) + status-breakdown + activity-totals. 92 rutter byggda.
 
 ---
 
