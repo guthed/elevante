@@ -85,6 +85,8 @@ export type Lesson = {
   transcript_status: TranscriptStatus;
   transcript_text: string | null;
   transcript_updated_at: string | null;
+  audio_path: string | null;
+  audio_duration_seconds: number | null;
   created_at: string;
 };
 
@@ -195,6 +197,8 @@ type LessonInsert = {
   transcript_status?: TranscriptStatus;
   transcript_text?: string | null;
   transcript_updated_at?: string | null;
+  audio_path?: string | null;
+  audio_duration_seconds?: number | null;
   id?: string;
   created_at?: string;
 };

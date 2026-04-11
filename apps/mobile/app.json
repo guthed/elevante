@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Elevante",
+    "slug": "elevante-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "elevante",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "se.elevante.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Elevante behöver mikrofonåtkomst för att spela in lektioner. Inspelningarna används endast för transkribering och raderas direkt efteråt."
+      }
+    },
+    "android": {
+      "package": "se.elevante.app",
+      "permissions": ["RECORD_AUDIO"],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1A1A2E"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Elevante behöver mikrofonåtkomst för att spela in lektioner."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}
