@@ -153,7 +153,8 @@ Baskomponenter i `apps/web/components/ui/` (Button, Input, Textarea, Select, Fie
 Supabase Auth via @supabase/ssr i `apps/web/lib/supabase/`. Databas delas med Bokmässan-projektet i eget `elevante`-schema (free-tier). RLS på alla tabeller, helpers via security definer. Login/signup/signOut Server Actions. `proxy.ts` refreshar session + skyddar `/app/*`. Role-baserad redirect i `/app/page.tsx`. Admin CSV-upload för timeslots + `GET /api/schedule`. 30 rutter totalt.
 ### Fas 3 — Lärarens webbvy: KLAR (2026-04-11)
 Migration `elevante_materials_and_storage` lägger till `materials`-tabell, `lessons.transcript_text/transcript_updated_at` och privat Storage-bucket `elevante-materials` (500 MB, RLS per skola). Data-layer i `lib/data/teacher.ts` för översikt, klasser, lektioner och detaljvyer. Server Actions: `uploadMaterial` (validering + sanering + signed URL), `getMaterialDownloadUrl`. Vyer: `/teacher` översikt med stat-tiles, `/teacher/klasser[/id]`, `/teacher/lektioner[/id]` med transkript-placeholder + materials-card. `LessonStatusBadge`, `MaterialUploadForm`, `MaterialList`. 50 rutter byggda.
-### Fas 4 — Elevens chattgränssnitt: EJ STARTAD
+### Fas 4 — Elevens chattgränssnitt: KLAR (2026-04-11)
+Migration `elevante_chat_history` lägger till `chats` + `chat_messages` med strikt RLS-privacy (lärare och admin kan ej läsa elevchats). Data-layer i `lib/data/student.ts`. Mockad RAG i `app/actions/chat.ts` (riktig pipeline kommer i Fas 6). Vyer: `/student` översikt, `/student/bibliotek` med kurs-filter, `/student/chat` landning + history, `/student/chat/[id]` full tråd. Lektionsdetaljen branchad på role: student ser chat-CTA, lärare ser upload-form. Komponenter: `ChatThread`, `LessonChatForm`, `CourseChatStarter`. 62 rutter byggda.
 ### Fas 5 — Mobilapp: EJ STARTAD
 ### Fas 6 — Transkription & RAG: EJ STARTAD
 ### Fas 7 — Admin & Statistik: EJ STARTAD
