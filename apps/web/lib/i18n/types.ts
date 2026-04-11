@@ -191,6 +191,49 @@ export type Dictionary = {
           subtitle: string;
           emptyTitle: string;
           emptyBody: string;
+          recentLessonsHeading: string;
+          coursesHeading: string;
+          chatCta: string;
+          openLibrary: string;
+        };
+        library: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          allCourses: string;
+          recordedLabel: string;
+          notRecorded: string;
+        };
+        lessonDetail: {
+          back: string;
+          metaCourse: string;
+          metaTeacher: string;
+          metaRecorded: string;
+          notRecorded: string;
+          transcriptHeading: string;
+          transcriptPending: string;
+          materialsHeading: string;
+          materialsEmpty: string;
+        };
+        chat: {
+          title: string;
+          subtitle: string;
+          openLessonChat: string;
+          startCourseChat: string;
+          pickCourse: string;
+          pickLesson: string;
+          empty: string;
+          inputPlaceholder: string;
+          send: string;
+          sending: string;
+          assistantTyping: string;
+          guardrailNotice: string;
+          sourcesHeading: string;
+          sourceFromLesson: string;
+          mockNotice: string;
+          newChat: string;
+          historyHeading: string;
+          noHistory: string;
         };
       };
       teacher: {

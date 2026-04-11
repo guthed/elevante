@@ -341,9 +341,57 @@ const en: Dictionary = {
       student: {
         overview: {
           title: 'Welcome back',
-          subtitle: 'All the lessons you have attended show up here as soon as your teacher uploads them.',
+          subtitle:
+            'All the lessons you have attended show up here as soon as your teacher uploads them.',
           emptyTitle: 'No lessons yet',
-          emptyBody: 'The moment your teacher taps REC, Elevante starts saving for you. Come back tomorrow.',
+          emptyBody:
+            'The moment your teacher taps REC, Elevante starts saving for you. Come back tomorrow.',
+          recentLessonsHeading: 'Recent lessons',
+          coursesHeading: 'Your courses',
+          chatCta: 'Ask Elevante',
+          openLibrary: 'Open library',
+        },
+        library: {
+          title: 'Library',
+          subtitle: 'Every lesson you have access to.',
+          empty: 'Your library is empty. Lessons will show up here as they happen.',
+          allCourses: 'All courses',
+          recordedLabel: 'Recorded',
+          notRecorded: 'Not recorded yet',
+        },
+        lessonDetail: {
+          back: '← Library',
+          metaCourse: 'Course',
+          metaTeacher: 'Teacher',
+          metaRecorded: 'Recorded',
+          notRecorded: 'Not recorded yet',
+          transcriptHeading: 'Transcript',
+          transcriptPending:
+            "Transcript isn't ready yet. You can still ask questions about the lesson.",
+          materialsHeading: 'Materials',
+          materialsEmpty: 'No materials uploaded.',
+        },
+        chat: {
+          title: 'Ask Elevante',
+          subtitle:
+            "Ask questions about your lessons. Elevante only answers from what your teacher actually said — and shows you where the answer comes from.",
+          openLessonChat: 'Chat about this lesson',
+          startCourseChat: 'Chat about the course',
+          pickCourse: 'Pick a course',
+          pickLesson: 'Pick a lesson',
+          empty: 'No chat yet — type a question below.',
+          inputPlaceholder: 'What do you want to know?',
+          send: 'Send',
+          sending: 'Sending…',
+          assistantTyping: 'Elevante is typing…',
+          guardrailNotice: "That wasn't covered in this lesson.",
+          sourcesHeading: 'Sources',
+          sourceFromLesson: 'From the lesson',
+          mockNotice:
+            'Mocked answer — real RAG turns on in Phase 6 once the KB-Whisper pipeline is live.',
+          newChat: 'New chat',
+          historyHeading: 'Previous chats',
+          noHistory: 'No previous chats yet.',
         },
       },
       teacher: {

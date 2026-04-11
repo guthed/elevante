@@ -341,9 +341,57 @@ const sv: Dictionary = {
       student: {
         overview: {
           title: 'Välkommen tillbaka',
-          subtitle: 'Här hamnar alla lektioner du varit med på — så fort läraren laddat upp dem.',
+          subtitle:
+            'Här hamnar alla lektioner du varit med på — så fort läraren laddat upp dem.',
           emptyTitle: 'Inga lektioner ännu',
-          emptyBody: 'Så fort din lärare trycker REC börjar Elevante spara åt dig. Kom tillbaka imorgon.',
+          emptyBody:
+            'Så fort din lärare trycker REC börjar Elevante spara åt dig. Kom tillbaka imorgon.',
+          recentLessonsHeading: 'Senaste lektionerna',
+          coursesHeading: 'Dina kurser',
+          chatCta: 'Fråga Elevante',
+          openLibrary: 'Öppna biblioteket',
+        },
+        library: {
+          title: 'Bibliotek',
+          subtitle: 'Alla lektioner du har tillgång till.',
+          empty: 'Ditt bibliotek är tomt. Lektioner dyker upp här efterhand.',
+          allCourses: 'Alla kurser',
+          recordedLabel: 'Inspelad',
+          notRecorded: 'Ej inspelad ännu',
+        },
+        lessonDetail: {
+          back: '← Biblioteket',
+          metaCourse: 'Kurs',
+          metaTeacher: 'Lärare',
+          metaRecorded: 'Inspelad',
+          notRecorded: 'Ej inspelad ännu',
+          transcriptHeading: 'Transkribering',
+          transcriptPending:
+            'Transkribering är inte klar ännu. Du kan ändå ställa frågor om lektionen.',
+          materialsHeading: 'Material',
+          materialsEmpty: 'Inget material uppladdat.',
+        },
+        chat: {
+          title: 'Fråga Elevante',
+          subtitle:
+            'Ställ frågor om dina lektioner. Elevante svarar bara på det din lärare faktiskt sa — och visar varifrån svaret kommer.',
+          openLessonChat: 'Chatta om denna lektion',
+          startCourseChat: 'Chatta om kursen',
+          pickCourse: 'Välj kurs',
+          pickLesson: 'Välj lektion',
+          empty: 'Ingen chat ännu — skriv en fråga nedan.',
+          inputPlaceholder: 'Vad vill du veta?',
+          send: 'Skicka',
+          sending: 'Skickar…',
+          assistantTyping: 'Elevante skriver…',
+          guardrailNotice: 'Det togs inte upp på den här lektionen.',
+          sourcesHeading: 'Källor',
+          sourceFromLesson: 'Från lektionen',
+          mockNotice:
+            'Mockat svar — riktig RAG aktiveras i Fas 6 när KB-Whisper-pipelinen är på plats.',
+          newChat: 'Ny chat',
+          historyHeading: 'Tidigare chattar',
+          noHistory: 'Inga tidigare chattar ännu.',
         },
       },
       teacher: {

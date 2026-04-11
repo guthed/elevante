@@ -100,6 +100,36 @@ export type Material = {
   created_at: string;
 };
 
+export type ChatRole = 'user' | 'assistant';
+export type ChatScope = 'lesson' | 'course';
+
+export type Chat = {
+  id: string;
+  school_id: string;
+  user_id: string;
+  scope: ChatScope;
+  course_id: string | null;
+  lesson_id: string | null;
+  title: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ChatSource = {
+  lesson_id: string;
+  lesson_title: string | null;
+  excerpt: string;
+};
+
+export type ChatMessage = {
+  id: string;
+  chat_id: string;
+  role: ChatRole;
+  content: string;
+  sources: ChatSource[];
+  created_at: string;
+};
+
 type TableDef<R, I> = {
   Row: R;
   Insert: I;
@@ -181,6 +211,27 @@ type MaterialInsert = {
   created_at?: string;
 };
 
+type ChatInsert = {
+  school_id: string;
+  user_id: string;
+  scope: ChatScope;
+  course_id?: string | null;
+  lesson_id?: string | null;
+  title?: string | null;
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+type ChatMessageInsert = {
+  chat_id: string;
+  role: ChatRole;
+  content: string;
+  sources?: ChatSource[];
+  id?: string;
+  created_at?: string;
+};
+
 export type Database = {
   elevante: {
     Tables: {
@@ -191,6 +242,8 @@ export type Database = {
       timeslots: TableDef<Timeslot, TimeslotInsert>;
       lessons: TableDef<Lesson, LessonInsert>;
       materials: TableDef<Material, MaterialInsert>;
+      chats: TableDef<Chat, ChatInsert>;
+      chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

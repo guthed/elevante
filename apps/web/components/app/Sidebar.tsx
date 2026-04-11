@@ -15,19 +15,14 @@ function itemsFor(
     return [
       { href: `${base}/student`, label: dict.app.sidebar.student.overview, icon: '◎' },
       {
-        href: `${base}/student/lektioner`,
-        label: dict.app.sidebar.student.lessons,
+        href: `${base}/student/bibliotek`,
+        label: dict.app.sidebar.student.library,
         icon: '▣',
       },
       {
         href: `${base}/student/chat`,
         label: dict.app.sidebar.student.chat,
         icon: '◐',
-      },
-      {
-        href: `${base}/student/bibliotek`,
-        label: dict.app.sidebar.student.library,
-        icon: '☰',
       },
     ];
   }
