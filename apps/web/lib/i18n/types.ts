@@ -199,6 +199,64 @@ export type Dictionary = {
           subtitle: string;
           emptyTitle: string;
           emptyBody: string;
+          classesHeading: string;
+          coursesHeading: string;
+          recentLessonsHeading: string;
+          studentsCount: string;
+          lessonsCount: string;
+        };
+        classes: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          year: string;
+          studentsLabel: string;
+        };
+        classDetail: {
+          back: string;
+          membersHeading: string;
+          membersEmpty: string;
+          coursesHeading: string;
+          lessonsHeading: string;
+        };
+        lessons: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          dateLabel: string;
+          courseLabel: string;
+          classLabel: string;
+          statusLabel: string;
+        };
+        lessonDetail: {
+          back: string;
+          metaCourse: string;
+          metaClass: string;
+          metaTeacher: string;
+          metaRecorded: string;
+          notRecorded: string;
+          materialsHeading: string;
+          materialsEmpty: string;
+          uploadLabel: string;
+          uploadHint: string;
+          uploadSubmit: string;
+          uploading: string;
+          uploadSuccess: string;
+          uploadError: string;
+          uploadTooLarge: string;
+          uploadBadType: string;
+          transcriptHeading: string;
+          transcriptPending: string;
+          transcriptProcessing: string;
+          transcriptReady: string;
+          transcriptFailed: string;
+          transcriptComingSoon: string;
+        };
+        statuses: {
+          pending: string;
+          processing: string;
+          ready: string;
+          failed: string;
         };
       };
       admin: {

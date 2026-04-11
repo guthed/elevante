@@ -83,6 +83,20 @@ export type Lesson = {
   title: string | null;
   recorded_at: string | null;
   transcript_status: TranscriptStatus;
+  transcript_text: string | null;
+  transcript_updated_at: string | null;
+  created_at: string;
+};
+
+export type Material = {
+  id: string;
+  lesson_id: string;
+  school_id: string;
+  uploaded_by: string;
+  name: string;
+  storage_path: string;
+  mime_type: string | null;
+  size_bytes: number | null;
   created_at: string;
 };
 
@@ -149,6 +163,20 @@ type LessonInsert = {
   title?: string | null;
   recorded_at?: string | null;
   transcript_status?: TranscriptStatus;
+  transcript_text?: string | null;
+  transcript_updated_at?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
+type MaterialInsert = {
+  lesson_id: string;
+  school_id: string;
+  uploaded_by: string;
+  name: string;
+  storage_path: string;
+  mime_type?: string | null;
+  size_bytes?: number | null;
   id?: string;
   created_at?: string;
 };
@@ -162,6 +190,7 @@ export type Database = {
       classes: TableDef<Class, ClassInsert>;
       timeslots: TableDef<Timeslot, TimeslotInsert>;
       lessons: TableDef<Lesson, LessonInsert>;
+      materials: TableDef<Material, MaterialInsert>;
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

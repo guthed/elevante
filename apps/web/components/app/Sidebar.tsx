@@ -44,11 +44,6 @@ function itemsFor(
         label: dict.app.sidebar.teacher.lessons,
         icon: '◐',
       },
-      {
-        href: `${base}/teacher/material`,
-        label: dict.app.sidebar.teacher.materials,
-        icon: '☰',
-      },
     ];
   }
   return [
