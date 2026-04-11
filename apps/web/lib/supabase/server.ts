@@ -55,12 +55,16 @@ export async function getCurrentUser() {
 export async function getCurrentProfile() {
   const user = await getCurrentUser();
   if (!user) return null;
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, role, school_id, full_name, email')
-    .eq('id', user.id)
-    .maybeSingle();
-  if (error) return null;
-  return data;
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, role, school_id, full_name, email')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (error) return null;
+    return data;
+  } catch {
+    return null;
+  }
 }

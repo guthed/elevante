@@ -4,6 +4,11 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 
+// Hela /app-trädet är auth-skyddat och läser session/profile per request.
+// force-dynamic förhindrar att Next.js försöker prerendera dem vid build-tid
+// (vilket annars skulle krascha utan Supabase env vars).
+export const dynamic = 'force-dynamic';
+
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: string }>;
