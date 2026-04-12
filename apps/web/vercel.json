@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["arn1"],
+  "functions": {
+    "app/**/*.tsx": {
+      "maxDuration": 30
+    },
+    "app/api/**/*.ts": {
+      "maxDuration": 60
+    }
+  }
+}

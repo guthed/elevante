@@ -36,7 +36,7 @@ export function AppShell({
       <Sidebar locale={locale} role={role} currentPath={currentPath} dict={dict} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar locale={locale} role={role} dict={dict} user={user} />
-        <main id="app-main" className="flex-1 overflow-y-auto">
+        <main id="app-main" className="flex-1 overflow-y-auto animate-page-in">
           {children}
         </main>
       </div>

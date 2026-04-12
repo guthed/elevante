@@ -48,8 +48,12 @@ export function ChatThread({ chatId, initialMessages, labels, userName }: Props)
             </li>
           ))}
           {pending ? (
-            <li className="flex items-start gap-3 text-sm text-[var(--color-ink-subtle)]">
-              <span className="font-mono">•••</span>
+            <li className="flex items-center gap-3 text-sm text-[var(--color-ink-subtle)]">
+              <span className="flex items-center gap-1">
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+              </span>
               {labels.assistantTyping}
             </li>
           ) : null}

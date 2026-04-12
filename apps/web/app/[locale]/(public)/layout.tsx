@@ -58,7 +58,7 @@ export default async function PublicLayout({ children, params }: Props) {
       </a>
       <div className="flex min-h-screen flex-col">
         <Header locale={locale} pathname={pathname} dict={dict} />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1 animate-page-in">
           {children}
         </main>
         <Footer locale={locale} pathname={pathname} dict={dict} />

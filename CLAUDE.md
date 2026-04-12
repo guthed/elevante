@@ -60,12 +60,12 @@ Nyckelprinciper:
 | Monorepo | Turborepo |
 | Frontend (webb + publik sajt) | Next.js 16 (App Router, React 19, `proxy.ts`) + Tailwind CSS v4 |
 | Mobilapp | React Native + Expo |
-| Backend | FastAPI (Python) |
+| Backend | Next.js Server Actions + Supabase Edge Functions (FastAPI planerad V2) |
 | Databas | Supabase (PostgreSQL + pgvector + Storage + Auth) |
 | AI — ALL generering | **Claude API (Anthropic) — enda AI-leverantören** |
 | Transkribering | KB-Whisper via Berget AI (svenska, GDPR) |
 | Hosting (webb) | Vercel (auto-deploy från GitHub) |
-| Hosting (backend/AI) | Berget AI (EU, GDPR) |
+| Hosting (backend/AI) | Vercel Functions (arn1, Stockholm) + Supabase Edge Functions + Berget AI (EU, GDPR) |
 | Versionshantering | GitHub |
 | Projekthantering | Notion via MCP |
 
@@ -115,14 +115,9 @@ elevante/
 ├── apps/
 │   ├── web/          # Next.js — publik sajt + app (elev, lärare, admin)
 │   └── mobile/       # React Native + Expo — lärare
-├── packages/
-│   ├── ui/           # Delat komponentbibliotek
-│   ├── api-client/   # Typade API-klienter
-│   └── types/        # Delade TypeScript-typer
-├── backend/
-│   ├── api/          # FastAPI
-│   ├── pipeline/     # Transkription + RAG
-│   └── workers/      # Bakgrundsjobb
+├── supabase/
+│   └── functions/    # Edge Functions (transcribe-lesson pipeline)
+├── packages/         # Delade paket (extraheras vid behov)
 ├── CLAUDE.md
 └── turbo.json
 ```
@@ -133,7 +128,7 @@ elevante/
 
 - [ ] WCAG AA på alla UI-komponenter
 - [ ] Inga hårdkodade strängar (t('key'))
-- [ ] Pydantic-validering på alla API-endpoints
+- [ ] Zod-validering på alla Server Actions (Pydantic om FastAPI läggs till i V2)
 - [ ] Inga TypeScript `any` utan kommentar
 - [ ] Responsivt: 375px, 768px, 1280px, 1440px
 - [ ] Inga TODO-kommentarer

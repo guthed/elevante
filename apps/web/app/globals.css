@@ -113,6 +113,43 @@
   }
 }
 
+/* Sidinnehåll fade-in — 150ms enligt DESIGN-sidan */
+@layer components {
+  @keyframes elevante-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-page-in {
+    animation: elevante-fade-in 150ms ease-out both;
+  }
+
+  /* Typing-indikator (3 pulserande punkter) för chatten */
+  @keyframes elevante-dot-pulse {
+    0%, 80%, 100% { opacity: 0.3; }
+    40% { opacity: 1; }
+  }
+
+  .typing-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ink-subtle);
+    animation: elevante-dot-pulse 1.4s infinite ease-in-out both;
+  }
+
+  .typing-dot:nth-child(1) { animation-delay: 0ms; }
+  .typing-dot:nth-child(2) { animation-delay: 160ms; }
+  .typing-dot:nth-child(3) { animation-delay: 320ms; }
+}
+
 @layer utilities {
   .container-prose {
     max-width: var(--container-prose);
