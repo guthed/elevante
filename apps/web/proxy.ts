@@ -2,16 +2,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { defaultLocale, isLocale, locales } from './lib/i18n/config';
 
-function pickLocale(acceptLanguage: string | null): string {
-  if (!acceptLanguage) return defaultLocale;
-  const parts = acceptLanguage
-    .split(',')
-    .map((part) => part.split(';')[0]!.trim().toLowerCase());
-  for (const part of parts) {
-    const base = part.split('-')[0]!;
-    if (isLocale(base)) return base;
-  }
-  return defaultLocale;
+// Svenska är alltid default. Språkväljaren i headern byter till /en.
+function pickLocale(): string {
+  return defaultLocale; // 'sv'
 }
 
 function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
@@ -42,7 +35,7 @@ export async function proxy(request: NextRequest) {
   // Steg 1: locale-redirect
   const firstSegment = pathname.split('/')[1];
   if (!firstSegment || !isLocale(firstSegment)) {
-    const locale = pickLocale(request.headers.get('accept-language'));
+    const locale = pickLocale();
     const url = request.nextUrl.clone();
     url.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
     return NextResponse.redirect(url);
