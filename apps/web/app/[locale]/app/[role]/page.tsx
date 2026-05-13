@@ -13,6 +13,7 @@ import { getTeacherOverview } from '@/lib/data/teacher';
 import { getStudentOverview } from '@/lib/data/student';
 import { getAdminOverview } from '@/lib/data/admin';
 import { LessonStatusBadge } from '@/components/app/LessonStatusBadge';
+import { StudentHome } from '@/components/app/student/StudentHome';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -145,101 +146,9 @@ export default async function RoleOverviewPage({ params }: Props) {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
     const data = await getStudentOverview(profile.id);
-    const student = dict.app.pages.student.overview;
-
-    if (data.courses.length === 0 && data.recentLessons.length === 0) {
-      return (
-        <PageWrapper title={student.title} subtitle={student.subtitle}>
-          <EmptyState title={student.emptyTitle} description={student.emptyBody} />
-        </PageWrapper>
-      );
-    }
-
-    return (
-      <PageWrapper
-        title={student.title}
-        subtitle={student.subtitle}
-        actions={
-          <>
-            <LinkButton
-              href={`${base}/app/student/chat`}
-              variant="ghost"
-              size="sm"
-            >
-              {student.chatCta}
-            </LinkButton>
-            <LinkButton href={`${base}/app/student/bibliotek`} size="sm">
-              {student.openLibrary}
-            </LinkButton>
-          </>
-        }
-      >
-        {data.courses.length > 0 ? (
-          <section>
-            <h2 className="font-serif text-2xl text-[var(--color-primary)]">
-              {student.coursesHeading}
-            </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {data.courses.map((course) => (
-                <Link
-                  key={course.id}
-                  href={`${base}/app/student/bibliotek?course=${course.id}`}
-                  className="group rounded-2xl border border-[var(--color-border)] bg-white p-6 transition-colors hover:border-[var(--color-accent)]"
-                >
-                  <div className="text-xs uppercase tracking-widest text-[var(--color-ink-subtle)]">
-                    {course.code}
-                  </div>
-                  <div className="mt-2 font-serif text-2xl text-[var(--color-primary)]">
-                    {course.name}
-                  </div>
-                  <div className="mt-4 text-sm text-[var(--color-ink-muted)]">
-                    {course.lessonsCount} {dict.app.pages.teacher.overview.lessonsCount}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {data.recentLessons.length > 0 ? (
-          <section className="mt-12">
-            <h2 className="font-serif text-2xl text-[var(--color-primary)]">
-              {student.recentLessonsHeading}
-            </h2>
-            <Card padded={false} className="mt-6">
-              <ul className="divide-y divide-[var(--color-border)]">
-                {data.recentLessons.map((lesson) => (
-                  <li key={lesson.id}>
-                    <Link
-                      href={`${base}/app/student/lektioner/${lesson.id}`}
-                      className="flex items-center justify-between gap-4 px-6 py-4 transition-colors hover:bg-[var(--color-bg-subtle)]"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate font-medium text-[var(--color-primary)]">
-                          {lesson.title ?? lesson.courseName ?? lesson.id}
-                        </div>
-                        <div className="mt-1 text-xs text-[var(--color-ink-subtle)]">
-                          {lesson.courseName ?? '—'} ·{' '}
-                          {lesson.recordedAt
-                            ? new Date(lesson.recordedAt).toLocaleString(
-                                locale === 'sv' ? 'sv-SE' : 'en-GB',
-                              )
-                            : dict.app.pages.student.library.notRecorded}
-                        </div>
-                      </div>
-                      <LessonStatusBadge
-                        status={lesson.status}
-                        labels={dict.app.pages.teacher.statuses}
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          </section>
-        ) : null}
-      </PageWrapper>
-    );
+    const firstName =
+      profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
+    return <StudentHome locale={locale} firstName={firstName} data={data} />;
   }
 
   // Admin: rik översikt med stat-tiles + recent lessons + quick actions

@@ -13,6 +13,7 @@ import { getStudentLessonDetail } from '@/lib/data/student';
 import { MaterialUploadForm } from './MaterialUploadForm';
 import { MaterialList } from './MaterialList';
 import { LessonChatForm } from './LessonChatForm';
+import { StudentLessonDetail as StudentLessonDetailView } from '@/components/app/student/StudentLessonDetail';
 
 type Props = {
   params: Promise<{ locale: string; role: string; id: string }>;
@@ -136,97 +137,10 @@ export default async function LessonDetailPage({ params }: Props) {
     );
   }
 
-  // Student-vy
+  // Student-vy — Editorial Calm enligt Stitch screen 09
   const lesson = await getStudentLessonDetail(id);
   if (!lesson) notFound();
-  const labels = dict.app.pages.student.lessonDetail;
-  const chatLabels = dict.app.pages.student.chat;
-  const base = `/${locale}/app/student`;
-  const recordedLabel = lesson.recordedAt
-    ? new Date(lesson.recordedAt).toLocaleString(locale === 'sv' ? 'sv-SE' : 'en-GB')
-    : labels.notRecorded;
-
-  return (
-    <PageWrapper
-      title={lesson.title ?? lesson.course?.name ?? lesson.id}
-      subtitle={recordedLabel}
-      actions={
-        <>
-          <LessonStatusBadge
-            status={lesson.status}
-            labels={dict.app.pages.teacher.statuses}
-          />
-          <Link
-            href={`${base}/bibliotek`}
-            className="text-sm text-[var(--color-ink-muted)] hover:text-[var(--color-primary)]"
-          >
-            {labels.back}
-          </Link>
-        </>
-      }
-    >
-      <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
-        <div className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{labels.transcriptHeading}</CardTitle>
-            </CardHeader>
-            <CardBody>
-              {lesson.status === 'ready' && lesson.transcriptText ? (
-                <div className="prose max-w-none whitespace-pre-wrap font-mono text-sm text-[var(--color-primary)]">
-                  {lesson.transcriptText}
-                </div>
-              ) : (
-                <p className="text-sm text-[var(--color-ink-muted)]">
-                  {labels.transcriptPending}
-                </p>
-              )}
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>{labels.materialsHeading}</CardTitle>
-            </CardHeader>
-            <CardBody>
-              <MaterialList
-                materials={lesson.materials}
-                emptyText={labels.materialsEmpty}
-              />
-            </CardBody>
-          </Card>
-        </div>
-
-        <div className="space-y-6">
-          <Card>
-            <CardBody>
-              <dl className="space-y-4 text-sm">
-                <Meta label={labels.metaCourse} value={lesson.course?.name ?? '—'} />
-                <Meta
-                  label={labels.metaTeacher}
-                  value={lesson.teacher?.full_name ?? '—'}
-                />
-                <Meta label={labels.metaRecorded} value={recordedLabel} />
-              </dl>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>{chatLabels.openLessonChat}</CardTitle>
-            </CardHeader>
-            <CardBody>
-              <LessonChatForm
-                locale={locale}
-                lessonId={lesson.id}
-                labels={chatLabels}
-              />
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-    </PageWrapper>
-  );
+  return <StudentLessonDetailView locale={locale} lesson={lesson} dict={dict} />;
 }
 
 function Meta({ label, value }: { label: string; value: string }) {
