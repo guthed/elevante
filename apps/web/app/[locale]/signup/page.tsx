@@ -19,37 +19,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Editorial Calm — matchar login-tonen
+
 export default async function SignupPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
   const labels = dict.auth.signup;
+  const sv = locale === 'sv';
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-subtle)]">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-16">
+    <div className="min-h-screen bg-[var(--color-canvas)]">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col px-6 py-10">
         <Link
           href={`/${locale}`}
-          className="text-center font-serif text-2xl text-[var(--color-primary)]"
+          className="font-serif text-[1.5rem] leading-none tracking-tight text-[var(--color-ink)]"
         >
           Elevante
         </Link>
-        <div className="mt-12 rounded-2xl border border-[var(--color-border)] bg-white p-8 md:p-10">
-          <h1 className="font-serif text-3xl text-[var(--color-primary)]">
-            {labels.title}
+
+        <div className="mt-16">
+          <h1 className="font-serif text-[clamp(2.25rem,3.5vw+1rem,3rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+            {sv ? 'Skapa konto.' : 'Create account.'}
           </h1>
-          <p className="mt-2 text-[var(--color-ink-muted)]">{labels.subtitle}</p>
-          <div className="mt-8">
-            <SignupForm locale={locale} labels={labels} />
-          </div>
-          <p className="mt-8 text-center text-sm text-[var(--color-ink-muted)]">
-            {labels.hasAccount}{' '}
-            <Link
-              href={`/${locale}/login`}
-              className="font-medium text-[var(--color-accent)] hover:underline"
-            >
-              {labels.loginLink}
-            </Link>
+          <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {labels.subtitle}
+          </p>
+        </div>
+
+        <div className="mt-10">
+          <SignupForm locale={locale} labels={labels} />
+        </div>
+
+        <p className="mt-8 text-[0.875rem] text-[var(--color-ink-muted)]">
+          {labels.hasAccount}{' '}
+          <Link
+            href={`/${locale}/login`}
+            className="font-medium text-[var(--color-ink)] underline-offset-4 hover:underline"
+          >
+            {labels.loginLink}
+          </Link>
+        </p>
+
+        <div className="mt-auto pt-10">
+          <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+            {sv
+              ? 'Data lagras i Stockholm · GDPR-säkert'
+              : 'Data stored in Stockholm · GDPR-safe'}
           </p>
         </div>
       </div>
