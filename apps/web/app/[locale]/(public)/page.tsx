@@ -52,8 +52,8 @@ export default async function HomePage({ params }: Props) {
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                   {sv ? 'Boka demo' : 'Book demo'}
                 </LinkButton>
-                <LinkButton href="#hur-det-funkar" variant="text" size="lg">
-                  {sv ? 'Se hur det funkar' : 'See how it works'} →
+                <LinkButton href={`${base}/lararappen`} variant="text" size="lg">
+                  {sv ? 'Klicka igenom appen' : 'Click through the app'} →
                 </LinkButton>
               </div>
             </div>

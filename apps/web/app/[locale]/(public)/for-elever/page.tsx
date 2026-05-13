@@ -147,9 +147,12 @@ export default async function ForStudentsPage({ params }: Props) {
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
               {sv ? 'Be din lärare prova' : 'Ask your teacher to try it'}
             </h2>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
               <LinkButton href={`${base}/kontakt?topic=elev`} size="lg">
                 {sv ? 'Skicka tips till skolan' : 'Send a tip to the school'}
+              </LinkButton>
+              <LinkButton href={`${base}/lararappen`} variant="ghost" size="lg">
+                {sv ? 'Visa lärar-appen' : 'Show the teacher app'} →
               </LinkButton>
             </div>
             <p className="mt-4 text-[0.875rem] text-[var(--color-ink-muted)]">

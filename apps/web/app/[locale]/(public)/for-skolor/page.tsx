@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { LinkButton } from '@/components/public/Button';
@@ -50,8 +51,8 @@ export default async function ForSchoolsPage({ params }: Props) {
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                   {sv ? 'Boka demo' : 'Book demo'}
                 </LinkButton>
-                <LinkButton href={`${base}/kontakt?topic=faktablad`} variant="text" size="lg">
-                  {sv ? 'Ladda ner faktablad (PDF)' : 'Download factsheet (PDF)'} →
+                <LinkButton href={`${base}/lararappen`} variant="text" size="lg">
+                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
                 </LinkButton>
               </div>
             </div>
@@ -106,6 +107,74 @@ export default async function ForSchoolsPage({ params }: Props) {
                   : 'Per-course statistics show what students are actually asking. Then you know where support is needed.'
               }
             />
+          </div>
+        </Container>
+      </section>
+
+      {/* SE APPEN I WEBBEN */}
+      <section className="py-16 md:py-20">
+        <Container width="wide">
+          <div className="grid items-center gap-10 rounded-[24px] bg-[var(--color-ink)] p-10 md:grid-cols-12 md:gap-16 md:p-16">
+            <div className="md:col-span-7">
+              <p className="text-[0.75rem] uppercase tracking-[0.12em] text-[var(--color-canvas)]/60">
+                {sv ? 'Demo i webbläsaren' : 'Demo in your browser'}
+              </p>
+              <h2 className="mt-4 font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-canvas)]">
+                {sv
+                  ? 'Inget möte krävs. Klicka igenom appen.'
+                  : 'No meeting required. Click through the app.'}
+              </h2>
+              <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-canvas)]/70">
+                {sv
+                  ? 'Tre skärmar, tre tryck. Du ser exakt vad läraren ser — utan att installera något.'
+                  : 'Three screens, three taps. You see exactly what the teacher sees — without installing anything.'}
+              </p>
+              <div className="mt-8">
+                <Link
+                  href={`${base}/lararappen`}
+                  className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-canvas)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-ink)] transition-opacity hover:opacity-90"
+                >
+                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
+                </Link>
+              </div>
+            </div>
+            <div className="md:col-span-5">
+              <div className="relative mx-auto max-w-[220px] rotate-[-3deg]">
+                <div className="rounded-[28px] bg-[var(--color-canvas)] p-2 shadow-[0_24px_60px_-16px_rgba(0,0,0,0.4)]">
+                  <div className="rounded-[20px] bg-[var(--color-canvas)] p-4 text-left">
+                    <p className="text-[0.6875rem] text-[var(--color-ink-muted)]">
+                      {sv ? 'Tisdag 13 maj' : 'Tuesday May 13'}
+                    </p>
+                    <p className="mt-0.5 font-serif text-[1.25rem] leading-none text-[var(--color-ink)]">
+                      {sv ? 'Idag' : 'Today'}
+                    </p>
+                    <div className="mt-5 space-y-3 border-t border-[var(--color-sand)] pt-3">
+                      <div className="flex items-center gap-2">
+                        <span className="status-dot status-dot--sage" />
+                        <span className="text-[0.6875rem] text-[var(--color-ink)]">
+                          08:15 · {sv ? 'Algebraisk modellering' : 'Algebra'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="status-dot status-dot--sand" />
+                        <span className="text-[0.6875rem] text-[var(--color-ink)]">
+                          10:15 · {sv ? 'Integraler' : 'Integrals'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="status-dot status-dot--sand" />
+                        <span className="text-[0.6875rem] text-[var(--color-ink)]">
+                          12:30 · {sv ? 'Repetition' : 'Review'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-[8px] bg-[var(--color-ink)] py-2 text-center text-[0.6875rem] font-medium text-[var(--color-canvas)]">
+                      {sv ? 'Spela in →' : 'Record →'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
