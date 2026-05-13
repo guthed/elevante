@@ -29,8 +29,35 @@ function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
   return { supabase, response };
 }
 
+// Paths som ALDRIG ska redirectas av locale-logiken.
+// Matcher i config räcker inte alltid (filnamn med ~ eller andra
+// specialtecken kan glida förbi negative lookahead-regex:en).
+function shouldSkip(pathname: string): boolean {
+  if (pathname.startsWith('/_next/')) return true;
+  if (pathname.startsWith('/api/')) return true;
+  if (pathname.startsWith('/static/')) return true;
+  // Filer med extension (favicon.ico, robots.txt, opengraph-image, etc.)
+  const lastSegment = pathname.split('/').pop() ?? '';
+  if (lastSegment.includes('.')) return true;
+  // Next.js metadata-routes (icon, opengraph-image, sitemap.xml, robots.txt)
+  if (
+    pathname === '/icon' ||
+    pathname === '/opengraph-image' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/robots.txt'
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Steg 0: hoppa över statiska assets helt
+  if (shouldSkip(pathname)) {
+    return NextResponse.next();
+  }
 
   // Steg 1: locale-redirect
   const firstSegment = pathname.split('/')[1];
