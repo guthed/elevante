@@ -1,9 +1,6 @@
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
-import { Avatar } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
-import { signOut } from '@/app/actions/auth';
 
 type Props = {
   locale: Locale;
@@ -15,68 +12,55 @@ type Props = {
   } | null;
 };
 
-export function Topbar({ locale, role, dict, user }: Props) {
-  const displayName = user?.fullName ?? user?.email ?? dict.app.roleTitles[role];
-  const displayEmail = user?.email ?? '';
+// Editorial Calm — minimal topbar.
+// User-info + sign-out har flyttats till Sidebar bottom.
+// Här kvar: notifikationer + (placeholder) global sök.
 
-  const signOutWithLocale = async () => {
-    'use server';
-    await signOut(locale);
-  };
-
+export function Topbar({ dict }: Props) {
   return (
-    <header className="flex h-16 items-center justify-between border-b border-[var(--color-border)] bg-white px-6">
-      <div className="flex items-center gap-3">
-        <label className="relative hidden md:block">
-          <span className="sr-only">{dict.app.topbar.search}</span>
-          <input
-            type="search"
-            placeholder={dict.app.topbar.search}
-            className="w-80 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-subtle)] py-2 pl-10 pr-4 text-sm placeholder:text-[var(--color-ink-subtle)] focus:border-[var(--color-accent)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
-          />
-          <span
-            aria-hidden="true"
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-ink-subtle)]"
-          >
-            ⌕
-          </span>
-        </label>
-        <Badge tone="accent" className="md:hidden">
-          {dict.app.roleTitles[role]}
-        </Badge>
-      </div>
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          aria-label={dict.app.topbar.notifications}
-          className="relative flex h-10 w-10 items-center justify-center rounded-full text-[var(--color-primary)] hover:bg-[var(--color-bg-subtle)]"
+    <header className="flex h-14 items-center justify-end gap-2 px-6">
+      <button
+        type="button"
+        aria-label={dict.app.topbar.search}
+        className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
         >
-          <span aria-hidden="true" className="text-base">
-            ◉
-          </span>
-        </button>
-        <div className="flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-3 py-1.5">
-          <Avatar name={displayName} size="sm" />
-          <div className="hidden text-left md:block">
-            <div className="text-xs font-medium text-[var(--color-primary)]">
-              {displayName}
-            </div>
-            {displayEmail ? (
-              <div className="text-[10px] text-[var(--color-ink-subtle)]">
-                {displayEmail}
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <form action={signOutWithLocale}>
-          <button
-            type="submit"
-            className="text-sm text-[var(--color-ink-subtle)] hover:text-[var(--color-primary)]"
-          >
-            {dict.auth.signOut}
-          </button>
-        </form>
-      </div>
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        aria-label={dict.app.topbar.notifications}
+        className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+        </svg>
+      </button>
     </header>
   );
 }
