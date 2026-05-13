@@ -66,18 +66,6 @@ export default async function HomePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Editorial photo placeholder */}
-      <section className="border-t border-[var(--color-sand)] py-12 md:py-16">
-        <Container width="wide">
-          <div className="relative aspect-[16/7] w-full overflow-hidden rounded-[20px] bg-[var(--color-sand)]/40">
-            <div
-              className="absolute inset-0 bg-gradient-to-br from-[var(--color-sand)]/60 via-[var(--color-canvas)] to-[var(--color-sage)]/20"
-              aria-hidden="true"
-            />
-          </div>
-        </Container>
-      </section>
-
       {/* "Elevante minns. Du fokuserar." — 2-col asymmetrisk */}
       <section id="hur-det-funkar" className="py-20 md:py-28">
         <Container width="wide">
