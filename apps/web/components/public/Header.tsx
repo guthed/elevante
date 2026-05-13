@@ -13,29 +13,33 @@ type Props = {
 export function Header({ locale, pathname, dict }: Props) {
   const base = `/${locale}`;
   const nav = [
+    { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/for-skolor`, label: dict.nav.forSchools },
     { href: `${base}/for-elever`, label: dict.nav.forStudents },
     { href: `${base}/priser`, label: dict.nav.pricing },
-    { href: `${base}/om-oss`, label: dict.nav.about },
+    { href: `${base}/kontakt`, label: dict.nav.contact },
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-sand)] bg-[var(--color-canvas)]/90 backdrop-blur-sm">
       <div className="container-wide flex items-center justify-between py-5">
         <Link
           href={base}
-          className="font-serif text-2xl text-[var(--color-primary)]"
+          className="font-serif text-[1.5rem] leading-none tracking-tight text-[var(--color-ink)]"
           aria-label={dict.meta.siteName}
         >
           {dict.meta.siteName}
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label={dict.nav.home}>
+        <nav
+          className="hidden items-center gap-7 md:flex"
+          aria-label={dict.nav.home}
+        >
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-[var(--color-ink-muted)] transition-colors hover:text-[var(--color-primary)]"
+              className="text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)]"
             >
               {item.label}
             </Link>
@@ -51,8 +55,8 @@ export function Header({ locale, pathname, dict }: Props) {
               ariaLabel={dict.nav.switchLanguage}
             />
           </div>
-          <LinkButton href={`${base}/kontakt?topic=demo`} size="md">
-            {dict.nav.bookDemo}
+          <LinkButton href={`${base}/login`} size="md">
+            {locale === 'sv' ? 'Logga in' : 'Log in'}
           </LinkButton>
           <MobileMenuToggle dict={dict} />
         </div>
@@ -62,15 +66,12 @@ export function Header({ locale, pathname, dict }: Props) {
   );
 }
 
-// Mobile-meny: ren CSS, ingen JS — använder ett dolt checkbox-hack
-// Alternativet hade varit <dialog> men det kräver client-komponent.
-// Här håller vi hela headern som Server Component.
 function MobileMenuToggle({ dict }: { dict: Dictionary }) {
   return (
     <>
       <label
         htmlFor="elv-mobile-menu"
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-[var(--color-primary)] hover:bg-[var(--color-bg-subtle)] md:hidden"
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-[var(--color-ink)] hover:bg-[var(--color-surface-soft)] md:hidden"
         aria-label={dict.nav.openMenu}
       >
         <svg
@@ -80,7 +81,7 @@ function MobileMenuToggle({ dict }: { dict: Dictionary }) {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
@@ -111,15 +112,15 @@ function MobileMenuPanel({
 }) {
   const base = `/${locale}`;
   const items = [
+    { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/for-skolor`, label: dict.nav.forSchools },
     { href: `${base}/for-elever`, label: dict.nav.forStudents },
     { href: `${base}/priser`, label: dict.nav.pricing },
-    { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/kontakt`, label: dict.nav.contact },
   ];
   return (
     <div
-      className="hidden border-t border-[var(--color-border)] bg-[var(--color-bg)] peer-checked:block md:peer-checked:hidden"
+      className="hidden border-t border-[var(--color-sand)] bg-[var(--color-canvas)] peer-checked:block md:peer-checked:hidden"
       role="dialog"
       aria-label={dict.nav.openMenu}
     >
@@ -128,7 +129,7 @@ function MobileMenuPanel({
           <Link
             key={item.href}
             href={item.href}
-            className="text-base text-[var(--color-primary)]"
+            className="text-base text-[var(--color-ink)]"
           >
             {item.label}
           </Link>
