@@ -94,7 +94,7 @@ const sv: Dictionary = {
       items: [
         { value: '500 kr', label: 'per elev och år' },
         { value: '71,7 %', label: 'driftsmarginal' },
-        { value: 'Nacka Gymnasium', label: 'pilotpartner 2026' },
+        { value: '2026', label: 'pilot startar' },
       ],
     },
     finalCta: {
@@ -246,7 +246,7 @@ const sv: Dictionary = {
       emailLabel: 'E-post',
       emailPlaceholder: 'anna@skolan.se',
       schoolLabel: 'Skola eller organisation',
-      schoolPlaceholder: 'Nacka Gymnasium',
+      schoolPlaceholder: 'Skolans namn',
       topicLabel: 'Ämne',
       topicOptions: {
         demo: 'Jag vill boka demo',

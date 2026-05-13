@@ -1,17 +1,18 @@
 import type { ReactNode } from 'react';
-import { DM_Serif_Display, Inter } from 'next/font/google';
+import { Geist, Newsreader } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const geist = Geist({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-inter',
+  variable: '--font-geist',
   display: 'swap',
 });
 
-const dmSerif = DM_Serif_Display({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-dm-serif',
+const newsreader = Newsreader({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
   display: 'swap',
 });
 
@@ -20,7 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       // lang sätts av [locale]/layout — detta är bara en fallback innan redirect
       lang="sv"
-      className={`${inter.variable} ${dmSerif.variable}`}
+      className={`${geist.variable} ${newsreader.variable}`}
       suppressHydrationWarning
     >
       <body>{children}</body>
