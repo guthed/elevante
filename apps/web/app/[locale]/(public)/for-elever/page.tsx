@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: sv ? 'För elever — Elevante' : 'For students — Elevante',
     description: sv
-      ? 'Du missar inget. Lovat. Elevante kommer ihåg lektionen så du kan fråga om allt.'
-      : 'You miss nothing. Promised. Elevante remembers the lesson so you can ask anything.',
+      ? 'Du missar inget. Lovar. Elevante kommer ihåg lektionen så du kan fråga om allt.'
+      : 'You miss nothing. Promise. Elevante remembers the lesson so you can ask anything.',
   };
 }
 
@@ -39,12 +39,12 @@ export default async function ForStudentsPage({ params }: Props) {
                 {sv ? (
                   <>
                     Du missar inget.{' '}
-                    <span className="italic text-[var(--color-coral)]">Lovat.</span>
+                    <span className="italic text-[var(--color-coral)]">Lovar.</span>
                   </>
                 ) : (
                   <>
                     You miss nothing.{' '}
-                    <span className="italic text-[var(--color-coral)]">Promised.</span>
+                    <span className="italic text-[var(--color-coral)]">Promise.</span>
                   </>
                 )}
               </h1>
