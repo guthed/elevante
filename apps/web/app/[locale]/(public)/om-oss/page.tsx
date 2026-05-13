@@ -138,48 +138,50 @@ export default async function AboutPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* TEAMET */}
+      {/* TEAMET — som lista, inte gradient-rutor */}
       <section className="py-20 md:py-28">
-        <Container width="wide">
+        <Container width="content">
           <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
             {sv ? 'Teamet' : 'The team'}
           </h2>
-          <div className="mt-16 grid gap-12 md:grid-cols-3">
+          <ul className="mt-12 divide-y divide-[var(--color-sand)]">
             {team.map((member, i) => (
-              <article key={i}>
-                <div className="aspect-square w-full overflow-hidden rounded-[16px] bg-gradient-to-br from-[var(--color-sand)]/60 via-[var(--color-canvas)] to-[var(--color-sage)]/30" />
-                <p className="mt-5 font-serif text-[1.125rem] text-[var(--color-ink)]">
-                  {member.name}
-                </p>
-                <p className="mt-1 text-[0.875rem] text-[var(--color-ink-muted)]">
-                  {member.role}
-                </p>
-                <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              <li
+                key={i}
+                className="grid gap-3 py-8 md:grid-cols-12 md:gap-8"
+              >
+                <div className="md:col-span-4">
+                  <p className="font-serif text-[1.25rem] text-[var(--color-ink)]">
+                    {member.name}
+                  </p>
+                  <p className="mt-1 text-[0.875rem] text-[var(--color-ink-muted)]">
+                    {member.role}
+                  </p>
+                </div>
+                <p className="text-[1rem] leading-relaxed text-[var(--color-ink-secondary)] md:col-span-8">
                   {member.bio}
                 </p>
-              </article>
+              </li>
             ))}
-          </div>
+          </ul>
         </Container>
       </section>
 
       {/* VI FINNS I STOCKHOLM */}
       <section className="bg-[var(--color-surface-soft)] py-20 md:py-28">
         <Container width="content">
-          <div className="grid items-start gap-12 md:grid-cols-12 md:gap-16">
-            <div className="md:col-span-5">
-              <h2 className="font-serif text-[clamp(1.5rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
-                {sv ? 'Vi finns i Stockholm' : 'We\'re in Stockholm'}
-              </h2>
-              <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                {sv
-                  ? 'Allt bygger vi själva. All data lagras i Stockholm. Vi pratar med er på svenska och förstår vad svenska skolor är.'
-                  : 'We build everything ourselves. All data is in Stockholm. We speak Swedish and understand Swedish schools.'}
-              </p>
-            </div>
-            <div className="md:col-span-7">
-              <div className="aspect-[16/10] w-full overflow-hidden rounded-[20px] bg-gradient-to-br from-[var(--color-sand)]/60 via-[var(--color-canvas)] to-[var(--color-sage)]/30" />
-            </div>
+          <div className="mx-auto max-w-3xl">
+            <p className="eyebrow mb-6">
+              {sv ? 'Stockholm · Sverige' : 'Stockholm · Sweden'}
+            </p>
+            <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+              {sv ? 'Allt vi gör görs här.' : 'Everything we do is done here.'}
+            </h2>
+            <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Vi bygger allt själva — ingen outsourcad utveckling, ingen amerikansk modellträning på svenska barns röster. All data lagras i Stockholm (AWS Stockholm + Supabase EU). Vi pratar med er på svenska och förstår vad en kursplan är.'
+                : 'We build everything ourselves — no outsourced development, no American model training on Swedish kids\' voices. All data is stored in Stockholm (AWS Stockholm + Supabase EU). We speak Swedish and understand what a curriculum is.'}
+            </p>
           </div>
         </Container>
       </section>
