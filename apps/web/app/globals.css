@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+/* Cache-bust: 2026-04-16 — tvinga Turborepo att bygga om */
+
 @theme {
   /* Färger — se DESIGN-sidan i Notion */
   --color-primary: #1a1a2e;
