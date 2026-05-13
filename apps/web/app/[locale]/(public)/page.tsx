@@ -40,8 +40,8 @@ export default async function HomePage({ params }: Props) {
             <div className="md:col-span-7">
               <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,5rem)] leading-[1.02] tracking-[-0.01em] text-[var(--color-ink)]">
                 {sv
-                  ? 'Allt du missade på lektionen — kom ihåg det.'
-                  : 'Everything you missed in class — remember it.'}
+                  ? 'Elevante kommer ihåg allt du missade på lektionen.'
+                  : 'Elevante remembers everything you missed in class.'}
               </h1>
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
