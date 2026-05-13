@@ -172,23 +172,6 @@ export default async function ForSchoolsPage({ params }: Props) {
         </Container>
       </section>
 
-      <Divider />
-
-      {/* REKTOR-QUOTE */}
-      <section className="py-20 md:py-28">
-        <Container width="content">
-          <figure className="mx-auto max-w-3xl">
-            <blockquote className="font-serif text-[clamp(1.5rem,2vw+1rem,2.125rem)] italic leading-[1.3] text-[var(--color-ink)]">
-              {sv
-                ? '"Vi sökte ett seriöst verktyg som inte krävde att vi byggde om hela skolan. Elevante landade på två veckor."'
-                : '"We needed a serious tool that didn\'t require rebuilding the school. Elevante was live in two weeks."'}
-            </blockquote>
-            <figcaption className="mt-6 text-[0.875rem] text-[var(--color-ink-muted)]">
-              {sv ? 'Karin S., rektor, Nacka Gymnasium' : 'Karin S., Principal, Nacka Gymnasium'}
-            </figcaption>
-          </figure>
-        </Container>
-      </section>
     </>
   );
 }

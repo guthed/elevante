@@ -94,7 +94,7 @@ const en: Dictionary = {
       items: [
         { value: '€45', label: 'per student per year' },
         { value: '71.7%', label: 'operating margin' },
-        { value: 'Nacka Gymnasium', label: 'pilot partner 2026' },
+        { value: '2026', label: 'pilot starts' },
       ],
     },
     finalCta: {
@@ -246,7 +246,7 @@ const en: Dictionary = {
       emailLabel: 'Email',
       emailPlaceholder: 'anna@school.com',
       schoolLabel: 'School or organisation',
-      schoolPlaceholder: 'Nacka Gymnasium',
+      schoolPlaceholder: 'School name',
       topicLabel: 'Topic',
       topicOptions: {
         demo: 'I want to book a demo',

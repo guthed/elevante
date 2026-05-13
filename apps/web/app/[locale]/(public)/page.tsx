@@ -66,30 +66,14 @@ export default async function HomePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Eyebrow — ANVÄNDS PÅ NACKA GYMNASIUM */}
-      <section className="border-y border-[var(--color-sand)] bg-[var(--color-surface-soft)] py-5">
-        <Container width="wide">
-          <p className="eyebrow text-center md:text-left">
-            {sv ? 'Används på Nacka Gymnasium' : 'Used at Nacka Gymnasium'}
-          </p>
-        </Container>
-      </section>
-
       {/* Editorial photo placeholder */}
-      <section className="py-12 md:py-16">
+      <section className="border-t border-[var(--color-sand)] py-12 md:py-16">
         <Container width="wide">
           <div className="relative aspect-[16/7] w-full overflow-hidden rounded-[20px] bg-[var(--color-sand)]/40">
             <div
               className="absolute inset-0 bg-gradient-to-br from-[var(--color-sand)]/60 via-[var(--color-canvas)] to-[var(--color-sage)]/20"
               aria-hidden="true"
             />
-            <div className="absolute inset-0 flex items-end p-8 md:p-12">
-              <p className="font-serif text-[1.125rem] italic text-[var(--color-ink-secondary)]">
-                {sv
-                  ? '"När jag kom hem och inte mindes vad läraren hade sagt, fanns Elevante kvar."'
-                  : '"When I got home and couldn\'t remember what the teacher said, Elevante was still there."'}
-              </p>
-            </div>
           </div>
         </Container>
       </section>
@@ -140,22 +124,6 @@ export default async function HomePage({ params }: Props) {
               </ol>
             </div>
           </div>
-        </Container>
-      </section>
-
-      {/* Inline editorial quote */}
-      <section className="border-y border-[var(--color-sand)] py-20 md:py-28">
-        <Container width="content">
-          <figure className="mx-auto max-w-3xl text-center">
-            <blockquote className="font-serif text-[1.75rem] italic leading-[1.3] text-[var(--color-ink)] md:text-[2.25rem]">
-              {sv
-                ? '"Eleverna har förändrats hur de pluggar. De använder sin tid bättre, för de vet att de alltid kan vrida tillbaka och kolla."'
-                : '"The students changed how they study. They use their time better, knowing they can always go back."'}
-            </blockquote>
-            <figcaption className="mt-6 text-[0.875rem] text-[var(--color-ink-muted)]">
-              {sv ? 'Mathias L., lärare i Matematik på Nacka Gymnasium' : 'Mathias L., math teacher at Nacka Gymnasium'}
-            </figcaption>
-          </figure>
         </Container>
       </section>
 

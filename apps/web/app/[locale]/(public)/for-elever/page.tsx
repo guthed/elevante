@@ -69,17 +69,8 @@ export default async function ForStudentsPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Eyebrow */}
-      <section className="border-y border-[var(--color-sand)] bg-[var(--color-surface-soft)] py-5">
-        <Container width="wide">
-          <p className="eyebrow text-center md:text-left">
-            {sv ? 'Används på Nacka Gymnasium' : 'Used at Nacka Gymnasium'}
-          </p>
-        </Container>
-      </section>
-
       {/* SÅ HÄR PLUGGAR DU */}
-      <section id="hur" className="py-20 md:py-28">
+      <section id="hur" className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="content">
           <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] text-[var(--color-ink)]">
             {sv ? 'Så här pluggar du med Elevante' : 'How you study with Elevante'}
@@ -114,24 +105,8 @@ export default async function ForStudentsPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* STUDENT QUOTE */}
-      <section className="border-y border-[var(--color-sand)] py-20 md:py-28">
-        <Container width="content">
-          <figure className="mx-auto max-w-3xl text-center">
-            <blockquote className="font-serif text-[clamp(1.5rem,2vw+1rem,2.25rem)] italic leading-[1.3] text-[var(--color-ink)]">
-              {sv
-                ? '"Jag pluggar inte längre genom att läsa anteckningar jag aldrig skrev. Jag pratar bara med Elevante."'
-                : '"I don\'t study from notes I never wrote anymore. I just talk to Elevante."'}
-            </blockquote>
-            <figcaption className="mt-6 text-[0.875rem] text-[var(--color-ink-muted)]">
-              {sv ? 'Lina A., NA3a, Nacka Gymnasium' : 'Lina A., NA3a, Nacka Gymnasium'}
-            </figcaption>
-          </figure>
-        </Container>
-      </section>
-
       {/* VAD ELEVANTE INTE GÖR */}
-      <section className="py-20 md:py-28">
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="content">
           <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
             {sv ? 'Vad Elevante INTE gör' : 'What Elevante does NOT do'}

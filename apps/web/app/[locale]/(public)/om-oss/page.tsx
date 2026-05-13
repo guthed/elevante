@@ -45,8 +45,8 @@ export default async function AboutPage({ params }: Props) {
       name: 'John Guthed',
       role: sv ? 'Grundare' : 'Founder',
       bio: sv
-        ? 'Pluggade på Nacka Gymnasium 2008–2011. Var en av de som ständigt missade lektionerna.'
-        : 'Studied at Nacka Gymnasium 2008–2011. Was one of those who constantly missed class.',
+        ? 'Gick i svenskt gymnasium 2008–2011. Var en av de som ständigt missade lektionerna.'
+        : 'Went to Swedish gymnasium 2008–2011. Was one of those who constantly missed class.',
     },
     {
       name: 'TBD',
@@ -99,8 +99,8 @@ export default async function AboutPage({ params }: Props) {
             <div className="space-y-5 md:col-span-7">
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'En matematiklärare på Nacka Gymnasium sa det rakt ut över en kaffe: "Jag svarar samma fråga 30 gånger. Eleven som vågar höja handen får svar. De som inte vågar går hem och gissar."'
-                  : 'A math teacher at Nacka Gymnasium said it plainly over coffee: "I answer the same question 30 times. The student who dares raise their hand gets the answer. Those who don\'t go home and guess."'}
+                  ? 'En matematiklärare på ett svenskt gymnasium sa det rakt ut över en kaffe: "Jag svarar samma fråga 30 gånger. Eleven som vågar höja handen får svar. De som inte vågar går hem och gissar."'
+                  : 'A math teacher at a Swedish gymnasium said it plainly over coffee: "I answer the same question 30 times. The student who dares raise their hand gets the answer. Those who don\'t go home and guess."'}
               </p>
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
