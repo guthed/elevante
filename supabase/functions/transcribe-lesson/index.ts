@@ -170,7 +170,7 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
   // 1. Hämta lesson
   const { data: lesson, error: lessonErr } = await supabase
     .from('lessons')
-    .select('id, school_id, audio_path, transcript_status')
+    .select('id, school_id, audio_path, transcript_status, teacher_id, recorded_at, course_id')
     .eq('id', lessonId)
     .single();
 
@@ -179,6 +179,26 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
   }
   if (!lesson.audio_path) {
     return { ok: false, detail: 'Lesson har ingen audio_path' };
+  }
+
+  let teacherName: string | null = null;
+  if (lesson?.teacher_id) {
+    const { data: teacher } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', lesson.teacher_id)
+      .maybeSingle();
+    teacherName = teacher?.full_name ?? null;
+  }
+
+  let courseName: string | null = null;
+  if (lesson?.course_id) {
+    const { data: course } = await supabase
+      .from('courses')
+      .select('name')
+      .eq('id', lesson.course_id)
+      .maybeSingle();
+    courseName = course?.name ?? null;
   }
 
   // Markera processing
@@ -232,6 +252,39 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
       .insert(chunkRows);
     if (insertErr) throw new Error(`Insert failed: ${insertErr.message}`);
 
+    // 6.5. AI-genererad sammanfattning, frågor och ämne
+    let contentTitle: string | null = null;
+    let contentSummary: string | null = null;
+    let contentQuestions: string[] = [];
+    let contentTopic: string | null = null;
+
+    try {
+      const content = await generateLessonContent(transcript, teacherName);
+      if (content) {
+        contentTopic = content.topic;
+        contentSummary = content.summary;
+        contentQuestions = content.questions;
+
+        const dateBasis = lesson.recorded_at ?? new Date().toISOString();
+        const dateLabel = new Intl.DateTimeFormat('sv-SE', {
+          day: 'numeric',
+          month: 'long',
+        }).format(new Date(dateBasis));
+        contentTitle = `${dateLabel} — ${content.topic}`;
+      }
+    } catch (err) {
+      console.error('Lesson content generation failed:', err);
+      // Inte fatalt — gå vidare utan summary, fallback titel sätts nedan
+      if (!contentTitle) {
+        const dateBasis = lesson.recorded_at ?? new Date().toISOString();
+        const dateLabel = new Intl.DateTimeFormat('sv-SE', {
+          day: 'numeric',
+          month: 'long',
+        }).format(new Date(dateBasis));
+        contentTitle = courseName ? `${dateLabel} — ${courseName}` : dateLabel;
+      }
+    }
+
     // 7. Uppdatera lessons med transcript_text och status
     await supabase
       .from('lessons')
@@ -239,6 +292,10 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
         transcript_text: transcript,
         transcript_updated_at: new Date().toISOString(),
         transcript_status: 'ready',
+        summary: contentSummary,
+        suggested_questions: contentQuestions,
+        ai_generated_topic: contentTopic,
+        ...(contentTitle ? { title: contentTitle } : {}),
       })
       .eq('id', lessonId);
 
