@@ -195,6 +195,16 @@ export async function getStudentLessonDetail(
   };
   const typed = lesson as unknown as LessonRow;
 
+  // Spåra att eleven öppnat lektionen (fire-and-forget, ej critical path)
+  try {
+    const rpcClient = supabase as unknown as {
+      rpc: (n: string, args: Record<string, unknown>) => Promise<{ error: unknown }>;
+    };
+    await rpcClient.rpc('track_lesson_view', { lesson_id_arg: lessonId });
+  } catch (err) {
+    console.warn('track_lesson_view failed:', err);
+  }
+
   return {
     id: typed.id,
     title: typed.title,
