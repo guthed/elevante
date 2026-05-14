@@ -4,6 +4,8 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { StudentLessonDetail as StudentLessonDetailData } from '@/lib/data/student';
 import { MaterialList } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialList';
 import { LessonChatForm } from '@/app/[locale]/app/[role]/lektioner/[id]/LessonChatForm';
+import { LessonSummary } from '@/components/app/student/LessonSummary';
+import { SuggestedQuestions } from '@/components/app/student/SuggestedQuestions';
 
 // Editorial Calm — Stitch screen 09-lektionsdetalj.png
 
@@ -89,26 +91,27 @@ export function StudentLessonDetail({ locale, lesson, dict }: Props) {
 
       {/* 2-col layout */}
       <div className="mt-10 grid gap-10 md:grid-cols-12">
-        {/* LEFT — Transcript (60%) */}
-        <div className="md:col-span-7">
-          <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
-          <article className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-8">
-            {lesson.status === 'ready' && lesson.transcriptText ? (
-              <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
-                {lesson.transcriptText}
-              </pre>
-            ) : (
+        {/* LEFT — Summary + Suggested questions + Chat input (7 col) */}
+        <div className="md:col-span-7 space-y-6">
+          {lesson.summary ? (
+            <LessonSummary summary={lesson.summary} />
+          ) : (
+            <section className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-8">
               <p className="text-[0.9375rem] text-[var(--color-ink-muted)]">
                 {labels.transcriptPending}
               </p>
-            )}
-          </article>
-        </div>
+            </section>
+          )}
 
-        {/* RIGHT — Chat + Materials (40%) */}
-        <aside className="space-y-6 md:col-span-5">
-          {/* Chat CTA card */}
-          <div className="rounded-[20px] bg-[var(--color-surface)] p-6">
+          {lesson.suggestedQuestions.length > 0 && (
+            <SuggestedQuestions
+              locale={locale}
+              lessonId={lesson.id}
+              questions={lesson.suggestedQuestions}
+            />
+          )}
+
+          <section className="rounded-[20px] bg-[var(--color-surface)] p-6">
             <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
               {sv ? 'Fråga om den här lektionen' : 'Ask about this lesson'}
             </h2>
@@ -122,11 +125,20 @@ export function StudentLessonDetail({ locale, lesson, dict }: Props) {
                 locale={locale}
                 lessonId={lesson.id}
                 labels={chatLabels}
+                placeholderOverride={
+                  lesson.suggestedQuestions.length > 0
+                    ? sv
+                      ? 'Eller skriv din egen fråga…'
+                      : 'Or write your own question…'
+                    : undefined
+                }
               />
             </div>
-          </div>
+          </section>
+        </div>
 
-          {/* Materials */}
+        {/* RIGHT — Materials + transcript link (5 col) */}
+        <aside className="space-y-6 md:col-span-5">
           <div className="rounded-[20px] border border-[var(--color-sand)] p-6">
             <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
               {labels.materialsHeading}
@@ -138,6 +150,15 @@ export function StudentLessonDetail({ locale, lesson, dict }: Props) {
               />
             </div>
           </div>
+
+          {lesson.status === 'ready' && lesson.transcriptText && (
+            <Link
+              href={`${base}/lektioner/${lesson.id}/transkript`}
+              className="block text-[0.875rem] text-[var(--color-ink-muted)] underline-offset-4 hover:underline"
+            >
+              {sv ? 'Visa hela transkriptet →' : 'View full transcript →'}
+            </Link>
+          )}
         </aside>
       </div>
     </div>

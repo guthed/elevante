@@ -38,3 +38,6 @@ coverage
 
 # vercel
 .vercel
+
+# superpowers brainstorming
+.superpowers/

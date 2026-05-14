@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
-import type { LessonDetail } from '@/lib/data/teacher';
+import type { LessonDetail, LessonInsight } from '@/lib/data/teacher';
 import { MaterialList } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialList';
 import { MaterialUploadForm } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialUploadForm';
+import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
 
 // Editorial Calm — Stitch screen 11 + 12 (Lärare Lektionsdetalj + Material upload)
 
@@ -11,6 +12,8 @@ type Props = {
   locale: Locale;
   lesson: LessonDetail;
   dict: Dictionary;
+  insight: LessonInsight | null;
+  aiInsight: string;
 };
 
 function statusDotClass(status: LessonDetail['status']): string {
@@ -38,7 +41,7 @@ function transcriptSize(text: string | null): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-export function TeacherLessonDetail({ locale, lesson, dict }: Props) {
+export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }: Props) {
   const sv = locale === 'sv';
   const labels = dict.app.pages.teacher.lessonDetail;
   const base = `/${locale}/app/teacher`;
@@ -111,8 +114,15 @@ export function TeacherLessonDetail({ locale, lesson, dict }: Props) {
         </dl>
       </header>
 
+      {/* Insikt — full-bredd heatmap, högst upp under header för max-värde */}
+      {insight && (
+        <section className="mt-10">
+          <InsightHeatmap insight={insight} aiInsight={aiInsight} />
+        </section>
+      )}
+
       {/* 2-col layout */}
-      <div className="mt-10 grid gap-10 md:grid-cols-12">
+      <div className="mt-12 grid gap-10 md:grid-cols-12">
         {/* LEFT — Transcript (65%) */}
         <div className="md:col-span-8">
           <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
@@ -163,17 +173,6 @@ export function TeacherLessonDetail({ locale, lesson, dict }: Props) {
             </div>
           </div>
 
-          {/* Andra elever frågade om — placeholder för Fas 6 */}
-          <div className="rounded-[20px] border border-[var(--color-sand)] p-6">
-            <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
-              {sv ? 'Frågor från elever' : 'Student questions'}
-            </h2>
-            <p className="mt-3 text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
-              {sv
-                ? 'När elever frågar Elevante om den här lektionen dyker frågorna upp här (anonymt).'
-                : 'When students ask Elevante about this lesson, the questions appear here (anonymously).'}
-            </p>
-          </div>
         </aside>
       </div>
     </div>

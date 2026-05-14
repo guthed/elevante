@@ -4,7 +4,7 @@ import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getTeacherOverview } from '@/lib/data/teacher';
+import { getTeacherOverview, getRecentLessonInsightRows } from '@/lib/data/teacher';
 import { getStudentOverview } from '@/lib/data/student';
 import { getAdminOverview } from '@/lib/data/admin';
 import { StudentHome } from '@/components/app/student/StudentHome';
@@ -32,10 +32,22 @@ export default async function RoleOverviewPage({ params }: Props) {
   if (role === 'teacher') {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
-    const data = await getTeacherOverview(profile.id);
+    const [data, insightRows] = await Promise.all([
+      getTeacherOverview(profile.id),
+      profile.school_id
+        ? getRecentLessonInsightRows(profile.school_id, 3)
+        : Promise.resolve([]),
+    ]);
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
-    return <TeacherDashboard locale={locale} firstName={firstName} data={data} />;
+    return (
+      <TeacherDashboard
+        locale={locale}
+        firstName={firstName}
+        data={data}
+        insightRows={insightRows}
+      />
+    );
   }
 
   if (role === 'student') {

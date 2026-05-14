@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
-import type { TeacherOverview, TeacherLessonRow } from '@/lib/data/teacher';
+import type { TeacherOverview, TeacherLessonRow, MiniLessonRow } from '@/lib/data/teacher';
+import { MiniHeatmap } from '@/components/app/teacher/MiniHeatmap';
 
 // Editorial Calm — Stitch screen 10-larare-dashboard.png
 
@@ -8,6 +9,7 @@ type Props = {
   locale: Locale;
   firstName: string;
   data: TeacherOverview;
+  insightRows: MiniLessonRow[];
 };
 
 function greeting(locale: Locale, name: string): string {
@@ -74,7 +76,7 @@ function formatTime(iso: string | null, locale: Locale): string {
   }).format(new Date(iso));
 }
 
-export function TeacherDashboard({ locale, firstName, data }: Props) {
+export function TeacherDashboard({ locale, firstName, data, insightRows }: Props) {
   const sv = locale === 'sv';
   const base = `/${locale}/app/teacher`;
   const todaysLessons = data.recentLessons.slice(0, 3);
@@ -172,16 +174,14 @@ export function TeacherDashboard({ locale, firstName, data }: Props) {
           )}
         </section>
 
-        {/* Senaste frågor från elever — empty state om ingen data */}
+        {/* Senaste frågor från elever — mini-heatmap */}
         <section className="mt-14">
           <h2 className="font-serif text-[1.5rem] leading-tight text-[var(--color-ink)]">
             {sv ? 'Senaste frågor från elever' : 'Recent student questions'}
           </h2>
-          <p className="mt-4 text-[0.9375rem] text-[var(--color-ink-muted)]">
-            {sv
-              ? 'När elever frågar Elevante om dina lektioner dyker frågorna upp här (anonymt).'
-              : 'When students ask Elevante about your lessons, the questions appear here (anonymously).'}
-          </p>
+          <div className="mt-6">
+            <MiniHeatmap locale={locale} rows={insightRows} />
+          </div>
         </section>
       </div>
 

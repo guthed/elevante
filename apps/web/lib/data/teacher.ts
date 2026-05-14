@@ -274,7 +274,7 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
   const { data: lesson } = await supabase
     .from('lessons')
     .select(
-      'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles ( id, full_name )',
+      'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
     )
     .eq('id', lessonId)
     .maybeSingle();
@@ -309,4 +309,220 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
     teacher: typed.profiles,
     materials: (materialsRows ?? []) as LessonDetail['materials'],
   };
+}
+
+// ---------------------------------------------------------------------------
+// Teacher insight — koncept-heatmap + drilldowns
+// ---------------------------------------------------------------------------
+
+export type LessonInsightStudent = {
+  id: string;
+  fullName: string;
+  hasViewed: boolean;
+  viewCount: number;
+  lastViewedAt: string | null;
+  totalQuestions: number;
+  conceptQuestionCounts: Record<string, number>;
+  questions: Array<{ id: string; content: string; concepts: string[]; createdAt: string }>;
+};
+
+export type LessonInsight = {
+  lessonId: string;
+  title: string | null;
+  concepts: string[];
+  students: LessonInsightStudent[];
+};
+
+export async function getLessonInsight(lessonId: string): Promise<LessonInsight | null> {
+  const supabase = await createSupabaseServerClient();
+
+  // 1. Hämta lessonen + class_id + concepts
+  const { data: lesson } = await supabase
+    .from('lessons')
+    .select('id, title, class_id, concepts')
+    .eq('id', lessonId)
+    .maybeSingle();
+  if (!lesson) return null;
+
+  type LessonRow = {
+    id: string;
+    title: string | null;
+    class_id: string;
+    concepts: unknown;
+  };
+  const typedLesson = lesson as unknown as LessonRow;
+  const concepts: string[] = Array.isArray(typedLesson.concepts)
+    ? (typedLesson.concepts as string[])
+    : [];
+
+  // 2. Hämta klassens elever (profiler via class_members)
+  const { data: members } = await supabase
+    .from('class_members')
+    .select('profile_id, profiles!inner(id, full_name, role)')
+    .eq('class_id', typedLesson.class_id);
+
+  type MemberRow = {
+    profile_id: string;
+    profiles: { id: string; full_name: string | null; role: string } | null;
+  };
+
+  const students = ((members ?? []) as unknown as MemberRow[])
+    .map((m) => m.profiles)
+    .filter(
+      (p): p is { id: string; full_name: string | null; role: string } =>
+        p !== null && p.role === 'student',
+    );
+
+  // 3. Hämta lesson_views
+  const { data: viewsRaw } = await supabase
+    .from('lesson_views')
+    .select('profile_id, view_count, last_viewed_at')
+    .eq('lesson_id', lessonId);
+  const viewsByProfile = new Map<string, { count: number; last: string }>();
+  for (const v of (viewsRaw ?? []) as Array<{
+    profile_id: string;
+    view_count: number;
+    last_viewed_at: string;
+  }>) {
+    viewsByProfile.set(v.profile_id, {
+      count: v.view_count ?? 0,
+      last: v.last_viewed_at ?? '',
+    });
+  }
+
+  // 4. Hämta chats + chat_messages för denna lesson, scope='lesson'
+  const { data: chatsRaw } = await supabase
+    .from('chats')
+    .select('id, user_id')
+    .eq('lesson_id', lessonId)
+    .eq('scope', 'lesson');
+  const chats = (chatsRaw ?? []) as Array<{ id: string; user_id: string }>;
+  const chatIds = chats.map((c) => c.id);
+  const userIdByChatId = new Map<string, string>();
+  for (const c of chats) userIdByChatId.set(c.id, c.user_id);
+
+  type MessageRow = {
+    id: string;
+    chat_id: string;
+    content: string;
+    concepts: unknown;
+    created_at: string;
+    role: string;
+  };
+  let messages: MessageRow[] = [];
+  if (chatIds.length > 0) {
+    const { data } = await supabase
+      .from('chat_messages')
+      .select('id, chat_id, content, concepts, created_at, role')
+      .in('chat_id', chatIds)
+      .eq('role', 'user');
+    messages = (data ?? []) as MessageRow[];
+  }
+
+  // 5. Bygg per-elev-data
+  const studentResults: LessonInsightStudent[] = students.map((s) => {
+    const view = viewsByProfile.get(s.id);
+    const studentMessages = messages.filter((m) => userIdByChatId.get(m.chat_id) === s.id);
+    const conceptCounts: Record<string, number> = {};
+    for (const m of studentMessages) {
+      const mc: string[] = Array.isArray(m.concepts) ? (m.concepts as string[]) : [];
+      for (const c of mc) conceptCounts[c] = (conceptCounts[c] ?? 0) + 1;
+    }
+    return {
+      id: s.id,
+      fullName: s.full_name ?? '—',
+      hasViewed: !!view,
+      viewCount: view?.count ?? 0,
+      lastViewedAt: view?.last ?? null,
+      totalQuestions: studentMessages.length,
+      conceptQuestionCounts: conceptCounts,
+      questions: studentMessages.map((m) => ({
+        id: m.id,
+        content: m.content,
+        concepts: Array.isArray(m.concepts) ? (m.concepts as string[]) : [],
+        createdAt: m.created_at,
+      })),
+    };
+  });
+
+  return {
+    lessonId,
+    title: typedLesson.title,
+    concepts,
+    students: studentResults,
+  };
+}
+
+// Used by TeacherDashboard MiniHeatmap
+export type MiniLessonRow = {
+  lessonId: string;
+  title: string;
+  topConceptName: string;
+  topConceptQuestionCount: number;
+  totalQuestions: number;
+  studentsAsking: number;
+  totalStudents: number;
+};
+
+export async function getRecentLessonInsightRows(
+  schoolId: string,
+  limit = 3,
+): Promise<MiniLessonRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data: lessons } = await supabase
+    .from('lessons')
+    .select('id, title, recorded_at')
+    .eq('school_id', schoolId)
+    .eq('transcript_status', 'ready')
+    .order('recorded_at', { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  const rows: MiniLessonRow[] = [];
+  for (const lesson of (lessons ?? []) as Array<{ id: string; title: string | null }>) {
+    const insight = await getLessonInsight(lesson.id);
+    if (!insight || insight.concepts.length === 0) continue;
+
+    const conceptTotals: Record<string, number> = {};
+    let totalQuestions = 0;
+    const askingStudents = new Set<string>();
+    for (const s of insight.students) {
+      if (s.totalQuestions > 0) askingStudents.add(s.id);
+      for (const [c, n] of Object.entries(s.conceptQuestionCounts)) {
+        conceptTotals[c] = (conceptTotals[c] ?? 0) + n;
+        totalQuestions += n;
+      }
+    }
+    const sortedConcepts = Object.entries(conceptTotals).sort(([, a], [, b]) => b - a);
+    const [topConcept, topCount] = sortedConcepts[0] ?? ['—', 0];
+
+    rows.push({
+      lessonId: lesson.id,
+      title: lesson.title ?? '—',
+      topConceptName: topConcept,
+      topConceptQuestionCount: topCount,
+      totalQuestions,
+      studentsAsking: askingStudents.size,
+      totalStudents: insight.students.length,
+    });
+  }
+
+  return rows;
+}
+
+// Helper för status-filter på lektionslistan
+export async function getLessonStatusCounts(
+  schoolId: string,
+): Promise<Record<'all' | 'ready' | 'processing' | 'pending' | 'failed', number>> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('lessons')
+    .select('transcript_status')
+    .eq('school_id', schoolId);
+  const counts = { all: 0, ready: 0, processing: 0, pending: 0, failed: 0 };
+  for (const row of (data ?? []) as Array<{ transcript_status: string }>) {
+    counts.all += 1;
+    const s = row.transcript_status as keyof typeof counts;
+    if (s in counts) counts[s] += 1;
+  }
+  return counts;
 }
