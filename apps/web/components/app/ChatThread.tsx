@@ -1,6 +1,8 @@
 'use client';
 
 import { useActionState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { sendMessage, type SendMessageState } from '@/app/actions/chat';
 import { Textarea } from '@/components/ui/Input';
 import type { Dictionary } from '@/lib/i18n/types';
@@ -129,8 +131,51 @@ function Message({
   // AI message — no bubble, just text on canvas
   return (
     <article>
-      <div className="whitespace-pre-wrap text-[1rem] leading-relaxed text-[var(--color-ink)]">
-        {message.content}
+      <div className="ai-prose text-[1rem] leading-relaxed text-[var(--color-ink)]">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+            ul: ({ children }) => (
+              <ul className="mb-4 list-disc space-y-1 pl-5 last:mb-0">{children}</ul>
+            ),
+            ol: ({ children }) => (
+              <ol className="mb-4 list-decimal space-y-1 pl-5 last:mb-0">{children}</ol>
+            ),
+            li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+            strong: ({ children }) => (
+              <strong className="font-semibold text-[var(--color-ink)]">{children}</strong>
+            ),
+            em: ({ children }) => <em className="italic">{children}</em>,
+            h1: ({ children }) => (
+              <h3 className="mb-3 mt-5 font-serif text-[1.25rem] text-[var(--color-ink)] first:mt-0">
+                {children}
+              </h3>
+            ),
+            h2: ({ children }) => (
+              <h3 className="mb-3 mt-5 font-serif text-[1.125rem] text-[var(--color-ink)] first:mt-0">
+                {children}
+              </h3>
+            ),
+            h3: ({ children }) => (
+              <h4 className="mb-2 mt-4 font-serif text-[1rem] text-[var(--color-ink)] first:mt-0">
+                {children}
+              </h4>
+            ),
+            code: ({ children }) => (
+              <code className="rounded bg-[var(--color-sand)] px-1.5 py-0.5 font-mono text-[0.875em]">
+                {children}
+              </code>
+            ),
+            blockquote: ({ children }) => (
+              <blockquote className="mb-4 border-l-2 border-[var(--color-sand-strong)] pl-4 italic text-[var(--color-ink-secondary)]">
+                {children}
+              </blockquote>
+            ),
+          }}
+        >
+          {message.content}
+        </ReactMarkdown>
       </div>
       {message.sources && message.sources.length > 0 ? (
         <div className="mt-5 flex flex-wrap gap-2">
