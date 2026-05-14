@@ -1,7 +1,6 @@
-// Handskrivna typer för elevante-schemat.
-// Automatisk generering via Supabase CLI returnerar bara public-schemat
-// i Bokmassan-databasen, så vi håller dessa synkade manuellt med
-// migrationerna tills vi flyttar till ett eget projekt.
+// Handskrivna typer för Elevante. Tabellerna bor i `public`-schemat i det
+// dedikerade Supabase-projektet (msqfuywpbrteyrzjggsw, eu-central-2).
+// Vi håller dessa synkade manuellt med migrationerna i supabase/migrations/.
 
 export type Json =
   | string
@@ -236,33 +235,8 @@ type ChatMessageInsert = {
   created_at?: string;
 };
 
-type MatchLessonChunkArgs = {
-  query_embedding: number[];
-  lesson_id_filter: string;
-  top_k?: number;
-};
-
-type MatchCourseChunkArgs = {
-  query_embedding: number[];
-  course_id_filter: string;
-  top_k?: number;
-};
-
-type LessonChunkMatch = {
-  id: string;
-  content: string;
-  similarity: number;
-};
-
-type CourseChunkMatch = {
-  id: string;
-  lesson_id: string;
-  content: string;
-  similarity: number;
-};
-
 export type Database = {
-  elevante: {
+  public: {
     Tables: {
       schools: TableDef<School, SchoolInsert>;
       profiles: TableDef<Profile, ProfileInsert>;
@@ -283,6 +257,8 @@ export type Database = {
     Enums: {
       user_role: UserRole;
       day_of_week: DayOfWeek;
+      chat_role: ChatRole;
+      chat_scope: ChatScope;
     };
     CompositeTypes: Record<string, never>;
   };
