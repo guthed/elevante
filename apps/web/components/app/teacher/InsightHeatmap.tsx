@@ -44,29 +44,53 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
     );
   }
 
+  // Beräkna totals
+  const conceptTotals: Record<string, number> = {};
+  let totalQuestionsClass = 0;
+  let totalStudentsAsking = 0;
+  for (const s of insight.students) {
+    if (s.totalQuestions > 0) totalStudentsAsking += 1;
+    for (const c of insight.concepts) {
+      const n = s.conceptQuestionCounts[c] ?? 0;
+      conceptTotals[c] = (conceptTotals[c] ?? 0) + n;
+      totalQuestionsClass += n;
+    }
+  }
+
   return (
     <section>
-      <p className="eyebrow mb-4">Förståelse-karta · {insight.students.length} elever</p>
+      <div className="mb-4 flex items-baseline justify-between gap-4">
+        <p className="eyebrow">Förståelse-karta</p>
+        <p className="text-[0.8125rem] text-[var(--color-ink-muted)]">
+          {totalStudentsAsking} av {insight.students.length} elever har frågat ·{' '}
+          {totalQuestionsClass} {totalQuestionsClass === 1 ? 'fråga' : 'frågor'} totalt
+        </p>
+      </div>
 
       <div className="overflow-x-auto rounded-[20px] bg-[var(--color-surface)] p-6">
         <div
           className="grid gap-1 text-[0.75rem]"
           style={{
-            gridTemplateColumns: `120px repeat(${insight.concepts.length}, minmax(70px, 1fr))`,
+            gridTemplateColumns: `140px repeat(${insight.concepts.length}, minmax(72px, 1fr)) 56px`,
           }}
         >
+          {/* Header-rad: tom hörna + koncept-rubriker + "Σ" totals-kolumn */}
           <div />
           {insight.concepts.map((c) => (
             <button
               key={c}
               type="button"
               onClick={() => setDrawer({ type: 'concept', concept: c })}
-              className="text-center text-[0.75rem] text-[var(--color-ink-secondary)] underline-offset-2 hover:text-[var(--color-ink)] hover:underline"
+              className="px-1 text-center text-[0.6875rem] leading-tight text-[var(--color-ink-secondary)] underline-offset-2 hover:text-[var(--color-ink)] hover:underline"
             >
               {c}
             </button>
           ))}
+          <div className="text-center text-[0.625rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+            Totalt
+          </div>
 
+          {/* Elev-rader */}
           {insight.students.map((s) => (
             <Row
               key={s.id}
@@ -75,6 +99,22 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
               onClick={() => setDrawer({ type: 'student', student: s })}
             />
           ))}
+
+          {/* Total-rad nederst */}
+          <div className="mt-2 border-t border-[var(--color-sand)] pt-3 text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+            Per koncept
+          </div>
+          {insight.concepts.map((c) => (
+            <div
+              key={`total-${c}`}
+              className="mt-2 border-t border-[var(--color-sand)] pt-3 text-center font-serif text-[0.9375rem] text-[var(--color-ink)] tabular-nums"
+            >
+              {conceptTotals[c] ?? 0}
+            </div>
+          ))}
+          <div className="mt-2 border-t border-[var(--color-sand)] pt-3 text-center font-serif text-[0.9375rem] text-[var(--color-ink)] tabular-nums">
+            {totalQuestionsClass}
+          </div>
         </div>
       </div>
 
@@ -147,28 +187,42 @@ function Row({
   concepts: string[];
   onClick: () => void;
 }) {
+  const total = student.totalQuestions;
   return (
     <>
       <button
         type="button"
         onClick={onClick}
-        className="truncate text-left text-[0.8125rem] text-[var(--color-ink)] underline-offset-2 hover:underline"
+        className="flex items-center text-left text-[0.8125rem] text-[var(--color-ink)] underline-offset-2 hover:underline"
       >
-        {student.fullName}
+        <span className="truncate">{student.fullName}</span>
       </button>
-      {concepts.map((c) => (
-        <button
-          key={c}
-          type="button"
-          onClick={onClick}
-          aria-label={`${student.fullName}: ${c}, ${student.conceptQuestionCounts[c] ?? 0} frågor`}
-          className="aspect-[2/1] min-h-[22px] rounded-sm transition-transform hover:scale-105"
-          style={{
-            background: cellColor(student, c),
-            border: cellBorder(student),
-          }}
-        />
-      ))}
+      {concepts.map((c) => {
+        const count = student.conceptQuestionCounts[c] ?? 0;
+        const isDark = count >= 3;
+        return (
+          <button
+            key={c}
+            type="button"
+            onClick={onClick}
+            aria-label={`${student.fullName}: ${c}, ${count} frågor`}
+            className="flex h-9 items-center justify-center rounded-sm font-serif text-[0.8125rem] tabular-nums transition-transform hover:scale-105"
+            style={{
+              background: cellColor(student, c),
+              border: cellBorder(student),
+              color: isDark ? '#FFF' : 'var(--color-ink)',
+            }}
+          >
+            {count > 0 ? count : ''}
+          </button>
+        );
+      })}
+      <div
+        className="flex h-9 items-center justify-center font-serif text-[0.9375rem] text-[var(--color-ink)] tabular-nums"
+        style={{ opacity: total === 0 ? 0.3 : 1 }}
+      >
+        {total > 0 ? total : '—'}
+      </div>
     </>
   );
 }
