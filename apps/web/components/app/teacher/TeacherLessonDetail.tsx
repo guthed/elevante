@@ -114,8 +114,15 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }
         </dl>
       </header>
 
+      {/* Insikt — full-bredd heatmap, högst upp under header för max-värde */}
+      {insight && (
+        <section className="mt-10">
+          <InsightHeatmap insight={insight} aiInsight={aiInsight} />
+        </section>
+      )}
+
       {/* 2-col layout */}
-      <div className="mt-10 grid gap-10 md:grid-cols-12">
+      <div className="mt-12 grid gap-10 md:grid-cols-12">
         {/* LEFT — Transcript (65%) */}
         <div className="md:col-span-8">
           <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
@@ -168,13 +175,6 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }
 
         </aside>
       </div>
-
-      {/* Insikt — full-bredd heatmap under transcript-layouten */}
-      {insight && (
-        <section className="mt-14">
-          <InsightHeatmap insight={insight} aiInsight={aiInsight} />
-        </section>
-      )}
     </div>
   );
 }
