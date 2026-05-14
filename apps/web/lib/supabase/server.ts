@@ -18,8 +18,7 @@ export async function createSupabaseServerClient() {
   const { url, key } = env();
   const cookieStore = await cookies();
 
-  return createServerClient<Database, 'elevante'>(url, key, {
-    db: { schema: 'elevante' },
+  return createServerClient<Database>(url, key, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

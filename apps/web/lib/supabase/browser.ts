@@ -11,7 +11,5 @@ export function createSupabaseBrowserClient() {
       'NEXT_PUBLIC_SUPABASE_URL och NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY måste vara satta',
     );
   }
-  return createBrowserClient<Database, 'elevante'>(url, key, {
-    db: { schema: 'elevante' },
-  });
+  return createBrowserClient<Database>(url, key);
 }

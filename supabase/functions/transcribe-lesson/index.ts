@@ -7,7 +7,7 @@
 //   2. Anropa Berget AI Whisper för transkribering
 //   3. Chunka transcript (~500 tecken per chunk, 80 tecken overlap)
 //   4. Anropa Berget AI embeddings för varje chunk
-//   5. Insert i elevante.lesson_chunks
+//   5. Insert i public.lesson_chunks
 //   6. Update lessons.transcript_text + transcript_status='ready'
 //   7. Radera audio från Storage (GDPR — råljud raderas efter transkribering)
 //
@@ -31,7 +31,6 @@ const BUCKET = 'elevante-audio';
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false },
-  db: { schema: 'elevante' },
 });
 
 const corsHeaders = {
