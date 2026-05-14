@@ -274,7 +274,7 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
   const { data: lesson } = await supabase
     .from('lessons')
     .select(
-      'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles ( id, full_name )',
+      'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
     )
     .eq('id', lessonId)
     .maybeSingle();

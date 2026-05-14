@@ -169,7 +169,7 @@ export async function getStudentLessonDetail(
   const { data: lesson } = await supabase
     .from('lessons')
     .select(
-      'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles ( id, full_name )',
+      'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
     )
     .eq('id', lessonId)
     .maybeSingle();
