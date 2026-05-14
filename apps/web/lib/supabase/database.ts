@@ -89,6 +89,7 @@ export type Lesson = {
   summary: string | null;
   suggested_questions: string[];
   ai_generated_topic: string | null;
+  concepts: string[];
   created_at: string;
 };
 
@@ -131,7 +132,24 @@ export type ChatMessage = {
   role: ChatRole;
   content: string;
   sources: ChatSource[];
+  concepts: string[];
   created_at: string;
+};
+
+export type LessonView = {
+  lesson_id: string;
+  profile_id: string;
+  first_viewed_at: string;
+  last_viewed_at: string;
+  view_count: number;
+};
+
+type LessonViewInsert = {
+  lesson_id: string;
+  profile_id: string;
+  first_viewed_at?: string;
+  last_viewed_at?: string;
+  view_count?: number;
 };
 
 type TableDef<R, I> = {
@@ -204,6 +222,7 @@ type LessonInsert = {
   summary?: string | null;
   suggested_questions?: string[];
   ai_generated_topic?: string | null;
+  concepts?: string[];
   id?: string;
   created_at?: string;
 };
@@ -237,6 +256,7 @@ type ChatMessageInsert = {
   role: ChatRole;
   content: string;
   sources?: ChatSource[];
+  concepts?: string[];
   id?: string;
   created_at?: string;
 };
@@ -253,6 +273,7 @@ export type Database = {
       materials: TableDef<Material, MaterialInsert>;
       chats: TableDef<Chat, ChatInsert>;
       chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
+      lesson_views: TableDef<LessonView, LessonViewInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
