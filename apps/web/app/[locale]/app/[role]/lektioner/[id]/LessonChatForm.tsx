@@ -11,9 +11,10 @@ type Props = {
   locale: Locale;
   lessonId: string;
   labels: Dictionary['app']['pages']['student']['chat'];
+  placeholderOverride?: string;
 };
 
-export function LessonChatForm({ locale, lessonId, labels }: Props) {
+export function LessonChatForm({ locale, lessonId, labels, placeholderOverride }: Props) {
   const [pending, startTransition] = useTransition();
   const [value, setValue] = useState('');
 
@@ -32,7 +33,7 @@ export function LessonChatForm({ locale, lessonId, labels }: Props) {
         name="question"
         rows={4}
         required
-        placeholder={labels.inputPlaceholder}
+        placeholder={placeholderOverride ?? labels.inputPlaceholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
