@@ -8,7 +8,6 @@ import { Topbar } from './Topbar';
 type Props = {
   locale: Locale;
   role: Role;
-  currentPath: string;
   dict: Dictionary;
   user: {
     fullName: string | null;
@@ -20,7 +19,6 @@ type Props = {
 export function AppShell({
   locale,
   role,
-  currentPath,
   dict,
   user,
   children,
@@ -33,13 +31,7 @@ export function AppShell({
       >
         {locale === 'sv' ? 'Hoppa till innehåll' : 'Skip to content'}
       </a>
-      <Sidebar
-        locale={locale}
-        role={role}
-        currentPath={currentPath}
-        dict={dict}
-        user={user}
-      />
+      <Sidebar locale={locale} role={role} dict={dict} user={user} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar locale={locale} role={role} dict={dict} user={user} />
         <main id="app-main" className="flex-1 overflow-y-auto animate-page-in">

@@ -4,6 +4,7 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { signOut } from '@/app/actions/auth';
+import { SidebarNav } from './SidebarNav';
 
 type NavItem = { href: string; label: string };
 
@@ -45,7 +46,6 @@ function roleSubtitle(role: Role, locale: Locale): string {
 type Props = {
   locale: Locale;
   role: Role;
-  currentPath: string;
   dict: Dictionary;
   user: {
     fullName: string | null;
@@ -53,9 +53,10 @@ type Props = {
   } | null;
 };
 
-export function Sidebar({ locale, role, currentPath, dict, user }: Props) {
+export function Sidebar({ locale, role, dict, user }: Props) {
   const base = `/${locale}/app`;
   const items = itemsFor(role, base, dict);
+  const overviewHref = `${base}/${role}`;
   const roleLabel = dict.app.roleTitles[role];
   const displayName = user?.fullName ?? user?.email ?? roleLabel;
 
@@ -84,29 +85,7 @@ export function Sidebar({ locale, role, currentPath, dict, user }: Props) {
 
       {/* Nav */}
       <nav className="flex-1 px-3">
-        <ul className="space-y-0.5">
-          {items.map((item) => {
-            const isActive =
-              currentPath === item.href ||
-              (item.href !== `${base}/${role}` && currentPath.startsWith(item.href));
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={[
-                    'block rounded-[12px] px-4 py-2.5 text-[0.9375rem] transition-colors',
-                    isActive
-                      ? 'bg-[var(--color-sand)]/45 text-[var(--color-ink)]'
-                      : 'text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]',
-                  ].join(' ')}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <SidebarNav items={items} overviewHref={overviewHref} />
       </nav>
 
       {/* User row */}
