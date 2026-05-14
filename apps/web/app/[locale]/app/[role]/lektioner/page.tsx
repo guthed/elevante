@@ -9,10 +9,19 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LessonStatusBadge } from '@/components/app/LessonStatusBadge';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getTeacherLessons } from '@/lib/data/teacher';
+import { getTeacherLessons, getLessonStatusCounts } from '@/lib/data/teacher';
+import { LessonStatusFilter } from '@/components/app/teacher/LessonStatusFilter';
+import type { TranscriptStatus } from '@/lib/supabase/database';
+
+type StatusFilter = 'all' | TranscriptStatus;
+
+function isStatusFilter(s: string | undefined): s is StatusFilter {
+  return s === 'all' || s === 'ready' || s === 'processing' || s === 'pending' || s === 'failed';
+}
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
+  searchParams: Promise<{ status?: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -25,20 +34,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function TeacherLessonsPage({ params }: Props) {
+export default async function TeacherLessonsPage({ params, searchParams }: Props) {
   const { locale, role } = await params;
+  const { status: statusParam } = await searchParams;
   if (!isLocale(locale) || !isRole(role)) notFound();
   if (role !== 'teacher') redirect(`/${locale}/app/${role}`);
 
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
 
+  const activeStatus: StatusFilter = isStatusFilter(statusParam) ? statusParam : 'all';
+
   const dict = await getDictionary(locale);
   const labels = dict.app.pages.teacher.lessons;
-  const lessons = await getTeacherLessons(profile.id);
+  const [allLessons, statusCounts] = await Promise.all([
+    getTeacherLessons(profile.id),
+    profile.school_id
+      ? getLessonStatusCounts(profile.school_id)
+      : Promise.resolve({ all: 0, ready: 0, processing: 0, pending: 0, failed: 0 }),
+  ]);
+  const lessons =
+    activeStatus === 'all'
+      ? allLessons
+      : allLessons.filter((l) => l.status === activeStatus);
   const base = `/${locale}/app/teacher`;
 
-  if (lessons.length === 0) {
+  if (allLessons.length === 0) {
     return (
       <PageWrapper title={labels.title} subtitle={labels.subtitle}>
         <EmptyState title={labels.empty} />
@@ -48,6 +69,12 @@ export default async function TeacherLessonsPage({ params }: Props) {
 
   return (
     <PageWrapper title={labels.title} subtitle={labels.subtitle}>
+      <div className="mb-6">
+        <LessonStatusFilter locale={locale} active={activeStatus} counts={statusCounts} />
+      </div>
+      {lessons.length === 0 ? (
+        <EmptyState title={labels.empty} />
+      ) : (
       <Card padded={false}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
@@ -100,6 +127,7 @@ export default async function TeacherLessonsPage({ params }: Props) {
           </table>
         </div>
       </Card>
+      )}
     </PageWrapper>
   );
 }
