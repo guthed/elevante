@@ -4,8 +4,9 @@ import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getLessonDetail } from '@/lib/data/teacher';
+import { getLessonDetail, getLessonInsight } from '@/lib/data/teacher';
 import { getStudentLessonDetail } from '@/lib/data/student';
+import { generateLessonInsight } from '@/lib/ai/anthropic';
 import { StudentLessonDetail as StudentLessonDetailView } from '@/components/app/student/StudentLessonDetail';
 import { TeacherLessonDetail as TeacherLessonDetailView } from '@/components/app/teacher/TeacherLessonDetail';
 
@@ -37,9 +38,44 @@ export default async function LessonDetailPage({ params }: Props) {
   const dict = await getDictionary(locale);
 
   if (role === 'teacher') {
-    const lesson = await getLessonDetail(id);
+    const [lesson, insight] = await Promise.all([
+      getLessonDetail(id),
+      getLessonInsight(id),
+    ]);
     if (!lesson) notFound();
-    return <TeacherLessonDetailView locale={locale} lesson={lesson} dict={dict} />;
+
+    let aiInsight = '';
+    if (insight && insight.concepts.length > 0) {
+      const engagement = insight.concepts.map((c) => ({
+        concept: c,
+        totalQuestions: insight.students.reduce(
+          (sum, s) => sum + (s.conceptQuestionCounts[c] ?? 0),
+          0,
+        ),
+        studentsAsking: insight.students.filter(
+          (s) => (s.conceptQuestionCounts[c] ?? 0) > 0,
+        ).length,
+      }));
+      const notViewed = insight.students
+        .filter((s) => !s.hasViewed)
+        .map((s) => s.fullName.split(' ')[0] ?? s.fullName);
+      aiInsight = await generateLessonInsight(
+        lesson.title ?? '—',
+        engagement,
+        notViewed,
+        insight.students.length,
+      );
+    }
+
+    return (
+      <TeacherLessonDetailView
+        locale={locale}
+        lesson={lesson}
+        dict={dict}
+        insight={insight}
+        aiInsight={aiInsight}
+      />
+    );
   }
 
   // Student-vy — Editorial Calm enligt Stitch screen 09
