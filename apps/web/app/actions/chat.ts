@@ -20,10 +20,23 @@ export type SendMessageState =
 async function ragAnswer(
   question: string,
   scopeContext: { scope: ChatScope; lessonId: string | null; courseId: string | null },
-): Promise<{ content: string; sources: ChatSource[] } | null> {
+): Promise<{ content: string; sources: ChatSource[]; concepts: string[] } | null> {
   if (!bergetIsConfigured() || !anthropicIsConfigured()) return null;
 
   const supabase = await createSupabaseServerClient();
+
+  // Hämta lektionens koncept för taggning (bara för lesson-scope)
+  let lessonConcepts: string[] = [];
+  if (scopeContext.scope === 'lesson' && scopeContext.lessonId) {
+    const { data: lessonRow } = await supabase
+      .from('lessons')
+      .select('concepts')
+      .eq('id', scopeContext.lessonId)
+      .maybeSingle();
+    lessonConcepts = Array.isArray(lessonRow?.concepts)
+      ? (lessonRow.concepts as string[])
+      : [];
+  }
 
   // Steg 1: embedda användarens fråga
   const embeddings = await embedTexts([question]);
@@ -65,6 +78,7 @@ async function ragAnswer(
     return {
       content: 'Det togs inte upp på den här lektionen.',
       sources: [],
+      concepts: [],
     };
   }
 
@@ -89,8 +103,8 @@ async function ragAnswer(
     content: m.content,
   }));
 
-  // Steg 4: Claude-svar med strikt RAG-prompt
-  const answer = await answerWithRag(question, chunks);
+  // Steg 4: Claude-svar med strikt RAG-prompt + koncept-taggning
+  const answer = await answerWithRag(question, chunks, lessonConcepts);
   return answer;
 }
 
@@ -101,7 +115,7 @@ async function ragAnswer(
 async function mockedAnswer(
   question: string,
   scopeContext: { scope: ChatScope; lessonId: string | null; courseId: string | null },
-): Promise<{ content: string; sources: ChatSource[] }> {
+): Promise<{ content: string; sources: ChatSource[]; concepts: string[] }> {
   const supabase = await createSupabaseServerClient();
 
   // Försök hitta en lektion att referera till — antingen den aktuella
@@ -152,6 +166,7 @@ async function mockedAnswer(
       '• returnera ett svar som bara bygger på det läraren sa\n' +
       '• visa exakta källcitat under svaret',
     sources,
+    concepts: [] as string[],
   };
 }
 
@@ -210,7 +225,17 @@ export async function startChat(input: StartChatInput) {
     role: 'assistant',
     content: answer.content,
     sources: answer.sources,
+    concepts: answer.concepts,
   });
+
+  // Tagga också user-meddelandet med samma koncept (frågan tangerar dem)
+  if (answer.concepts.length > 0) {
+    await supabase
+      .from('chat_messages')
+      .update({ concepts: answer.concepts })
+      .eq('chat_id', chat.id)
+      .eq('role', 'user');
+  }
 
   return { ok: true as const, chatId: chat.id };
 }
@@ -254,10 +279,29 @@ export async function sendMessage(
     role: 'assistant',
     content: answer.content,
     sources: answer.sources,
+    concepts: answer.concepts,
   });
 
   if (insertError) {
     return { status: 'error', code: 'generic', detail: insertError.message };
+  }
+
+  // Tagga senaste user-meddelandet med samma koncept (frågan tangerar dem)
+  if (answer.concepts.length > 0) {
+    const { data: latestUserMsg } = await supabase
+      .from('chat_messages')
+      .select('id')
+      .eq('chat_id', chatId)
+      .eq('role', 'user')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (latestUserMsg?.id) {
+      await supabase
+        .from('chat_messages')
+        .update({ concepts: answer.concepts })
+        .eq('id', latestUserMsg.id);
+    }
   }
 
   // Bumpa updated_at via en touch-update
