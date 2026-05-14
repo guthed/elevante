@@ -153,7 +153,9 @@ async function generateLessonContent(
 
   const json = (await res.json()) as { content?: { text?: string }[] };
   const raw = json.content?.[0]?.text ?? '';
-  const parsed = JSON.parse(raw) as LessonContent;
+  // Claude wrappar ibland JSON i ```json ... ``` trots instruktion — strippa fences
+  const cleaned = raw.trim().replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
+  const parsed = JSON.parse(cleaned) as LessonContent;
 
   if (
     typeof parsed.topic !== 'string' ||
