@@ -102,6 +102,7 @@ Du får ett transkript från en lektion. Ditt jobb är att:
 1. Skriva en varm, kort sammanfattning (3-5 meningar) som om du pratar med eleven
 2. Föreslå exakt två startfrågor som hjälper eleven börja utforska innehållet
 3. Extrahera ett kort ämne (max 6 ord) som kan användas i lektionens titel
+4. Lista 5-8 nyckelkoncept som behandlas i lektionen — de begrepp eleverna ska kunna efter lektionen
 
 REGLER:
 - Sammanfattningen är 3-5 meningar, max cirka 400 tecken
@@ -112,14 +113,17 @@ REGLER:
 - Frågor är pedagogiska ("Förklara skillnaden mellan...", "Beskriv hur...")
 - Frågorna måste vara besvarbara enbart från transkriptet
 - Ämnet är kort och deskriptivt (t.ex. "Ekosystem och näringsvävar")
+- Koncepten är 1-4 ord vardera (t.ex. "Näringspyramid", "Biotiska faktorer", "Energiflöde")
+- Koncept är nominalfraser eller substantiv, inte hela meningar
 
 Svara ENDAST med valid JSON i detta format, ingen annan text:
-{"topic": "<kort ämne>", "summary": "<3-5 meningar>", "questions": ["<fråga 1>", "<fråga 2>"]}`;
+{"topic": "<kort ämne>", "summary": "<3-5 meningar>", "questions": ["<fråga 1>", "<fråga 2>"], "concepts": ["<koncept 1>", "<koncept 2>", "<koncept 3>", "<koncept 4>", "<koncept 5>"]}`;
 
 type LessonContent = {
   topic: string;
   summary: string;
   questions: [string, string];
+  concepts: string[];
 };
 
 async function generateLessonContent(
@@ -161,7 +165,11 @@ async function generateLessonContent(
     typeof parsed.topic !== 'string' ||
     typeof parsed.summary !== 'string' ||
     !Array.isArray(parsed.questions) ||
-    parsed.questions.length !== 2
+    parsed.questions.length !== 2 ||
+    !Array.isArray(parsed.concepts) ||
+    parsed.concepts.length < 4 ||
+    parsed.concepts.length > 10 ||
+    !parsed.concepts.every((c: unknown) => typeof c === 'string')
   ) {
     throw new Error('Anthropic response failed validation');
   }
@@ -254,11 +262,12 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
       .insert(chunkRows);
     if (insertErr) throw new Error(`Insert failed: ${insertErr.message}`);
 
-    // 6.5. AI-genererad sammanfattning, frågor och ämne
+    // 6.5. AI-genererad sammanfattning, frågor, ämne och koncept
     let contentTitle: string | null = null;
     let contentSummary: string | null = null;
     let contentQuestions: string[] = [];
     let contentTopic: string | null = null;
+    let contentConcepts: string[] = [];
 
     try {
       const content = await generateLessonContent(transcript, teacherName);
@@ -266,6 +275,7 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
         contentTopic = content.topic;
         contentSummary = content.summary;
         contentQuestions = content.questions;
+        contentConcepts = content.concepts;
 
         const dateBasis = lesson.recorded_at ?? new Date().toISOString();
         const dateLabel = new Intl.DateTimeFormat('sv-SE', {
@@ -297,6 +307,7 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
         summary: contentSummary,
         suggested_questions: contentQuestions,
         ai_generated_topic: contentTopic,
+        concepts: contentConcepts,
         ...(contentTitle ? { title: contentTitle } : {}),
       })
       .eq('id', lessonId);
