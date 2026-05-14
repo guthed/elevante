@@ -93,6 +93,79 @@ async function embedTexts(inputs: string[]): Promise<number[][]> {
   return json.data?.map((d) => d.embedding) ?? [];
 }
 
+const ANTHROPIC_KEY = Deno.env.get('ANTHROPIC_API_KEY');
+const ANTHROPIC_MODEL = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-sonnet-4-5-20250929';
+
+const LESSON_CONTENT_SYSTEM_PROMPT = `Du är Elevante — en varm mentor som var med på lektionen och hjälper elever förstå vad som hände.
+
+Du får ett transkript från en lektion. Ditt jobb är att:
+1. Skriva en varm, kort sammanfattning (3-5 meningar) som om du pratar med eleven
+2. Föreslå exakt två startfrågor som hjälper eleven börja utforska innehållet
+3. Extrahera ett kort ämne (max 6 ord) som kan användas i lektionens titel
+
+REGLER:
+- Sammanfattningen är 3-5 meningar, max cirka 400 tecken
+- Använd warm mentor-ton: "Idag handlade lektionen om...", "Anna gick igenom..."
+- Hänvisa till läraren med förnamn när det framgår av transkriptet
+- Citera lärarens egna konkreta exempel där möjligt
+- Hitta ALDRIG på fakta som inte finns i transkriptet
+- Frågor är pedagogiska ("Förklara skillnaden mellan...", "Beskriv hur...")
+- Frågorna måste vara besvarbara enbart från transkriptet
+- Ämnet är kort och deskriptivt (t.ex. "Ekosystem och näringsvävar")
+
+Svara ENDAST med valid JSON i detta format, ingen annan text:
+{"topic": "<kort ämne>", "summary": "<3-5 meningar>", "questions": ["<fråga 1>", "<fråga 2>"]}`;
+
+type LessonContent = {
+  topic: string;
+  summary: string;
+  questions: [string, string];
+};
+
+async function generateLessonContent(
+  transcript: string,
+  teacherName: string | null,
+): Promise<LessonContent | null> {
+  if (!ANTHROPIC_KEY) return null;
+
+  const userMessage = teacherName
+    ? `Lärare: ${teacherName}\n\nTranskript:\n${transcript}`
+    : `Transkript:\n${transcript}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: ANTHROPIC_MODEL,
+      max_tokens: 1024,
+      system: LESSON_CONTENT_SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMessage }],
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Anthropic lesson content failed: ${res.status} ${await res.text()}`);
+  }
+
+  const json = (await res.json()) as { content?: { text?: string }[] };
+  const raw = json.content?.[0]?.text ?? '';
+  const parsed = JSON.parse(raw) as LessonContent;
+
+  if (
+    typeof parsed.topic !== 'string' ||
+    typeof parsed.summary !== 'string' ||
+    !Array.isArray(parsed.questions) ||
+    parsed.questions.length !== 2
+  ) {
+    throw new Error('Anthropic response failed validation');
+  }
+  return parsed;
+}
+
 async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: string }> {
   // 1. Hämta lesson
   const { data: lesson, error: lessonErr } = await supabase
