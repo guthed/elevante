@@ -147,6 +147,9 @@ export type StudentLessonDetail = {
   recordedAt: string | null;
   status: TranscriptStatus;
   transcriptText: string | null;
+  summary: string | null;
+  suggestedQuestions: string[];
+  aiGeneratedTopic: string | null;
   course: { id: string; code: string; name: string } | null;
   teacher: { id: string; full_name: string | null } | null;
   materials: {
@@ -166,7 +169,7 @@ export async function getStudentLessonDetail(
   const { data: lesson } = await supabase
     .from('lessons')
     .select(
-      'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), profiles ( id, full_name )',
+      'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles ( id, full_name )',
     )
     .eq('id', lessonId)
     .maybeSingle();
@@ -184,6 +187,9 @@ export async function getStudentLessonDetail(
     recorded_at: string | null;
     transcript_status: TranscriptStatus;
     transcript_text: string | null;
+    summary: string | null;
+    suggested_questions: unknown;
+    ai_generated_topic: string | null;
     courses: { id: string; code: string; name: string } | null;
     profiles: { id: string; full_name: string | null } | null;
   };
@@ -195,6 +201,9 @@ export async function getStudentLessonDetail(
     recordedAt: typed.recorded_at,
     status: typed.transcript_status,
     transcriptText: typed.transcript_text,
+    summary: typed.summary ?? null,
+    suggestedQuestions: Array.isArray(typed.suggested_questions) ? (typed.suggested_questions as string[]) : [],
+    aiGeneratedTopic: typed.ai_generated_topic ?? null,
     course: typed.courses,
     teacher: typed.profiles,
     materials: (materials ?? []) as StudentLessonDetail['materials'],
