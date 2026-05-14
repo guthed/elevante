@@ -86,6 +86,9 @@ export type Lesson = {
   transcript_updated_at: string | null;
   audio_path: string | null;
   audio_duration_seconds: number | null;
+  summary: string | null;
+  suggested_questions: string[];
+  ai_generated_topic: string | null;
   created_at: string;
 };
 
@@ -198,6 +201,9 @@ type LessonInsert = {
   transcript_updated_at?: string | null;
   audio_path?: string | null;
   audio_duration_seconds?: number | null;
+  summary?: string | null;
+  suggested_questions?: string[];
+  ai_generated_topic?: string | null;
   id?: string;
   created_at?: string;
 };
