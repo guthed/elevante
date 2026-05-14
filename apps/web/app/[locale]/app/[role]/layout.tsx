@@ -31,14 +31,12 @@ export default async function RoleLayout({ children, params }: Props) {
   }
 
   const dict = await getDictionary(locale);
-  const currentPath = `/${locale}/app/${role}`;
   const typedRole: Role = role;
 
   return (
     <AppShell
       locale={locale}
       role={typedRole}
-      currentPath={currentPath}
       dict={dict}
       user={{ fullName: profile.full_name, email: profile.email }}
     >
