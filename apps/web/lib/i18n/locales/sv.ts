@@ -322,6 +322,7 @@ const sv: Dictionary = {
         lessons: 'Mina lektioner',
         chat: 'Fråga Elevante',
         library: 'Bibliotek',
+        examPrep: 'Plugga inför prov',
       },
       teacher: {
         overview: 'Översikt',

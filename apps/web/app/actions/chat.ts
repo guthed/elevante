@@ -17,9 +17,16 @@ export type SendMessageState =
  * Returnerar null om någon del saknas så anroparen faller tillbaka
  * till mockedAnswer.
  */
+type ScopeContext = {
+  scope: ChatScope;
+  lessonId: string | null;
+  courseId: string | null;
+  lessonIds: string[] | null;
+};
+
 async function ragAnswer(
   question: string,
-  scopeContext: { scope: ChatScope; lessonId: string | null; courseId: string | null },
+  scopeContext: ScopeContext,
 ): Promise<{ content: string; sources: ChatSource[]; concepts: string[] } | null> {
   if (!bergetIsConfigured() || !anthropicIsConfigured()) return null;
 
@@ -72,11 +79,27 @@ async function ragAnswer(
       top_k: 8,
     });
     matches = data ?? [];
+  } else if (
+    scopeContext.scope === 'selection' &&
+    scopeContext.courseId &&
+    scopeContext.lessonIds &&
+    scopeContext.lessonIds.length > 0
+  ) {
+    const { data } = await rpcClient.rpc('match_course_chunks', {
+      query_embedding: queryEmbedding,
+      course_id_filter: scopeContext.courseId,
+      top_k: 8,
+      lesson_ids_filter: scopeContext.lessonIds,
+    });
+    matches = data ?? [];
   }
 
   if (matches.length === 0) {
     return {
-      content: 'Det togs inte upp på den här lektionen.',
+      content:
+        scopeContext.scope === 'lesson'
+          ? 'Det togs inte upp på den här lektionen.'
+          : 'Det togs inte upp i lektionerna du valt.',
       sources: [],
       concepts: [],
     };
@@ -114,16 +137,28 @@ async function ragAnswer(
  */
 async function mockedAnswer(
   question: string,
-  scopeContext: { scope: ChatScope; lessonId: string | null; courseId: string | null },
+  scopeContext: ScopeContext,
 ): Promise<{ content: string; sources: ChatSource[]; concepts: string[] }> {
   const supabase = await createSupabaseServerClient();
 
-  // Försök hitta en lektion att referera till — antingen den aktuella
-  // (lesson-scope) eller en lektion i kursen (course-scope).
+  // Försök hitta en lektion att referera till — den aktuella (lesson-scope),
+  // en av de valda (selection-scope) eller en lektion i kursen (course-scope).
   let lessonId: string | null = scopeContext.lessonId;
   let lessonTitle: string | null = null;
 
-  if (!lessonId && scopeContext.courseId) {
+  if (!lessonId && scopeContext.scope === 'selection' && scopeContext.lessonIds?.length) {
+    const { data } = await supabase
+      .from('lessons')
+      .select('id, title')
+      .in('id', scopeContext.lessonIds)
+      .order('recorded_at', { ascending: false, nullsFirst: false })
+      .limit(1)
+      .maybeSingle();
+    if (data) {
+      lessonId = data.id;
+      lessonTitle = data.title;
+    }
+  } else if (!lessonId && scopeContext.courseId) {
     const { data } = await supabase
       .from('lessons')
       .select('id, title')
@@ -174,6 +209,7 @@ type StartChatInput = {
   scope: ChatScope;
   lessonId?: string;
   courseId?: string;
+  lessonIds?: string[];
   question: string;
 };
 
@@ -196,6 +232,7 @@ export async function startChat(input: StartChatInput) {
       scope: input.scope,
       lesson_id: input.lessonId ?? null,
       course_id: input.courseId ?? null,
+      lesson_ids: input.lessonIds ?? null,
       title: input.question.slice(0, 80),
     })
     .select('id')
@@ -211,10 +248,11 @@ export async function startChat(input: StartChatInput) {
     content: input.question,
   });
 
-  const scopeContext = {
+  const scopeContext: ScopeContext = {
     scope: input.scope,
     lessonId: input.lessonId ?? null,
     courseId: input.courseId ?? null,
+    lessonIds: input.lessonIds ?? null,
   };
   const answer =
     (await ragAnswer(input.question, scopeContext)) ??
@@ -255,7 +293,7 @@ export async function sendMessage(
   const supabase = await createSupabaseServerClient();
   const { data: chat } = await supabase
     .from('chats')
-    .select('id, scope, lesson_id, course_id')
+    .select('id, scope, lesson_id, course_id, lesson_ids')
     .eq('id', chatId)
     .maybeSingle();
 
@@ -265,10 +303,11 @@ export async function sendMessage(
     .from('chat_messages')
     .insert({ chat_id: chatId, role: 'user', content: question });
 
-  const scopeContext = {
+  const scopeContext: ScopeContext = {
     scope: chat.scope,
     lessonId: chat.lesson_id,
     courseId: chat.course_id,
+    lessonIds: chat.lesson_ids,
   };
   const answer =
     (await ragAnswer(question, scopeContext)) ??
@@ -332,6 +371,28 @@ export async function startCourseChat(formData: FormData): Promise<void> {
   if (!courseId || !question) return;
 
   const result = await startChat({ scope: 'course', courseId, question });
+  if (result.ok) {
+    redirect(`/${locale}/app/student/chat/${result.chatId}`);
+  }
+}
+
+/** Provplugg: starta en chat mot ett urval av lektioner i en kurs. */
+export async function startExamPrepChat(formData: FormData): Promise<void> {
+  const courseId = (formData.get('course_id') ?? '').toString();
+  const question = (formData.get('question') ?? '').toString().trim();
+  const locale = ((formData.get('locale') ?? 'sv').toString()) as 'sv' | 'en';
+  const lessonIds = formData
+    .getAll('lesson_ids')
+    .map((v) => v.toString())
+    .filter(Boolean);
+  if (!courseId || !question || lessonIds.length === 0) return;
+
+  const result = await startChat({
+    scope: 'selection',
+    courseId,
+    lessonIds,
+    question,
+  });
   if (result.ok) {
     redirect(`/${locale}/app/student/chat/${result.chatId}`);
   }

@@ -322,6 +322,7 @@ const en: Dictionary = {
         lessons: 'My lessons',
         chat: 'Ask Elevante',
         library: 'Library',
+        examPrep: 'Exam prep',
       },
       teacher: {
         overview: 'Overview',

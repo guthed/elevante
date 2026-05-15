@@ -242,9 +242,10 @@ export async function getUserChatHistory(): Promise<ChatHistoryRow[]> {
 export type ChatThread = {
   chat: {
     id: string;
-    scope: 'lesson' | 'course';
+    scope: 'lesson' | 'course' | 'selection';
     lesson_id: string | null;
     course_id: string | null;
+    lesson_ids: string[] | null;
     title: string | null;
   };
   messages: {
@@ -260,7 +261,7 @@ export async function getChatThread(chatId: string): Promise<ChatThread | null> 
   const supabase = await createSupabaseServerClient();
   const { data: chat } = await supabase
     .from('chats')
-    .select('id, scope, lesson_id, course_id, title')
+    .select('id, scope, lesson_id, course_id, lesson_ids, title')
     .eq('id', chatId)
     .maybeSingle();
   if (!chat) return null;
@@ -275,4 +276,64 @@ export async function getChatThread(chatId: string): Promise<ChatThread | null> 
     chat: chat as ChatThread['chat'],
     messages: (messages ?? []) as ChatThread['messages'],
   };
+}
+
+export type ProvpluggLesson = {
+  id: string;
+  title: string | null;
+  recordedAt: string | null;
+};
+
+export type ProvpluggCourse = {
+  id: string;
+  code: string;
+  name: string;
+  lessons: ProvpluggLesson[];
+};
+
+/**
+ * Kurser med sina färdigtranskriberade lektioner — underlag för Provplugg.
+ * Bara 'ready'-lektioner tas med: en lektion utan transkript har inga
+ * chunks att söka i, så det vore meningslöst att kunna välja den.
+ */
+export async function getStudentCoursesWithLessons(
+  studentId: string,
+): Promise<ProvpluggCourse[]> {
+  const supabase = await createSupabaseServerClient();
+  const classIds = await getStudentClassIds(studentId);
+  if (classIds.length === 0) return [];
+
+  type LessonJoin = {
+    id: string;
+    title: string | null;
+    recorded_at: string | null;
+    course_id: string;
+    courses: { id: string; code: string; name: string } | null;
+  };
+
+  const { data } = await supabase
+    .from('lessons')
+    .select('id, title, recorded_at, course_id, courses ( id, code, name )')
+    .in('class_id', classIds)
+    .eq('transcript_status', 'ready')
+    .order('recorded_at', { ascending: true, nullsFirst: false })
+    .limit(300);
+
+  const byCourse = new Map<string, ProvpluggCourse>();
+  for (const row of (data ?? []) as unknown as LessonJoin[]) {
+    const course = row.courses;
+    if (!course) continue;
+    let entry = byCourse.get(course.id);
+    if (!entry) {
+      entry = { id: course.id, code: course.code, name: course.name, lessons: [] };
+      byCourse.set(course.id, entry);
+    }
+    entry.lessons.push({
+      id: row.id,
+      title: row.title,
+      recordedAt: row.recorded_at,
+    });
+  }
+
+  return Array.from(byCourse.values()).filter((c) => c.lessons.length > 0);
 }
