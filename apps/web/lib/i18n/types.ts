@@ -11,6 +11,7 @@ export type Dictionary = {
   nav: {
     home: string;
     forSchools: string;
+    forTeachers: string;
     forStudents: string;
     pricing: string;
     about: string;

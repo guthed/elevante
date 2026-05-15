@@ -33,6 +33,7 @@ Elevante minns allt du lär dig i skolan — "Elevante remembers everything you 
 - Home: https://elevante.se/sv — company overview (Swedish)
 - Home (English): https://elevante.se/en
 - For schools: https://elevante.se/sv/for-skolor
+- For teachers: https://elevante.se/sv/for-larare
 - For students: https://elevante.se/sv/for-elever
 - Pricing: https://elevante.se/sv/priser
 - About: https://elevante.se/sv/om-oss

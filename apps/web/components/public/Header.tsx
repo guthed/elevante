@@ -15,6 +15,7 @@ export function Header({ locale, pathname, dict }: Props) {
   const nav = [
     { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/for-skolor`, label: dict.nav.forSchools },
+    { href: `${base}/for-larare`, label: dict.nav.forTeachers },
     { href: `${base}/for-elever`, label: dict.nav.forStudents },
     { href: `${base}/priser`, label: dict.nav.pricing },
     { href: `${base}/kontakt`, label: dict.nav.contact },
@@ -114,6 +115,7 @@ function MobileMenuPanel({
   const items = [
     { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/for-skolor`, label: dict.nav.forSchools },
+    { href: `${base}/for-larare`, label: dict.nav.forTeachers },
     { href: `${base}/for-elever`, label: dict.nav.forStudents },
     { href: `${base}/priser`, label: dict.nav.pricing },
     { href: `${base}/kontakt`, label: dict.nav.contact },

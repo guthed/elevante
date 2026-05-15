@@ -7,6 +7,7 @@ export const SITE_URL = (
 export const PAGE_PATHS = [
   '',
   '/for-skolor',
+  '/for-larare',
   '/for-elever',
   '/priser',
   '/om-oss',
