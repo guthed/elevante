@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition } from 'react';
 import { startExamPrepChat } from '@/app/actions/chat';
+import { createPracticeTest } from '@/app/actions/practice-test';
 import { Button } from '@/components/ui/Button';
 import { Field, Textarea } from '@/components/ui/Input';
 import type { Locale } from '@/lib/i18n/config';
@@ -46,9 +47,17 @@ export function ExamPrepPicker({ locale, courses }: Props) {
   }
 
   const selectedCount = lessons.filter((l) => selected.has(l.id)).length;
-  const canSubmit = selectedCount > 0 && question.trim().length > 0 && !pending;
+  const canTest = selectedCount > 0 && !pending;
+  const canChat = selectedCount > 0 && question.trim().length > 0 && !pending;
+  const estimatedQuestions = Math.min(12, Math.max(4, selectedCount * 2));
 
-  function handleSubmit(formData: FormData) {
+  function handleTest(formData: FormData) {
+    startTransition(() => {
+      createPracticeTest(formData);
+    });
+  }
+
+  function handleChat(formData: FormData) {
     startTransition(() => {
       startExamPrepChat(formData);
     });
@@ -63,7 +72,7 @@ export function ExamPrepPicker({ locale, courses }: Props) {
   }
 
   return (
-    <form action={handleSubmit} className="space-y-8">
+    <form className="space-y-8">
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="course_id" value={course?.id ?? ''} />
       {lessons
@@ -161,48 +170,89 @@ export function ExamPrepPicker({ locale, courses }: Props) {
         )}
       </div>
 
-      {/* Steg 3 — fråga */}
+      {/* Steg 3 — vad vill du göra */}
       <div>
         <p className="eyebrow mb-3">
-          {sv ? '3 · Vad vill du börja med?' : '3 · What do you want to start with?'}
+          {sv ? '3 · Vad vill du göra?' : '3 · What do you want to do?'}
         </p>
-        <Field
-          id="exam-prep-question"
-          label={
-            sv
-              ? 'Ställ en första fråga om de valda lektionerna'
-              : 'Ask a first question about the selected lessons'
-          }
-        >
-          <Textarea
-            id="exam-prep-question"
-            name="question"
-            rows={3}
-            required
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder={
-              sv
-                ? 'T.ex. Sammanfatta det viktigaste jag behöver kunna inför provet'
-                : 'E.g. Summarise the key things I need to know for the exam'
-            }
-          />
-        </Field>
-      </div>
 
-      <div className="flex items-center gap-4">
-        <Button type="submit" disabled={!canSubmit}>
-          {pending
-            ? sv
-              ? 'Startar…'
-              : 'Starting…'
-            : sv
-              ? `Starta provplugg (${selectedCount} ${selectedCount === 1 ? 'lektion' : 'lektioner'})`
-              : `Start exam prep (${selectedCount})`}
-        </Button>
+        {/* Testprov — primär väg */}
+        <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5">
+          <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
+            {sv ? 'Gör ett testprov' : 'Take a practice test'}
+          </h3>
+          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? `Elevante skapar ett övningsprov med ca ${estimatedQuestions} frågor — flerval, kortsvar och resonerande — utifrån de valda lektionerna. Du fyller i det här och får poäng och feedback.`
+              : `Elevante builds a practice test with about ${estimatedQuestions} questions — multiple choice, short answer and reasoning — from the selected lessons. Fill it in and get a score and feedback.`}
+          </p>
+          <div className="mt-4">
+            <Button type="submit" formAction={handleTest} disabled={!canTest}>
+              {pending
+                ? sv
+                  ? 'Skapar provet…'
+                  : 'Building the test…'
+                : sv
+                  ? `Skapa testprov (${selectedCount} ${selectedCount === 1 ? 'lektion' : 'lektioner'})`
+                  : `Create practice test (${selectedCount})`}
+            </Button>
+          </div>
+        </div>
+
+        {/* Chatt — sekundär väg */}
+        <div className="mt-4 rounded-[16px] border border-[var(--color-sand)] p-5">
+          <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
+            {sv ? 'Eller ställ en fråga' : 'Or ask a question'}
+          </h3>
+          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? 'Chatta fritt om de valda lektionerna — bra för att reda ut något du fastnat på.'
+              : 'Chat freely about the selected lessons — good for untangling something you got stuck on.'}
+          </p>
+          <div className="mt-3">
+            <Field
+              id="exam-prep-question"
+              label={
+                sv
+                  ? 'Ställ en första fråga om de valda lektionerna'
+                  : 'Ask a first question about the selected lessons'
+              }
+            >
+              <Textarea
+                id="exam-prep-question"
+                name="question"
+                rows={3}
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder={
+                  sv
+                    ? 'T.ex. Förklara skillnaden mellan näringskedja och näringsväv'
+                    : 'E.g. Explain the difference between a food chain and a food web'
+                }
+              />
+            </Field>
+            <div className="mt-3">
+              <Button
+                type="submit"
+                variant="secondary"
+                formAction={handleChat}
+                disabled={!canChat}
+              >
+                {pending
+                  ? sv
+                    ? 'Startar…'
+                    : 'Starting…'
+                  : sv
+                    ? 'Starta chatt'
+                    : 'Start chat'}
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {selectedCount === 0 ? (
-          <p className="text-[0.8125rem] text-[var(--color-ink-muted)]">
-            {sv ? 'Välj minst en lektion.' : 'Pick at least one lesson.'}
+          <p className="mt-3 text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {sv ? 'Välj minst en lektion ovan.' : 'Pick at least one lesson above.'}
           </p>
         ) : null}
       </div>

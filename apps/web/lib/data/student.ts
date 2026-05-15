@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { TranscriptStatus } from '@/lib/supabase/database';
+import type { TranscriptStatus, PracticeTest } from '@/lib/supabase/database';
 
 export type StudentLessonRow = {
   id: string;
@@ -336,4 +336,47 @@ export async function getStudentCoursesWithLessons(
   }
 
   return Array.from(byCourse.values()).filter((c) => c.lessons.length > 0);
+}
+
+export type PracticeTestWithMeta = {
+  test: PracticeTest;
+  courseName: string | null;
+  lessonTitles: Record<string, string>;
+};
+
+/** Hämtar ett testprov + kursnamn och lektionstitlar för visning. */
+export async function getPracticeTest(
+  testId: string,
+): Promise<PracticeTestWithMeta | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('practice_tests')
+    .select('*')
+    .eq('id', testId)
+    .maybeSingle();
+
+  const test = data as PracticeTest | null;
+  if (!test) return null;
+
+  const { data: course } = await supabase
+    .from('courses')
+    .select('name')
+    .eq('id', test.course_id)
+    .maybeSingle();
+
+  const { data: lessonRows } = await supabase
+    .from('lessons')
+    .select('id, title')
+    .in('id', test.lesson_ids);
+
+  const lessonTitles: Record<string, string> = {};
+  for (const row of (lessonRows ?? []) as { id: string; title: string | null }[]) {
+    if (row.title) lessonTitles[row.id] = row.title;
+  }
+
+  return {
+    test,
+    courseName: (course as { name: string } | null)?.name ?? null,
+    lessonTitles,
+  };
 }
