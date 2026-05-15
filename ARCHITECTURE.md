@@ -35,10 +35,10 @@ Allt bor i `public`-schemat. Migrationer i `supabase/migrations/`.
 | `class_members` | Elev × klass |
 | `course_teachers` | Lärare × kurs |
 | `timeslots` | Schema-rader (day_of_week + start/slut) |
-| `lessons` | recording-metadata, `transcript_status`, `audio_path`, `transcript_text`, `summary`, `suggested_questions`, `ai_generated_topic`, `concepts` |
+| `lessons` | recording-metadata, `transcript_status`, `audio_path`, `transcript_text`, `summary`, `suggested_questions`, `ai_generated_topic`, `concepts`, `is_synthetic` |
 | `materials` | Filer per lektion (lagras i Storage) |
 | `lesson_chunks` | pgvector 1024-dim embeddings för RAG |
-| `chats` | Chat-tråd-metadata, `scope` (lesson/course), `lesson_id`/`course_id` |
+| `chats` | Chat-tråd-metadata, `scope` (lesson/course/selection), `lesson_id`/`course_id`/`lesson_ids` |
 | `chat_messages` | Role (user/assistant), content, `sources jsonb`, `concepts jsonb` |
 | `lesson_views` | Telemetry per elev × lektion (view_count, first_viewed_at, last_viewed_at) |
 
@@ -54,10 +54,12 @@ Alla tabeller har RLS på. Helper-funktioner:
 - Admin skriver, lärare skriver sina egna lektioner.
 - `chats`/`chat_messages`: ägaren ser sina egna OCH lärare/admin i samma skola ser elev-chats (för insikt-vyn). Privacy-trade-off — kräver explicit samtycke vid pilot mot riktig skola (`20260515090200_teacher_chat_read_for_insight.sql`).
 
+`is_synthetic` på `lessons` märker demo-genererade lektioner (AI-skrivna transkript) så de kan filtreras bort innan en riktig pilotskola. `lesson_ids` på `chats` håller lektionsurvalet för en `selection`-chat (Provplugg).
+
 ### RPC
 
 - `match_lesson_chunks(query_embedding, lesson_id, top_k)` — cosine vector-search för chat på en lektion.
-- `match_course_chunks(query_embedding, course_id, top_k)` — cosine vector-search över alla lektioner i en kurs.
+- `match_course_chunks(query_embedding, course_id, top_k, lesson_ids_filter)` — cosine vector-search över en kurs. `lesson_ids_filter` (valfri, default null) begränsar sökningen till ett urval lektioner — används av Provplugg.
 - `track_lesson_view(lesson_id_arg)` — security definer, upsertar `lesson_views` (för heatmap-telemetry).
 
 ### Storage-buckets
@@ -105,6 +107,12 @@ REC → STOP → upload (m4a) → elevante-audio bucket
 ```
 
 Claude returnerar JSON som ibland wrapped i markdown-fences → strippas med regex innan parse.
+
+Om request-body innehåller `transcript_text` används det direkt — steg 1–2 (audio-download + Whisper) hoppas över och ingen GDPR-radering körs (ingen ljudfil finns). Används för att seeda demo-lektioner med färdiga transkript.
+
+### Webb-chat (RAG) — scopes
+
+En chat har ett `scope`: `lesson` (en lektion, `match_lesson_chunks`), `course` (hela kursen, `match_course_chunks`) eller `selection` (Provplugg — ett urval lektioner, `match_course_chunks` med `lesson_ids_filter`).
 
 ### Webb-chat (RAG)
 

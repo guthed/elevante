@@ -16,6 +16,27 @@ Format per entry:
 
 ---
 
+## [Demo-iteration — Provplugg, syntetiska lektioner, chat-källor] — 2026-05-15
+
+### Byggt
+- **Provplugg** (PR #12): ny chat-scope `selection` + `chats.lesson_ids`. Eleven kan välja ett urval av lektioner i en kurs och chatta riktat mot dem — t.ex. inför ett prov. Dedikerad sida `/app/student/provplugg` med `ExamPrepPicker` (kurs-pills → lektions-kryssrutor med "markera alla" → första fråga). `startExamPrepChat` Server Action. `match_course_chunks` fick ett valfritt `lesson_ids_filter` så vector-sökningen begränsas till urvalet. Chat-tråden visar "Provplugg · N lektioner". Ny nav-post i elevens sidebar.
+- **6 syntetiska Ekologi-lektioner** (PR #11): Ekologi-kursen är nu en fylld 8-lektioners kurs (2/vecka × 4 veckor) — 6 AI-genererade transkript + 2 äkta inspelningar sist (vecka 4). Migration `lessons.is_synthetic` märker demo-genererade lektioner. `transcribe-lesson` Edge Function tar nu valfritt `transcript_text` i body → hoppar över audio/Whisper, kör chunk → embed → AI-insikter. Transcript-källor versionshanterade i `scripts/synthetic-ekologi/`.
+- **Chat-citat-kort** (PR #10): de döda källpillarna (5 identiska lektionstitlar utan funktion, bara hover-tooltip) ersatta med citat-kort som visar faktiska transcript-utdrag (~180 tecken) som AI:n grundade svaret på. 2 kort default, "Visa fler källor (N)" expanderar resten.
+- **Sidebar aktiv-markering** (PR #9): nav-listan bröts ut till klient-komponenten `SidebarNav` som läser `usePathname()`. Tidigare fick Sidebar `currentPath` hårdkodat från role-layouten så bara Översikt kunde markeras aktiv.
+- **CHANGELOG.md + ARCHITECTURE.md** lades till i repot (PR #8) som speglar Notion-sidorna.
+
+### QA-fynd
+- zsh-arrayer är 1-indexerade → första seed-loopen lade fel transkript i fel lektionsrad. Fixat genom att nollställa raderna och köra om med en `while read`-loop över explicita fil↔id-par.
+- `ALTER TYPE ... ADD VALUE` kan inte användas i samma transaktion som värdet läggs till → enum-tillägget bröts ut till en egen migration separat från användningen.
+
+### Tekniska beslut
+- **`selection`-scope via `lesson_ids`-kolumn**, inte en join-tabell. Räcker för pilotskala, färre joins, ingen ny RLS-policy.
+- **`transcript_text`-läge i Edge Function** för demo-seedning — återanvänder chunk → embed → AI-insikter. Ingen GDPR-radering körs när ingen ljudfil finns.
+- **`is_synthetic`** märker demo-lektioner internt så de kan filtreras bort innan en riktig pilotskola. Hellre tydligt syntetiskt än låtsas-äkta — samma princip som Nacka-rensningen.
+- **Citat-kort visar transcript-utdrag**, inte lektionstitlar — källans värde är *var i materialet* svaret kom ifrån, inte vilken lektion (särskilt nu när en provplugg-chat spänner flera).
+
+---
+
 ## [Fas 8 — Dedikerat Supabase + skarp AI-pipeline + demo] — 2026-05-14
 
 ### Byggt
