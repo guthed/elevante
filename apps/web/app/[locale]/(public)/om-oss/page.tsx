@@ -49,6 +49,13 @@ export default async function AboutPage({ params }: Props) {
         : 'Went to Swedish gymnasium 2008–2011. Was one of those who constantly missed class.',
     },
     {
+      name: 'Stefan Pettersson Noord',
+      role: sv ? 'Grundare' : 'Founder',
+      bio: sv
+        ? 'Medgrundare av Elevante. Mer om Stefan inom kort.'
+        : 'Co-founder of Elevante. More about Stefan soon.',
+    },
+    {
       name: 'TBD',
       role: 'CTO',
       bio: sv
