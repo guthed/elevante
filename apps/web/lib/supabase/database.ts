@@ -195,6 +195,8 @@ export type PracticeTest = {
   submission: PracticeSubmission | null;
   score: number | null;
   max_score: number;
+  shared_with_teacher: boolean;
+  shared_at: string | null;
   created_at: string;
   submitted_at: string | null;
 };
@@ -209,6 +211,8 @@ type PracticeTestInsert = {
   submission?: PracticeSubmission | null;
   score?: number | null;
   max_score?: number;
+  shared_with_teacher?: boolean;
+  shared_at?: string | null;
   id?: string;
   created_at?: string;
   submitted_at?: string | null;

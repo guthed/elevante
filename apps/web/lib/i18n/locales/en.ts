@@ -329,6 +329,7 @@ const en: Dictionary = {
         classes: 'My classes',
         lessons: 'Lessons',
         materials: 'Materials',
+        sharedTests: 'Shared tests',
       },
       admin: {
         overview: 'Overview',

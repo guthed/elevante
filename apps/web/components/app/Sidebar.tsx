@@ -22,6 +22,7 @@ function itemsFor(role: Role, base: string, dict: Dictionary): NavItem[] {
       { href: `${base}/teacher`, label: dict.app.sidebar.teacher.overview },
       { href: `${base}/teacher/klasser`, label: dict.app.sidebar.teacher.classes },
       { href: `${base}/teacher/lektioner`, label: dict.app.sidebar.teacher.lessons },
+      { href: `${base}/teacher/prov`, label: dict.app.sidebar.teacher.sharedTests },
     ];
   }
   return [
