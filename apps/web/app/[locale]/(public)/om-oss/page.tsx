@@ -45,15 +45,15 @@ export default async function AboutPage({ params }: Props) {
       name: 'John Guthed',
       role: sv ? 'Grundare' : 'Founder',
       bio: sv
-        ? 'Gick i svenskt gymnasium 2008–2011. Var en av de som ständigt missade lektionerna.'
-        : 'Went to Swedish gymnasium 2008–2011. Was one of those who constantly missed class.',
+        ? 'John är entreprenör och konsult inom AI och datastrategi. Han har byggt bolagen We Are Allies och Avail Sthlm, där han hjälper företag att få ordning på sin data och använda den till bättre beslut. Han gick själv i svenskt gymnasium och var en av dem som ständigt missade lektionerna — Elevante är verktyget han önskar att han haft då.'
+        : 'John is an entrepreneur and consultant in AI and data strategy. He has built the companies We Are Allies and Avail Sthlm, where he helps businesses get their data in order and turn it into better decisions. He went to Swedish upper-secondary school himself and was one of those who constantly missed class — Elevante is the tool he wishes he had had back then.',
     },
     {
       name: 'Stefan Pettersson Noord',
       role: sv ? 'Grundare' : 'Founder',
       bio: sv
-        ? 'Medgrundare av Elevante. Mer om Stefan inom kort.'
-        : 'Co-founder of Elevante. More about Stefan soon.',
+        ? 'Stefan har drygt tre decennier i den digitala och kreativa branschen bakom sig. Han har grundat och lett bolag som Otto Stockholm Proximity och Klirr, varit Managing Director för Ogilvy Interactive Sweden, och driver idag innovationsbolaget The Innovation Chapel. Han startade Elevante för att rikta den erfarenheten mot något som verkligen betyder något — att ge varje elev samma chans att förstå.'
+        : 'Stefan brings more than three decades in the digital and creative industry. He has founded and led companies such as Otto Stockholm Proximity and Klirr, served as Managing Director of Ogilvy Interactive Sweden, and today runs the innovation company The Innovation Chapel. He started Elevante to point that experience at something that genuinely matters — giving every student the same chance to understand.',
     },
     {
       name: 'TBD',
