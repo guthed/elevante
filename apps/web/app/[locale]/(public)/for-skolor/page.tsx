@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
+import { Faq, type FaqItem } from '@/components/public/Faq';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -28,6 +29,92 @@ export default async function ForSchoolsPage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
   const sv = locale === 'sv';
+
+  const faqs: FaqItem[] = sv
+    ? [
+        {
+          q: 'Hur lång tid tar det att införa Elevante på en skola?',
+          a: 'Elevante är byggt för att kunna införas över en eftermiddag. Det finns ingen hårdvara att beställa och ingen installation som kräver IT-avdelningen. När GDPR-avtalet är påskrivet och vi fått tillgång till schemat kan lärarna börja spela in nästa dag.',
+        },
+        {
+          q: 'Behöver vi köpa in hårdvara eller utrustning?',
+          a: 'Nej. Elevante använder den mobiltelefon läraren redan har. Det finns inga mikrofoner att montera, ingen utrustning i klassrummet och inga licenser att administrera per dator.',
+        },
+        {
+          q: 'Hur hanterar Elevante GDPR och elevernas personuppgifter?',
+          a: 'All persondata behandlas inom EU och vi skriver ett personuppgiftsbiträdesavtal med skolan innan första uppladdningen. Råljudet raderas så fort transkriberingen är klar, så det enda som sparas är text. Vi har också ett samtyckesflöde för minderåriga inbyggt från start.',
+        },
+        {
+          q: 'Var lagras lektionsljudet och transkriberingarna?',
+          a: 'Lektionsljud och transkriberingar lagras i Stockholm, på Supabase EU och AWS Stockholm. Inget av det lämnar EU. Råljudet finns bara kvar tills transkriberingen är klar — sedan raderas det automatiskt.',
+        },
+        {
+          q: 'Vad krävs av lärarna rent praktiskt?',
+          a: 'Läraren laddar ner appen och trycker på REC när lektionen börjar. Schemat hämtas automatiskt, så läraren behöver inte tagga eller namnge lektioner. Det är som mest två tryck per lektion, och inget efterarbete.',
+        },
+        {
+          q: 'Hur ser skolledningen att Elevante faktiskt används?',
+          a: 'Skolan får en adminvy med statistik per kurs och klass. Där ser ni hur många lektioner som spelats in, hur mycket eleverna frågar och vilka kurser som används mest. Det gör att ni kan se var stödet behövs innan provresultaten kommer.',
+        },
+        {
+          q: 'Tränar ni AI-modeller på våra elevers data?',
+          a: 'Nej, aldrig. Elevernas röster och transkriberingar används bara för att svara den enskilda eleven om den enskilda lektionen. Vi tränar inga modeller på elevdata, och vår AI-leverantör Anthropic gör det inte heller.',
+        },
+        {
+          q: 'Vad händer med vår data om vi avslutar avtalet?',
+          a: 'Om ni avslutar avtalet exporterar vi all er data till er och raderar våra kopior inom 30 dagar. Det finns ingen inlåsning — datan tillhör skolan, inte oss.',
+        },
+        {
+          q: 'Passar Elevante en enskild skola eller bara kommuner?',
+          a: 'Båda. Priset och produkten är desamma oavsett om ni är en fristående skola eller en kommun med många skolor. Det finns ingen minimigräns, och ni kan börja med en klass på pilot innan ni rullar ut det brett.',
+        },
+        {
+          q: 'Hur skiljer sig Elevante från en vanlig lärplattform?',
+          a: 'En lärplattform är till för att administrera kurser, uppgifter och betyg. Elevante gör något annat: det bevarar själva lektionen så att eleven kan fråga om den efteråt. Elevante ersätter inte er lärplattform — det fyller gapet den lämnar när lektionen är slut.',
+        },
+      ]
+    : [
+        {
+          q: 'How long does it take to roll out Elevante at a school?',
+          a: 'Elevante is built to be rolled out over a single afternoon. There is no hardware to order and no installation that needs the IT department. Once the GDPR agreement is signed and we have access to the schedule, teachers can start recording the next day.',
+        },
+        {
+          q: 'Do we need to buy hardware or equipment?',
+          a: 'No. Elevante uses the mobile phone the teacher already has. There are no microphones to mount, no equipment in the classroom and no per-computer licences to administer.',
+        },
+        {
+          q: 'How does Elevante handle GDPR and student personal data?',
+          a: 'All personal data is processed inside the EU, and we sign a data processing agreement with the school before the first upload. Raw audio is deleted as soon as transcription is finished, so the only thing kept is text. We also have a consent flow for minors built in from the start.',
+        },
+        {
+          q: 'Where are lesson audio and transcripts stored?',
+          a: 'Lesson audio and transcripts are stored in Stockholm, on Supabase EU and AWS Stockholm. None of it leaves the EU. Raw audio only exists until transcription is done — then it is deleted automatically.',
+        },
+        {
+          q: 'What does Elevante require from teachers in practice?',
+          a: 'The teacher downloads the app and presses REC when the lesson starts. The schedule loads automatically, so the teacher does not need to tag or name lessons. It is at most two taps per lesson, with no follow-up work.',
+        },
+        {
+          q: 'How does school leadership see that Elevante is actually used?',
+          a: 'The school gets an admin view with statistics per course and class. There you can see how many lessons were recorded, how much students are asking and which courses are used most. That lets you see where support is needed before test results arrive.',
+        },
+        {
+          q: 'Do you train AI models on our students’ data?',
+          a: 'No, never. Student voices and transcripts are used only to answer that individual student about that individual lesson. We do not train any models on student data, and neither does our AI provider, Anthropic.',
+        },
+        {
+          q: 'What happens to our data if we end the agreement?',
+          a: 'If you end the agreement, we export all your data to you and delete our copies within 30 days. There is no lock-in — the data belongs to the school, not to us.',
+        },
+        {
+          q: 'Is Elevante for a single school or only for municipalities?',
+          a: 'Both. The price and the product are the same whether you are an independent school or a municipality with many schools. There is no minimum, and you can start with one class on a pilot before rolling it out widely.',
+        },
+        {
+          q: 'How is Elevante different from a regular learning platform?',
+          a: 'A learning platform exists to administer courses, assignments and grades. Elevante does something different: it preserves the lesson itself so students can ask about it afterwards. Elevante does not replace your learning platform — it fills the gap it leaves once the lesson is over.',
+        },
+      ];
 
   return (
     <>
@@ -238,6 +325,21 @@ export default async function ForSchoolsPage({ params }: Props) {
               </LinkButton>
             </div>
           </div>
+        </Container>
+      </section>
+
+      {/* FAQ — AEO-motorn */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
+        <Container width="content">
+          <Faq
+            heading={sv ? 'Frågor från skolledare' : 'Questions from school leaders'}
+            intro={
+              sv
+                ? 'Det skolledning och huvudmän oftast vill veta innan ett beslut.'
+                : 'What school leaders and operators most often want to know before a decision.'
+            }
+            items={faqs}
+          />
         </Container>
       </section>
 

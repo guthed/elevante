@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
+import { Faq, type FaqItem } from '@/components/public/Faq';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -27,6 +28,84 @@ export default async function ForStudentsPage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
   const sv = locale === 'sv';
+
+  const faqs: FaqItem[] = sv
+    ? [
+        {
+          q: 'Vad är Elevante?',
+          a: 'Elevante är ett verktyg som kommer ihåg dina lektioner åt dig. Läraren spelar in lektionen, och sedan kan du skriva frågor om den i en chat. Du får svar på det läraren faktiskt sa — och ser var i lektionen det sas.',
+        },
+        {
+          q: 'Är det fusk att använda Elevante?',
+          a: 'Nej. Elevante skriver inte dina inlämningsuppgifter och gör inte jobbet åt dig. Det förklarar vad läraren gick igenom, ungefär som om du frågade en klasskompis som var uppmärksam. Du lär dig fortfarande själv — du slipper bara gissa.',
+        },
+        {
+          q: 'Kan läraren se vad jag frågar Elevante?',
+          a: 'Nej. Dina chattar är privata. Läraren och skolan kan inte läsa vad du frågar om eller vad Elevante svarar. Det ska kännas tryggt att ställa även de frågor du inte vågar räcka upp handen för.',
+        },
+        {
+          q: 'Vad gör jag om jag missat en hel lektion?',
+          a: 'Då kan du fråga Elevante om hela lektionen. Be om en sammanfattning, eller fråga om en specifik sak du undrar över. Elevante svarar utifrån vad läraren sa, så du kommer ikapp utan att låna någons anteckningar.',
+        },
+        {
+          q: 'Kan jag använda Elevante när jag pluggar inför prov?',
+          a: 'Ja, det är då Elevante är som mest användbart. Du kan fråga om vad som helst från terminen och be Elevante förklara ett begrepp, sammanfatta ett kapitel eller ge dig en övningsfråga. Allt bygger på dina egna lektioner, inte på en lärobok.',
+        },
+        {
+          q: 'Vad händer om jag frågar om något som inte togs upp på lektionen?',
+          a: 'Då säger Elevante det rakt ut — "det togs inte upp på den här lektionen". Elevante hittar aldrig på ett svar bara för att låta hjälpsamt. Det är hela poängen: du kan lita på att svaret kommer från din lektion.',
+        },
+        {
+          q: 'Kostar Elevante något för mig som elev?',
+          a: 'Nej. Det är skolan som betalar för Elevante. För dig som elev är det gratis, och det finns inga gränser för hur mycket du får fråga.',
+        },
+        {
+          q: 'Vilka ämnen funkar Elevante för?',
+          a: 'Elevante funkar för alla ämnen där läraren pratar — matte, historia, samhällskunskap, naturkunskap, språk och mer. Så länge läraren spelar in lektionen kan du fråga om den efteråt.',
+        },
+        {
+          q: 'Hur kommer jag igång med Elevante?',
+          a: 'Din skola behöver först börja använda Elevante. Om de inte gör det än kan du tipsa dem — skicka ett mail eller be din lärare att höra av sig till oss. Vi kontaktar skolan inom en arbetsdag.',
+        },
+      ]
+    : [
+        {
+          q: 'What is Elevante?',
+          a: 'Elevante is a tool that remembers your lessons for you. The teacher records the lesson, and then you can type questions about it in a chat. You get answers based on what the teacher actually said — and you see where in the lesson it was said.',
+        },
+        {
+          q: 'Is it cheating to use Elevante?',
+          a: 'No. Elevante does not write your assignments and does not do the work for you. It explains what the teacher covered, much like asking a classmate who was paying attention. You still learn it yourself — you just don\'t have to guess.',
+        },
+        {
+          q: 'Can the teacher see what I ask Elevante?',
+          a: 'No. Your chats are private. The teacher and the school cannot read what you ask or what Elevante answers. It should feel safe to ask even the questions you wouldn\'t raise your hand for.',
+        },
+        {
+          q: 'What do I do if I missed a whole lesson?',
+          a: 'Then you can ask Elevante about the whole lesson. Ask for a summary, or ask about a specific thing you\'re unsure of. Elevante answers from what the teacher said, so you catch up without borrowing anyone\'s notes.',
+        },
+        {
+          q: 'Can I use Elevante when studying for a test?',
+          a: 'Yes — that\'s when Elevante is most useful. You can ask about anything from the term and have Elevante explain a concept, summarise a chapter or give you a practice question. It\'s all based on your own lessons, not on a textbook.',
+        },
+        {
+          q: 'What happens if I ask about something that wasn\'t covered in class?',
+          a: 'Then Elevante says so plainly — "that wasn\'t covered in this lesson". Elevante never makes up an answer just to sound helpful. That\'s the whole point: you can trust that the answer comes from your lesson.',
+        },
+        {
+          q: 'Does Elevante cost anything for me as a student?',
+          a: 'No. The school pays for Elevante. For you as a student it is free, and there is no limit on how much you can ask.',
+        },
+        {
+          q: 'Which subjects does Elevante work for?',
+          a: 'Elevante works for any subject where the teacher talks — maths, history, social studies, science, languages and more. As long as the teacher records the lesson, you can ask about it afterwards.',
+        },
+        {
+          q: 'How do I get started with Elevante?',
+          a: 'Your school needs to start using Elevante first. If they don\'t yet, you can tip them off — send an email or ask your teacher to get in touch with us. We contact the school within one business day.',
+        },
+      ];
 
   return (
     <>
@@ -137,6 +216,21 @@ export default async function ForStudentsPage({ params }: Props) {
               }
             />
           </ul>
+        </Container>
+      </section>
+
+      {/* FAQ — AEO-motorn */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
+        <Container width="content">
+          <Faq
+            heading={sv ? 'Frågor från elever' : 'Questions from students'}
+            intro={
+              sv
+                ? 'Det elever oftast undrar innan de börjar använda Elevante.'
+                : 'What students most often wonder before they start using Elevante.'
+            }
+            items={faqs}
+          />
         </Container>
       </section>
 
