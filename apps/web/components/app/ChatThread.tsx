@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { sendMessage, type SendMessageState } from '@/app/actions/chat';
@@ -8,14 +8,20 @@ import { Textarea } from '@/components/ui/Input';
 import type { Dictionary } from '@/lib/i18n/types';
 
 // Editorial Calm — Stitch screen 03 (chat active)
-// Användar-meddelande = ink-bubbla höger. AI-svar = text på canvas (ingen bubbla),
-// med SourcePills under svaret. Inspirerad av Claude.ai men varmare.
+// Användar-meddelande = ink-bubbla höger. AI-svar = text på canvas (ingen bubbla).
+// Under svaret: citat-kort med faktiska utdrag ur transcripten, inte döda pillar.
+
+type Source = {
+  lesson_id: string;
+  lesson_title: string | null;
+  excerpt: string;
+};
 
 type Message = {
   id: string;
   role: 'user' | 'assistant';
   content: string;
-  sources: { lesson_id: string; lesson_title: string | null; excerpt: string }[];
+  sources: Source[];
   created_at: string;
 };
 
@@ -178,21 +184,72 @@ function Message({
         </ReactMarkdown>
       </div>
       {message.sources && message.sources.length > 0 ? (
-        <div className="mt-5 flex flex-wrap gap-2">
-          {message.sources.map((source, idx) => (
-            <span
-              key={`${source.lesson_id}-${idx}`}
-              className="source-pill"
-              title={source.excerpt}
-            >
-              <span className="status-dot status-dot--sage" />
-              <span className="font-medium">
-                {source.lesson_title ?? labels.sourceFromLesson}
-              </span>
-            </span>
-          ))}
-        </div>
+        <MessageSources sources={message.sources} labels={labels} />
       ) : null}
     </article>
   );
+}
+
+function MessageSources({
+  sources,
+  labels,
+}: {
+  sources: Source[];
+  labels: Props['labels'];
+}) {
+  const unique = dedupeSources(sources);
+  const [expanded, setExpanded] = useState(false);
+  const initial = 2;
+  const visible = expanded ? unique : unique.slice(0, initial);
+  const hidden = unique.length - initial;
+
+  return (
+    <div className="mt-5 space-y-2">
+      <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+        {labels.sourcesHeading}
+      </p>
+      <ul className="space-y-2">
+        {visible.map((source, idx) => (
+          <li
+            key={`${source.lesson_id}-${idx}`}
+            className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface)] px-4 py-3"
+          >
+            <p className="mb-1 text-[0.75rem] text-[var(--color-ink-muted)]">
+              {source.lesson_title ?? labels.sourceFromLesson}
+            </p>
+            <p className="text-[0.875rem] italic leading-relaxed text-[var(--color-ink-secondary)]">
+              &ldquo;{truncate(source.excerpt, 180)}&rdquo;
+            </p>
+          </li>
+        ))}
+      </ul>
+      {hidden > 0 ? (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="text-[0.8125rem] text-[var(--color-ink-secondary)] underline-offset-2 hover:text-[var(--color-ink)] hover:underline"
+        >
+          {expanded ? labels.sourcesShowLess : `${labels.sourcesShowMore} (${hidden})`}
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+function dedupeSources(sources: Source[]): Source[] {
+  const seen = new Set<string>();
+  const out: Source[] = [];
+  for (const s of sources) {
+    const key = s.excerpt.slice(0, 60).toLowerCase().replace(/\s+/g, ' ').trim();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(s);
+  }
+  return out;
+}
+
+function truncate(text: string, max: number): string {
+  const clean = text.trim().replace(/\s+/g, ' ');
+  if (clean.length <= max) return clean;
+  return clean.slice(0, max).replace(/[\s,.;:!?-]+$/, '') + '…';
 }

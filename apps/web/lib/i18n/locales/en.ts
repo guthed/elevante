@@ -387,6 +387,8 @@ const en: Dictionary = {
           guardrailNotice: "That wasn't covered in this lesson.",
           sourcesHeading: 'Sources',
           sourceFromLesson: 'From the lesson',
+          sourcesShowMore: 'Show more sources',
+          sourcesShowLess: 'Show fewer',
           mockNotice:
             'Mocked answer — real RAG turns on in Phase 6 once the KB-Whisper pipeline is live.',
           newChat: 'New chat',
