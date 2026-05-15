@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { TranscriptStatus } from '@/lib/supabase/database';
+import type { TranscriptStatus, PracticeTest } from '@/lib/supabase/database';
 
 export type TeacherClassRow = {
   id: string;
@@ -525,4 +525,59 @@ export async function getLessonStatusCounts(
     if (s in counts) counts[s] += 1;
   }
   return counts;
+}
+
+export type SharedTestRow = {
+  id: string;
+  studentName: string | null;
+  courseName: string | null;
+  lessonCount: number;
+  score: number;
+  maxScore: number;
+  sharedAt: string | null;
+};
+
+/**
+ * Testprov som elever aktivt delat med läraren. RLS säkerställer att bara
+ * delade prov i lärarens skola syns — ingen extra filtrering behövs här.
+ */
+export async function getSharedPracticeTests(): Promise<SharedTestRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('practice_tests')
+    .select('*')
+    .eq('shared_with_teacher', true)
+    .order('shared_at', { ascending: false, nullsFirst: false })
+    .limit(200);
+
+  const tests = (data ?? []) as PracticeTest[];
+  if (tests.length === 0) return [];
+
+  const studentIds = Array.from(new Set(tests.map((t) => t.user_id)));
+  const courseIds = Array.from(new Set(tests.map((t) => t.course_id)));
+
+  const [{ data: students }, { data: courses }] = await Promise.all([
+    supabase.from('profiles').select('id, full_name').in('id', studentIds),
+    supabase.from('courses').select('id, name').in('id', courseIds),
+  ]);
+
+  const nameById = new Map(
+    ((students ?? []) as { id: string; full_name: string | null }[]).map((s) => [
+      s.id,
+      s.full_name,
+    ]),
+  );
+  const courseById = new Map(
+    ((courses ?? []) as { id: string; name: string }[]).map((c) => [c.id, c.name]),
+  );
+
+  return tests.map((t) => ({
+    id: t.id,
+    studentName: nameById.get(t.user_id) ?? null,
+    courseName: courseById.get(t.course_id) ?? null,
+    lessonCount: t.lesson_ids.length,
+    score: t.score ?? 0,
+    maxScore: t.max_score,
+    sharedAt: t.shared_at,
+  }));
 }

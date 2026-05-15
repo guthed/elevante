@@ -176,6 +176,7 @@ export type Dictionary = {
         classes: string;
         lessons: string;
         materials: string;
+        sharedTests: string;
       };
       admin: {
         overview: string;
