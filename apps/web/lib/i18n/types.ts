@@ -230,6 +230,8 @@ export type Dictionary = {
           guardrailNotice: string;
           sourcesHeading: string;
           sourceFromLesson: string;
+          sourcesShowMore: string;
+          sourcesShowLess: string;
           mockNotice: string;
           newChat: string;
           historyHeading: string;

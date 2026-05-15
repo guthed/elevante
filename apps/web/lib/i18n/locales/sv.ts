@@ -387,6 +387,8 @@ const sv: Dictionary = {
           guardrailNotice: 'Det togs inte upp på den här lektionen.',
           sourcesHeading: 'Källor',
           sourceFromLesson: 'Från lektionen',
+          sourcesShowMore: 'Visa fler källor',
+          sourcesShowLess: 'Visa färre',
           mockNotice:
             'Mockat svar — riktig RAG aktiveras i Fas 6 när KB-Whisper-pipelinen är på plats.',
           newChat: 'Ny chat',
