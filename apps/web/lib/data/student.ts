@@ -341,10 +341,11 @@ export async function getStudentCoursesWithLessons(
 export type PracticeTestWithMeta = {
   test: PracticeTest;
   courseName: string | null;
+  studentName: string | null;
   lessonTitles: Record<string, string>;
 };
 
-/** Hämtar ett testprov + kursnamn och lektionstitlar för visning. */
+/** Hämtar ett testprov + kursnamn, elevnamn och lektionstitlar för visning. */
 export async function getPracticeTest(
   testId: string,
 ): Promise<PracticeTestWithMeta | null> {
@@ -364,6 +365,12 @@ export async function getPracticeTest(
     .eq('id', test.course_id)
     .maybeSingle();
 
+  const { data: student } = await supabase
+    .from('profiles')
+    .select('full_name')
+    .eq('id', test.user_id)
+    .maybeSingle();
+
   const { data: lessonRows } = await supabase
     .from('lessons')
     .select('id, title')
@@ -377,6 +384,7 @@ export async function getPracticeTest(
   return {
     test,
     courseName: (course as { name: string } | null)?.name ?? null,
+    studentName: (student as { full_name: string | null } | null)?.full_name ?? null,
     lessonTitles,
   };
 }

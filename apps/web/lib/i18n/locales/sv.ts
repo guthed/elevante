@@ -329,6 +329,7 @@ const sv: Dictionary = {
         classes: 'Mina klasser',
         lessons: 'Lektioner',
         materials: 'Material',
+        sharedTests: 'Delade prov',
       },
       admin: {
         overview: 'Översikt',

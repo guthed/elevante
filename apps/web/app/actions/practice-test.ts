@@ -194,3 +194,24 @@ export async function submitPracticeTest(
   revalidatePath(`/en/app/student/provplugg/${testId}`);
   return { ok: true };
 }
+
+/** Eleven delar ett rättat prov med sin lärare. */
+export async function sharePracticeTest(
+  testId: string,
+): Promise<{ ok: boolean }> {
+  const profile = await getCurrentProfile();
+  if (!profile) return { ok: false };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from('practice_tests')
+    .update({ shared_with_teacher: true, shared_at: new Date().toISOString() })
+    .eq('id', testId)
+    .eq('user_id', profile.id);
+
+  if (error) return { ok: false };
+
+  revalidatePath(`/sv/app/student/provplugg/${testId}`);
+  revalidatePath(`/en/app/student/provplugg/${testId}`);
+  return { ok: true };
+}
