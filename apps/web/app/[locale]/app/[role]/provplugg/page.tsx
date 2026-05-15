@@ -6,6 +6,10 @@ import { getCurrentProfile } from '@/lib/supabase/server';
 import { getStudentCoursesWithLessons } from '@/lib/data/student';
 import { ExamPrepPicker } from './ExamPrepPicker';
 
+// Provgenereringen anropar Claude med flera lektioners transkript — det tar
+// längre tid än en vanlig chat, så Server Action behöver en högre timeout.
+export const maxDuration = 60;
+
 type Props = {
   params: Promise<{ locale: string; role: string }>;
 };

@@ -153,6 +153,67 @@ type LessonViewInsert = {
   view_count?: number;
 };
 
+export type PracticeQuestionType =
+  | 'multiple_choice'
+  | 'short_answer'
+  | 'open'
+  | 'reasoning';
+
+export type PracticeQuestion = {
+  id: string;
+  type: PracticeQuestionType;
+  prompt: string;
+  lesson_id: string;
+  options: string[] | null;
+  correct_index: number | null;
+  answer_key: string;
+  max_points: number;
+};
+
+export type PracticeAnswer = {
+  question_id: string;
+  answer: string;
+  points: number;
+  max_points: number;
+  correct: boolean | null;
+  feedback: string;
+};
+
+export type PracticeSubmission = {
+  answers: PracticeAnswer[];
+  overall_feedback: string;
+};
+
+export type PracticeTest = {
+  id: string;
+  school_id: string;
+  user_id: string;
+  course_id: string;
+  lesson_ids: string[];
+  status: 'generated' | 'graded';
+  questions: PracticeQuestion[];
+  submission: PracticeSubmission | null;
+  score: number | null;
+  max_score: number;
+  created_at: string;
+  submitted_at: string | null;
+};
+
+type PracticeTestInsert = {
+  school_id: string;
+  user_id: string;
+  course_id: string;
+  lesson_ids: string[];
+  status?: 'generated' | 'graded';
+  questions?: PracticeQuestion[];
+  submission?: PracticeSubmission | null;
+  score?: number | null;
+  max_score?: number;
+  id?: string;
+  created_at?: string;
+  submitted_at?: string | null;
+};
+
 type TableDef<R, I> = {
   Row: R;
   Insert: I;
@@ -276,6 +337,7 @@ export type Database = {
       chats: TableDef<Chat, ChatInsert>;
       chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
       lesson_views: TableDef<LessonView, LessonViewInsert>;
+      practice_tests: TableDef<PracticeTest, PracticeTestInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
