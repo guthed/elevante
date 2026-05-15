@@ -86,6 +86,17 @@ export default async function StudentChatThreadPage({ params }: Props) {
       {/* Chat main — 9 cols, max-w-2xl centered */}
       <main className="md:col-span-9">
         <div className="mx-auto max-w-3xl px-2">
+          {thread.chat.scope === 'selection' && thread.chat.lesson_ids ? (
+            <p className="mb-3 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+              {sv
+                ? `Provplugg · ${thread.chat.lesson_ids.length} ${
+                    thread.chat.lesson_ids.length === 1 ? 'lektion' : 'lektioner'
+                  }`
+                : `Exam prep · ${thread.chat.lesson_ids.length} ${
+                    thread.chat.lesson_ids.length === 1 ? 'lesson' : 'lessons'
+                  }`}
+            </p>
+          ) : null}
           {thread.chat.title ? (
             <p className="mb-8 inline-flex items-center gap-2 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-3 py-1.5 text-[0.8125rem] text-[var(--color-ink-secondary)]">
               {thread.chat.title}

@@ -106,7 +106,7 @@ export type Material = {
 };
 
 export type ChatRole = 'user' | 'assistant';
-export type ChatScope = 'lesson' | 'course';
+export type ChatScope = 'lesson' | 'course' | 'selection';
 
 export type Chat = {
   id: string;
@@ -115,6 +115,7 @@ export type Chat = {
   scope: ChatScope;
   course_id: string | null;
   lesson_id: string | null;
+  lesson_ids: string[] | null;
   title: string | null;
   created_at: string;
   updated_at: string;
@@ -245,6 +246,7 @@ type ChatInsert = {
   scope: ChatScope;
   course_id?: string | null;
   lesson_id?: string | null;
+  lesson_ids?: string[] | null;
   title?: string | null;
   id?: string;
   created_at?: string;

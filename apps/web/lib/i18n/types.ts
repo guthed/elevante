@@ -169,6 +169,7 @@ export type Dictionary = {
         lessons: string;
         chat: string;
         library: string;
+        examPrep: string;
       };
       teacher: {
         overview: string;
