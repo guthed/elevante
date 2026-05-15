@@ -1,5 +1,9 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { TranscriptStatus, PracticeTest } from '@/lib/supabase/database';
+import type {
+  TranscriptStatus,
+  PracticeTest,
+  LearnerProfile,
+} from '@/lib/supabase/database';
 
 export type StudentLessonRow = {
   id: string;
@@ -387,4 +391,17 @@ export async function getPracticeTest(
     studentName: (student as { full_name: string | null } | null)?.full_name ?? null,
     lessonTitles,
   };
+}
+
+/** Elevens lärprofil. Null om eleven inte gjort något prov ännu. */
+export async function getLearnerProfile(
+  userId: string,
+): Promise<LearnerProfile | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('learner_profiles')
+    .select('*')
+    .eq('profile_id', userId)
+    .maybeSingle();
+  return (data as LearnerProfile | null) ?? null;
 }

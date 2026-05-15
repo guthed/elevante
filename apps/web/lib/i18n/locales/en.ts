@@ -323,6 +323,7 @@ const en: Dictionary = {
         chat: 'Ask Elevante',
         library: 'Library',
         examPrep: 'Exam prep',
+        learnerProfile: 'Your learner profile',
       },
       teacher: {
         overview: 'Overview',

@@ -18,11 +18,15 @@ function getClient(): Anthropic | null {
   return cachedClient;
 }
 
-function buildSystemPrompt(lessonConcepts: string[]): string {
+function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): string {
   const conceptsBlock =
     lessonConcepts.length > 0
       ? `\n\nHär är listan över koncept som behandlas i lektionen:\n${lessonConcepts.map((c) => `- ${c}`).join('\n')}\n\nFörutom att svara på frågan, identifiera vilka 1-3 av dessa koncept som frågan tangerar mest. Om frågan inte passar något koncept, returnera en tom array.`
       : '';
+
+  const personaBlock = personaSummary
+    ? `\n\nDu känner den här elevens lärprofil: "${personaSummary}" — anpassa hur du förklarar därefter (t.ex. mer struktur om eleven brukar tappa fokus, konkreta exempel om eleven fastnar på abstrakt teori). Ändra aldrig fakta — bara hur du lägger fram dem.`
+    : '';
 
   return `Du är Elevante, en AI-assistent som hjälper gymnasieelever att förstå sina lektioner.
 
@@ -34,7 +38,7 @@ REGLER (måste följas exakt):
 5. Var rak och klar — undvik fyllmedel som "Bra fråga!" eller "Som sagt".
 6. När du citerar ett utdrag, hänvisa till det med lektionens titel.
 
-Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}
+Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}${personaBlock}
 
 Svara ENDAST med valid JSON i detta format, ingen annan text:
 {"answer": "<ditt svar på elevens fråga>", "concepts": ["<koncept 1>", "<koncept 2>"]}`;
@@ -62,6 +66,7 @@ export async function answerWithRag(
   question: string,
   chunks: RagChunk[],
   lessonConcepts: string[] = [],
+  personaSummary?: string,
 ): Promise<RagAnswer | null> {
   const client = getClient();
   if (!client) return null;
@@ -86,7 +91,7 @@ export async function answerWithRag(
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: 1024,
-    system: buildSystemPrompt(lessonConcepts),
+    system: buildSystemPrompt(lessonConcepts, personaSummary),
     messages: [{ role: 'user', content: userPrompt }],
   });
 
@@ -369,10 +374,12 @@ Använd svenska. Svara ENDAST med valid JSON, ingen annan text:
 
 /**
  * Rättar de frågor som inte är flerval (flerval rättas deterministiskt i kod).
- * Returnerar null om Anthropic inte är konfigurerat.
+ * personaSummary, om satt, gör feedbacken personanpassad efter elevens
+ * lärprofil. Returnerar null om Anthropic inte är konfigurerat.
  */
 export async function gradePracticeTest(
   items: PracticeGradeInput[],
+  personaSummary?: string,
 ): Promise<PracticeGradeResult | null> {
   const client = getClient();
   if (!client || items.length === 0) return null;
@@ -384,10 +391,14 @@ export async function gradePracticeTest(
     )
     .join('\n\n---\n\n');
 
+  const system = personaSummary
+    ? `${TEST_GRADING_SYSTEM_PROMPT}\n\nDu känner sedan tidigare den här elevens lärprofil: "${personaSummary}" — vinkla feedbacken så den hjälper eleven framåt utifrån just det, men var fortfarande rättvis med poängen.`
+    : TEST_GRADING_SYSTEM_PROMPT;
+
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: 3072,
-    system: TEST_GRADING_SYSTEM_PROMPT,
+    system,
     messages: [{ role: 'user', content: block }],
   });
 
@@ -414,5 +425,88 @@ export async function gradePracticeTest(
     grades,
     overall_feedback:
       typeof parsed.overall_feedback === 'string' ? parsed.overall_feedback : '',
+  };
+}
+
+export type LearnerProfileTestInput = {
+  questionType: string;
+  points: number;
+  maxPoints: number;
+  studentAnswer: string;
+  feedback: string;
+};
+
+export type LearnerProfileResult = {
+  strengths: string[];
+  growth_areas: string[];
+  summary: string;
+};
+
+const LEARNER_PROFILE_SYSTEM_PROMPT = `Du är en pedagogisk analytiker. Du får data från en elevs rättade övningsprov — för varje fråga: frågetyp, poäng, elevens svar och lärarens feedback.
+
+Din uppgift är att se mönster i HUR eleven lär sig och uttrycker sig — inte VAD de kan för fakta. Exempel på sådana mönster:
+- Stark på fakta och flervalsfrågor men tappar poäng på resonerande frågor.
+- Skriver genomgående för kort — svaren stämmer men utvecklas inte.
+- Skriver långt men tappar fokus och får inte fram kärnan.
+- Bra på att förklara begrepp men svag på att jämföra och dra slutsatser.
+- Använder rätt fackord / undviker fackord.
+
+Destillera:
+1. strengths: 2-4 konkreta styrkor i hur eleven arbetar.
+2. growth_areas: 2-4 konkreta utvecklingsområden — sådant eleven kan träna på, formulerat uppmuntrande.
+3. summary: 2-3 meningar som talar direkt till eleven ("du..."), varmt och ärligt, som sammanfattar hur de lär sig och vad som skulle lyfta deras resultat mest.
+
+REGLER:
+- Fokusera på lärande-mönster, inte på ämnesfakta.
+- Var konkret — "skriver ofta för kort" är bättre än "kan utvecklas".
+- Varje styrka/utvecklingsområde är en kort fras (max ~10 ord).
+- Döm aldrig eleven som person. Det handlar om hur de arbetar, inte vem de är.
+
+Svara ENDAST med valid JSON, ingen annan text:
+{"strengths": ["<...>"], "growth_areas": ["<...>"], "summary": "<...>"}`;
+
+/**
+ * Bygger en lärprofil av elevens rättade testprov — mönster i hur eleven
+ * lär sig och uttrycker sig. Returnerar null om Anthropic inte är konfigurerat.
+ */
+export async function buildLearnerProfile(
+  tests: LearnerProfileTestInput[][],
+): Promise<LearnerProfileResult | null> {
+  const client = getClient();
+  if (!client || tests.length === 0) return null;
+
+  const block = tests
+    .map((test, idx) => {
+      const rows = test
+        .map(
+          (q) =>
+            `  - [${q.questionType}] ${q.points}/${q.maxPoints} p\n    Elevsvar: ${q.studentAnswer.trim().slice(0, 400) || '(tomt)'}\n    Feedback: ${q.feedback.slice(0, 400)}`,
+        )
+        .join('\n');
+      return `Prov ${idx + 1}:\n${rows}`;
+    })
+    .join('\n\n');
+
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: LEARNER_PROFILE_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: block }],
+  });
+
+  let parsed: { strengths?: unknown; growth_areas?: unknown; summary?: unknown };
+  try {
+    parsed = JSON.parse(stripFences(textOf(response)));
+  } catch {
+    return null;
+  }
+
+  const toStringArray = (v: unknown): string[] =>
+    Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+
+  return {
+    strengths: toStringArray(parsed.strengths),
+    growth_areas: toStringArray(parsed.growth_areas),
+    summary: typeof parsed.summary === 'string' ? parsed.summary : '',
   };
 }

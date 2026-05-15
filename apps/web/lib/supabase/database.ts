@@ -218,6 +218,26 @@ type PracticeTestInsert = {
   submitted_at?: string | null;
 };
 
+export type LearnerProfile = {
+  profile_id: string;
+  school_id: string;
+  strengths: string[];
+  growth_areas: string[];
+  summary: string;
+  tests_analyzed: number;
+  updated_at: string;
+};
+
+type LearnerProfileInsert = {
+  profile_id: string;
+  school_id: string;
+  strengths?: string[];
+  growth_areas?: string[];
+  summary?: string;
+  tests_analyzed?: number;
+  updated_at?: string;
+};
+
 type TableDef<R, I> = {
   Row: R;
   Insert: I;
@@ -342,6 +362,7 @@ export type Database = {
       chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
       lesson_views: TableDef<LessonView, LessonViewInsert>;
       practice_tests: TableDef<PracticeTest, PracticeTestInsert>;
+      learner_profiles: TableDef<LearnerProfile, LearnerProfileInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat

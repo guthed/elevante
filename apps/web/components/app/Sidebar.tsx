@@ -15,6 +15,7 @@ function itemsFor(role: Role, base: string, dict: Dictionary): NavItem[] {
       { href: `${base}/student/bibliotek`, label: dict.app.sidebar.student.library },
       { href: `${base}/student/chat`, label: dict.app.sidebar.student.chat },
       { href: `${base}/student/provplugg`, label: dict.app.sidebar.student.examPrep },
+      { href: `${base}/student/profil`, label: dict.app.sidebar.student.learnerProfile },
     ];
   }
   if (role === 'teacher') {
