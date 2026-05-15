@@ -1,6 +1,6 @@
 # ARCHITECTURE — Elevante
 
-Senast uppdaterad: 2026-05-15
+Senast uppdaterad: 2026-05-15 (övningsprov + lärprofil)
 
 > Detta dokument speglar Notion-sidan **ARCHITECTURE** (`33e84c8f289e8191b9b1d2e35309da3f`).
 
@@ -41,6 +41,8 @@ Allt bor i `public`-schemat. Migrationer i `supabase/migrations/`.
 | `chats` | Chat-tråd-metadata, `scope` (lesson/course/selection), `lesson_id`/`course_id`/`lesson_ids` |
 | `chat_messages` | Role (user/assistant), content, `sources jsonb`, `concepts jsonb` |
 | `lesson_views` | Telemetry per elev × lektion (view_count, first_viewed_at, last_viewed_at) |
+| `practice_tests` | AI-genererade övningsprov — `questions`/`submission` jsonb, score, `shared_with_teacher` |
+| `learner_profiles` | Elevens lärprofil — `strengths`/`growth_areas` jsonb, `summary`. En rad per elev |
 
 ### RLS
 
@@ -55,6 +57,9 @@ Alla tabeller har RLS på. Helper-funktioner:
 - `chats`/`chat_messages`: ägaren ser sina egna OCH lärare/admin i samma skola ser elev-chats (för insikt-vyn). Privacy-trade-off — kräver explicit samtycke vid pilot mot riktig skola (`20260515090200_teacher_chat_read_for_insight.sql`).
 
 `is_synthetic` på `lessons` märker demo-genererade lektioner (AI-skrivna transkript) så de kan filtreras bort innan en riktig pilotskola. `lesson_ids` på `chats` håller lektionsurvalet för en `selection`-chat (Provplugg).
+
+- `practice_tests`: RLS owner-only — plus en policy som låter lärare/admin i samma skola läsa prov där eleven satt `shared_with_teacher`.
+- `learner_profiles`: RLS strikt owner-only — läraren har ingen åtkomst. En profil över en minderårigs styrkor/svagheter är känslig persondata (GDPR-uppgift finns i Notion).
 
 ### RPC
 
@@ -136,6 +141,22 @@ AGGREGERA per elev: total_questions, concept_question_counts {concept → count}
 SELECT lesson_views för att visa "har öppnat" vs "ej öppnat"
 RENDER InsightHeatmap: matris elev × koncept med siffror i celler
 ```
+
+### Övningsprov & lärprofil
+
+```
+Provplugg → createPracticeTest → Claude genererar prov från lektionernas
+            transkript → practice_tests (questions jsonb)
+Eleven fyller i → submitPracticeTest:
+   flerval rättas i kod, fritextsvar av Claude (gradePracticeTest)
+   → submission jsonb + score
+   → buildLearnerProfile analyserar elevens senaste prov → learner_profiles
+Eleven kan dela ett prov (shared_with_teacher) → läraren ser /teacher/prov
+```
+
+Lärprofilen (`learner_profiles`) matas in i `gradePracticeTest` och `answerWithRag`
+så test-feedback och chattsvar blir personanpassade. Loop: prov → mönster →
+bättre feedback nästa gång.
 
 ---
 

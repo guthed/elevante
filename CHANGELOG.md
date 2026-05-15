@@ -16,6 +16,23 @@ Format per entry:
 
 ---
 
+## [Övningsprov & lärprofil] — 2026-05-15
+
+### Byggt
+- **AI-genererat testprov** (PR #13): eleven genererar ett övningsprov från sitt lektionsurval i Provplugg — ~2 frågor per vald lektion (klampat 4–12), blandat flerval / kortsvar / öppna / resonerande, nivå Biologi 1 gymnasiet. Ny tabell `practice_tests` (frågor + inlämning som jsonb), RLS owner-only. `createPracticeTest` / `submitPracticeTest` Server Actions: flerval rättas deterministiskt i kod, fritextsvar av Claude mot facit. `TestRunner`-komponent + resultatvy med poäng, procent och per-fråga-feedback. `maxDuration=60` på provplugg-sidorna.
+- **Dela prov med läraren** (PR #15): `practice_tests.shared_with_teacher` + RLS-policy — lärare/admin i samma skola ser ett prov först när eleven aktivt delat det. "Dela med din lärare"-knapp i resultatvyn. Ny lärarvy `/teacher/prov` (lista) + `/teacher/prov/[id]` (helt rättat prov). `TestResult` bröts ut till en delad komponent.
+- **Lärprofil** (PR #16): `learner_profiles`-tabell, RLS — bara eleven själv. `buildLearnerProfile` analyserar elevens rättade prov (frågetyp, poäng, mönster i feedbacken) och destillerar styrkor, utvecklingsområden och en sammanfattning. Byggs om efter varje inlämnat prov. Matas in i test-rättning (`gradePracticeTest`) och chattsvar (`answerWithRag`) → personanpassad feedback. Elevsida `/student/profil`.
+
+### QA-fynd
+- PR #14 (dela prov) stängdes automatiskt av GitHub när dess bas-branch mergades — fick återskapas som PR #15 efter rebase på main.
+
+### Tekniska beslut
+- **Testet som en jsonb-rad** (frågor + inlämning), inte normaliserade tabeller — ett prov är en självständig enhet, inga joins.
+- **Eleven äger sina prov och sin profil**: prov delas bara aktivt, lärprofilen är osynlig för läraren. En profil över en minderårigs styrkor/svagheter är känslig persondata — GDPR-uppgift skapad i Notion inför riktig pilot.
+- **Persona-loopen**: prov rättas → mönster destilleras → nästa provs rättning + chattsvar anpassas. submitPracticeTest gör två AI-anrop (rättning + profilbygge), ryms inom maxDuration=60.
+
+---
+
 ## [Demo-iteration — Provplugg, syntetiska lektioner, chat-källor] — 2026-05-15
 
 ### Byggt
