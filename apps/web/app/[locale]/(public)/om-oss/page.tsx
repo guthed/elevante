@@ -45,8 +45,8 @@ export default async function AboutPage({ params }: Props) {
       name: 'John Guthed',
       role: sv ? 'Grundare' : 'Founder',
       bio: sv
-        ? 'John är entreprenör och konsult inom AI och datastrategi. Han har byggt bolagen We Are Allies och Avail Sthlm, där han hjälper företag att få ordning på sin data och använda den till bättre beslut. Han gick själv i svenskt gymnasium och var en av dem som ständigt missade lektionerna — Elevante är verktyget han önskar att han haft då.'
-        : 'John is an entrepreneur and consultant in AI and data strategy. He has built the companies We Are Allies and Avail Sthlm, where he helps businesses get their data in order and turn it into better decisions. He went to Swedish upper-secondary school himself and was one of those who constantly missed class — Elevante is the tool he wishes he had had back then.',
+        ? 'John är entreprenör och konsult inom AI och datastrategi och har byggt bolagen We Are Allies och Avail Sthlm. Hans yrkesliv handlar om att sortera information — att hjälpa företag få ordning på sin data, hitta mönstren och göra något användbart av dem. Han har aldrig tagit en anteckning i hela sitt liv; Elevante bygger på hans övertygelse att man inte ska behöva det — det som sägs ska fångas och struktureras automatiskt.'
+        : 'John is an entrepreneur and consultant in AI and data strategy, and has built the companies We Are Allies and Avail Sthlm. His working life is about sorting information — helping companies get their data in order, find the patterns and turn them into something useful. He has never taken a note in his life; Elevante is built on his conviction that you should not have to — what is said should be captured and structured automatically.',
     },
     {
       name: 'Stefan Pettersson Noord',
@@ -54,20 +54,6 @@ export default async function AboutPage({ params }: Props) {
       bio: sv
         ? 'Stefan har drygt tre decennier i den digitala och kreativa branschen bakom sig. Han har grundat och lett bolag som Otto Stockholm Proximity och Klirr, varit Managing Director för Ogilvy Interactive Sweden, och driver idag innovationsbolaget The Innovation Chapel. Han startade Elevante för att rikta den erfarenheten mot något som verkligen betyder något — att ge varje elev samma chans att förstå.'
         : 'Stefan brings more than three decades in the digital and creative industry. He has founded and led companies such as Otto Stockholm Proximity and Klirr, served as Managing Director of Ogilvy Interactive Sweden, and today runs the innovation company The Innovation Chapel. He started Elevante to point that experience at something that genuinely matters — giving every student the same chance to understand.',
-    },
-    {
-      name: 'TBD',
-      role: 'CTO',
-      bio: sv
-        ? 'Bygger AI-pipelinen från audio till svar med källa.'
-        : 'Building the AI pipeline from audio to sourced answer.',
-    },
-    {
-      name: 'TBD',
-      role: sv ? 'Designansvarig' : 'Head of Design',
-      bio: sv
-        ? 'Designar för 16-åringar som inte tål dåliga gränssnitt.'
-        : 'Designs for 16-year-olds who don\'t tolerate bad interfaces.',
     },
   ];
 

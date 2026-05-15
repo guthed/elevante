@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 
-// Editorial Calm — Stitch screens 16/17/18 i interaktiv iPhone-mockup
-// Demoflöde för säljare: klick navigerar mellan skärmarna utan riktig data.
+// Interaktiv iPhone-mockup som speglar den faktiska lärar-appen
+// (apps/mobile): login → dagens lektion → inspelning (idle → recording).
+// Skärmarna använder mobilappens designtokens (apps/mobile/lib/theme.ts).
 
-type Screen = 'login' | 'schedule' | 'recording';
+type Screen = 'login' | 'schedule' | 'record';
+type RecordPhase = 'idle' | 'recording';
 
 type Props = {
   locale: string;
@@ -14,18 +16,80 @@ type Props = {
 export function MobileAppDemo({ locale }: Props) {
   const sv = locale === 'sv';
   const [screen, setScreen] = useState<Screen>('login');
+  const [recordPhase, setRecordPhase] = useState<RecordPhase>('idle');
   const [pendingUpload, setPendingUpload] = useState(false);
 
+  const lesson = sv
+    ? { time: '10:15 – 11:00', room: 'Sal B214', course: 'Ekologi', detail: 'Biologi 2 · NA2b' }
+    : { time: '10:15 – 11:00', room: 'Room B214', course: 'Ecology', detail: 'Biology 2 · NA2b' };
+
   const handleLogin = () => setScreen('schedule');
-  const handleRecord = () => setScreen('recording');
+  const handleOpenLesson = () => {
+    setRecordPhase('idle');
+    setScreen('record');
+  };
+  const handleStartRecording = () => setRecordPhase('recording');
   const handleStop = () => {
     setPendingUpload(true);
+    setRecordPhase('idle');
     setScreen('schedule');
   };
   const handleReset = () => {
     setScreen('login');
+    setRecordPhase('idle');
     setPendingUpload(false);
   };
+
+  const narrative = (() => {
+    if (screen === 'login') {
+      return {
+        title: sv ? 'Steg 1 — Logga in' : 'Step 1 — Log in',
+        body: sv
+          ? 'Läraren loggar in en gång. Sedan vet appen vem hen är och vilka lektioner som ligger på schemat idag.'
+          : 'The teacher logs in once. After that the app knows who they are and which lessons are on today’s schedule.',
+        cta: sv ? 'Logga in →' : 'Log in →',
+        onCta: handleLogin,
+      };
+    }
+    if (screen === 'schedule') {
+      if (pendingUpload) {
+        return {
+          title: sv ? 'Klart — inget efterarbete' : 'Done — no follow-up work',
+          body: sv
+            ? 'Inspelningen laddas upp i bakgrunden. Läraren gör ingenting mer. Snart kan eleverna ställa frågor om ekologilektionen.'
+            : 'The recording uploads in the background. The teacher does nothing more. Soon students can ask questions about the ecology lesson.',
+          cta: undefined,
+          onCta: undefined,
+        };
+      }
+      return {
+        title: sv ? 'Steg 2 — Dagens lektion' : 'Step 2 — Today’s lesson',
+        body: sv
+          ? 'Schemat synkas automatiskt — dagens lektion ligger redan här. Läraren behöver inte namnge eller tagga något. Tryck på lektionen för att öppna den.'
+          : 'The schedule syncs automatically — today’s lesson is already here. The teacher names and tags nothing. Tap the lesson to open it.',
+        cta: sv ? 'Öppna lektionen →' : 'Open the lesson →',
+        onCta: handleOpenLesson,
+      };
+    }
+    if (recordPhase === 'idle') {
+      return {
+        title: sv ? 'Steg 3 — Tryck för att spela in' : 'Step 3 — Tap to record',
+        body: sv
+          ? 'Inspelningsskärmen är mörk för att inte distrahera. En enda stor knapp — tryck på den röda knappen för att starta inspelningen.'
+          : 'The recording screen is dark so it does not distract. One big button — tap the red button to start recording.',
+        cta: sv ? 'Starta inspelning →' : 'Start recording →',
+        onCta: handleStartRecording,
+      };
+    }
+    return {
+      title: sv ? 'Spelar in lektionen' : 'Recording the lesson',
+      body: sv
+        ? 'Timern räknar. När lektionen är slut trycker läraren på stopp — ljudet laddas upp automatiskt och köar för transkribering.'
+        : 'The timer runs. When the lesson ends the teacher taps stop — the audio uploads automatically and queues for transcription.',
+      cta: sv ? 'Stoppa inspelning →' : 'Stop recording →',
+      onCta: handleStop,
+    };
+  })();
 
   return (
     <div className="grid items-start gap-12 md:grid-cols-12 md:gap-16">
@@ -37,19 +101,26 @@ export function MobileAppDemo({ locale }: Props) {
             {/* Notch */}
             <div className="absolute left-1/2 top-3 z-20 h-6 w-32 -translate-x-1/2 rounded-b-[20px] bg-[var(--color-ink)]" />
             {/* Screen */}
-            <div className="relative h-[680px] overflow-hidden rounded-[32px] bg-[var(--color-canvas)]">
+            <div className="relative h-[680px] overflow-hidden rounded-[32px]">
               {screen === 'login' ? (
                 <LoginScreen sv={sv} onLogin={handleLogin} />
               ) : null}
               {screen === 'schedule' ? (
                 <ScheduleScreen
                   sv={sv}
+                  lesson={lesson}
                   pendingUpload={pendingUpload}
-                  onRecord={handleRecord}
+                  onOpenLesson={handleOpenLesson}
                 />
               ) : null}
-              {screen === 'recording' ? (
-                <RecordingScreen sv={sv} onStop={handleStop} />
+              {screen === 'record' ? (
+                <RecordScreen
+                  sv={sv}
+                  lesson={lesson}
+                  phase={recordPhase}
+                  onStart={handleStartRecording}
+                  onStop={handleStop}
+                />
               ) : null}
             </div>
           </div>
@@ -58,7 +129,7 @@ export function MobileAppDemo({ locale }: Props) {
           <div className="mt-6 flex items-center justify-center gap-2">
             <StepDot active={screen === 'login'} />
             <StepDot active={screen === 'schedule'} />
-            <StepDot active={screen === 'recording'} />
+            <StepDot active={screen === 'record'} />
           </div>
         </div>
       </div>
@@ -70,50 +141,28 @@ export function MobileAppDemo({ locale }: Props) {
             {sv ? 'Demo av lärar-appen' : 'Teacher app demo'}
           </p>
 
-          {screen === 'login' ? (
-            <Narrative
-              title={sv ? 'Steg 1 — Logga in' : 'Step 1 — Log in'}
-              body={
-                sv
-                  ? 'En gång. Sen vet appen vem du är, vilka lektioner du har och när. Inga e-postlänkar varje vecka. Inga möten med IT.'
-                  : 'Once. Then the app knows who you are, your lessons and when. No weekly email links. No IT meetings.'
-              }
-              cta={sv ? 'Logga in →' : 'Log in →'}
-              onCta={handleLogin}
-            />
-          ) : null}
+          <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+            {narrative.title}
+          </h2>
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {narrative.body}
+          </p>
 
-          {screen === 'schedule' ? (
-            <Narrative
-              title={sv ? 'Steg 2 — Schemat finns redan' : 'Step 2 — Your schedule is already there'}
-              body={
-                sv
-                  ? 'Lärarens schema synkas automatiskt. Nästa lektion är alltid en knapptryckning bort. Inga inställningar att kröka, ingen "vilken klass är detta?".'
-                  : 'The teacher\'s schedule syncs automatically. The next lesson is always one tap away. Nothing to configure, no "which class is this?".'
-              }
-              cta={sv ? 'Spela in nästa lektion →' : 'Record next lesson →'}
-              onCta={handleRecord}
-            />
-          ) : null}
-
-          {screen === 'recording' ? (
-            <Narrative
-              title={sv ? 'Steg 3 — En knapp. Spelar in.' : 'Step 3 — One button. Recording.'}
-              body={
-                sv
-                  ? 'Mörk skärm för att inte distrahera. Stor stop-knapp så du hittar den utan att kolla. Audion laddas upp automatiskt när lektionen är klar — du gör ingenting.'
-                  : 'Dark screen to not distract. Big stop button so you find it without looking. Audio uploads automatically — you do nothing.'
-              }
-              cta={sv ? 'Stoppa inspelning →' : 'Stop recording →'}
-              onCta={handleStop}
-            />
+          {narrative.cta && narrative.onCta ? (
+            <button
+              type="button"
+              onClick={narrative.onCta}
+              className="mt-8 inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-ink)] px-5 py-3 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-opacity hover:opacity-90"
+            >
+              {narrative.cta}
+            </button>
           ) : null}
 
           {screen !== 'login' ? (
             <button
               type="button"
               onClick={handleReset}
-              className="mt-8 text-[0.875rem] text-[var(--color-ink-muted)] underline-offset-4 hover:underline"
+              className="mt-8 block text-[0.875rem] text-[var(--color-ink-muted)] underline-offset-4 hover:underline"
             >
               {sv ? '↺ Spela demo från början' : '↺ Restart demo'}
             </button>
@@ -138,302 +187,216 @@ function StepDot({ active }: { active: boolean }) {
   );
 }
 
-function Narrative({
-  title,
-  body,
-  cta,
-  onCta,
-}: {
-  title: string;
-  body: string;
-  cta: string;
-  onCta: () => void;
-}) {
-  return (
-    <div>
-      <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-        {title}
-      </h2>
-      <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
-        {body}
-      </p>
-      <button
-        type="button"
-        onClick={onCta}
-        className="mt-8 inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-ink)] px-5 py-3 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-opacity hover:opacity-90"
-      >
-        {cta}
-      </button>
-    </div>
-  );
-}
+type Lesson = { time: string; room: string; course: string; detail: string };
 
 /* ────────────────────────────────────────────────────────────────
-   Stitch screen 16 — Login
+   Login — speglar apps/mobile/app/(auth)/login.tsx
    ──────────────────────────────────────────────────────────────── */
 function LoginScreen({ sv, onLogin }: { sv: boolean; onLogin: () => void }) {
   return (
-    <div className="flex h-full flex-col px-6 pb-6 pt-12">
-      <div className="pt-4">
-        <p className="font-serif text-[1.125rem] leading-none text-[var(--color-ink)]">
-          Elevante
-        </p>
-        <p className="mt-1 text-[0.75rem] text-[var(--color-ink-muted)]">
-          {sv ? 'för lärare' : 'for teachers'}
-        </p>
-      </div>
-
-      <div className="mt-16">
-        <h1 className="font-serif text-[2.5rem] leading-none tracking-[-0.01em] text-[var(--color-ink)]">
-          {sv ? 'Hej.' : 'Hi.'}
-        </h1>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
-          {sv
-            ? 'Logga in för att börja spela in lektioner.'
-            : 'Log in to start recording lessons.'}
-        </p>
-      </div>
+    <div className="flex h-full flex-col bg-[#f8f8f8] px-6 pt-16">
+      <p className="text-center text-[1.25rem] font-semibold text-[#1a1a2e]">
+        Elevante
+      </p>
+      <p className="mt-12 text-[2rem] font-bold leading-tight text-[#1a1a2e]">
+        {sv ? 'Logga in' : 'Log in'}
+      </p>
+      <p className="mt-2 text-[0.9375rem] text-[#5b5e72]">
+        {sv
+          ? 'För lärare som spelar in lektioner.'
+          : 'For teachers who record lessons.'}
+      </p>
 
       <form
         onSubmit={(e) => {
           e.preventDefault();
           onLogin();
         }}
-        className="mt-8"
+        className="mt-2"
       >
-        <label className="block">
-          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
-            {sv ? 'E-postadress' : 'Email'}
-          </span>
+        <div className="mt-6">
+          <label className="block text-[0.8125rem] font-medium text-[#1a1a2e]">
+            {sv ? 'E-post' : 'Email'}
+          </label>
           <input
             type="email"
-            defaultValue="anna@stockholms-gymnasium.se"
-            className="mt-2 w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] focus:border-[var(--color-ink-secondary)] focus:outline-none"
+            defaultValue="anna@nacka-gymnasium.se"
+            className="mt-1.5 w-full rounded-[12px] border border-[#e4e6ec] bg-white px-4 py-3 text-[0.9375rem] text-[#1a1a2e] focus:border-[#4f7fff] focus:outline-none"
           />
-        </label>
-        <label className="mt-5 block">
-          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
+        </div>
+        <div className="mt-5">
+          <label className="block text-[0.8125rem] font-medium text-[#1a1a2e]">
             {sv ? 'Lösenord' : 'Password'}
-          </span>
+          </label>
           <input
             type="password"
-            defaultValue="••••••••"
-            className="mt-2 w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] focus:border-[var(--color-ink-secondary)] focus:outline-none"
+            defaultValue="passwordtext"
+            className="mt-1.5 w-full rounded-[12px] border border-[#e4e6ec] bg-white px-4 py-3 text-[0.9375rem] text-[#1a1a2e] focus:border-[#4f7fff] focus:outline-none"
           />
-        </label>
-
+        </div>
         <button
           type="submit"
-          className="mt-8 flex h-12 w-full items-center justify-center rounded-[12px] bg-[var(--color-ink)] text-[1rem] font-medium text-[var(--color-canvas)]"
+          className="mt-8 flex h-12 w-full items-center justify-center rounded-full bg-[#4f7fff] text-[0.9375rem] font-semibold text-white transition-colors hover:bg-[#3d6be6]"
         >
           {sv ? 'Logga in' : 'Log in'}
         </button>
       </form>
-
-      <div className="mt-auto pb-2 text-center">
-        <p className="text-[0.8125rem] text-[var(--color-ink-secondary)]">
-          {sv ? 'Får jag inte tillgång? Be din skoladmin.' : 'No access? Ask your school admin.'}
-        </p>
-        <p className="mt-3 text-[0.6875rem] text-[var(--color-ink-muted)]">
-          {sv ? 'Data lagras i Stockholm. GDPR-säkert.' : 'Data stored in Stockholm. GDPR-safe.'}
-        </p>
-      </div>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────────────
-   Stitch screen 17 — Schedule
+   Schedule — speglar apps/mobile/app/(app)/index.tsx
    ──────────────────────────────────────────────────────────────── */
 function ScheduleScreen({
   sv,
+  lesson,
   pendingUpload,
-  onRecord,
+  onOpenLesson,
 }: {
   sv: boolean;
+  lesson: Lesson;
   pendingUpload: boolean;
-  onRecord: () => void;
+  onOpenLesson: () => void;
 }) {
-  const lessons = sv
-    ? [
-        { time: '08:15', end: '09:00', title: 'Algebraisk modellering', course: 'Matematik 4 · NA3a · A102', status: 'ready' },
-        { time: '10:15', end: '11:00', title: 'Integralberäkning — del 2', course: 'Matematik 4 · NA3a · A102', status: pendingUpload ? 'ready' : 'waiting' },
-        { time: '12:30', end: '13:15', title: 'Repetition inför prov', course: 'Matematik 3 · TE2c · A205', status: 'waiting' },
-        { time: '14:00', end: '14:45', title: 'Derivata och optimering', course: 'Matematik 4 · NA3a · A102', status: 'waiting' },
-      ]
-    : [
-        { time: '08:15', end: '09:00', title: 'Algebraic modelling', course: 'Math 4 · NA3a · A102', status: 'ready' },
-        { time: '10:15', end: '11:00', title: 'Integrals — part 2', course: 'Math 4 · NA3a · A102', status: pendingUpload ? 'ready' : 'waiting' },
-        { time: '12:30', end: '13:15', title: 'Test prep', course: 'Math 3 · TE2c · A205', status: 'waiting' },
-        { time: '14:00', end: '14:45', title: 'Derivatives & optimization', course: 'Math 4 · NA3a · A102', status: 'waiting' },
-      ];
-
   return (
-    <div className="flex h-full flex-col">
-      <div className="px-5 pt-10">
-        <div className="flex items-center justify-between">
+    <div className="flex h-full flex-col bg-[#f8f8f8]">
+      <div className="px-6 pt-12">
+        <div className="flex items-start justify-between">
           <div>
-            <p className="text-[0.75rem] text-[var(--color-ink-muted)]">
-              {sv ? 'Tisdag 13 maj' : 'Tuesday May 13'}
-            </p>
-            <h1 className="mt-0.5 font-serif text-[1.75rem] leading-none text-[var(--color-ink)]">
+            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-[#8a8d9e]">
               {sv ? 'Idag' : 'Today'}
-            </h1>
-          </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-sand)] text-[0.6875rem] font-medium text-[var(--color-ink)]">
-            AB
-          </div>
-        </div>
-
-        {pendingUpload ? (
-          <div className="mt-4 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-3 py-2.5">
-            <p className="text-[0.75rem] text-[var(--color-ink-secondary)]">
-              {sv ? 'Föreläsning_slides.pptx · Laddar upp (67%)' : 'Lecture_slides.pptx · Uploading (67%)'}
             </p>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--color-sand)]">
-              <div className="h-full w-2/3 rounded-full bg-[var(--color-coral)]" />
-            </div>
+            <p className="mt-1 text-[1.5rem] font-bold text-[#1a1a2e]">
+              Anna Bergström
+            </p>
           </div>
-        ) : null}
+          <span className="text-[0.8125rem] text-[#5b5e72]">
+            {sv ? 'Logga ut' : 'Log out'}
+          </span>
+        </div>
       </div>
 
-      <ul className="mt-4 flex-1 overflow-y-auto">
-        {lessons.map((lesson, idx) => (
-          <li
-            key={idx}
-            className="flex items-center gap-3 border-t border-[var(--color-sand)] px-5 py-3.5 last:border-b"
-          >
-            <div className="w-12 shrink-0">
-              <p className="font-serif text-[0.9375rem] leading-none text-[var(--color-ink)]">
-                {lesson.time}
-              </p>
-              <p className="mt-1 text-[0.6875rem] text-[var(--color-ink-muted)]">
-                {lesson.end}
-              </p>
-            </div>
-            <div className="h-8 w-px bg-[var(--color-sand)]" />
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-serif text-[0.9375rem] leading-tight text-[var(--color-ink)]">
-                {lesson.title}
-              </p>
-              <p className="mt-0.5 truncate text-[0.6875rem] text-[var(--color-ink-muted)]">
-                {lesson.course}
-              </p>
-            </div>
-            <span
-              className={
-                lesson.status === 'ready'
-                  ? 'status-dot status-dot--sage'
-                  : 'status-dot status-dot--sand'
-              }
-              aria-hidden="true"
-            />
-          </li>
-        ))}
-      </ul>
+      {pendingUpload ? (
+        <div className="mx-6 mt-4 rounded-[12px] bg-[#fef3c7] px-4 py-2.5">
+          <p className="text-[0.8125rem] text-[#92400e]">
+            {sv
+              ? '1 inspelning väntar på upload'
+              : '1 recording waiting to upload'}
+          </p>
+        </div>
+      ) : null}
 
-      <div className="px-4 pb-6 pt-4">
+      <div className="mt-4 px-6">
         <button
           type="button"
-          onClick={onRecord}
-          className="flex h-14 w-full items-center justify-center gap-2 rounded-[14px] bg-[var(--color-ink)] text-[1rem] font-medium text-[var(--color-canvas)] shadow-[0_8px_24px_-8px_rgba(26,26,46,0.4)]"
+          onClick={onOpenLesson}
+          className="w-full rounded-[20px] border border-[#e4e6ec] bg-white p-5 text-left transition-colors hover:border-[#4f7fff]"
         >
-          {sv ? 'Spela in nästa lektion' : 'Record next lesson'} →
+          <div className="flex items-center justify-between">
+            <span className="text-[0.875rem] font-semibold text-[#4f7fff]">
+              {lesson.time}
+            </span>
+            <span className="text-[0.75rem] text-[#8a8d9e]">{lesson.room}</span>
+          </div>
+          <p className="mt-2 text-[1.375rem] font-bold leading-tight text-[#1a1a2e]">
+            {lesson.course}
+          </p>
+          <p className="mt-1 text-[0.8125rem] text-[#5b5e72]">{lesson.detail}</p>
+          <div className="mt-4 flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ef4444]" />
+            <span className="text-[0.8125rem] text-[#5b5e72]">
+              {sv ? 'Tryck för att spela in' : 'Tap to record'}
+            </span>
+          </div>
         </button>
-
-        {/* Tab bar */}
-        <nav className="mt-4 flex items-center justify-around border-t border-[var(--color-sand)] pt-3">
-          <span className="text-[0.75rem] font-medium text-[var(--color-ink)]">
-            {sv ? 'Schema' : 'Schedule'}
-          </span>
-          <span className="text-[0.75rem] text-[var(--color-ink-muted)]">
-            {sv ? 'Inspelningar' : 'Recordings'}
-          </span>
-          <span className="text-[0.75rem] text-[var(--color-ink-muted)]">
-            {sv ? 'Inställningar' : 'Settings'}
-          </span>
-        </nav>
       </div>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────────────
-   Stitch screen 18 — Recording (dark)
+   Record — speglar apps/mobile/app/(app)/record.tsx (idle → recording)
    ──────────────────────────────────────────────────────────────── */
-function RecordingScreen({
+function RecordScreen({
   sv,
+  lesson,
+  phase,
+  onStart,
   onStop,
 }: {
   sv: boolean;
+  lesson: Lesson;
+  phase: RecordPhase;
+  onStart: () => void;
   onStop: () => void;
 }) {
   return (
-    <div className="flex h-full flex-col bg-[var(--color-ink)] px-6 pb-8 pt-12 text-[var(--color-canvas)]">
-      <div className="pt-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/15 px-2.5 py-1">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-coral)]" />
-          <span className="text-[0.6875rem] uppercase tracking-[0.1em] text-white/80">
-            {sv ? 'Inspelar lektion' : 'Recording lesson'}
-          </span>
-        </div>
-        <h1 className="mt-4 font-serif text-[1.5rem] leading-tight">
-          {sv ? 'Integralberäkning — del 2' : 'Integrals — part 2'}
-        </h1>
-        <p className="mt-1 text-[0.75rem] text-white/60">
-          {sv ? 'Matematik 4 · NA3a · 10:15' : 'Math 4 · NA3a · 10:15'}
-        </p>
+    <div className="flex h-full flex-col bg-[#1a1a2e] px-6 pb-10 pt-12 text-white">
+      <div className="flex justify-end">
+        <span
+          className={
+            phase === 'recording'
+              ? 'text-[0.9375rem] text-white/35'
+              : 'text-[0.9375rem] text-white'
+          }
+        >
+          {sv ? 'Avbryt' : 'Cancel'}
+        </span>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center">
-        <p className="font-serif text-[5rem] leading-none tracking-tight tabular-nums">
-          12:34
+        {phase === 'recording' ? (
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#ef4444]" />
+            <span className="text-[0.6875rem] uppercase tracking-[0.12em] text-white/80">
+              {sv ? 'Spelar in lektionen' : 'Recording the lesson'}
+            </span>
+          </div>
+        ) : null}
+
+        <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-white/60">
+          {lesson.detail}
         </p>
-        <p className="mt-1 text-[0.6875rem] uppercase tracking-[0.15em] text-white/50">
-          min:sek
+        <p className="mt-1.5 text-[1.875rem] font-bold leading-tight text-white">
+          {lesson.course}
         </p>
 
-        <button
-          type="button"
-          onClick={onStop}
-          aria-label={sv ? 'Stoppa inspelning' : 'Stop recording'}
-          className="relative mt-10 flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-canvas)] transition-transform active:scale-95"
-        >
-          <span className="absolute inset-0 -m-2 rounded-full border-2 border-[var(--color-coral)]/60 coral-pulse" />
-          <span className="h-6 w-6 rounded-[4px] bg-[var(--color-ink)]" />
-        </button>
-        <p className="mt-3 text-[0.75rem] text-white/70">
-          {sv ? 'Tryck för att stoppa' : 'Tap to stop'}
+        <p className="mt-10 text-[4rem] font-light leading-none tabular-nums text-white">
+          {phase === 'recording' ? '12:34' : '00:00'}
+        </p>
+
+        {phase === 'idle' ? (
+          <button
+            type="button"
+            onClick={onStart}
+            aria-label={sv ? 'Starta inspelning' : 'Start recording'}
+            className="mt-10 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white transition-transform active:scale-95"
+          >
+            <span className="h-[3.75rem] w-[3.75rem] rounded-full bg-[#ef4444]" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onStop}
+            aria-label={sv ? 'Stoppa inspelning' : 'Stop recording'}
+            className="relative mt-10 flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#ef4444] transition-transform active:scale-95"
+          >
+            <span className="absolute inset-0 -m-2 rounded-full border-2 border-[#ef4444]/60 coral-pulse" />
+            <span className="h-7 w-7 rounded-[4px] bg-[#ef4444]" />
+          </button>
+        )}
+
+        <p className="mt-5 text-[0.8125rem] text-white/70">
+          {phase === 'idle'
+            ? sv
+              ? 'Tryck för att börja'
+              : 'Tap to start'
+            : sv
+              ? 'Tryck för att stoppa och ladda upp'
+              : 'Tap to stop and upload'}
         </p>
       </div>
-
-      <div>
-        <Waveform />
-        <p className="mt-3 text-center text-[0.6875rem] text-white/50">
-          {sv
-            ? 'Mikrofon: iPhone (intern) · Kvalitet: HD'
-            : 'Mic: iPhone (built-in) · Quality: HD'}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function Waveform() {
-  // 32 staplar med varierande höjd för att simulera live audio
-  const bars = [
-    20, 38, 24, 52, 36, 18, 44, 60, 32, 22, 48, 30, 56, 24, 18, 42,
-    50, 28, 38, 22, 46, 32, 58, 30, 20, 44, 36, 52, 28, 18, 40, 26,
-  ];
-  return (
-    <div className="flex h-14 items-center justify-between gap-[3px]">
-      {bars.map((h, i) => (
-        <span
-          key={i}
-          className="w-[3px] rounded-full bg-[var(--color-coral)]/80"
-          style={{ height: `${h}%` }}
-        />
-      ))}
     </div>
   );
 }
