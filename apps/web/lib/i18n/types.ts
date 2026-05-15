@@ -170,6 +170,7 @@ export type Dictionary = {
         chat: string;
         library: string;
         examPrep: string;
+        learnerProfile: string;
       };
       teacher: {
         overview: string;

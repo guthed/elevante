@@ -27,6 +27,7 @@ type ScopeContext = {
 async function ragAnswer(
   question: string,
   scopeContext: ScopeContext,
+  personaSummary?: string,
 ): Promise<{ content: string; sources: ChatSource[]; concepts: string[] } | null> {
   if (!bergetIsConfigured() || !anthropicIsConfigured()) return null;
 
@@ -126,9 +127,21 @@ async function ragAnswer(
     content: m.content,
   }));
 
-  // Steg 4: Claude-svar med strikt RAG-prompt + koncept-taggning
-  const answer = await answerWithRag(question, chunks, lessonConcepts);
+  // Steg 4: Claude-svar med strikt RAG-prompt + koncept-taggning + lärprofil
+  const answer = await answerWithRag(question, chunks, lessonConcepts, personaSummary);
   return answer;
+}
+
+/** Hämtar elevens lärprofil-sammanfattning för personanpassade svar. */
+async function getPersonaSummary(userId: string): Promise<string | undefined> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('learner_profiles')
+    .select('summary')
+    .eq('profile_id', userId)
+    .maybeSingle();
+  const summary = (data as { summary: string } | null)?.summary;
+  return summary && summary.trim().length > 0 ? summary : undefined;
 }
 
 /**
@@ -254,8 +267,9 @@ export async function startChat(input: StartChatInput) {
     courseId: input.courseId ?? null,
     lessonIds: input.lessonIds ?? null,
   };
+  const personaSummary = await getPersonaSummary(profile.id);
   const answer =
-    (await ragAnswer(input.question, scopeContext)) ??
+    (await ragAnswer(input.question, scopeContext, personaSummary)) ??
     (await mockedAnswer(input.question, scopeContext));
 
   await supabase.from('chat_messages').insert({
@@ -309,8 +323,9 @@ export async function sendMessage(
     courseId: chat.course_id,
     lessonIds: chat.lesson_ids,
   };
+  const personaSummary = await getPersonaSummary(profile.id);
   const answer =
-    (await ragAnswer(question, scopeContext)) ??
+    (await ragAnswer(question, scopeContext, personaSummary)) ??
     (await mockedAnswer(question, scopeContext));
 
   const { error: insertError } = await supabase.from('chat_messages').insert({

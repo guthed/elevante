@@ -12,7 +12,9 @@ import type {
 import {
   generatePracticeTest as aiGenerateTest,
   gradePracticeTest as aiGradeTest,
+  buildLearnerProfile,
   type PracticeGradeInput,
+  type LearnerProfileTestInput,
 } from '@/lib/ai/anthropic';
 
 const MIN_QUESTIONS = 4;
@@ -131,7 +133,23 @@ export async function submitPracticeTest(
     });
   }
 
-  const aiResult = gradeInputs.length > 0 ? await aiGradeTest(gradeInputs) : null;
+  // Hämta elevens lärprofil (om den finns) så rättningen blir personanpassad.
+  const { data: profileRow } = await supabase
+    .from('learner_profiles')
+    .select('summary')
+    .eq('profile_id', test.user_id)
+    .maybeSingle();
+  const personaSummary = (profileRow as { summary: string } | null)?.summary;
+
+  const aiResult =
+    gradeInputs.length > 0
+      ? await aiGradeTest(
+          gradeInputs,
+          personaSummary && personaSummary.trim().length > 0
+            ? personaSummary
+            : undefined,
+        )
+      : null;
   const gradeByQuestion = new Map(
     (aiResult?.grades ?? []).map((g) => [g.question_id, g]),
   );
@@ -190,9 +208,72 @@ export async function submitPracticeTest(
 
   if (error) return { ok: false };
 
+  // Uppdatera elevens lärprofil utifrån alla rättade prov (inkl. detta).
+  await rebuildLearnerProfile(test.user_id, test.school_id);
+
   revalidatePath(`/sv/app/student/provplugg/${testId}`);
   revalidatePath(`/en/app/student/provplugg/${testId}`);
+  revalidatePath(`/sv/app/student/profil`);
+  revalidatePath(`/en/app/student/profil`);
   return { ok: true };
+}
+
+/**
+ * Bygger om elevens lärprofil från deras senaste rättade prov. Körs efter
+ * varje inlämnat prov. Tyst no-op om AI inte är konfigurerat.
+ */
+async function rebuildLearnerProfile(
+  userId: string,
+  schoolId: string,
+): Promise<void> {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase
+      .from('practice_tests')
+      .select('questions, submission')
+      .eq('user_id', userId)
+      .eq('status', 'graded')
+      .order('submitted_at', { ascending: false, nullsFirst: false })
+      .limit(5);
+
+    const rows = (data ?? []) as Pick<PracticeTest, 'questions' | 'submission'>[];
+    if (rows.length === 0) return;
+
+    const tests: LearnerProfileTestInput[][] = rows.map((row) => {
+      const answerByQuestion = new Map(
+        (row.submission?.answers ?? []).map((a) => [a.question_id, a]),
+      );
+      return row.questions.map((q) => {
+        const a = answerByQuestion.get(q.id);
+        return {
+          questionType: q.type,
+          points: a?.points ?? 0,
+          maxPoints: q.max_points,
+          studentAnswer: a?.answer ?? '',
+          feedback: a?.feedback ?? '',
+        };
+      });
+    });
+
+    const result = await buildLearnerProfile(tests);
+    if (!result) return;
+
+    await supabase.from('learner_profiles').upsert(
+      {
+        profile_id: userId,
+        school_id: schoolId,
+        strengths: result.strengths,
+        growth_areas: result.growth_areas,
+        summary: result.summary,
+        tests_analyzed: rows.length,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'profile_id' },
+    );
+  } catch (err) {
+    // Profil-uppdatering är inte kritisk — provet är redan rättat och sparat.
+    console.warn('rebuildLearnerProfile failed:', err);
+  }
 }
 
 /** Eleven delar ett rättat prov med sin lärare. */
