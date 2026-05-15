@@ -1,0 +1,33 @@
+God morgon allihop. Sätt er till rätta. Sist slutade vi med en fråga från Elin — finns det en gräns för hur många trofinivåer en näringskedja kan ha? Och jag lovade att svaret handlar om energi. Idag löser vi det. Vi ska prata om energiflöde, energipyramider och varför så mycket energi försvinner i varje steg.
+
+Vi börjar i grunden. Var kommer all energi i ett ekosystem ifrån? Ja, just det — solen. Producenterna, växterna, fångar in solenergin genom fotosyntesen och lagrar den som kemisk energi i socker och andra ämnen. Det är ingångsporten. Nästan all energi i nästan alla ekosystem på jorden kommer den vägen.
+
+Men här kommer det centrala. Av all solenergi som träffar ett blad är det bara ungefär en procent som faktiskt fastnar i fotosyntesen. Resten reflekteras, blir värme, träffar marken istället. Så redan från start jobbar vi med en liten andel.
+
+Och sen blir det värre för varje steg. Det här är dagens viktigaste regel, skriv ner den: när energi förs från en trofinivå till nästa går ungefär 90 procent förlorad, och bara cirka 10 procent förs vidare. Det kallas tioprocentsregeln.
+
+Theo?
+
+Vart tar de 90 procenten vägen då? De kan väl inte bara försvinna?
+
+Helt rätt tänkt, energi försvinner aldrig — det är termodynamikens första lag. Men den omvandlas till en form som nästa organism inte kan använda. Låt mig räkna upp vart den tar vägen. För det första, cellandningen. Varje organism andas, och i andningen omvandlas energi till värme som strålar bort. För det andra, rörelse — haren springer, hjärtat slår, allt det kostar energi. För det tredje, allt blir inte uppätet. Räven äter inte harens skelett, klövdjur lämnar kvar mycket. Och för det fjärde, det som äts upp smälts inte fullständigt — en del lämnar kroppen som avföring. Summan av allt det här blir att bara en tiondel når nästa nivå som användbar, lagrad energi.
+
+Nu kan vi rita det här, och det blir en pyramid. Längst ner, en bred bas — producenterna, väldigt mycket energi. Nästa våning, förstahandskonsumenterna, en tiondel så bred. Sen andrahandskonsumenterna, en tiondel av det. Och så vidare. Formen blir oundvikligen en pyramid, en energipyramid. Den kan aldrig vara upp och ner, för du kan inte få ut mer energi ur en nivå än vad som finns i den.
+
+Maja?
+
+Är det därför ni säger att det är klimatsmart att äta mer vegetariskt?
+
+Precis, exakt den kopplingen. Tänk på det så här. Om vi äter växten direkt är vi förstahandskonsumenter och får tio procent av producenternas energi. Om vi istället låter en ko äta växten och sen äter kon, då har energin passerat ett extra steg, och vi får bara tio procent av tio procent — alltså en procent. Det går åt ungefär tio gånger mer åkermark och växtenergi för att producera en portion nötkött jämfört med en portion baljväxter. Samma logik, bara tillämpad på vår tallrik.
+
+Och nu kan vi äntligen svara på Elins fråga från förra lektionen. Varför stannar kedjorna vid fyra eller fem nivåer? För att energin tar slut. Säg att producenterna har tiotusen energienheter. Förstahandskonsumenterna får tusen. Andrahands hundra. Tredjehands tio. En femte nivå skulle få en enda enhet — det räcker helt enkelt inte för att försörja en hel population av rovdjur. Pyramiden tar slut av sig själv.
+
+Elin?
+
+Men de stora rovdjuren, som ligger högst upp — de borde ju ha det jättesvårt då?
+
+Ja, och det är en jätteviktig poäng. Topprovdjuren lever på marginalen. De behöver enorma jaktområden för att hitta tillräckligt med byte, just för att det finns så lite energi kvar på deras nivå. Det är därför en lo eller en kungsörn behöver flera kvadratmil för sig själv. Och det är också därför topprovdjur är så känsliga — minskar bytesdjuren lite, så raserar det deras energibudget direkt. De har ingen marginal.
+
+En sak till, ett begrepp: biomassa. Biomassa är den totala vikten av allt levande på en nivå. Oftast följer biomassan samma pyramidform som energin — mycket växter, mindre växtätare, ännu mindre rovdjur. Men det finns undantag, särskilt i havet, där man kan mäta vid fel tidpunkt och få konstiga former. Energipyramiden däremot, den är alltid en pyramid. Den ljuger aldrig.
+
+Sammanfattning. All energi kommer från solen via fotosyntesen. Tioprocentsregeln — bara cirka tio procent förs vidare till nästa trofinivå, resten blir värme, rörelse och avfall. Det ger energipyramiden, som alltid är bredast i botten. Det förklarar varför kedjor är korta, varför topprovdjur behöver stora ytor, och varför vegetabilisk mat är energisnålare. Till nästa gång: räkna ut hur mycket producentenergi som krävs för att försörja ett rovdjur på fjärde trofinivån om det behöver hundra energienheter. Tack, vi ses.

@@ -14,10 +14,14 @@
 // Funktionen är ett SKELETON. Den kör helt utan externa anrop om
 // BERGET_AI_API_KEY saknas — då markeras lektionen som 'failed' med
 // en tydlig felmeddelande, så pipelinen kan testas end-to-end utan keys.
+//
+// Om request-body innehåller transcript_text används det direkt: stegen
+// audio-download + Whisper hoppas över. Används för att seeda demo-lektioner
+// med ett färdigt transkript (ingen ljudfil finns att radera då).
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-type RequestBody = { lesson_id?: string };
+type RequestBody = { lesson_id?: string; transcript_text?: string };
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -176,7 +180,10 @@ async function generateLessonContent(
   return parsed;
 }
 
-async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: string }> {
+async function processLesson(
+  lessonId: string,
+  providedTranscript?: string,
+): Promise<{ ok: boolean; detail: string }> {
   // 1. Hämta lesson
   const { data: lesson, error: lessonErr } = await supabase
     .from('lessons')
@@ -187,8 +194,8 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
   if (lessonErr || !lesson) {
     return { ok: false, detail: `Lesson not found: ${lessonErr?.message ?? lessonId}` };
   }
-  if (!lesson.audio_path) {
-    return { ok: false, detail: 'Lesson har ingen audio_path' };
+  if (!providedTranscript && !lesson.audio_path) {
+    return { ok: false, detail: 'Lesson har varken audio_path eller transcript_text' };
   }
 
   let teacherName: string | null = null;
@@ -218,21 +225,31 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
     .eq('id', lessonId);
 
   try {
-    // 2. Hämta audio från Storage
-    const { data: audioData, error: storageErr } = await supabase.storage
-      .from(BUCKET)
-      .download(lesson.audio_path);
-    if (storageErr || !audioData) {
-      throw new Error(`Storage download failed: ${storageErr?.message}`);
-    }
+    let transcript: string;
 
-    // 3. Transkribera
-    const transcript = await transcribeAudio(
-      audioData,
-      lesson.audio_path.split('/').pop() ?? 'audio.m4a',
-    );
-    if (!transcript) {
-      throw new Error('Transcript är tom');
+    if (providedTranscript) {
+      // Demo-seedning: transkriptet är redan färdigt, hoppa över ljud/Whisper.
+      transcript = providedTranscript.trim();
+      if (!transcript) {
+        throw new Error('transcript_text är tomt');
+      }
+    } else {
+      // 2. Hämta audio från Storage
+      const { data: audioData, error: storageErr } = await supabase.storage
+        .from(BUCKET)
+        .download(lesson.audio_path!);
+      if (storageErr || !audioData) {
+        throw new Error(`Storage download failed: ${storageErr?.message}`);
+      }
+
+      // 3. Transkribera
+      transcript = await transcribeAudio(
+        audioData,
+        lesson.audio_path!.split('/').pop() ?? 'audio.m4a',
+      );
+      if (!transcript) {
+        throw new Error('Transcript är tom');
+      }
     }
 
     // 4. Chunka
@@ -312,12 +329,14 @@ async function processLesson(lessonId: string): Promise<{ ok: boolean; detail: s
       })
       .eq('id', lessonId);
 
-    // 8. Radera audio från Storage (GDPR)
-    await supabase.storage.from(BUCKET).remove([lesson.audio_path]);
-    await supabase
-      .from('lessons')
-      .update({ audio_path: null })
-      .eq('id', lessonId);
+    // 8. Radera audio från Storage (GDPR) — bara om en ljudfil faktiskt fanns
+    if (lesson.audio_path) {
+      await supabase.storage.from(BUCKET).remove([lesson.audio_path]);
+      await supabase
+        .from('lessons')
+        .update({ audio_path: null })
+        .eq('id', lessonId);
+    }
 
     return { ok: true, detail: `Transcribed ${chunks.length} chunks` };
   } catch (error) {
@@ -358,7 +377,7 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const result = await processLesson(body.lesson_id);
+  const result = await processLesson(body.lesson_id, body.transcript_text);
   return new Response(JSON.stringify(result), {
     status: result.ok ? 200 : 500,
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
