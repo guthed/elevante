@@ -11,6 +11,9 @@ export const PAGE_PATHS = [
   '/priser',
   '/om-oss',
   '/kontakt',
+  '/integritetspolicy',
+  '/villkor',
+  '/cookies',
 ] as const;
 
 export type PagePath = (typeof PAGE_PATHS)[number];
