@@ -4,6 +4,7 @@ import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
+import { Faq, type FaqItem } from '@/components/public/Faq';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -30,6 +31,76 @@ export default async function HomePage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
   const sv = locale === 'sv';
+
+  const faqs: FaqItem[] = sv
+    ? [
+        {
+          q: 'Vad är Elevante?',
+          a: 'Elevante är en svensk plattform som spelar in och transkriberar lektioner så att eleverna kan ställa frågor om dem efteråt. Läraren trycker på en knapp i mobilappen, AI:n transkriberar lektionen, och eleverna chattar sedan med innehållet. Svaren bygger bara på det som faktiskt sades i klassrummet.',
+        },
+        {
+          q: 'Hur fungerar Elevante?',
+          a: 'Det sker i tre steg. Läraren spelar in lektionen med ett tryck i appen, svensk taligenkänning transkriberar ljudet inom EU, och eleven ställer frågor i en textchat. Varje svar pekar tillbaka till exakt var i lektionen läraren förklarade saken.',
+        },
+        {
+          q: 'Hittar Elevante på svar, som en vanlig chatbot?',
+          a: 'Nej. Elevante använder strikt RAG, vilket betyder att AI:n bara får svara utifrån lektionens transkribering. Om något inte togs upp på lektionen säger Elevante det rakt ut istället för att gissa. Varje svar visar dessutom källan så att eleven kan kontrollera den.',
+        },
+        {
+          q: 'Är Elevante GDPR-säkert?',
+          a: 'Ja. All data lagras inom EU och råljudet raderas så fort transkriberingen är klar. Vi har ett personuppgiftsbiträdesavtal redo innan första uppladdningen och tränar aldrig AI-modeller på elevernas data.',
+        },
+        {
+          q: 'Behöver skolan installera utrustning eller hårdvara?',
+          a: 'Nej. Läraren laddar ner mobilappen och kan börja spela in samma dag. Det finns ingen utrustning att köpa in, inga installationer och ingen IT-uppsättning.',
+        },
+        {
+          q: 'Ersätter Elevante läraren?',
+          a: 'Nej. Elevante tar hand om återupprepade frågor efter lektionen så att läraren får tid till det som faktiskt kräver en lärare. Det är ett verktyg som förlänger lektionen, inte en ersättning för undervisningen.',
+        },
+        {
+          q: 'Vad kostar Elevante?',
+          a: 'Elevante kostar 500 kr per elev och år, och då ingår allt — inspelning, transkribering, AI-chat och support. Det finns inga setup-avgifter och inga tilläggskostnader per lektion eller fråga. Skolor med över 1 000 elever får volymrabatt.',
+        },
+        {
+          q: 'Vilka skolor använder Elevante?',
+          a: 'Elevante pilottestas på Nacka Gymnasium under 2026 med cirka 2 000 elever. Plattformen är byggd för svenska och nordiska gymnasieskolor. Vill din skola vara med tidigt går det bra att boka en demo.',
+        },
+      ]
+    : [
+        {
+          q: 'What is Elevante?',
+          a: 'Elevante is a Swedish platform that records and transcribes classroom lessons so students can ask questions about them afterwards. The teacher taps a button in the mobile app, AI transcribes the lesson, and students then chat with the content. Answers are based only on what was actually said in class.',
+        },
+        {
+          q: 'How does Elevante work?',
+          a: 'It works in three steps. The teacher records the lesson with one tap in the app, Swedish speech recognition transcribes the audio inside the EU, and the student asks questions in a text chat. Every answer points back to exactly where in the lesson the teacher explained it.',
+        },
+        {
+          q: 'Does Elevante make up answers, like a regular chatbot?',
+          a: 'No. Elevante uses strict RAG, which means the AI may only answer from the lesson transcript. If something was not covered in class, Elevante says so plainly instead of guessing. Every answer also shows its source so the student can check it.',
+        },
+        {
+          q: 'Is Elevante GDPR-safe?',
+          a: 'Yes. All data is stored inside the EU and raw audio is deleted as soon as transcription is finished. We have a data processing agreement ready before the first upload and never train AI models on student data.',
+        },
+        {
+          q: 'Does the school need to install equipment or hardware?',
+          a: 'No. The teacher downloads the mobile app and can start recording the same day. There is no equipment to buy, no installations and no IT setup.',
+        },
+        {
+          q: 'Does Elevante replace the teacher?',
+          a: 'No. Elevante handles repeated questions after the lesson so the teacher gets time back for what actually needs a teacher. It is a tool that extends the lesson, not a replacement for teaching.',
+        },
+        {
+          q: 'What does Elevante cost?',
+          a: 'Elevante costs SEK 500 per student per year, and everything is included — recording, transcription, AI chat and support. There are no setup fees and no extra charges per lesson or question. Schools with more than 1,000 students get a volume discount.',
+        },
+        {
+          q: 'Which schools use Elevante?',
+          a: 'Elevante is being piloted at Nacka Gymnasium during 2026 with around 2,000 students. The platform is built for Swedish and Nordic upper-secondary schools. If your school wants to join early, you are welcome to book a demo.',
+        },
+      ];
 
   return (
     <>
@@ -138,6 +209,21 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
           </div>
+        </Container>
+      </section>
+
+      {/* FAQ — AEO-motorn */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
+        <Container width="content">
+          <Faq
+            heading={sv ? 'Vanliga frågor' : 'Frequently asked questions'}
+            intro={
+              sv
+                ? 'Det vi oftast får höra från skolor, lärare och elever.'
+                : 'What schools, teachers and students most often ask us.'
+            }
+            items={faqs}
+          />
         </Container>
       </section>
     </>
