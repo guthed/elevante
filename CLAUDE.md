@@ -28,7 +28,7 @@ Marknadsföringssajt som säljer och berättar om Elevante. Byggs först — ger
 
 ### Webb-app — tre roller
 **Lärare:** Lektionsöversikt, materialuppladdning, transkriberingsvisning
-**Elev:** Chat-gränssnitt (strikt RAG), lektionsbibliotek
+**Elev:** Chat-gränssnitt (strikt RAG), lektionsbibliotek, provplugg, AI-övningsprov, lärprofil
 **Admin:** Schemauppladdning, statistik, användarhantering
 
 ### Mobilapp — lärare only
@@ -44,12 +44,13 @@ Röst (V2), video/avatar (V3), hybrid RAG (V2+), föräldraapp (V2)
 **Läs alltid DESIGN-sidan i Notion innan du bygger UI:**
 `https://www.notion.so/33e84c8f289e81ec869fe7e6a91585f9`
 
-Nyckelprinciper:
-- Inspiration: hedvig.com — rent, generöst whitespace, minimalt brus
-- Färger: primär #1A1A2E (mörkblå), accent #4F7FFF (klar blå), vit bakgrund
-- Typografi: DM Serif Display (rubriker) + Inter (brödtext)
-- Ton: Varm och direkt. Aldrig formell, aldrig påklistrat ungdomlig.
-- Animationer: Subtila, 150ms övergångar
+Nyckelprinciper (Editorial Calm — designreboot 2026-05-13):
+- Känsla i ett ord: "Andningsbart". Rent, generöst, modernt — motsatsen till röriga, föråldrade skolverktyg.
+- Inspiration: Linear, Arc, Claude.ai, Are.na, Notion. INTE hedvig.com (för corporate-kallt), INTE Duolingo (för gamified).
+- Färger: ivory canvas #FAF7F2 (ALDRIG pure white), ink #1A1A2E, accent #4F7FFF (sparsamt), coral #FF7A6B, sage #B8C5A6, sand #E8DCC4.
+- Typografi: Newsreader (rubriker, editorial serif) + Geist (brödtext/UI) + JetBrains Mono (transkript). Ersätter DM Serif Display + Inter.
+- Ton: Varm och direkt. Aldrig formell, aldrig påklistrat ungdomlig. Tilltal: du.
+- Motion: Subtila, cubic-bezier(0.22, 1, 0.36, 1), 240–320ms. `prefers-reduced-motion` respekteras.
 
 ---
 
@@ -156,6 +157,16 @@ Supabase Auth via @supabase/ssr i `apps/web/lib/supabase/`. Tabeller bor i `publ
 `lesson_chunks` med pgvector (1024-dim, IVFFLAT-index) + RPC `match_lesson_chunks` / `match_course_chunks` (security invoker — RLS skyddar). `transcribe-lesson` Edge Function (Deno) kör hela pipelinen: download audio → KB-Whisper transkribering (Berget AI) → chunking (~500 tecken, 80 overlap) → embeddings (Berget AI `intfloat/multilingual-e5-large`) → insert i `lesson_chunks` → AI-genererad summary/frågor/topic via Claude → uppdaterar `lessons` → raderar audio (GDPR). AI-adaptrar i `lib/ai/`: `anthropic.ts` med strikt RAG-system-prompt + chat-svar med källcitat, `berget.ts` OpenAI-kompatibelt embeddings-API. `app/actions/chat.ts` använder riktig RAG som primär väg, faller tillbaka till `mockedAnswer` om keys saknas.
 ### Fas 7 — Admin & Statistik: KLAR (2026-04-11)
 Data-layer i `lib/data/admin.ts` (overview, users, schools, stats med 7-dagars-bucket). Server Actions: `updateUserRole`, `createSchool`. Vyer: `/admin` översikt med 5 stat-tiles, `/admin/anvandare` med inline `UserRoleForm`, `/admin/skolor` med `CreateSchoolForm`, `/admin/statistik` med weekly bar chart (div-bars utan dep) + status-breakdown + activity-totals. 92 rutter byggda.
+### Polering — Edge Function-deploy + UX + A11y: KLAR (2026-04-11)
+`supabase/functions/transcribe-lesson` deployad (Deno, ACTIVE). Mobilens upload-queue triggar `functions.invoke('transcribe-lesson')` fire-and-forget. `loading.tsx`/`error.tsx`/`not-found.tsx` på båda route groups. Lokaliserad skip-to-content-länk i båda layouterna.
+### Designreboot — Editorial Calm: KLAR (2026-05-13)
+Designsystemet bytt till "Editorial Calm" baserat på 18 Stitch-screens. Tokens i `globals.css`: ivory canvas #FAF7F2, coral/sage/sand-accenter, mjuka varma skuggor. Fonts Newsreader + Geist (ersätter DM Serif Display + Inter). 5 publika sidor + auth + kontakt omskrivna; AppShell/Sidebar/Topbar + alla app-vyer per roll i `components/app/{role}/`. Ny `/lararappen` med klickbar mobil-demo (`MobileAppDemo`) — säljarverktyg. Nacka Gymnasium-referenser borttagna från publika sajten (hellre tomt än ljuga om kund). Live på `elevante-web.vercel.app`.
+### Fas 8 — Dedikerat Supabase + skarp AI-pipeline + lärar-insikt: KLAR (2026-05-14)
+Dedikerat Supabase-projekt (`msqfuywpbrteyrzjggsw`), tabeller i `public`-schemat, konsoliderade migrationer i `supabase/migrations/`. AI-pipelinen skarp end-to-end — `transcribe-lesson` v4 verifierad på riktig inspelad lektion. Demo-konton seedade (loggade i Notion "Nycklar"). Student-lektionsvy med AI-`summary`/`suggested_questions`/`ai_generated_topic`. Lärar-insiktsvy: `concepts` på `lessons` + `chat_messages`, `lesson_views`-tabell, `InsightHeatmap` (förståelse-karta koncept × elev). RLS-policy låter lärare/admin i samma skola läsa elevchats för insikt-vyn.
+### Demo-iteration — Provplugg, syntetiska lektioner, citat-kort: KLAR (2026-05-15)
+Provplugg: chat-scope `selection` + `chats.lesson_ids` — eleven chattar mot ett urval lektioner inför prov (`/student/provplugg`, `ExamPrepPicker`). 6 syntetiska Ekologi-lektioner seedade (`lessons.is_synthetic`); Edge Function tar valfri `transcript_text` och hoppar då över audio/Whisper. Döda källpillar ersatta med citat-kort som visar faktiska transcript-utdrag. `SidebarNav` markerar aktiv route via `usePathname()`. `CHANGELOG.md` + `ARCHITECTURE.md` tillagda i repot, speglar Notion.
+### Övningsprov & lärprofil: KLAR (2026-05-15)
+AI-genererat övningsprov från Provplugg-urval (`practice_tests`; flerval rättas deterministiskt i kod, fritext av Claude). "Dela med läraren" → lärarvy `/teacher/prov[/id]`. Lärprofil (`learner_profiles`, RLS bara eleven själv) destillerar styrkor/utvecklingsområden ur rättade prov och matas in i provrättning + chattsvar. Persona-loop: prov rättas → profil byggs om → nästa rättning anpassas. Elevsidor `/student/prov`, `/student/profil`.
 
 ---
 

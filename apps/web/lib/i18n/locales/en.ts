@@ -10,6 +10,7 @@ const en: Dictionary = {
   nav: {
     home: 'Home',
     forSchools: 'For schools',
+    forTeachers: 'For teachers',
     forStudents: 'For students',
     pricing: 'Pricing',
     about: 'About',
