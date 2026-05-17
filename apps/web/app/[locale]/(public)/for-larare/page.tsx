@@ -48,8 +48,8 @@ export default async function ForTeachersPage({ params }: Props) {
           body: 'Så fort lektionen transkriberats finns ingen ljudfil kvar att lyssna på — för någon. Bara texten sparas, och du kan radera hela lektionen när du vill.',
         },
         {
-          lead: 'Skolledningen ser att verktyget används — inte hur du undervisar.',
-          body: 'De får driftsstatistik: antal inspelade lektioner och aktivitet per kurs. Inte en bedömning av din lektion.',
+          lead: 'Din förståelsekarta är privat.',
+          body: 'Insikten om vad just din klass fastnat på syns bara för dig — inte för skolledningen och inte för dina kollegor. Skolledningen ser att verktyget används, aldrig vad det visar dig.',
         },
         {
           lead: 'Ingen AI tränas på din undervisning.',
@@ -70,8 +70,8 @@ export default async function ForTeachersPage({ params }: Props) {
           body: 'As soon as the lesson is transcribed there is no audio file left to listen to — for anyone. Only the text is kept, and you can delete an entire lesson whenever you want.',
         },
         {
-          lead: 'Leadership sees that the tool is used — not how you teach.',
-          body: 'They get operational statistics: the number of lessons recorded and activity per course. Not an assessment of your lesson.',
+          lead: 'Your understanding map is private.',
+          body: 'The insight into what your class got stuck on is visible only to you — not to leadership and not to your colleagues. Leadership sees that the tool is used, never what it shows you.',
         },
         {
           lead: 'No AI is trained on your teaching.',
@@ -91,7 +91,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'Se vad klassen fastnat på',
-          body: 'Förståelsekartan visar vilka begrepp som skaver — per elev, före provet — utan att du läser någons privata chatt.',
+          body: 'Förståelsekartan visar vilka begrepp som skaver — per elev, före provet. Bara du ser den, och du läser aldrig någons privata chatt.',
         },
         {
           title: 'Eleverna kommer förberedda',
@@ -125,7 +125,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'See what the class got stuck on',
-          body: 'The understanding map shows which concepts are shaky — per student, before the test — without you reading anyone’s private chat.',
+          body: 'The understanding map shows which concepts are shaky — per student, before the test. Only you see it, and you never read anyone’s private chat.',
         },
         {
           title: 'Students arrive prepared',
@@ -157,7 +157,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           q: 'Kan skolledningen lyssna på mina lektioner eller använda Elevante för att utvärdera mig?',
-          a: 'Nej. Råljudet raderas så fort lektionen transkriberats — det finns ingen inspelning kvar att lyssna på. Skolledningen får driftsstatistik: antal inspelade lektioner och aktivitet per kurs, så att de ser att verktyget används. Elevante har inga funktioner byggda för att betygsätta eller granska en enskild lärares undervisning. Inspelningen finns till av ett enda skäl — att din elev ska kunna fråga om lektionen efteråt.',
+          a: 'Nej. Råljudet raderas så fort lektionen transkriberats — det finns ingen inspelning kvar att lyssna på. Skolledningen får driftsstatistik: antal inspelade lektioner och aktivitet per kurs, så att de ser att verktyget används. Din förståelsekarta — insikten om vad klassen fastnat på — är privat och syns bara för dig. Elevante har inga funktioner byggda för att betygsätta eller granska en enskild lärares undervisning. Inspelningen finns till av ett enda skäl — att din elev ska kunna fråga om lektionen efteråt.',
         },
         {
           q: 'Måste jag ändra hur jag undervisar?',
@@ -191,7 +191,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           q: 'Can leadership listen to my lessons or use Elevante to evaluate me?',
-          a: 'No. Raw audio is deleted as soon as the lesson is transcribed — there is no recording left to listen to. Leadership gets operational statistics: the number of lessons recorded and activity per course, so they can see the tool is used. Elevante has no features built to grade or review an individual teacher. The recording exists for one reason only — so your student can ask about the lesson afterwards.',
+          a: 'No. Raw audio is deleted as soon as the lesson is transcribed — there is no recording left to listen to. Leadership gets operational statistics: the number of lessons recorded and activity per course, so they can see the tool is used. Your understanding map — the insight into what the class got stuck on — is private and visible only to you. Elevante has no features built to grade or review an individual teacher. The recording exists for one reason only — so your student can ask about the lesson afterwards.',
         },
         {
           q: 'Do I have to change how I teach?',
