@@ -10,6 +10,7 @@ const sv: Dictionary = {
   nav: {
     home: 'Hem',
     forSchools: 'För skolor',
+    forTeachers: 'För lärare',
     forStudents: 'För elever',
     pricing: 'Priser',
     about: 'Om oss',
