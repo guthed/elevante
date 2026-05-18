@@ -40,9 +40,13 @@ export function Header({ locale, pathname, dict }: Props) {
             <Link
               key={item.href}
               href={item.href}
-              className="text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)]"
+              className="group relative text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)]"
             >
               {item.label}
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-1.5 left-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-[var(--color-coral)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+              />
             </Link>
           ))}
         </nav>
