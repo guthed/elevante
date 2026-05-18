@@ -185,8 +185,8 @@ export default async function ForSchoolsPage({ params }: Props) {
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                 {sv ? 'Boka demo' : 'Book demo'}
               </LinkButton>
-              <LinkButton href={`${base}/lararappen`} variant="text" size="lg">
-                {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
+              <LinkButton href={`${base}/demo`} variant="text" size="lg">
+                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
               </LinkButton>
             </div>
           </div>
@@ -293,10 +293,10 @@ export default async function ForSchoolsPage({ params }: Props) {
               </p>
               <div className="mt-8">
                 <Link
-                  href={`${base}/lararappen`}
+                  href={`${base}/demo`}
                   className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-canvas)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-ink)] transition-opacity hover:opacity-90"
                 >
-                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
+                  {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
                 </Link>
               </div>
             </div>

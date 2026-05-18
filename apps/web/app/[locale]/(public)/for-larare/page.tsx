@@ -249,8 +249,8 @@ export default async function ForTeachersPage({ params }: Props) {
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                   {sv ? 'Boka demo' : 'Book demo'}
                 </LinkButton>
-                <LinkButton href={`${base}/lararappen`} variant="text" size="lg">
-                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
+                <LinkButton href={`${base}/demo`} variant="text" size="lg">
+                  {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
                 </LinkButton>
               </div>
             </div>
@@ -356,16 +356,16 @@ export default async function ForTeachersPage({ params }: Props) {
               </h2>
               <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-canvas)]/70">
                 {sv
-                  ? 'Tre skärmar, tre tryck. Klicka igenom lärar-appen i webbläsaren — utan att installera något.'
-                  : 'Three screens, three taps. Click through the teacher app in your browser — without installing anything.'}
+                  ? 'Klicka igenom Elevante-demon i webbläsaren — utan att installera något.'
+                  : 'Click through the Elevante demo in your browser — without installing anything.'}
               </p>
             </div>
             <div className="md:col-span-4 md:text-right">
               <Link
-                href={`${base}/lararappen`}
+                href={`${base}/demo`}
                 className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-canvas)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-ink)] transition-opacity hover:opacity-90"
               >
-                {sv ? 'Klicka igenom appen' : 'Click through the app'} →
+                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
               </Link>
             </div>
           </div>
