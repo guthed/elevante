@@ -74,8 +74,8 @@ export default async function PricingPage({ params }: Props) {
           a: 'Avtalet löper ett år i taget och kan sägas upp med tre månaders varsel. Vi vill att ni stannar för att Elevante levererar, inte för att ni är bundna. Det finns ingen inlåsning.',
         },
         {
-          q: 'Kan vi testa Elevante innan vi köper?',
-          a: 'Ja. En enskild klass kan köra Elevante gratis i tre månader som pilot innan ni fattar beslut om hela skolan. Det ger lärare och elever en chans att testa i verkligheten, och er ett underlag att utvärdera.',
+          q: 'Hur kan vi utvärdera Elevante innan vi bestämmer oss?',
+          a: 'Boka en demo, så går vi igenom Elevante med er — och ni kan klicka igenom hela produkten själva i en interaktiv demo, utan att installera något. Det finns ingen minimigräns: när ni bestämmer er kan ni börja med en skola och rulla ut bredare i er egen takt.',
         },
         {
           q: 'Vilka volymrabatter finns det?',
@@ -128,8 +128,8 @@ export default async function PricingPage({ params }: Props) {
           a: 'The agreement runs one year at a time and can be cancelled with three months\' notice. We want you to stay because Elevante delivers, not because you are locked in. There is no lock-in.',
         },
         {
-          q: 'Can we try Elevante before we buy?',
-          a: 'Yes. A single class can run Elevante free for three months as a pilot before you decide on the whole school. It gives teachers and students a chance to test it for real, and gives you something concrete to evaluate.',
+          q: 'How can we evaluate Elevante before we decide?',
+          a: 'Book a demo and we’ll walk through Elevante with you — and you can click through the whole product yourself in an interactive demo, with nothing to install. There is no minimum: once you decide, you can start with one school and roll out more widely at your own pace.',
         },
         {
           q: 'What volume discounts are there?',
@@ -210,12 +210,7 @@ export default async function PricingPage({ params }: Props) {
 
       <section className="border-y border-[var(--color-sand)] py-12 md:py-16">
         <Container width="wide">
-          <div className="grid gap-8 md:grid-cols-3">
-            <Compare
-              name={sv ? 'Pilot' : 'Pilot'}
-              desc={sv ? 'En klass på prov.' : 'One class on a trial.'}
-              price={sv ? 'Gratis i 3 månader' : 'Free for 3 months'}
-            />
+          <div className="grid gap-8 md:grid-cols-2">
             <Compare
               name={sv ? 'Skola' : 'School'}
               desc={sv ? 'Hela skolan, alla lärare och elever.' : 'Whole school, all teachers and students.'}
@@ -224,7 +219,7 @@ export default async function PricingPage({ params }: Props) {
             />
             <Compare
               name={sv ? 'Huvudman' : 'Operator'}
-              desc={sv ? 'Flera skolor under en avtal.' : 'Multiple schools under one contract.'}
+              desc={sv ? 'Flera skolor under ett avtal.' : 'Multiple schools under one contract.'}
               price={sv ? 'Anpassad offert' : 'Custom quote'}
             />
           </div>
