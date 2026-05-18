@@ -49,8 +49,16 @@ export async function fetchSchoolFacts(code: string): Promise<SchoolFacts | null
     if (!res.ok) return null;
     const b = (await res.json())?.body ?? {};
     const c = b?.contactInfo ?? {};
+    // Föredra postadress; annars första adressen. Bygg fullständig sträng.
+    const addrs: Array<{ type?: string; street?: string; zipCode?: string; city?: string }> =
+      Array.isArray(c.addresses) ? c.addresses : [];
+    const addr = addrs.find((a) => /POSTAL/i.test(a?.type ?? '')) ?? addrs[0];
+    const address = addr
+      ? [addr.street, [addr.zipCode, addr.city].filter(Boolean).join(' ')]
+          .filter(Boolean).join(', ') || null
+      : null;
     return {
-      address: c.addresses?.[0]?.street ?? null,
+      address,
       phone: c.telephone ?? null,
       email: c.email ?? null,
       web: c.web ?? null,

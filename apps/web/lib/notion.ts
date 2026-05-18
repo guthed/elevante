@@ -5,7 +5,9 @@ export type NotionProspect = {
   huvudman: string | null;
   students: number | null;
   priceSek: number | null;
-  contact: string | null;        // sammanslagen telefon/e-post/adress
+  phone: string | null;
+  email: string | null;
+  address: string | null;
   aiBrief: string | null;
   lookupCount: number;
   leadEmail: string | null;
@@ -22,7 +24,9 @@ function properties(p: NotionProspect) {
     Huvudman: rich(p.huvudman),
     'Antal elever': { number: p.students },
     'Uppskattat pris': { number: p.priceSek },
-    Kontakt: rich(p.contact),
+    Telefon: { phone_number: p.phone },
+    'E-post': { email: p.email },
+    Adress: rich(p.address),
     'AI-brief': rich(p.aiBrief),
     'Antal uppslag': { number: p.lookupCount },
     'Lead-e-post': { email: p.leadEmail },

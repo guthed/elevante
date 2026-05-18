@@ -18,8 +18,6 @@ type ProspectRow = {
 };
 
 function toNotion(p: ProspectRow): NotionProspect {
-  const contact = [p.contact_phone, p.contact_email, p.contact_address]
-    .filter(Boolean).join(' · ') || null;
   return {
     notionPageId: p.notion_page_id,
     schoolName: p.school_name,
@@ -27,7 +25,9 @@ function toNotion(p: ProspectRow): NotionProspect {
     huvudman: p.huvudman_name,
     students: p.students,
     priceSek: p.students != null ? estimateAnnualPrice(p.students) : null,
-    contact,
+    phone: p.contact_phone,
+    email: p.contact_email,
+    address: p.contact_address,
     aiBrief: p.ai_brief,
     lookupCount: p.lookup_count,
     leadEmail: p.latest_lead_email,
