@@ -55,20 +55,6 @@ export default async function AboutPage({ params }: Props) {
         ? 'Stefan har drygt tre decennier i den digitala och kreativa branschen bakom sig. Han har grundat och lett bolag som Otto Stockholm Proximity och Klirr, varit Managing Director för Ogilvy Interactive Sweden, och driver idag innovationsbolaget The Innovation Chapel. Han startade Elevante för att rikta den erfarenheten mot något som verkligen betyder något — att ge varje elev samma chans att förstå.'
         : 'Stefan brings more than three decades in the digital and creative industry. He has founded and led companies such as Otto Stockholm Proximity and Klirr, served as Managing Director of Ogilvy Interactive Sweden, and today runs the innovation company The Innovation Chapel. He started Elevante to point that experience at something that genuinely matters — giving every student the same chance to understand.',
     },
-    {
-      name: 'TBD',
-      role: 'CTO',
-      bio: sv
-        ? 'Bygger AI-pipelinen från audio till svar med källa.'
-        : 'Building the AI pipeline from audio to sourced answer.',
-    },
-    {
-      name: 'TBD',
-      role: sv ? 'Designansvarig' : 'Head of Design',
-      bio: sv
-        ? 'Designar för 16-åringar som inte tål dåliga gränssnitt.'
-        : 'Designs for 16-year-olds who don\'t tolerate bad interfaces.',
-    },
   ];
 
   return (

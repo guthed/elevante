@@ -393,6 +393,11 @@ export default async function ForSchoolsPage({ params }: Props) {
               <p className="mt-3 text-[1rem] text-[var(--color-ink-secondary)]">
                 {sv ? 'Allt ingår. Volymrabatter över 1 000 elever.' : 'Everything included. Volume discounts over 1,000 students.'}
               </p>
+              <div className="mt-5">
+                <LinkButton href={`${base}/vad-kostar-elevante`} variant="text" size="md">
+                  {sv ? 'Räkna ut vad det kostar för just er skola →' : 'Work out the cost for your school →'}
+                </LinkButton>
+              </div>
             </div>
             <div className="md:col-span-4 md:text-right">
               <LinkButton href={`${base}/priser`} variant="ghost" size="md">

@@ -1,0 +1,5222 @@
+[
+  {
+    "code": "85014247",
+    "name": "Academy X Economy and Business Kristianstad"
+  },
+  {
+    "code": "33572033",
+    "name": "Academy X Music and Business Tingsryd"
+  },
+  {
+    "code": "54382141",
+    "name": "Academy X Music and Business Vara"
+  },
+  {
+    "code": "30530571",
+    "name": "af Chapmangymnasiet"
+  },
+  {
+    "code": "49616977",
+    "name": "Affärsgymnasiet Gävle"
+  },
+  {
+    "code": "13994736",
+    "name": "Affärsgymnasiet Göteborg"
+  },
+  {
+    "code": "32659125",
+    "name": "Affärsgymnasiet Halmstad"
+  },
+  {
+    "code": "82592568",
+    "name": "Affärsgymnasiet Helsingborg"
+  },
+  {
+    "code": "66151516",
+    "name": "Affärsgymnasiet Jönköping"
+  },
+  {
+    "code": "10481541",
+    "name": "Affärsgymnasiet Malmö"
+  },
+  {
+    "code": "59364802",
+    "name": "Affärsgymnasiet Nacka"
+  },
+  {
+    "code": "87207941",
+    "name": "Affärsgymnasiet Sports Academy Karlstad"
+  },
+  {
+    "code": "69040241",
+    "name": "Affärsgymnasiet Sports Academy Umeå"
+  },
+  {
+    "code": "48555205",
+    "name": "Affärsgymnasiet Stockholm"
+  },
+  {
+    "code": "14237886",
+    "name": "Affärsgymnasiet Stockholm 2"
+  },
+  {
+    "code": "90509211",
+    "name": "Affärsgymnasiet Uppsala"
+  },
+  {
+    "code": "18042101",
+    "name": "Affärsgymnasiet Västerås"
+  },
+  {
+    "code": "72071234",
+    "name": "Affärsgymnasiet Örebro"
+  },
+  {
+    "code": "28770304",
+    "name": "Agnesfrids gymnasium"
+  },
+  {
+    "code": "59483268",
+    "name": "Akademi Båstad Gymnasium"
+  },
+  {
+    "code": "47872090",
+    "name": "Aleholm 1"
+  },
+  {
+    "code": "37912396",
+    "name": "Aleholm 3"
+  },
+  {
+    "code": "74434644",
+    "name": "Alice Lundsgymnasiet"
+  },
+  {
+    "code": "17474377",
+    "name": "Alingsås Yrkesgymnasium"
+  },
+  {
+    "code": "70969714",
+    "name": "Alléskolan 1"
+  },
+  {
+    "code": "22752398",
+    "name": "Alléskolan 3"
+  },
+  {
+    "code": "68734112",
+    "name": "Alléskolan 4"
+  },
+  {
+    "code": "78730011",
+    "name": "Alléskolan 6"
+  },
+  {
+    "code": "74148070",
+    "name": "Alléskolan 7"
+  },
+  {
+    "code": "18425335",
+    "name": "Almåsgymnasiet A"
+  },
+  {
+    "code": "93281974",
+    "name": "Almåsgymnasiet B"
+  },
+  {
+    "code": "23424275",
+    "name": "Almåsgymnasiet C"
+  },
+  {
+    "code": "68556196",
+    "name": "Almåsgymnasiet E"
+  },
+  {
+    "code": "18345915",
+    "name": "Alströmergymnasiet sektor 2"
+  },
+  {
+    "code": "68229719",
+    "name": "Alströmergymnasiet sektor 3"
+  },
+  {
+    "code": "61004230",
+    "name": "Alströmergymnasiet sektor 4"
+  },
+  {
+    "code": "67768292",
+    "name": "Alströmergymnasiet sektor 5"
+  },
+  {
+    "code": "16505784",
+    "name": "Alströmergymnasiet Sektor 6"
+  },
+  {
+    "code": "75459583",
+    "name": "Alvesta Gymnasieskola"
+  },
+  {
+    "code": "49918856",
+    "name": "Amerikanska Gymnasiet Göteborg"
+  },
+  {
+    "code": "43657259",
+    "name": "Amerikanska Gymnasiet Halmstad"
+  },
+  {
+    "code": "16631623",
+    "name": "Amerikanska Gymnasiet Stockholm"
+  },
+  {
+    "code": "91518288",
+    "name": "Amerikanska Gymnasiet Stockholm Campus Frescati Hage"
+  },
+  {
+    "code": "42063970",
+    "name": "Amerikanska Gymnasiet Uppsala"
+  },
+  {
+    "code": "68796493",
+    "name": "Andénska gymnasiet"
+  },
+  {
+    "code": "89357497",
+    "name": "Anders Ljungstedts gymnasium 10"
+  },
+  {
+    "code": "61432781",
+    "name": "Anders Ljungstedts gymnasium 4"
+  },
+  {
+    "code": "78287294",
+    "name": "Anders Ljungstedts gymnasium 7"
+  },
+  {
+    "code": "74316305",
+    "name": "Anders Ljungstedts gymnasium 8"
+  },
+  {
+    "code": "39096170",
+    "name": "Anders Ljungstedts gymnasium 9"
+  },
+  {
+    "code": "45034559",
+    "name": "Anderstorpsgymnasiet"
+  },
+  {
+    "code": "24653673",
+    "name": "Anderstorpsgymnasiet Hammarängen"
+  },
+  {
+    "code": "72998905",
+    "name": "Angeredsgymnasiet 1"
+  },
+  {
+    "code": "84835666",
+    "name": "Angeredsgymnasiet 2"
+  },
+  {
+    "code": "24685151",
+    "name": "Angeredsgymnasiet 3"
+  },
+  {
+    "code": "25872338",
+    "name": "Angeredsgymnasiet 4"
+  },
+  {
+    "code": "54040574",
+    "name": "Anna Whitlocks gymnasium 54040574"
+  },
+  {
+    "code": "74560191",
+    "name": "Ansgargymnasiet"
+  },
+  {
+    "code": "32879845",
+    "name": "Apelrydsskolan i Båstad"
+  },
+  {
+    "code": "58191646",
+    "name": "Aranäsgymnasiet Enhet 2"
+  },
+  {
+    "code": "15567070",
+    "name": "Aranäsgymnasiet Enhet 3"
+  },
+  {
+    "code": "56021320",
+    "name": "Aranäsgymnasiet Enhet 4"
+  },
+  {
+    "code": "41358402",
+    "name": "Aranäsgymnasiet Enhet 5"
+  },
+  {
+    "code": "80405898",
+    "name": "Aranäsgymnasiet Enhet 6"
+  },
+  {
+    "code": "83272868",
+    "name": "Arlandagymnasiet 1"
+  },
+  {
+    "code": "66912789",
+    "name": "Arlandagymnasiet 2"
+  },
+  {
+    "code": "48304166",
+    "name": "Arlandagymnasiet 3"
+  },
+  {
+    "code": "20319353",
+    "name": "Aspero Idrottsgymn. Göteborg"
+  },
+  {
+    "code": "92507006",
+    "name": "Aspero Idrottsgymn. Halmstad"
+  },
+  {
+    "code": "78839208",
+    "name": "Aspero Idrottsgymn. Karlskrona"
+  },
+  {
+    "code": "86825268",
+    "name": "Axevalla Hästcentrum"
+  },
+  {
+    "code": "56831840",
+    "name": "Baldergymnasiet"
+  },
+  {
+    "code": "78665324",
+    "name": "Baldergymnasiet introduktionsprogrammet"
+  },
+  {
+    "code": "86483208",
+    "name": "Bellevue gymnasium"
+  },
+  {
+    "code": "38448056",
+    "name": "Berga naturbruksgymnasium"
+  },
+  {
+    "code": "84828713",
+    "name": "Bergska gymnasiet"
+  },
+  {
+    "code": "11674477",
+    "name": "Bergstrands Gymnasium Märsta"
+  },
+  {
+    "code": "26298615",
+    "name": "Bergstrands Gymnasium Stockholm"
+  },
+  {
+    "code": "39147056",
+    "name": "Bergstrands Gymnasium Uppsala"
+  },
+  {
+    "code": "92194545",
+    "name": "Bernadottegymnasiet 1"
+  },
+  {
+    "code": "38171731",
+    "name": "Bernadottegymnasiet 2"
+  },
+  {
+    "code": "77176811",
+    "name": "Bernadottegymnasiet 77176811"
+  },
+  {
+    "code": "79527481",
+    "name": "Berzeliusskolan 1"
+  },
+  {
+    "code": "67300857",
+    "name": "Berzeliusskolan 2"
+  },
+  {
+    "code": "67809400",
+    "name": "Berzeliusskolan 7"
+  },
+  {
+    "code": "16493131",
+    "name": "Bessemerskolan"
+  },
+  {
+    "code": "33528519",
+    "name": "Bessemerskolan_IM"
+  },
+  {
+    "code": "29445330",
+    "name": "Betty Petterssons gymnasium"
+  },
+  {
+    "code": "24538846",
+    "name": "Bildningscentrum Facetten"
+  },
+  {
+    "code": "70404319",
+    "name": "Birger Jarls Gymnasium (A1)"
+  },
+  {
+    "code": "12120212",
+    "name": "Birger Jarls Gymnasium (A2)"
+  },
+  {
+    "code": "50133877",
+    "name": "Birger Sjöberggymnasiet 1"
+  },
+  {
+    "code": "49868916",
+    "name": "Birger Sjöberggymnasiet 2"
+  },
+  {
+    "code": "40991561",
+    "name": "Björkhagsskolan, gymnasium"
+  },
+  {
+    "code": "32960825",
+    "name": "Björknäsgymnasiet Enhet 1"
+  },
+  {
+    "code": "43609520",
+    "name": "Björknäsgymnasiet Enhet 2"
+  },
+  {
+    "code": "41416934",
+    "name": "Björknäsgymnasiet Enhet 3"
+  },
+  {
+    "code": "80224228",
+    "name": "Björknäsgymnasiet enhet 4"
+  },
+  {
+    "code": "83534216",
+    "name": "Björknäsgymnasiet enhet 5"
+  },
+  {
+    "code": "85152591",
+    "name": "Blackebergs gymnasium 85152591"
+  },
+  {
+    "code": "21938183",
+    "name": "Bladins gymnasium"
+  },
+  {
+    "code": "86896907",
+    "name": "Blekinge Naturbruksgymnasium"
+  },
+  {
+    "code": "56802300",
+    "name": "Bobergsgymnasiet"
+  },
+  {
+    "code": "35225375",
+    "name": "Bollebygds gymnasieskola"
+  },
+  {
+    "code": "65234368",
+    "name": "Bollerups Lantbruksinstitut"
+  },
+  {
+    "code": "21648755",
+    "name": "Borgarskolan"
+  },
+  {
+    "code": "48738629",
+    "name": "Brinellgymnasiet 1"
+  },
+  {
+    "code": "56739540",
+    "name": "Brinellgymnasiet 2"
+  },
+  {
+    "code": "37220633",
+    "name": "Brinellgymnasiet 3"
+  },
+  {
+    "code": "32420077",
+    "name": "Brinellskolan"
+  },
+  {
+    "code": "66620411",
+    "name": "British International School"
+  },
+  {
+    "code": "71457328",
+    "name": "Brogymnasiet 1"
+  },
+  {
+    "code": "47820251",
+    "name": "Brogymnasiet 2"
+  },
+  {
+    "code": "72832832",
+    "name": "Brogymnasiet 3"
+  },
+  {
+    "code": "34247736",
+    "name": "Bromangymnasiet 1"
+  },
+  {
+    "code": "47550455",
+    "name": "Bromangymnasiet 2"
+  },
+  {
+    "code": "30329172",
+    "name": "Bromangymnasiet 3 - Anpassad gymnasieskola"
+  },
+  {
+    "code": "82423815",
+    "name": "Bromangymnasiet 4"
+  },
+  {
+    "code": "21798613",
+    "name": "Bromangymnasiet 5"
+  },
+  {
+    "code": "72594971",
+    "name": "Bromangymnasiet 6"
+  },
+  {
+    "code": "54117171",
+    "name": "Bromma gymnasium 54117171"
+  },
+  {
+    "code": "80008140",
+    "name": "Bromölla gymnasium"
+  },
+  {
+    "code": "51023367",
+    "name": "Bruksgymnasiet"
+  },
+  {
+    "code": "71472793",
+    "name": "Bryggeriets Gymnasium"
+  },
+  {
+    "code": "83805032",
+    "name": "Bråvallagymnasiet 1"
+  },
+  {
+    "code": "48862305",
+    "name": "Bråvallagymnasiet 2"
+  },
+  {
+    "code": "32887559",
+    "name": "Bråvallagymnasiet 3"
+  },
+  {
+    "code": "85586216",
+    "name": "Bråvallagymnasiet 4"
+  },
+  {
+    "code": "88153340",
+    "name": "Bräckegymnasiet 1"
+  },
+  {
+    "code": "94353434",
+    "name": "Bräckegymnasiet 2"
+  },
+  {
+    "code": "84978846",
+    "name": "Bräckegymnasiet 4"
+  },
+  {
+    "code": "37896786",
+    "name": "Burgården gymnasium 2"
+  },
+  {
+    "code": "59396229",
+    "name": "Burgårdens Gymnasium 1"
+  },
+  {
+    "code": "95165649",
+    "name": "Burgårdens Gymnasium 2"
+  },
+  {
+    "code": "64740897",
+    "name": "Burgårdens Gymnasium 3"
+  },
+  {
+    "code": "78979604",
+    "name": "Burgårdens Gymnasium 4"
+  },
+  {
+    "code": "69626109",
+    "name": "Burgårdens Gymnasium 5"
+  },
+  {
+    "code": "21938009",
+    "name": "Burgårdens Gymnasium 6"
+  },
+  {
+    "code": "46162400",
+    "name": "Bäckadalsgymnasiet RO 1"
+  },
+  {
+    "code": "39565412",
+    "name": "Bäckadalsgymnasiet RO 2"
+  },
+  {
+    "code": "98369689",
+    "name": "Bäckadalsgymnasiet RO 3"
+  },
+  {
+    "code": "56529916",
+    "name": "Bäckadalsgymnasiet RO 4"
+  },
+  {
+    "code": "40810950",
+    "name": "Bäckadalsgymnasiet RO 5"
+  },
+  {
+    "code": "43634528",
+    "name": "Bäckängsgymnasiet A"
+  },
+  {
+    "code": "36263479",
+    "name": "Bäckängsgymnasiet B"
+  },
+  {
+    "code": "56679384",
+    "name": "Bäckängsgymnasiet C"
+  },
+  {
+    "code": "30538202",
+    "name": "Bäckängsgymnasiet D"
+  },
+  {
+    "code": "11138440",
+    "name": "Bäckängsgymnasiet E"
+  },
+  {
+    "code": "88466776",
+    "name": "Calmare Internationella Skola"
+  },
+  {
+    "code": "41745951",
+    "name": "Campeon Frigymnasium"
+  },
+  {
+    "code": "48120273",
+    "name": "Campus Manilla Gymnasium"
+  },
+  {
+    "code": "15077883",
+    "name": "Carl Engströmgymnasiet"
+  },
+  {
+    "code": "13963517",
+    "name": "Carl Wahren Gymnasium"
+  },
+  {
+    "code": "95805896",
+    "name": "Carlforsska gymnasiet"
+  },
+  {
+    "code": "36670439",
+    "name": "Carlsund utbildningscentrum 1"
+  },
+  {
+    "code": "22220001",
+    "name": "Carlsund utbildningscentrum 2"
+  },
+  {
+    "code": "72351233",
+    "name": "Carlsund utbildningscentrum 3"
+  },
+  {
+    "code": "47844862",
+    "name": "Celsiusskolan"
+  },
+  {
+    "code": "53432700",
+    "name": "Center för språkintroduktion Lindholmen 1"
+  },
+  {
+    "code": "84341377",
+    "name": "Christian 4s Gymnasium 11"
+  },
+  {
+    "code": "71073360",
+    "name": "Christian 4s Gymnasium 13"
+  },
+  {
+    "code": "76359296",
+    "name": "Christinagymnasiet"
+  },
+  {
+    "code": "83137205",
+    "name": "Cultura Gymnasium"
+  },
+  {
+    "code": "22239675",
+    "name": "Cultus gymnasium"
+  },
+  {
+    "code": "95683850",
+    "name": "Curt Nicolin Gymnasiet"
+  },
+  {
+    "code": "94167577",
+    "name": "Cybergymnasiet Stockholm"
+  },
+  {
+    "code": "80376589",
+    "name": "Dackeskolan MG3"
+  },
+  {
+    "code": "67752682",
+    "name": "Dackeskolan MG4"
+  },
+  {
+    "code": "69985412",
+    "name": "Dahlander kunskapscentrum"
+  },
+  {
+    "code": "88894245",
+    "name": "Dahlstiernska gymnasiet"
+  },
+  {
+    "code": "12807435",
+    "name": "Dammsdalskolan gymnasieskola"
+  },
+  {
+    "code": "30866364",
+    "name": "Danderyds Gymnasium"
+  },
+  {
+    "code": "58544422",
+    "name": "De Geergymnasiet 1"
+  },
+  {
+    "code": "65150019",
+    "name": "De Geergymnasiet 3"
+  },
+  {
+    "code": "22426680",
+    "name": "De Geergymnasiet 6"
+  },
+  {
+    "code": "89807183",
+    "name": "De la Gardiegymnasiet, enhet 1"
+  },
+  {
+    "code": "86724994",
+    "name": "De la Gardiegymnasiet, enhet 2"
+  },
+  {
+    "code": "61161774",
+    "name": "De la Gardiegymnasiet, enhet 3"
+  },
+  {
+    "code": "86158933",
+    "name": "De la Gardiegymnasiet, enhet 4"
+  },
+  {
+    "code": "39179525",
+    "name": "De la Gardiegymnasiet, enhet 5"
+  },
+  {
+    "code": "14102256",
+    "name": "De la Gardiegymnasiet, enhet 6"
+  },
+  {
+    "code": "10924758",
+    "name": "Degerforsgymnasiet"
+  },
+  {
+    "code": "10968377",
+    "name": "Designgymnasiet Göteborg"
+  },
+  {
+    "code": "27023528",
+    "name": "Designgymnasiet Kungsholmen"
+  },
+  {
+    "code": "42662249",
+    "name": "Designgymnasiet Malmö"
+  },
+  {
+    "code": "14355031",
+    "name": "Designgymnasiet Sickla"
+  },
+  {
+    "code": "85993600",
+    "name": "Designgymnasiet Västerås"
+  },
+  {
+    "code": "62490359",
+    "name": "Dille Gård Naturbruksgymnasium"
+  },
+  {
+    "code": "97090958",
+    "name": "Dinglegymnasiet"
+  },
+  {
+    "code": "85782695",
+    "name": "Distra Gymnasium"
+  },
+  {
+    "code": "98815582",
+    "name": "Djurgymnasiet Stockholm"
+  },
+  {
+    "code": "78397312",
+    "name": "Donnergymnasiet"
+  },
+  {
+    "code": "95422674",
+    "name": "Dragonskolan GY1"
+  },
+  {
+    "code": "88038823",
+    "name": "Dragonskolan GY2"
+  },
+  {
+    "code": "74819699",
+    "name": "Dragonskolan GY3"
+  },
+  {
+    "code": "22103276",
+    "name": "Dragonskolan GY4"
+  },
+  {
+    "code": "19150273",
+    "name": "Drottning Blankas Gymnasieskola Borås"
+  },
+  {
+    "code": "58724424",
+    "name": "Drottning Blankas Gymnasieskola Falkenberg"
+  },
+  {
+    "code": "11111710",
+    "name": "Drottning Blankas Gymnasieskola Gävle"
+  },
+  {
+    "code": "36444853",
+    "name": "Drottning Blankas Gymnasieskola Göteborg Centrum"
+  },
+  {
+    "code": "85068812",
+    "name": "Drottning Blankas Gymnasieskola Göteborg Karlastaden"
+  },
+  {
+    "code": "10638939",
+    "name": "Drottning Blankas Gymnasieskola Göteborg Odin"
+  },
+  {
+    "code": "44653962",
+    "name": "Drottning Blankas Gymnasieskola Halmstad"
+  },
+  {
+    "code": "28398531",
+    "name": "Drottning Blankas Gymnasieskola Helsingborg"
+  },
+  {
+    "code": "85214294",
+    "name": "Drottning Blankas Gymnasieskola Jakobsberg"
+  },
+  {
+    "code": "12279302",
+    "name": "Drottning Blankas Gymnasieskola Jönköping"
+  },
+  {
+    "code": "93947551",
+    "name": "Drottning Blankas Gymnasieskola Karlstad 1"
+  },
+  {
+    "code": "79516949",
+    "name": "Drottning Blankas gymnasieskola Karlstad 2"
+  },
+  {
+    "code": "67554405",
+    "name": "Drottning Blankas Gymnasieskola Kristianstad 1"
+  },
+  {
+    "code": "43251309",
+    "name": "Drottning Blankas Gymnasieskola Kristianstad 2"
+  },
+  {
+    "code": "64569393",
+    "name": "Drottning Blankas Gymnasieskola Kungsbacka"
+  },
+  {
+    "code": "64648904",
+    "name": "Drottning Blankas Gymnasieskola Lund"
+  },
+  {
+    "code": "77609073",
+    "name": "Drottning Blankas Gymnasieskola Malmö City"
+  },
+  {
+    "code": "35894996",
+    "name": "Drottning Blankas Gymnasieskola Malmö Lilla Torg"
+  },
+  {
+    "code": "68602647",
+    "name": "Drottning Blankas Gymnasieskola Nacka 1"
+  },
+  {
+    "code": "31071774",
+    "name": "Drottning Blankas Gymnasieskola Nacka 2"
+  },
+  {
+    "code": "28023078",
+    "name": "Drottning Blankas Gymnasieskola Norrköping"
+  },
+  {
+    "code": "26508763",
+    "name": "Drottning Blankas Gymnasieskola Skövde"
+  },
+  {
+    "code": "97770837",
+    "name": "Drottning Blankas Gymnasieskola Stockholm Södra"
+  },
+  {
+    "code": "85516596",
+    "name": "Drottning Blankas Gymnasieskola Stockholm Vasastan"
+  },
+  {
+    "code": "36769815",
+    "name": "Drottning Blankas Gymnasieskola Sundsvall"
+  },
+  {
+    "code": "25156286",
+    "name": "Drottning Blankas Gymnasieskola Trollhättan 1"
+  },
+  {
+    "code": "71969230",
+    "name": "Drottning Blankas Gymnasieskola Trollhättan 2"
+  },
+  {
+    "code": "50424828",
+    "name": "Drottning Blankas Gymnasieskola Uddevalla"
+  },
+  {
+    "code": "55472112",
+    "name": "Drottning Blankas Gymnasieskola Uppsala"
+  },
+  {
+    "code": "64648566",
+    "name": "Drottning Blankas Gymnasieskola Örebro"
+  },
+  {
+    "code": "23836342",
+    "name": "Duveholmsgymnasiet 1"
+  },
+  {
+    "code": "79471219",
+    "name": "Duveholmsgymnasiet 4"
+  },
+  {
+    "code": "16755988",
+    "name": "Ebba Brahe Gymnasium"
+  },
+  {
+    "code": "53832505",
+    "name": "Ebersteinska gymnasiet  4"
+  },
+  {
+    "code": "71541108",
+    "name": "Ebersteinska gymnasiet 5"
+  },
+  {
+    "code": "62956050",
+    "name": "Ebersteinska gymnasiet 6"
+  },
+  {
+    "code": "88412374",
+    "name": "Ebersteinska gymnasiet 7"
+  },
+  {
+    "code": "92009807",
+    "name": "Edströmska"
+  },
+  {
+    "code": "96024712",
+    "name": "Ehrensvärdska gymnasiet"
+  },
+  {
+    "code": "12926770",
+    "name": "Einar Hansengymnasiet"
+  },
+  {
+    "code": "41555549",
+    "name": "Ekbackeskolan"
+  },
+  {
+    "code": "24194577",
+    "name": "Ekebyholmsskolan, gy"
+  },
+  {
+    "code": "34153869",
+    "name": "Eksjö Gymnasium 1"
+  },
+  {
+    "code": "88259298",
+    "name": "Eksjö Gymnasium 2"
+  },
+  {
+    "code": "21312503",
+    "name": "Elektrikergymnasiet"
+  },
+  {
+    "code": "56050416",
+    "name": "Ellen Fries gymnasium"
+  },
+  {
+    "code": "87262566",
+    "name": "Elof Lindälvs Gymnasium Enhet 1"
+  },
+  {
+    "code": "64160122",
+    "name": "Elof Lindälvs Gymnasium Enhet 2"
+  },
+  {
+    "code": "48217580",
+    "name": "Elof Lindälvs Gymnasium Enhet 3"
+  },
+  {
+    "code": "41844601",
+    "name": "Elof Lindälvs Gymnasium Enhet 4"
+  },
+  {
+    "code": "51620045",
+    "name": "Elof Lindälvs Gymnasium Enhet 5"
+  },
+  {
+    "code": "27489137",
+    "name": "Elteknikbranschens gymnasium"
+  },
+  {
+    "code": "69650864",
+    "name": "Enskilda gymnasiet, gy"
+  },
+  {
+    "code": "67279263",
+    "name": "Erik Dahlbergsgymnasiet RO 1"
+  },
+  {
+    "code": "40037982",
+    "name": "Erik Dahlbergsgymnasiet RO 2"
+  },
+  {
+    "code": "51210136",
+    "name": "Erik Dahlbergsgymnasiet RO 3"
+  },
+  {
+    "code": "73829818",
+    "name": "Erik Dahlbergsgymnasiet RO 4"
+  },
+  {
+    "code": "60881275",
+    "name": "Erik Dahlbergsgymnasiet RO 5"
+  },
+  {
+    "code": "30022894",
+    "name": "ESS-gymnasiet 30022894"
+  },
+  {
+    "code": "84286715",
+    "name": "ESS-gymnasiet 84286715"
+  },
+  {
+    "code": "98847548",
+    "name": "ESS-gymnasiet 98847548"
+  },
+  {
+    "code": "15414001",
+    "name": "Ester Mosessons gymnasium 1"
+  },
+  {
+    "code": "38311488",
+    "name": "Ester Mosessons gymnasium 2"
+  },
+  {
+    "code": "23517336",
+    "name": "Estetiska skolan, gymnasiet"
+  },
+  {
+    "code": "22383788",
+    "name": "Etec Teknikutbildning AB"
+  },
+  {
+    "code": "32071849",
+    "name": "Europaskolan Strängnäs"
+  },
+  {
+    "code": "95684185",
+    "name": "Falkenbergs Gymnasieskola 1A"
+  },
+  {
+    "code": "51138448",
+    "name": "Falkenbergs Gymnasieskola 2A"
+  },
+  {
+    "code": "69207980",
+    "name": "Falkenbergs gymnasieskola 2B"
+  },
+  {
+    "code": "98640469",
+    "name": "Falkenbergs gymnasieskola 2C"
+  },
+  {
+    "code": "64465418",
+    "name": "Falkenbergs gymnasieskola 3A"
+  },
+  {
+    "code": "19647256",
+    "name": "Falkenbergs Gymnasieskola 3B"
+  },
+  {
+    "code": "44013173",
+    "name": "Falkenbergs gymnasieskola 3C"
+  },
+  {
+    "code": "25720752",
+    "name": "Falu Frigymnasium"
+  },
+  {
+    "code": "32492188",
+    "name": "Fenix Gymnasium 1"
+  },
+  {
+    "code": "54172830",
+    "name": "Filbornaskolan"
+  },
+  {
+    "code": "47537928",
+    "name": "Film & Musikgymnasiet"
+  },
+  {
+    "code": "16577552",
+    "name": "Finnvedens Gymnasium 1"
+  },
+  {
+    "code": "36355200",
+    "name": "Finnvedens Gymnasium 2"
+  },
+  {
+    "code": "96920524",
+    "name": "Finnvedens Gymnasium 3"
+  },
+  {
+    "code": "18217765",
+    "name": "Finnvedens Gymnasium 4"
+  },
+  {
+    "code": "36845597",
+    "name": "Fischerströmska gymnasiet"
+  },
+  {
+    "code": "43649848",
+    "name": "Flygteknikcenter, Ljungbyhed"
+  },
+  {
+    "code": "43450482",
+    "name": "Flyinge Hästsportgymnasium"
+  },
+  {
+    "code": "24544503",
+    "name": "Folkungaskolan 1"
+  },
+  {
+    "code": "25392789",
+    "name": "Folkungaskolan 2"
+  },
+  {
+    "code": "64394770",
+    "name": "Folkungaskolan 3"
+  },
+  {
+    "code": "28081446",
+    "name": "Folkuniversitetets gymnasium i Trollhättan"
+  },
+  {
+    "code": "82163292",
+    "name": "ForshagaAkademin"
+  },
+  {
+    "code": "63451147",
+    "name": "Forslundagymnasiet GY"
+  },
+  {
+    "code": "76562396",
+    "name": "Franklins gymnasium"
+  },
+  {
+    "code": "41938272",
+    "name": "Franska Skolan/Ecole francaise Gymnasium"
+  },
+  {
+    "code": "29185207",
+    "name": "Fredrika Bremergymnasiet Högskoleförberedande program"
+  },
+  {
+    "code": "44224753",
+    "name": "Fredrika Bremergymnasiet Yrkesprogram"
+  },
+  {
+    "code": "42573391",
+    "name": "Fria Läroverken i Karlshamn"
+  },
+  {
+    "code": "31380193",
+    "name": "Fria Läroverken i Ystad"
+  },
+  {
+    "code": "27115998",
+    "name": "Fria Läroverken Karlstad"
+  },
+  {
+    "code": "69240218",
+    "name": "Fria Läroverken Linköping"
+  },
+  {
+    "code": "68748767",
+    "name": "Fria Läroverken Malmö"
+  },
+  {
+    "code": "69471748",
+    "name": "Fria Läroverken Norrköping"
+  },
+  {
+    "code": "67286143",
+    "name": "Fridagymnasiet i Mölnlycke"
+  },
+  {
+    "code": "74919147",
+    "name": "Fridagymnasiet, Vänersborg"
+  },
+  {
+    "code": "58125096",
+    "name": "Fridegårdsgymnasiet"
+  },
+  {
+    "code": "82914148",
+    "name": "Fridegårdsgymnasiet- AST-programmen"
+  },
+  {
+    "code": "21567982",
+    "name": "Friskolan Nytorp"
+  },
+  {
+    "code": "24759907",
+    "name": "Fryshuset Gymnasium"
+  },
+  {
+    "code": "10975008",
+    "name": "Furuboda Gymnasieskola"
+  },
+  {
+    "code": "29324709",
+    "name": "Furubygg"
+  },
+  {
+    "code": "40667807",
+    "name": "Furuhedsskolan 1"
+  },
+  {
+    "code": "18091973",
+    "name": "Furuhedsskolan 2"
+  },
+  {
+    "code": "23476801",
+    "name": "Furulundsgymnasiet 1"
+  },
+  {
+    "code": "86351879",
+    "name": "Furulundsgymnasiet 2"
+  },
+  {
+    "code": "74322969",
+    "name": "Fågelvikskolans gymnasie"
+  },
+  {
+    "code": "86310217",
+    "name": "G.O. Kompetens Transportgymnasium"
+  },
+  {
+    "code": "14677676",
+    "name": "Gamlebygymnasiet"
+  },
+  {
+    "code": "79168684",
+    "name": "GIS"
+  },
+  {
+    "code": "89888648",
+    "name": "Gislaveds gymnasium Innovationssektor"
+  },
+  {
+    "code": "25679488",
+    "name": "Gislaveds gymnasium Samhällssektor"
+  },
+  {
+    "code": "25677996",
+    "name": "Gislaveds gymnasium Utvecklingssektor"
+  },
+  {
+    "code": "76054399",
+    "name": "Globala gymnasiet 76054399"
+  },
+  {
+    "code": "35063170",
+    "name": "Gnosjöandans kunskapsc. gy"
+  },
+  {
+    "code": "42517257",
+    "name": "Grans naturbruksgymnasium"
+  },
+  {
+    "code": "23555409",
+    "name": "Grillska Gymnasiet Eskilstuna"
+  },
+  {
+    "code": "21627442",
+    "name": "Grillska Gymnasiet Kungsholmen"
+  },
+  {
+    "code": "33132452",
+    "name": "Grillska Gymnasiet Liljeholmen"
+  },
+  {
+    "code": "36480690",
+    "name": "Grillska Gymnasiet Uppsala"
+  },
+  {
+    "code": "10433896",
+    "name": "Grillska Gymnasiet Västerås"
+  },
+  {
+    "code": "49739986",
+    "name": "Grillska Gymnasiet Örebro"
+  },
+  {
+    "code": "52690153",
+    "name": "Gränsälvsgymnasiet"
+  },
+  {
+    "code": "89837629",
+    "name": "GTIs gymnasieskola"
+  },
+  {
+    "code": "90990441",
+    "name": "Guldstadsgymnasiet i Skellefteå"
+  },
+  {
+    "code": "92814975",
+    "name": "Gullmarsgymnasiet 1"
+  },
+  {
+    "code": "60873719",
+    "name": "Gullmarsgymnasiet 2"
+  },
+  {
+    "code": "24277564",
+    "name": "Gustavsbergs gymnasium"
+  },
+  {
+    "code": "31279294",
+    "name": "Gutegymnasiet"
+  },
+  {
+    "code": "57446690",
+    "name": "Gymn.utb. Töreboda Kanalskola"
+  },
+  {
+    "code": "12994441",
+    "name": "Gymnasieakademin Göteborg"
+  },
+  {
+    "code": "55295253",
+    "name": "Gymnasieskolan"
+  },
+  {
+    "code": "58187973",
+    "name": "Gymnasieskolan"
+  },
+  {
+    "code": "28085125",
+    "name": "Gymnasieskolan Gripen"
+  },
+  {
+    "code": "40338843",
+    "name": "Gymnasieskolan Knut Hahn 1"
+  },
+  {
+    "code": "77440824",
+    "name": "Gymnasieskolan Knut Hahn 2"
+  },
+  {
+    "code": "13883567",
+    "name": "Gymnasieskolan Knut Hahn 3"
+  },
+  {
+    "code": "71069359",
+    "name": "Gymnasieskolan Knut Hahn 4"
+  },
+  {
+    "code": "75939593",
+    "name": "Gymnasieskolan Spyken"
+  },
+  {
+    "code": "63035915",
+    "name": "Gymnasieskolan Vipan"
+  },
+  {
+    "code": "41878314",
+    "name": "Gymnasiet"
+  },
+  {
+    "code": "49279427",
+    "name": "Gymnasieutb. Älvkarleby komvux"
+  },
+  {
+    "code": "11681103",
+    "name": "Gymnasieutbildn. i Svenljunga"
+  },
+  {
+    "code": "24445686",
+    "name": "Gymnasieutbildning i Lekeberg"
+  },
+  {
+    "code": "25253663",
+    "name": "Gymnasieutbildningen Hallstahammar"
+  },
+  {
+    "code": "70011480",
+    "name": "Gymnasieutbildningen i Bjuv"
+  },
+  {
+    "code": "73416853",
+    "name": "Gymnasieutbildningen i Burlöv"
+  },
+  {
+    "code": "19599583",
+    "name": "Gymnasieutbildningen i Gagnef"
+  },
+  {
+    "code": "45101776",
+    "name": "Gymnasieutbildningen i Höör"
+  },
+  {
+    "code": "84200045",
+    "name": "Göinge utbildningscenter, Gymnasium"
+  },
+  {
+    "code": "41119610",
+    "name": "Göranssonska skolan"
+  },
+  {
+    "code": "88774402",
+    "name": "Göteborgs Högre Samskola gy."
+  },
+  {
+    "code": "53660780",
+    "name": "Göteborgsregionens tekniska gymnasium"
+  },
+  {
+    "code": "49750031",
+    "name": "Hagagymnasiet skolenhet Blå"
+  },
+  {
+    "code": "76485705",
+    "name": "Hagagymnasiet skolenhet grön"
+  },
+  {
+    "code": "31771188",
+    "name": "Hagagymnasiet skolenhet gul"
+  },
+  {
+    "code": "93239262",
+    "name": "Hagagymnasiet skolenhet röd"
+  },
+  {
+    "code": "67422309",
+    "name": "Haganässkolan 1"
+  },
+  {
+    "code": "67058407",
+    "name": "Haganässkolan2"
+  },
+  {
+    "code": "55155562",
+    "name": "Hagströmska Gymnasiet Falun 1"
+  },
+  {
+    "code": "34253318",
+    "name": "Hagströmska Gymnasiet Falun 2"
+  },
+  {
+    "code": "10342448",
+    "name": "Hahrska gymnasiet"
+  },
+  {
+    "code": "18072172",
+    "name": "Hampnäs gymnasium"
+  },
+  {
+    "code": "20763964",
+    "name": "Hedda Anderssongymnasiet"
+  },
+  {
+    "code": "77352223",
+    "name": "Helsingborgs Lärlingsgymnasium"
+  },
+  {
+    "code": "75458014",
+    "name": "Helsingborgs Sportgymnasium"
+  },
+  {
+    "code": "70811222",
+    "name": "Hermods Distansgymnasium"
+  },
+  {
+    "code": "27993549",
+    "name": "Herrgårdsgymnasiet 1"
+  },
+  {
+    "code": "71043974",
+    "name": "Hersby gymnasium"
+  },
+  {
+    "code": "25745773",
+    "name": "Himmelstalunds utbildningscentrum"
+  },
+  {
+    "code": "97535124",
+    "name": "Hitachigymnasiet Ludvika"
+  },
+  {
+    "code": "66028861",
+    "name": "Hitachigymnasiet Västerås"
+  },
+  {
+    "code": "59386837",
+    "name": "Hjalmar Strömerskolan"
+  },
+  {
+    "code": "14853321",
+    "name": "Holavedsgymnasiet RO1"
+  },
+  {
+    "code": "95368476",
+    "name": "Holavedsgymnasiet RO2"
+  },
+  {
+    "code": "76342612",
+    "name": "Holavedsgymnasiet RO3"
+  },
+  {
+    "code": "70437191",
+    "name": "Holavedsgymnasiet RO4"
+  },
+  {
+    "code": "55795961",
+    "name": "Hornavanskolan"
+  },
+  {
+    "code": "49862313",
+    "name": "Huddingegymnasiet"
+  },
+  {
+    "code": "76877530",
+    "name": "Hudikgymnasiet"
+  },
+  {
+    "code": "98053087",
+    "name": "Hulebäcksgymnasiet 1"
+  },
+  {
+    "code": "92533079",
+    "name": "Hulebäcksgymnasiet 2"
+  },
+  {
+    "code": "61528940",
+    "name": "Hulebäcksgymnasiet 3"
+  },
+  {
+    "code": "23681822",
+    "name": "Hulebäcksgymnasiet 4"
+  },
+  {
+    "code": "66861851",
+    "name": "Hulebäcksgymnasiet 5"
+  },
+  {
+    "code": "72206824",
+    "name": "Hulebäcksgymnasiet 6"
+  },
+  {
+    "code": "47046103",
+    "name": "Hultsfreds gymnasium 1"
+  },
+  {
+    "code": "56664512",
+    "name": "Hultsfreds gymnasium 2"
+  },
+  {
+    "code": "38167912",
+    "name": "Hultsfreds gymnasium 3"
+  },
+  {
+    "code": "68769650",
+    "name": "Hushagsgymnasiet"
+  },
+  {
+    "code": "34222422",
+    "name": "Hvilangymnasiet"
+  },
+  {
+    "code": "61701709",
+    "name": "Hvitfeldtska gymnasiet 1"
+  },
+  {
+    "code": "61469192",
+    "name": "Hvitfeldtska gymnasiet 2"
+  },
+  {
+    "code": "84306392",
+    "name": "Hvitfeldtska gymnasiet 3"
+  },
+  {
+    "code": "28627819",
+    "name": "Hvitfeldtska gymnasiet 4"
+  },
+  {
+    "code": "30086854",
+    "name": "Hvitfeldtska gymnasiet 5"
+  },
+  {
+    "code": "50235617",
+    "name": "Hvitfeldtska gymnasiet 6"
+  },
+  {
+    "code": "75914968",
+    "name": "Hvitfeldtska gymnasiet 7"
+  },
+  {
+    "code": "83501757",
+    "name": "Hylte gymnasieskola"
+  },
+  {
+    "code": "43623146",
+    "name": "Häggviks Gymnasium"
+  },
+  {
+    "code": "91748148",
+    "name": "Hälsingegymnasiet"
+  },
+  {
+    "code": "17173461",
+    "name": "Härjedalens gymnasium"
+  },
+  {
+    "code": "55535552",
+    "name": "Härnösands gymnasium 1"
+  },
+  {
+    "code": "19560192",
+    "name": "Härnösands gymnasium 2"
+  },
+  {
+    "code": "30468157",
+    "name": "Härnösands gymnasium 3"
+  },
+  {
+    "code": "92858957",
+    "name": "Hässleholms Tekniska Skola"
+  },
+  {
+    "code": "65833454",
+    "name": "Höga kustens teoretiska gymnasium"
+  },
+  {
+    "code": "31057219",
+    "name": "Högbergsskolan"
+  },
+  {
+    "code": "67783774",
+    "name": "Högsby Lärcenter"
+  },
+  {
+    "code": "39015433",
+    "name": "Hörby Lärcenter, komvux"
+  },
+  {
+    "code": "38917647",
+    "name": "Hörby Yrkesgymnasium"
+  },
+  {
+    "code": "10425474",
+    "name": "Idrottsgymnasiet Dragonskolan"
+  },
+  {
+    "code": "58943570",
+    "name": "IM"
+  },
+  {
+    "code": "52054634",
+    "name": "IM Grums"
+  },
+  {
+    "code": "41600127",
+    "name": "Im-enheten"
+  },
+  {
+    "code": "83487818",
+    "name": "IM-gymnasiet"
+  },
+  {
+    "code": "71728074",
+    "name": "IM-programmet i Nora"
+  },
+  {
+    "code": "65136104",
+    "name": "Impius gymnasium"
+  },
+  {
+    "code": "53494028",
+    "name": "Individuella programmet"
+  },
+  {
+    "code": "24501884",
+    "name": "Ingelstadgymnasiet"
+  },
+  {
+    "code": "48847282",
+    "name": "Ingrid Segerstedts gymnasium"
+  },
+  {
+    "code": "28967085",
+    "name": "Ingridskolan, gymnasiet"
+  },
+  {
+    "code": "61826221",
+    "name": "International school of Hbg/Gy"
+  },
+  {
+    "code": "25525759",
+    "name": "International School of the Stockholm Region 25525759"
+  },
+  {
+    "code": "77632411",
+    "name": "Internationella Engelska Gymnasiet Södermalm"
+  },
+  {
+    "code": "32995170",
+    "name": "Internationella gymnasiet"
+  },
+  {
+    "code": "56653353",
+    "name": "Internationella Hotell- och Restaurangskolan"
+  },
+  {
+    "code": "19100658",
+    "name": "Introduktionsprogrammen"
+  },
+  {
+    "code": "39827453",
+    "name": "Introduktionsprogrammen"
+  },
+  {
+    "code": "69504751",
+    "name": "Introduktionsprogrammet"
+  },
+  {
+    "code": "46660042",
+    "name": "Jacobsskolan"
+  },
+  {
+    "code": "54655009",
+    "name": "Jenny Nyströmskolan B"
+  },
+  {
+    "code": "88986563",
+    "name": "JENSEN Gymnasium Eskilstuna"
+  },
+  {
+    "code": "97510495",
+    "name": "JENSEN Gymnasium Gamla stan"
+  },
+  {
+    "code": "38684438",
+    "name": "JENSEN Gymnasium Göteborg"
+  },
+  {
+    "code": "82628341",
+    "name": "JENSEN gymnasium Haninge"
+  },
+  {
+    "code": "56330385",
+    "name": "JENSEN Gymnasium Helsingborg"
+  },
+  {
+    "code": "18881773",
+    "name": "JENSEN Gymnasium Jönköping"
+  },
+  {
+    "code": "17666526",
+    "name": "JENSEN Gymnasium Kristianstad"
+  },
+  {
+    "code": "38460895",
+    "name": "JENSEN Gymnasium Linköping"
+  },
+  {
+    "code": "26324896",
+    "name": "JENSEN Gymnasium Lund"
+  },
+  {
+    "code": "48593439",
+    "name": "JENSEN Gymnasium Malmö"
+  },
+  {
+    "code": "42053960",
+    "name": "JENSEN gymnasium Nacka strand"
+  },
+  {
+    "code": "97378761",
+    "name": "JENSEN Gymnasium Norrköping"
+  },
+  {
+    "code": "61674097",
+    "name": "JENSEN Gymnasium Uppsala"
+  },
+  {
+    "code": "38195284",
+    "name": "JENSEN Gymnasium Vasastan"
+  },
+  {
+    "code": "49170638",
+    "name": "JENSEN Gymnasium Västerås"
+  },
+  {
+    "code": "65615078",
+    "name": "JENSEN Gymnasium Wenngarn"
+  },
+  {
+    "code": "92192566",
+    "name": "JENSEN Gymnasium Örebro"
+  },
+  {
+    "code": "69747871",
+    "name": "Johan Movingers Gymnasium"
+  },
+  {
+    "code": "20228162",
+    "name": "Johannes Hedberggymnasiet"
+  },
+  {
+    "code": "60743463",
+    "name": "Jämtlands Gymn, Berg"
+  },
+  {
+    "code": "17184072",
+    "name": "Jämtlands Gymn, Bispgården"
+  },
+  {
+    "code": "26864271",
+    "name": "Jämtlands Gymn, Bräcke"
+  },
+  {
+    "code": "32239920",
+    "name": "Jämtlands Gymn, Fyrvalla 3A"
+  },
+  {
+    "code": "68310175",
+    "name": "Jämtlands Gymn, Fyrvalla 3B"
+  },
+  {
+    "code": "33467604",
+    "name": "Jämtlands Gymn, Fyrvalla 3C"
+  },
+  {
+    "code": "64725297",
+    "name": "Jämtlands Gymn, Torsta"
+  },
+  {
+    "code": "38880984",
+    "name": "Jämtlands Gymn, Wargentin 1A"
+  },
+  {
+    "code": "28872974",
+    "name": "Jämtlands Gymn, Wargentin 1B"
+  },
+  {
+    "code": "85760240",
+    "name": "Jämtlands Gymn, Wargentin 1C"
+  },
+  {
+    "code": "83581734",
+    "name": "Jämtlands Gymn, Wargentin 1D"
+  },
+  {
+    "code": "69812576",
+    "name": "Jämtlands Gymn, Wargentin 1E"
+  },
+  {
+    "code": "18686599",
+    "name": "Jämtlands Gymn, Wargentin 2A"
+  },
+  {
+    "code": "93779220",
+    "name": "Jämtlands Gymn, Wargentin 2B"
+  },
+  {
+    "code": "77797484",
+    "name": "Jämtlands Gymn, Wargentin 2C"
+  },
+  {
+    "code": "53279140",
+    "name": "Jämtlands Gymn, Wargentin 2D"
+  },
+  {
+    "code": "43362941",
+    "name": "Jämtlands Gymn, Wången"
+  },
+  {
+    "code": "15149235",
+    "name": "Jämtlands Gymn, Åre 1"
+  },
+  {
+    "code": "48336642",
+    "name": "Jämtlands Gymn, Åre 2"
+  },
+  {
+    "code": "22349317",
+    "name": "Järfälla gymnasium Barkarby"
+  },
+  {
+    "code": "33254860",
+    "name": "Järfälla gymnasium Jakobsberg"
+  },
+  {
+    "code": "80280597",
+    "name": "Järna Naturbruksgymnasium"
+  },
+  {
+    "code": "54715314",
+    "name": "Järva Gymnasium"
+  },
+  {
+    "code": "93674454",
+    "name": "Järvsögymnasiet"
+  },
+  {
+    "code": "50908408",
+    "name": "Jönköpings musikgymnasium"
+  },
+  {
+    "code": "85015577",
+    "name": "Kanalskolan"
+  },
+  {
+    "code": "16848652",
+    "name": "Karlbergsgymnasiet 1"
+  },
+  {
+    "code": "88429477",
+    "name": "Karlbergsgymnasiet 2"
+  },
+  {
+    "code": "94975733",
+    "name": "Karlbergsgymnasiet 3"
+  },
+  {
+    "code": "30376472",
+    "name": "Karlfeldtgymnasiet"
+  },
+  {
+    "code": "45830583",
+    "name": "Karlskoga Idrottsgymnasium"
+  },
+  {
+    "code": "54399371",
+    "name": "Karlstads Globala Gymnasium"
+  },
+  {
+    "code": "18966635",
+    "name": "Karlstads gymnasieingenjörsutbildning"
+  },
+  {
+    "code": "21363125",
+    "name": "Karolinaskolan"
+  },
+  {
+    "code": "17482735",
+    "name": "Karolinska gymnasiet ES"
+  },
+  {
+    "code": "83979426",
+    "name": "Karolinska gymnasiet NA"
+  },
+  {
+    "code": "49174017",
+    "name": "Karolinska gymnasiet NB"
+  },
+  {
+    "code": "56956709",
+    "name": "Karolinska gymnasiet SA"
+  },
+  {
+    "code": "56639389",
+    "name": "Katedralskolan"
+  },
+  {
+    "code": "32550660",
+    "name": "Katedralskolan"
+  },
+  {
+    "code": "53821161",
+    "name": "Katedralskolan 1"
+  },
+  {
+    "code": "46707989",
+    "name": "Katedralskolan 1"
+  },
+  {
+    "code": "46986216",
+    "name": "Katedralskolan 2"
+  },
+  {
+    "code": "31199511",
+    "name": "Katedralskolan 2"
+  },
+  {
+    "code": "67924816",
+    "name": "Katedralskolan 3"
+  },
+  {
+    "code": "12934438",
+    "name": "Katedralskolan 3"
+  },
+  {
+    "code": "92805465",
+    "name": "Katedralskolan 4"
+  },
+  {
+    "code": "72276266",
+    "name": "Katedralskolan 5"
+  },
+  {
+    "code": "30706655",
+    "name": "Katedralskolan Skara Enhet 2"
+  },
+  {
+    "code": "92332557",
+    "name": "Katedralskolan Skara Enhet 3"
+  },
+  {
+    "code": "25535510",
+    "name": "Katedralskolan Skara Enhet 4"
+  },
+  {
+    "code": "63791419",
+    "name": "Katrineholms Tekniska College 1"
+  },
+  {
+    "code": "39805497",
+    "name": "Katrineholms Tekniska College 2"
+  },
+  {
+    "code": "31251822",
+    "name": "Katrinelundsgymnasiet 1"
+  },
+  {
+    "code": "90099336",
+    "name": "Katrinelundsgymnasiet 2"
+  },
+  {
+    "code": "96590873",
+    "name": "Katrinelundsgymnasiet 3"
+  },
+  {
+    "code": "35647481",
+    "name": "Katrinelundsgymnasiet 4"
+  },
+  {
+    "code": "39549479",
+    "name": "Katrinelundsgymnasiet 5"
+  },
+  {
+    "code": "31137257",
+    "name": "Katrinelundsgymnasiet 6"
+  },
+  {
+    "code": "20100577",
+    "name": "Kattegattgymnasiet 1"
+  },
+  {
+    "code": "81993306",
+    "name": "Kattegattgymnasiet 2"
+  },
+  {
+    "code": "19051089",
+    "name": "Kattegattgymnasiet 3"
+  },
+  {
+    "code": "29097621",
+    "name": "Kattegattgymnasiet 4"
+  },
+  {
+    "code": "61195886",
+    "name": "Kattegattgymnasiet 5"
+  },
+  {
+    "code": "19413066",
+    "name": "Kattegattgymnasiet 6"
+  },
+  {
+    "code": "42287353",
+    "name": "Kavelbro 1"
+  },
+  {
+    "code": "43998440",
+    "name": "Kavelbro 2"
+  },
+  {
+    "code": "42911621",
+    "name": "Kavelbro 3"
+  },
+  {
+    "code": "73147554",
+    "name": "Kitas Ekonomi"
+  },
+  {
+    "code": "69983740",
+    "name": "Kitas Gymnasium"
+  },
+  {
+    "code": "66491596",
+    "name": "Kitas Natur"
+  },
+  {
+    "code": "40690520",
+    "name": "KLARA Teoretiska Gymnasium Göteborg Postgatan"
+  },
+  {
+    "code": "75141151",
+    "name": "KLARA Teoretiska Gymnasium Göteborg Vallgatan"
+  },
+  {
+    "code": "43313366",
+    "name": "KLARA Teoretiska Gymnasium Linköping"
+  },
+  {
+    "code": "23548714",
+    "name": "KLARA Teoretiska Gymnasium Malmö"
+  },
+  {
+    "code": "49141105",
+    "name": "KLARA Teoretiska Gymnasium Sollentuna"
+  },
+  {
+    "code": "73812226",
+    "name": "KLARA Teoretiska Gymnasium Stockholm Norra"
+  },
+  {
+    "code": "94717858",
+    "name": "KLARA Teoretiska Gymnasium Stockholm Södra"
+  },
+  {
+    "code": "17911161",
+    "name": "KLARA Teoretiska Gymnasium Stockholm Östra"
+  },
+  {
+    "code": "21382451",
+    "name": "KLARA Teoretiska Gymnasium Sundsvall"
+  },
+  {
+    "code": "69270944",
+    "name": "KLARA Teoretiska Gymnasium Västerås"
+  },
+  {
+    "code": "15763669",
+    "name": "Klaragymnasiet med internat"
+  },
+  {
+    "code": "31688123",
+    "name": "Kometskolan Introduktionsprogram"
+  },
+  {
+    "code": "68524034",
+    "name": "Kommunala aktivitetsansvaret"
+  },
+  {
+    "code": "46379730",
+    "name": "Kopparlundsgymnasiet"
+  },
+  {
+    "code": "13754017",
+    "name": "Kramfors gymnasium"
+  },
+  {
+    "code": "81665426",
+    "name": "Kristinegymnasiet"
+  },
+  {
+    "code": "53760158",
+    "name": "Kristofferskolan, gy"
+  },
+  {
+    "code": "76470241",
+    "name": "Krokslättsgymnasiet Skolenhet 1"
+  },
+  {
+    "code": "99356671",
+    "name": "Krokslättsgymnasiet Skolenhet 2"
+  },
+  {
+    "code": "85272681",
+    "name": "Kullagymnasiet"
+  },
+  {
+    "code": "78422467",
+    "name": "Kulturama gymnasium"
+  },
+  {
+    "code": "37802196",
+    "name": "Kulturama Gymnasium Natur"
+  },
+  {
+    "code": "23350817",
+    "name": "Kumla gymnasium"
+  },
+  {
+    "code": "38683336",
+    "name": "Kungl. Svenska Balettskolan gy 38683336"
+  },
+  {
+    "code": "99976753",
+    "name": "Kungsgårdsgymnasiet 1"
+  },
+  {
+    "code": "58037626",
+    "name": "Kungsgårdsgymnasiet 2"
+  },
+  {
+    "code": "14278480",
+    "name": "Kungsgårdsgymnasiet 3"
+  },
+  {
+    "code": "74812809",
+    "name": "Kungsh gy/Sthlms Musikgy 74812809"
+  },
+  {
+    "code": "95618280",
+    "name": "Kungsholmens Västra Gymnasium 95618280"
+  },
+  {
+    "code": "31870541",
+    "name": "Kungshögaskolan MG1"
+  },
+  {
+    "code": "71160225",
+    "name": "Kungshögaskolan MG2"
+  },
+  {
+    "code": "56084099",
+    "name": "Kungsmadskolan 1"
+  },
+  {
+    "code": "80711021",
+    "name": "Kungsmadskolan 2"
+  },
+  {
+    "code": "54927401",
+    "name": "Kungsmadskolan 3"
+  },
+  {
+    "code": "17648596",
+    "name": "Kungsmadskolan 5"
+  },
+  {
+    "code": "16720048",
+    "name": "Kungsmadskolan 6"
+  },
+  {
+    "code": "11106296",
+    "name": "Kungsmadskolan 8"
+  },
+  {
+    "code": "75075402",
+    "name": "Kungstensgymnasiet"
+  },
+  {
+    "code": "87859089",
+    "name": "Kungsängsgymnasiet"
+  },
+  {
+    "code": "95992977",
+    "name": "Kungsörs Gymnasium"
+  },
+  {
+    "code": "58583587",
+    "name": "Kunskapens hus, IM"
+  },
+  {
+    "code": "91333138",
+    "name": "Kunskapscompaniets Gymnasium i Eskilstuna"
+  },
+  {
+    "code": "12052268",
+    "name": "Kunskapsgymnasiet Göteborg"
+  },
+  {
+    "code": "91773491",
+    "name": "Kunskapsgymnasiet Malmö"
+  },
+  {
+    "code": "75575321",
+    "name": "Kunskapsgymnasiet Norrköping"
+  },
+  {
+    "code": "26326048",
+    "name": "Kunskapsgymnasiet Stockholm"
+  },
+  {
+    "code": "49068301",
+    "name": "Kunskapsgymnasiet Stockholm Södermalm"
+  },
+  {
+    "code": "93488613",
+    "name": "Kunskapsgymnasiet Uppsala"
+  },
+  {
+    "code": "25379974",
+    "name": "Kunskapsgymnasiet Västerås"
+  },
+  {
+    "code": "86385479",
+    "name": "Kunskapskällan"
+  },
+  {
+    "code": "37839488",
+    "name": "Kärrtorps gymnasium 37839488"
+  },
+  {
+    "code": "88192227",
+    "name": "Kävlinge Lärcentrum, Gymnasieskola"
+  },
+  {
+    "code": "59521477",
+    "name": "Lagmansgymnasiet1"
+  },
+  {
+    "code": "29221653",
+    "name": "Lagmansgymnasiet2"
+  },
+  {
+    "code": "20666515",
+    "name": "Lapplands Gymnasium Gällivare enhet 1"
+  },
+  {
+    "code": "37906565",
+    "name": "Lapplands Gymnasium Gällivare enhet 2"
+  },
+  {
+    "code": "23063954",
+    "name": "Lapplands Gymnasium Gällivare enhet 3"
+  },
+  {
+    "code": "39555838",
+    "name": "Lapplands Gymnasium Jokkmokk"
+  },
+  {
+    "code": "53630885",
+    "name": "Lapplands Gymnasium Kiruna enh. 1"
+  },
+  {
+    "code": "53048977",
+    "name": "Lapplands Gymnasium Kiruna enh. 2"
+  },
+  {
+    "code": "53131149",
+    "name": "Lapplands Gymnasium Kiruna enh. 3"
+  },
+  {
+    "code": "75324351",
+    "name": "Lapplands Gymnasium Pajala"
+  },
+  {
+    "code": "37917591",
+    "name": "Lars Kaggskolan"
+  },
+  {
+    "code": "95700485",
+    "name": "Lars-Erik Larssongymnasiet"
+  },
+  {
+    "code": "69018222",
+    "name": "LBS Kreativa Gymnasiet Borås"
+  },
+  {
+    "code": "53231578",
+    "name": "LBS Kreativa Gymnasiet Göteborg"
+  },
+  {
+    "code": "47264019",
+    "name": "LBS Kreativa Gymnasiet Halmstad"
+  },
+  {
+    "code": "68240485",
+    "name": "LBS Kreativa Gymnasiet Helsingborg"
+  },
+  {
+    "code": "18594470",
+    "name": "LBS Kreativa Gymnasiet Jönköping"
+  },
+  {
+    "code": "86888278",
+    "name": "LBS Kreativa Gymnasiet Kungsbacka"
+  },
+  {
+    "code": "86787111",
+    "name": "LBS Kreativa Gymnasiet Linköping"
+  },
+  {
+    "code": "51449748",
+    "name": "LBS Kreativa Gymnasiet Lund"
+  },
+  {
+    "code": "97931189",
+    "name": "LBS Kreativa Gymnasiet Malmö"
+  },
+  {
+    "code": "44285075",
+    "name": "LBS Kreativa Gymnasiet Nyköping"
+  },
+  {
+    "code": "18106851",
+    "name": "LBS Kreativa Gymnasiet Stockholm Norra"
+  },
+  {
+    "code": "46256929",
+    "name": "LBS Kreativa Gymnasiet Stockholm Södra"
+  },
+  {
+    "code": "21400668",
+    "name": "LBS Kreativa Gymnasiet Trollhättan"
+  },
+  {
+    "code": "17083056",
+    "name": "LBS Kreativa Gymnasiet Växjö"
+  },
+  {
+    "code": "94207720",
+    "name": "LBS Kreativa Gymnasiet Örebro"
+  },
+  {
+    "code": "44417214",
+    "name": "Leksands gymnasium"
+  },
+  {
+    "code": "25025681",
+    "name": "Lerums Gymnasium, skolenhet 1"
+  },
+  {
+    "code": "88776535",
+    "name": "Lerums Gymnasium, skolenhet 2"
+  },
+  {
+    "code": "29351272",
+    "name": "Lerums Gymnasium, skolenhet 3"
+  },
+  {
+    "code": "49488344",
+    "name": "Lerums Gymnasium, skolenhet 4"
+  },
+  {
+    "code": "74408578",
+    "name": "Lerums Gymnasium, skolenhet 5"
+  },
+  {
+    "code": "75395882",
+    "name": "Lessebo Gymnasium"
+  },
+  {
+    "code": "75027822",
+    "name": "Lichron Teknikgymnasium Skövde"
+  },
+  {
+    "code": "33022817",
+    "name": "Liljaskolan, Järnvägsteknik"
+  },
+  {
+    "code": "90240730",
+    "name": "Liljaskolan, sektor A"
+  },
+  {
+    "code": "84908877",
+    "name": "Liljaskolan, sektor B"
+  },
+  {
+    "code": "78389879",
+    "name": "Liljaskolan, sektor C"
+  },
+  {
+    "code": "59409052",
+    "name": "Liljeholmens gymnasium 59409052"
+  },
+  {
+    "code": "83374651",
+    "name": "Lilla Akademiens Musikgymn."
+  },
+  {
+    "code": "65662401",
+    "name": "Lillerudsgymnasiet AB"
+  },
+  {
+    "code": "38400227",
+    "name": "Lindengymnasiet"
+  },
+  {
+    "code": "24365362",
+    "name": "Lindeparkens anpassade gymnasieskola, Gy"
+  },
+  {
+    "code": "75082280",
+    "name": "Lindeskolan LS 1"
+  },
+  {
+    "code": "75914181",
+    "name": "Lindeskolan LS 2"
+  },
+  {
+    "code": "39302565",
+    "name": "Lindeskolan LS 3"
+  },
+  {
+    "code": "96818167",
+    "name": "Lindeskolan LS 4"
+  },
+  {
+    "code": "11274830",
+    "name": "Lindholmens tekniska gymnasium 1"
+  },
+  {
+    "code": "51321260",
+    "name": "Lindholmens tekniska gymnasium 2"
+  },
+  {
+    "code": "96279444",
+    "name": "Lindholmens tekniska gymnasium 3"
+  },
+  {
+    "code": "87030133",
+    "name": "Lindholmens tekniska gymnasium 4"
+  },
+  {
+    "code": "98000262",
+    "name": "Linköpings idrottsgymnasium"
+  },
+  {
+    "code": "63653488",
+    "name": "Linnégymnasiet 1"
+  },
+  {
+    "code": "50063655",
+    "name": "Linnégymnasiet 2"
+  },
+  {
+    "code": "98939081",
+    "name": "Linnégymnasiet 3"
+  },
+  {
+    "code": "99279503",
+    "name": "Linnégymnasiet 4"
+  },
+  {
+    "code": "71597051",
+    "name": "LM Engströms gymnasium"
+  },
+  {
+    "code": "73046137",
+    "name": "Lugnetgymnasiet"
+  },
+  {
+    "code": "42289842",
+    "name": "Luleå Gymnasieskola, International Programme"
+  },
+  {
+    "code": "31740319",
+    "name": "Luleå gymnasieskola, skolenhet A"
+  },
+  {
+    "code": "10129345",
+    "name": "Luleå gymnasieskola, skolenhet B"
+  },
+  {
+    "code": "17944628",
+    "name": "Luleå gymnasieskola, skolenhet C"
+  },
+  {
+    "code": "82826083",
+    "name": "Luleå gymnasieskola, skolenhet D"
+  },
+  {
+    "code": "94468610",
+    "name": "Luleå gymnasieskola, skolenhet E"
+  },
+  {
+    "code": "94090461",
+    "name": "Luleå gymnasieskola, skolenhet F"
+  },
+  {
+    "code": "12954099",
+    "name": "Luleå gymnasieskola, skolenhet G"
+  },
+  {
+    "code": "80931789",
+    "name": "Luleå gymnasieskola, skolenhet H"
+  },
+  {
+    "code": "84098842",
+    "name": "Luleå gymnasieskola, skolenhet J"
+  },
+  {
+    "code": "57777751",
+    "name": "Lunagymnasiet"
+  },
+  {
+    "code": "59599256",
+    "name": "Lundellska skolan"
+  },
+  {
+    "code": "38081093",
+    "name": "Lunden"
+  },
+  {
+    "code": "28267726",
+    "name": "Lunds Dans- o Musikalgymnasium"
+  },
+  {
+    "code": "28848709",
+    "name": "Lunds Fordonstekniska Gymn."
+  },
+  {
+    "code": "30167976",
+    "name": "Lundsbergs gymnasieskola"
+  },
+  {
+    "code": "50104466",
+    "name": "Luspengymnasiet"
+  },
+  {
+    "code": "59796774",
+    "name": "Lycée Francais Saint Louis, gy"
+  },
+  {
+    "code": "71353314",
+    "name": "Magelungens Gymnasium Danvikstull"
+  },
+  {
+    "code": "27268498",
+    "name": "Magelungens Gymnasium Göteborg"
+  },
+  {
+    "code": "69271071",
+    "name": "Magelungens Gymnasium Jönköping"
+  },
+  {
+    "code": "56942970",
+    "name": "Magelungens Gymnasium Liljeholmen"
+  },
+  {
+    "code": "24147242",
+    "name": "Magelungens gymnasium Södermalm"
+  },
+  {
+    "code": "45466628",
+    "name": "Magelungens Gymnasium Uppsala"
+  },
+  {
+    "code": "92949043",
+    "name": "Magnus Åbergsgymnasiet 1"
+  },
+  {
+    "code": "53889000",
+    "name": "Maja Beskowgymnasiet GY1"
+  },
+  {
+    "code": "26375935",
+    "name": "Maja Beskowgymnasiet GY2"
+  },
+  {
+    "code": "27964873",
+    "name": "Malenagymnasiet"
+  },
+  {
+    "code": "63931325",
+    "name": "Malgomajskolan 1"
+  },
+  {
+    "code": "98702729",
+    "name": "Malgomajskolan 2"
+  },
+  {
+    "code": "30361243",
+    "name": "Malmö Borgarskola Ro 1"
+  },
+  {
+    "code": "57072964",
+    "name": "Malmö Citadellsgymnasium"
+  },
+  {
+    "code": "25596917",
+    "name": "Malmö Idrottsgymnasium Ro1"
+  },
+  {
+    "code": "65722876",
+    "name": "Malmö Latinskola Ro 1"
+  },
+  {
+    "code": "33969130",
+    "name": "Malmö Magistratsgymnasium"
+  },
+  {
+    "code": "90071951",
+    "name": "Malmö Neptunigymnasium"
+  },
+  {
+    "code": "11608031",
+    "name": "Malmö Restaurangskola"
+  },
+  {
+    "code": "68381790",
+    "name": "Malung-Sälens gymnasieskola"
+  },
+  {
+    "code": "73138140",
+    "name": "Malå gymnasieskola"
+  },
+  {
+    "code": "82814120",
+    "name": "Marina läroverket i Danderyd"
+  },
+  {
+    "code": "60294546",
+    "name": "Marks Gymnasieskola, enhet A"
+  },
+  {
+    "code": "12793324",
+    "name": "Marks Gymnasieskola, enhet B1"
+  },
+  {
+    "code": "51629043",
+    "name": "Marks Gymnasieskola, enhet B2"
+  },
+  {
+    "code": "60155358",
+    "name": "Marks Gymnasieskola, enhet C"
+  },
+  {
+    "code": "60878131",
+    "name": "Marks Gymnasieskola, enhet D"
+  },
+  {
+    "code": "20446679",
+    "name": "Marks Gymnasieskola, enhet E"
+  },
+  {
+    "code": "86327236",
+    "name": "Martin Koch-gymnasiet"
+  },
+  {
+    "code": "97868185",
+    "name": "Mediateknikerutbildningen, MTU"
+  },
+  {
+    "code": "97382366",
+    "name": "Mediegymnasiet"
+  },
+  {
+    "code": "95046058",
+    "name": "Mega Musik gymnasium"
+  },
+  {
+    "code": "45652254",
+    "name": "Midgårdsskolan GY"
+  },
+  {
+    "code": "17675502",
+    "name": "Midsommarkransens gy 17675502"
+  },
+  {
+    "code": "82718660",
+    "name": "Mimers Gymnasium Täby"
+  },
+  {
+    "code": "90435000",
+    "name": "Mimers hus Gymnasium, Skolenhet 1"
+  },
+  {
+    "code": "75941223",
+    "name": "Mimers hus Gymnasium, Skolenhet 2"
+  },
+  {
+    "code": "33720955",
+    "name": "Mimers hus Gymnasium, Skolenhet 3"
+  },
+  {
+    "code": "45796620",
+    "name": "Mimers hus Gymnasium, Skolenhet 4"
+  },
+  {
+    "code": "38646067",
+    "name": "Mimers hus Gymnasium, Skolenhet 5"
+  },
+  {
+    "code": "23544320",
+    "name": "Minervagymnasium"
+  },
+  {
+    "code": "47864830",
+    "name": "Mora gymnasium ro 1"
+  },
+  {
+    "code": "74128230",
+    "name": "Mora gymnasium ro 2"
+  },
+  {
+    "code": "97651849",
+    "name": "Morabergs studiecentrum"
+  },
+  {
+    "code": "61880907",
+    "name": "Motorbranschens tekniska gymnasium 1"
+  },
+  {
+    "code": "90003262",
+    "name": "Motorsportsgymnasiet i Anderstorp"
+  },
+  {
+    "code": "38544187",
+    "name": "Munkagårdsgymnasiet"
+  },
+  {
+    "code": "54481243",
+    "name": "Musikkonservatoriet Falun"
+  },
+  {
+    "code": "88956420",
+    "name": "Mälardalens Ridgymnasium Gustavsberg"
+  },
+  {
+    "code": "98032567",
+    "name": "Mälardalens Ridgymnasium Västerås"
+  },
+  {
+    "code": "67628478",
+    "name": "Mälardalens Tekniska Gymnasium"
+  },
+  {
+    "code": "55711881",
+    "name": "Mälarögymnasiet"
+  },
+  {
+    "code": "70669322",
+    "name": "Möckelngymnasiet"
+  },
+  {
+    "code": "62855448",
+    "name": "Nacka Enskilda Gymnasium"
+  },
+  {
+    "code": "92506886",
+    "name": "Nacka Gymnasium"
+  },
+  {
+    "code": "35265260",
+    "name": "Nacka Idrottsgymnasium"
+  },
+  {
+    "code": "29449669",
+    "name": "Nacka Strands Gymnasium"
+  },
+  {
+    "code": "86319615",
+    "name": "Naturbruksgymnasiet i Burträsk"
+  },
+  {
+    "code": "88624631",
+    "name": "Naturbruksgymnasiet Kalmar 1"
+  },
+  {
+    "code": "35390185",
+    "name": "Naturbruksgymnasiet Kalmar 2"
+  },
+  {
+    "code": "19035583",
+    "name": "Naturbruksskolan Svenljunga"
+  },
+  {
+    "code": "25698509",
+    "name": "Naturbruksskolan Sötåsen"
+  },
+  {
+    "code": "46332927",
+    "name": "Naturbruksskolan Uddetorp"
+  },
+  {
+    "code": "49379603",
+    "name": "Naturlära i Hälsingland"
+  },
+  {
+    "code": "44392995",
+    "name": "Nicolaiskolan"
+  },
+  {
+    "code": "44240250",
+    "name": "Nifsarpsskolan"
+  },
+  {
+    "code": "84329061",
+    "name": "Nils Ericsonsgymnasiet 1"
+  },
+  {
+    "code": "84225089",
+    "name": "Nils Ericsonsgymnasiet 2"
+  },
+  {
+    "code": "58518163",
+    "name": "Nils Fredriksson Gymnasium"
+  },
+  {
+    "code": "70463529",
+    "name": "Nils Holgerssongymnasiet i Skurup"
+  },
+  {
+    "code": "61119556",
+    "name": "Njudungsgymnasiet 1"
+  },
+  {
+    "code": "82251333",
+    "name": "Njudungsgymnasiet 2"
+  },
+  {
+    "code": "99864908",
+    "name": "Njudungsgymnasiet 3"
+  },
+  {
+    "code": "27106031",
+    "name": "Njudungsgymnasiet 4"
+  },
+  {
+    "code": "59463950",
+    "name": "Njudungsgymnasiet 5"
+  },
+  {
+    "code": "92200855",
+    "name": "Njudungsgymnasiet 6"
+  },
+  {
+    "code": "55654062",
+    "name": "Nobelgymnasiet 1"
+  },
+  {
+    "code": "82378820",
+    "name": "Nobelgymnasiet 2"
+  },
+  {
+    "code": "79909954",
+    "name": "Nobelgymnasiet 3"
+  },
+  {
+    "code": "83612768",
+    "name": "Nobelgymnasiet 4"
+  },
+  {
+    "code": "16374064",
+    "name": "Nordanstigs gymnasium"
+  },
+  {
+    "code": "59655752",
+    "name": "Nordenbergsskolan 1"
+  },
+  {
+    "code": "88750078",
+    "name": "Nordenbergsskolan 2"
+  },
+  {
+    "code": "30762346",
+    "name": "Nordiska Musikgymnasiet"
+  },
+  {
+    "code": "47070220",
+    "name": "Nordmalings gymnasieskola"
+  },
+  {
+    "code": "82964090",
+    "name": "Norra Real 82964090"
+  },
+  {
+    "code": "17204216",
+    "name": "Norrköpings Lärlingsgymnasium 1"
+  },
+  {
+    "code": "33678402",
+    "name": "Norrängsskolan"
+  },
+  {
+    "code": "25985417",
+    "name": "Norsjö gymnasium"
+  },
+  {
+    "code": "16748680",
+    "name": "Nova gymnasium"
+  },
+  {
+    "code": "68485877",
+    "name": "Novalisgymnasiet"
+  },
+  {
+    "code": "42022406",
+    "name": "NTI Gymnasiet Borlänge"
+  },
+  {
+    "code": "30341162",
+    "name": "NTI Gymnasiet Eskilstuna"
+  },
+  {
+    "code": "79033948",
+    "name": "NTI Gymnasiet Helsingborg"
+  },
+  {
+    "code": "79094701",
+    "name": "NTI Gymnasiet Johanneberg"
+  },
+  {
+    "code": "41867682",
+    "name": "NTI Gymnasiet Karlstad"
+  },
+  {
+    "code": "53691739",
+    "name": "NTI Gymnasiet Kristianstad"
+  },
+  {
+    "code": "35006050",
+    "name": "NTI Gymnasiet Kronhus"
+  },
+  {
+    "code": "90473340",
+    "name": "NTI Gymnasiet Luleå"
+  },
+  {
+    "code": "12613085",
+    "name": "NTI Gymnasiet Lund"
+  },
+  {
+    "code": "52129378",
+    "name": "NTI Gymnasiet Malmö"
+  },
+  {
+    "code": "26671095",
+    "name": "NTI Gymnasiet Skövde"
+  },
+  {
+    "code": "15870428",
+    "name": "NTI Gymnasiet Sollentuna"
+  },
+  {
+    "code": "15390992",
+    "name": "NTI Gymnasiet Stockholm"
+  },
+  {
+    "code": "48244956",
+    "name": "NTI Gymnasiet Sundsvall"
+  },
+  {
+    "code": "37517404",
+    "name": "NTI Gymnasiet Södertälje"
+  },
+  {
+    "code": "99838438",
+    "name": "NTI Gymnasiet Södertörn"
+  },
+  {
+    "code": "57668673",
+    "name": "NTI Gymnasiet Umeå"
+  },
+  {
+    "code": "52048443",
+    "name": "NTI Gymnasiet Uppsala"
+  },
+  {
+    "code": "43154449",
+    "name": "NTI Gymnasiet Västerås"
+  },
+  {
+    "code": "29225010",
+    "name": "NTI Gymnasiet Örebro"
+  },
+  {
+    "code": "53698122",
+    "name": "NTI Handelsgymnasiet Göteborg"
+  },
+  {
+    "code": "15278518",
+    "name": "NTI Handelsgymnasiet Stockholm"
+  },
+  {
+    "code": "86547467",
+    "name": "NTI Vetenskapsgymnasiet Gävle"
+  },
+  {
+    "code": "48610406",
+    "name": "NTI Vetenskapsgymnasiet Helsingborg"
+  },
+  {
+    "code": "50644850",
+    "name": "NTI Vetenskapsgymnasiet Stockholm"
+  },
+  {
+    "code": "16093109",
+    "name": "Nuntorpsgymnasiet"
+  },
+  {
+    "code": "60424371",
+    "name": "Nyköping Strand Utbildn.center"
+  },
+  {
+    "code": "95785055",
+    "name": "Nyköpings Enskilda Gymnasium"
+  },
+  {
+    "code": "68655578",
+    "name": "Nyköpings gymnasium Gripen"
+  },
+  {
+    "code": "68741484",
+    "name": "Nyköpings gymnasium Nico"
+  },
+  {
+    "code": "17062663",
+    "name": "Nyköpings gymnasium Skavsta"
+  },
+  {
+    "code": "37054246",
+    "name": "Nynäshamns gymnasium"
+  },
+  {
+    "code": "10226870",
+    "name": "Nyströmska skolan 1"
+  },
+  {
+    "code": "19839859",
+    "name": "Nyströmska skolan 2"
+  },
+  {
+    "code": "37583611",
+    "name": "Nyströmska skolan 3"
+  },
+  {
+    "code": "80167319",
+    "name": "Nytorps Hästgymnasium"
+  },
+  {
+    "code": "42060237",
+    "name": "Nösnäsgymnasiet 1"
+  },
+  {
+    "code": "89816391",
+    "name": "Nösnäsgymnasiet 2"
+  },
+  {
+    "code": "14448619",
+    "name": "Nösnäsgymnasiet 3"
+  },
+  {
+    "code": "12546590",
+    "name": "Nösnäsgymnasiet 4"
+  },
+  {
+    "code": "38604678",
+    "name": "Nösnäsgymnasiet 5"
+  },
+  {
+    "code": "63943560",
+    "name": "Odengymnasiet"
+  },
+  {
+    "code": "77718188",
+    "name": "Olinsgymnasiet i Götene"
+  },
+  {
+    "code": "16555851",
+    "name": "Olinsgymnasiet i Skara"
+  },
+  {
+    "code": "89287364",
+    "name": "Olinsgymnasiet Sparresäter"
+  },
+  {
+    "code": "69360339",
+    "name": "Olinsgymnasiet Tibro"
+  },
+  {
+    "code": "53462953",
+    "name": "Olympiaskolan"
+  },
+  {
+    "code": "43826783",
+    "name": "OneSchool Global Nyby Campus Gymnasium"
+  },
+  {
+    "code": "71512894",
+    "name": "Osbecksgymnasiet RO1"
+  },
+  {
+    "code": "24709894",
+    "name": "Oscarsgymnasiet"
+  },
+  {
+    "code": "67167389",
+    "name": "Oscarsgymnasiet E"
+  },
+  {
+    "code": "24650116",
+    "name": "P A Fogelströms gymnasium 24650116"
+  },
+  {
+    "code": "61229217",
+    "name": "Partille Gymnasium"
+  },
+  {
+    "code": "65381163",
+    "name": "Pauliskolan"
+  },
+  {
+    "code": "88886610",
+    "name": "Peabskolan Göteborg"
+  },
+  {
+    "code": "98541468",
+    "name": "Peabskolan Malmö"
+  },
+  {
+    "code": "70119254",
+    "name": "Peabskolan Solna"
+  },
+  {
+    "code": "78295411",
+    "name": "Per Brahegymnasiet RO 1"
+  },
+  {
+    "code": "80686587",
+    "name": "Per Brahegymnasiet RO 2"
+  },
+  {
+    "code": "72232853",
+    "name": "Per Brahegymnasiet RO 3"
+  },
+  {
+    "code": "78986011",
+    "name": "Per Brahegymnasiet RO 4"
+  },
+  {
+    "code": "58929357",
+    "name": "Perstorp Tekniska Gymnasium"
+  },
+  {
+    "code": "20620556",
+    "name": "Pihlskolan gymnasium"
+  },
+  {
+    "code": "31822012",
+    "name": "Platengymnasiet 1"
+  },
+  {
+    "code": "83161201",
+    "name": "Platengymnasiet 2"
+  },
+  {
+    "code": "94843889",
+    "name": "Platengymnasiet 4"
+  },
+  {
+    "code": "27807194",
+    "name": "Polhems anpassade gymnasieskola, Gy"
+  },
+  {
+    "code": "21505555",
+    "name": "Polhemsgymnasiet 1"
+  },
+  {
+    "code": "34336190",
+    "name": "Polhemsgymnasiet 2"
+  },
+  {
+    "code": "21052710",
+    "name": "Polhemsgymnasiet 3"
+  },
+  {
+    "code": "70484769",
+    "name": "Polhemsgymnasiet 4"
+  },
+  {
+    "code": "53896162",
+    "name": "Polhemskolan"
+  },
+  {
+    "code": "90551279",
+    "name": "Polhemsskolan"
+  },
+  {
+    "code": "25624692",
+    "name": "Praktiska Gymnasiet Borås"
+  },
+  {
+    "code": "14926020",
+    "name": "Praktiska Gymnasiet Bromma"
+  },
+  {
+    "code": "59734510",
+    "name": "Praktiska Gymnasiet Falun"
+  },
+  {
+    "code": "16819383",
+    "name": "Praktiska Gymnasiet Gamlestaden"
+  },
+  {
+    "code": "93062368",
+    "name": "Praktiska Gymnasiet Gävle"
+  },
+  {
+    "code": "87764775",
+    "name": "Praktiska Gymnasiet Halmstad"
+  },
+  {
+    "code": "69241230",
+    "name": "Praktiska Gymnasiet Helsingborg"
+  },
+  {
+    "code": "17849518",
+    "name": "Praktiska Gymnasiet Jönköping"
+  },
+  {
+    "code": "31657916",
+    "name": "Praktiska Gymnasiet Kalmar"
+  },
+  {
+    "code": "38645259",
+    "name": "Praktiska Gymnasiet Karlstad"
+  },
+  {
+    "code": "71571158",
+    "name": "Praktiska Gymnasiet Kristianstad"
+  },
+  {
+    "code": "23457902",
+    "name": "Praktiska Gymnasiet Kungsbacka"
+  },
+  {
+    "code": "38236800",
+    "name": "Praktiska Gymnasiet Liljeholmen"
+  },
+  {
+    "code": "81551726",
+    "name": "Praktiska Gymnasiet Linköping"
+  },
+  {
+    "code": "26167236",
+    "name": "Praktiska Gymnasiet Luleå"
+  },
+  {
+    "code": "88556189",
+    "name": "Praktiska Gymnasiet Majorna"
+  },
+  {
+    "code": "25648215",
+    "name": "Praktiska Gymnasiet Malmö City"
+  },
+  {
+    "code": "61823258",
+    "name": "Praktiska Gymnasiet Malmö Limhamn"
+  },
+  {
+    "code": "24982097",
+    "name": "Praktiska Gymnasiet Märsta"
+  },
+  {
+    "code": "72891848",
+    "name": "Praktiska Gymnasiet Nacka"
+  },
+  {
+    "code": "62458752",
+    "name": "Praktiska Gymnasiet Norrköping"
+  },
+  {
+    "code": "53180719",
+    "name": "Praktiska Gymnasiet Nykvarn"
+  },
+  {
+    "code": "15609112",
+    "name": "Praktiska Gymnasiet Nyköping"
+  },
+  {
+    "code": "87303004",
+    "name": "Praktiska Gymnasiet Skellefteå"
+  },
+  {
+    "code": "14504503",
+    "name": "Praktiska Gymnasiet Skövde"
+  },
+  {
+    "code": "16931486",
+    "name": "Praktiska Gymnasiet Sundsvall"
+  },
+  {
+    "code": "29159460",
+    "name": "Praktiska Gymnasiet Södertälje"
+  },
+  {
+    "code": "76942525",
+    "name": "Praktiska Gymnasiet Täby"
+  },
+  {
+    "code": "69865450",
+    "name": "Praktiska Gymnasiet Uppsala"
+  },
+  {
+    "code": "96194948",
+    "name": "Praktiska Gymnasiet Västerås"
+  },
+  {
+    "code": "39341381",
+    "name": "Praktiska Gymnasiet Växjö"
+  },
+  {
+    "code": "90290154",
+    "name": "Praktiska Gymnasiet Ystad"
+  },
+  {
+    "code": "18691102",
+    "name": "Praktiska Gymnasiet Örebro"
+  },
+  {
+    "code": "85188855",
+    "name": "Praktiska Gymnasiet Örnsköldsvik"
+  },
+  {
+    "code": "59455288",
+    "name": "Prins Wilhelm Yrkesgymnasium"
+  },
+  {
+    "code": "55421481",
+    "name": "Processtekniska Gymnasiet"
+  },
+  {
+    "code": "60730660",
+    "name": "ProCivitas Privata Gymnasium Helsingborg"
+  },
+  {
+    "code": "29733255",
+    "name": "ProCivitas Privata Gymnasium Karlberg"
+  },
+  {
+    "code": "17779637",
+    "name": "ProCivitas Privata Gymnasium Lund"
+  },
+  {
+    "code": "84424083",
+    "name": "ProCivitas Privata Gymnasium Malmö"
+  },
+  {
+    "code": "59359012",
+    "name": "ProCivitas Privata Gymnasium Stockholm"
+  },
+  {
+    "code": "69618988",
+    "name": "ProCivitas Privata Gymnasium Uppsala"
+  },
+  {
+    "code": "61176909",
+    "name": "ProCivitas Privata Gymnasium Växjö"
+  },
+  {
+    "code": "70302356",
+    "name": "Proffsgymnasiet"
+  },
+  {
+    "code": "89315947",
+    "name": "PS Enhet 1"
+  },
+  {
+    "code": "63770160",
+    "name": "PS Enhet 2"
+  },
+  {
+    "code": "31151740",
+    "name": "Psykologigymnasiet"
+  },
+  {
+    "code": "16784385",
+    "name": "Påhlmans gymnasium"
+  },
+  {
+    "code": "25955541",
+    "name": "Realgymnasiet  Västerås"
+  },
+  {
+    "code": "11858071",
+    "name": "Realgymnasiet Borlänge"
+  },
+  {
+    "code": "88534520",
+    "name": "Realgymnasiet Borås"
+  },
+  {
+    "code": "39936461",
+    "name": "Realgymnasiet Eskilstuna"
+  },
+  {
+    "code": "69686851",
+    "name": "Realgymnasiet Gävle"
+  },
+  {
+    "code": "35236491",
+    "name": "Realgymnasiet Göteborg"
+  },
+  {
+    "code": "71401921",
+    "name": "Realgymnasiet Halmstad"
+  },
+  {
+    "code": "85544331",
+    "name": "Realgymnasiet Helsingborg"
+  },
+  {
+    "code": "76361202",
+    "name": "Realgymnasiet i Skövde"
+  },
+  {
+    "code": "20454041",
+    "name": "Realgymnasiet i Sundbyberg"
+  },
+  {
+    "code": "92489953",
+    "name": "Realgymnasiet i Sundsvall"
+  },
+  {
+    "code": "50772536",
+    "name": "Realgymnasiet i Växjö"
+  },
+  {
+    "code": "59571562",
+    "name": "Realgymnasiet Karlstad"
+  },
+  {
+    "code": "77823650",
+    "name": "Realgymnasiet Linköping"
+  },
+  {
+    "code": "27023902",
+    "name": "Realgymnasiet Luleå"
+  },
+  {
+    "code": "11185244",
+    "name": "Realgymnasiet Lund"
+  },
+  {
+    "code": "69807202",
+    "name": "Realgymnasiet Lund 2"
+  },
+  {
+    "code": "39178171",
+    "name": "Realgymnasiet Malmö"
+  },
+  {
+    "code": "43284031",
+    "name": "Realgymnasiet Norrköping"
+  },
+  {
+    "code": "56267421",
+    "name": "Realgymnasiet Nyköping"
+  },
+  {
+    "code": "59026584",
+    "name": "Realgymnasiet Stockholm"
+  },
+  {
+    "code": "42500145",
+    "name": "Realgymnasiet Trollhättan"
+  },
+  {
+    "code": "31112935",
+    "name": "Realgymnasiet Uppsala"
+  },
+  {
+    "code": "28482422",
+    "name": "Realgymnasiet Örebro"
+  },
+  {
+    "code": "79829846",
+    "name": "REFIS Rör- och Elentr. friskola Sthlm"
+  },
+  {
+    "code": "72266906",
+    "name": "Rekarnegymnasiet 1"
+  },
+  {
+    "code": "27030026",
+    "name": "Rekarnegymnasiet 2"
+  },
+  {
+    "code": "89963319",
+    "name": "RGRH Stockholm, Riksgymnasium  för rörelsehindrade elever 89963319"
+  },
+  {
+    "code": "83085136",
+    "name": "Rid- & Djursjukvårdsgymnasiet, Helsingborg"
+  },
+  {
+    "code": "50696507",
+    "name": "Ridsportsgymnasiet"
+  },
+  {
+    "code": "43321733",
+    "name": "Riksgymnasiet DH"
+  },
+  {
+    "code": "79606767",
+    "name": "Riksäpplet"
+  },
+  {
+    "code": "16950252",
+    "name": "Rinmangymnasiet RI 1N"
+  },
+  {
+    "code": "34637764",
+    "name": "Rinmangymnasiet RI 2N"
+  },
+  {
+    "code": "44957557",
+    "name": "Rinmangymnasiet RI3N"
+  },
+  {
+    "code": "42258644",
+    "name": "Rodengymnasiet"
+  },
+  {
+    "code": "26957025",
+    "name": "Rosendalsgymnasiet"
+  },
+  {
+    "code": "68247152",
+    "name": "Rudbeck"
+  },
+  {
+    "code": "53709553",
+    "name": "Rudbeck AST-enheten"
+  },
+  {
+    "code": "26646080",
+    "name": "Rudbeck Ekonomiprogrammet"
+  },
+  {
+    "code": "26750052",
+    "name": "Rudbeck El- och Teknikprogrammet"
+  },
+  {
+    "code": "26996566",
+    "name": "Rudbeck Humanistiska och Estetiska programmet"
+  },
+  {
+    "code": "15832056",
+    "name": "Rudbeck Introduktionsprogrammet och Löpargymnasiet"
+  },
+  {
+    "code": "27704246",
+    "name": "Rudbeck Naturvetenskapsprogrammet"
+  },
+  {
+    "code": "57246966",
+    "name": "Rudbeck Samhällsvetenskapsprogrammet"
+  },
+  {
+    "code": "88025221",
+    "name": "Rudbeckianska gymnasiet"
+  },
+  {
+    "code": "90260899",
+    "name": "Rudbecksgymnasiet 1"
+  },
+  {
+    "code": "69302313",
+    "name": "Rudbecksgymnasiet 2"
+  },
+  {
+    "code": "90561488",
+    "name": "Rudbecksgymnasiet EK"
+  },
+  {
+    "code": "40428860",
+    "name": "Rudbecksgymnasiet FS"
+  },
+  {
+    "code": "29741218",
+    "name": "Rudbecksgymnasiet IB"
+  },
+  {
+    "code": "81153809",
+    "name": "Rudbecksgymnasiet NA"
+  },
+  {
+    "code": "97247216",
+    "name": "Rudbecksgymnasiet SA"
+  },
+  {
+    "code": "75030652",
+    "name": "Rudbecksgymnasiet VO"
+  },
+  {
+    "code": "90006712",
+    "name": "Rymdgymnasiet"
+  },
+  {
+    "code": "32705515",
+    "name": "RyssbyGymnasiet"
+  },
+  {
+    "code": "31322470",
+    "name": "Rytmus Borlänge"
+  },
+  {
+    "code": "69739484",
+    "name": "Rytmus Göteborg"
+  },
+  {
+    "code": "49231191",
+    "name": "Rytmus Malmö"
+  },
+  {
+    "code": "46611859",
+    "name": "Rytmus Stockholm"
+  },
+  {
+    "code": "67908927",
+    "name": "Rytmus Örebro"
+  },
+  {
+    "code": "98908403",
+    "name": "Rönninge gymnasium"
+  },
+  {
+    "code": "80327946",
+    "name": "Rönnowska skolan"
+  },
+  {
+    "code": "97758137",
+    "name": "S:t Botvids gymnasium"
+  },
+  {
+    "code": "65666808",
+    "name": "S:t Eriks gymnasium 65666808"
+  },
+  {
+    "code": "19912478",
+    "name": "S:t Eskils gymnasium"
+  },
+  {
+    "code": "73217812",
+    "name": "S:t Martins gymnasium"
+  },
+  {
+    "code": "78231062",
+    "name": "S:t Petri skola"
+  },
+  {
+    "code": "32057701",
+    "name": "S:ta Ragnhildgymnasiet"
+  },
+  {
+    "code": "64205087",
+    "name": "Sandagymnasiet RO 1"
+  },
+  {
+    "code": "50500028",
+    "name": "Sandagymnasiet RO 2"
+  },
+  {
+    "code": "94570025",
+    "name": "Sandagymnasiet RO 4"
+  },
+  {
+    "code": "91984508",
+    "name": "Sandagymnasiet RO 5"
+  },
+  {
+    "code": "84947634",
+    "name": "Sandbackaskolan"
+  },
+  {
+    "code": "35670336",
+    "name": "Sannarpsgymnasiet 1"
+  },
+  {
+    "code": "50198492",
+    "name": "Sannarpsgymnasiet 2"
+  },
+  {
+    "code": "48438396",
+    "name": "Sannarpsgymnasiet 3"
+  },
+  {
+    "code": "98052678",
+    "name": "Sannarpsgymnasiet 4"
+  },
+  {
+    "code": "95993832",
+    "name": "Sannarpsgymnasiet 5"
+  },
+  {
+    "code": "83361122",
+    "name": "Sannarpsgymnasiet 6"
+  },
+  {
+    "code": "92887917",
+    "name": "Schillerska gymnasiet 1"
+  },
+  {
+    "code": "88834120",
+    "name": "Schillerska gymnasiet 2"
+  },
+  {
+    "code": "36748805",
+    "name": "Schillerska gymnasiet 3"
+  },
+  {
+    "code": "96786102",
+    "name": "Second chance School 1"
+  },
+  {
+    "code": "75344502",
+    "name": "Segragymnasiet Klippan"
+  },
+  {
+    "code": "19207279",
+    "name": "Sigrid Rudebecks gymnasium"
+  },
+  {
+    "code": "45552626",
+    "name": "Sigtunaskolan hum. läroverket, gy"
+  },
+  {
+    "code": "50906954",
+    "name": "Sigtunaskolan hum. läroverket, int gy"
+  },
+  {
+    "code": "41888308",
+    "name": "Sjukhusskolan"
+  },
+  {
+    "code": "42859669",
+    "name": "Sjödalsgymnasiet"
+  },
+  {
+    "code": "97064126",
+    "name": "Sjögrenska gymnasiet"
+  },
+  {
+    "code": "53640774",
+    "name": "Sjölins Gymnasium Göteborg"
+  },
+  {
+    "code": "37692021",
+    "name": "Sjölins Gymnasium Malmö"
+  },
+  {
+    "code": "58907711",
+    "name": "Sjölins Gymnasium Nacka"
+  },
+  {
+    "code": "24339566",
+    "name": "Sjölins Gymnasium Södermalm"
+  },
+  {
+    "code": "87844327",
+    "name": "Sjölins Gymnasium Vasastan"
+  },
+  {
+    "code": "20061769",
+    "name": "Sjömansskolan"
+  },
+  {
+    "code": "34295208",
+    "name": "Skandinaviska Skolan i Madrid"
+  },
+  {
+    "code": "28284938",
+    "name": "Skellefteå fjärrgymnasium"
+  },
+  {
+    "code": "58502307",
+    "name": "SKF Tekniska Gymnasium"
+  },
+  {
+    "code": "65458415",
+    "name": "Skolslussen 65458415"
+  },
+  {
+    "code": "33537203",
+    "name": "Skultuna gymnasieenhet"
+  },
+  {
+    "code": "43873969",
+    "name": "Skvaderns gymnasieskola"
+  },
+  {
+    "code": "60096875",
+    "name": "Skyttbrinks gymnasium"
+  },
+  {
+    "code": "56187883",
+    "name": "Skärgårdsgymnasiet"
+  },
+  {
+    "code": "26267406",
+    "name": "Skärgårdsgymnasiet Norrtälje"
+  },
+  {
+    "code": "11709772",
+    "name": "Slakthusområdets gymnasium"
+  },
+  {
+    "code": "23306658",
+    "name": "Slottegymnasiet"
+  },
+  {
+    "code": "95154882",
+    "name": "Snitz Gymnasium"
+  },
+  {
+    "code": "86086213",
+    "name": "Sofiaängens skola"
+  },
+  {
+    "code": "48009865",
+    "name": "Solbergagymnasiet"
+  },
+  {
+    "code": "76903284",
+    "name": "Sollefteå gymnasium"
+  },
+  {
+    "code": "79346084",
+    "name": "Solna Gymnasium"
+  },
+  {
+    "code": "65192707",
+    "name": "Soltorgsgymnasiet"
+  },
+  {
+    "code": "43614611",
+    "name": "Sommarskola Stockholm stad"
+  },
+  {
+    "code": "19456482",
+    "name": "Sotenäs Gymnasieskola"
+  },
+  {
+    "code": "12399380",
+    "name": "Sparre Gymnasium"
+  },
+  {
+    "code": "36208931",
+    "name": "Spira Teoretiska Gymnasium Lund"
+  },
+  {
+    "code": "24716263",
+    "name": "Spira Teoretiska Gymnasium Stora Essingen"
+  },
+  {
+    "code": "52333875",
+    "name": "Spånga Gymnasium 52333875"
+  },
+  {
+    "code": "19586169",
+    "name": "Spångbergsgymnasiet"
+  },
+  {
+    "code": "45593337",
+    "name": "Staffangymnasiet RO6"
+  },
+  {
+    "code": "90312942",
+    "name": "Staffangymnasiet RO7"
+  },
+  {
+    "code": "23058925",
+    "name": "Stagneliusskolan"
+  },
+  {
+    "code": "67182630",
+    "name": "Stagneliusskolan A"
+  },
+  {
+    "code": "30677562",
+    "name": "Sthlm hotell & restaurangsk 30677562"
+  },
+  {
+    "code": "85054102",
+    "name": "Sthlm Transport- och fordonstekniska gymnasiet 85054102"
+  },
+  {
+    "code": "14292382",
+    "name": "Stiernhööksgymnasiet"
+  },
+  {
+    "code": "89693952",
+    "name": "Stift. Sthlm Intern. School gy"
+  },
+  {
+    "code": "34381901",
+    "name": "Stjerneskolan"
+  },
+  {
+    "code": "78433202",
+    "name": "Stockholm Science & Innovation School 78433202, SSIS"
+  },
+  {
+    "code": "35366805",
+    "name": "Stockholms Estetiska Gymnasium"
+  },
+  {
+    "code": "31315191",
+    "name": "Stockholms Idrottsgymnasium"
+  },
+  {
+    "code": "88163512",
+    "name": "Stora Segerstad Naturbrukscentrum"
+  },
+  {
+    "code": "80785976",
+    "name": "Storsjögymnasiet, Östersund"
+  },
+  {
+    "code": "59575030",
+    "name": "Strömbacka Hugin"
+  },
+  {
+    "code": "93503103",
+    "name": "Strömbacka Magne"
+  },
+  {
+    "code": "18617410",
+    "name": "Strömbacka Mimer"
+  },
+  {
+    "code": "41697930",
+    "name": "Strömbacka Mjölner"
+  },
+  {
+    "code": "28025244",
+    "name": "Strömbacka Munin"
+  },
+  {
+    "code": "19464342",
+    "name": "Strömkullegymnasiet"
+  },
+  {
+    "code": "93486713",
+    "name": "Strömma Naturbrukscentrum"
+  },
+  {
+    "code": "70036612",
+    "name": "Strömstad Gymnasium, SGY1"
+  },
+  {
+    "code": "36936260",
+    "name": "Strömstad Gymnasium, SGY2"
+  },
+  {
+    "code": "20099064",
+    "name": "Sturegymnasiet 1"
+  },
+  {
+    "code": "44341171",
+    "name": "Sturegymnasiet 2"
+  },
+  {
+    "code": "32671805",
+    "name": "Sturegymnasiet 4"
+  },
+  {
+    "code": "13993712",
+    "name": "Sturegymnasiet 5"
+  },
+  {
+    "code": "46148350",
+    "name": "Sundlergymnasiet"
+  },
+  {
+    "code": "31975673",
+    "name": "Sundsgymnasiet"
+  },
+  {
+    "code": "99147574",
+    "name": "Sundsta-Älvkullegymnasiet 1"
+  },
+  {
+    "code": "42168219",
+    "name": "Sundsta-Älvkullegymnasiet 2"
+  },
+  {
+    "code": "89630390",
+    "name": "Sundsta-Älvkullegymnasiet 4"
+  },
+  {
+    "code": "65637648",
+    "name": "Sundsta-Älvkullegymnasiet 5"
+  },
+  {
+    "code": "62272121",
+    "name": "Sundsta-Älvkullegymnasiet 6"
+  },
+  {
+    "code": "89793044",
+    "name": "Sundsvalls gymn. Hedbergska 1"
+  },
+  {
+    "code": "55825382",
+    "name": "Sundsvalls Gymn. Hedbergska 2"
+  },
+  {
+    "code": "35301145",
+    "name": "Sundsvalls Gymn. Hedbergska 4"
+  },
+  {
+    "code": "51467760",
+    "name": "Sundsvalls Gymn. Hedbergska 6"
+  },
+  {
+    "code": "24993048",
+    "name": "Sundsvalls Gymn. Västermalm 1"
+  },
+  {
+    "code": "70132092",
+    "name": "Sundsvalls Gymn. Västermalm 2"
+  },
+  {
+    "code": "65034473",
+    "name": "Sundsvalls Gymn. Västermalm 4"
+  },
+  {
+    "code": "13084253",
+    "name": "Sundsvalls Gymn. Västermalm 5"
+  },
+  {
+    "code": "83650855",
+    "name": "Sundsvalls Gymn. Västermalm 7"
+  },
+  {
+    "code": "66273269",
+    "name": "Sunne Gymnasieskola / Broby"
+  },
+  {
+    "code": "82888663",
+    "name": "Sunne Gymnasieskola / Södra Viken"
+  },
+  {
+    "code": "60214465",
+    "name": "Sunnerbogymnasiet 1"
+  },
+  {
+    "code": "70137084",
+    "name": "Sunnerbogymnasiet 2"
+  },
+  {
+    "code": "82002016",
+    "name": "Sunnerbogymnasiet 3"
+  },
+  {
+    "code": "21901328",
+    "name": "Sunnerbogymnasiet 4"
+  },
+  {
+    "code": "11275959",
+    "name": "Svalöfs gymnasium"
+  },
+  {
+    "code": "66838190",
+    "name": "Svea Gymnasium Sollentuna"
+  },
+  {
+    "code": "12889940",
+    "name": "Sven Eriksonsgymnasiet A"
+  },
+  {
+    "code": "16554575",
+    "name": "Sven Eriksonsgymnasiet B"
+  },
+  {
+    "code": "34076477",
+    "name": "Sven Eriksonsgymnasiet C"
+  },
+  {
+    "code": "54450836",
+    "name": "Sven Eriksonsgymnasiet D"
+  },
+  {
+    "code": "28756919",
+    "name": "Sven Eriksonsgymnasiet E"
+  },
+  {
+    "code": "32191771",
+    "name": "Svenska skolan i London"
+  },
+  {
+    "code": "69350932",
+    "name": "Svenska Skolan i Nairobi"
+  },
+  {
+    "code": "39102843",
+    "name": "Svenska skolan i Paris"
+  },
+  {
+    "code": "72203001",
+    "name": "Svenska Skolan på Costa del Sol"
+  },
+  {
+    "code": "56211717",
+    "name": "Sveriges Ridgymnasium Flyinge"
+  },
+  {
+    "code": "27597104",
+    "name": "Sveriges Ridgymnasium Kungsbacka"
+  },
+  {
+    "code": "50615280",
+    "name": "Sveriges Ridgymnasium Svedala"
+  },
+  {
+    "code": "23517683",
+    "name": "Sveriges Ridgymnasium Varberg"
+  },
+  {
+    "code": "46241804",
+    "name": "SYAB Transportgymnasium"
+  },
+  {
+    "code": "70923626",
+    "name": "Sågbäcksgymnasiet"
+  },
+  {
+    "code": "73944169",
+    "name": "Söderportgymnasiet 31"
+  },
+  {
+    "code": "59849681",
+    "name": "Söderportgymnasiet 32"
+  },
+  {
+    "code": "75105182",
+    "name": "Söderportgymnasiet 33"
+  },
+  {
+    "code": "26072400",
+    "name": "Söderslättsgymnasiet"
+  },
+  {
+    "code": "53400472",
+    "name": "Södertörns Gymnasium"
+  },
+  {
+    "code": "89370947",
+    "name": "Södra Latins gymnasium 89370947"
+  },
+  {
+    "code": "49168016",
+    "name": "Tannbergsskolan 1"
+  },
+  {
+    "code": "32042066",
+    "name": "Tannbergsskolan 2"
+  },
+  {
+    "code": "50821167",
+    "name": "Tannbergsskolan 3"
+  },
+  {
+    "code": "71929526",
+    "name": "Tannbergsskolan 4"
+  },
+  {
+    "code": "14586562",
+    "name": "Tanums Gymnasium"
+  },
+  {
+    "code": "68518617",
+    "name": "Taserudsgymnasiet"
+  },
+  {
+    "code": "84247499",
+    "name": "Tegelbruksskolan"
+  },
+  {
+    "code": "18451445",
+    "name": "Teknik & Servicegymnasiet"
+  },
+  {
+    "code": "60088179",
+    "name": "Teknikum 1"
+  },
+  {
+    "code": "28391147",
+    "name": "Teknikum 2"
+  },
+  {
+    "code": "77843821",
+    "name": "Teknikum 3"
+  },
+  {
+    "code": "90347955",
+    "name": "Teknikum 4"
+  },
+  {
+    "code": "30359269",
+    "name": "Tekniska Gymnasiet Helsingborg"
+  },
+  {
+    "code": "66824652",
+    "name": "Tekniska Gymnasiet Lund"
+  },
+  {
+    "code": "63837179",
+    "name": "Tekniska Gymnasiet Solna"
+  },
+  {
+    "code": "82931004",
+    "name": "Tekniska Gymnasiet Uddevalla"
+  },
+  {
+    "code": "78659008",
+    "name": "Tenhults naturbruksgymnasium"
+  },
+  {
+    "code": "11317587",
+    "name": "The British School in Gothenburg (BSG)"
+  },
+  {
+    "code": "26627862",
+    "name": "The International High School of the Gothenburg Region"
+  },
+  {
+    "code": "79845033",
+    "name": "Thomasgymnasiet"
+  },
+  {
+    "code": "37378772",
+    "name": "Thoren Innovation School Uppsala"
+  },
+  {
+    "code": "42371863",
+    "name": "Thoren Innovation School Västerås"
+  },
+  {
+    "code": "20699797",
+    "name": "Thoren Innovation School Örebro"
+  },
+  {
+    "code": "32116280",
+    "name": "Thorildsplans gymnasium 32116280"
+  },
+  {
+    "code": "43565270",
+    "name": "Tibble Gymnasium Campus Kista"
+  },
+  {
+    "code": "31486865",
+    "name": "Tibble Gymnasium Campus Täby"
+  },
+  {
+    "code": "27079521",
+    "name": "Timrå gymnasium 1"
+  },
+  {
+    "code": "47864446",
+    "name": "Timrå gymnasium 2"
+  },
+  {
+    "code": "33657492",
+    "name": "Tingsholmsgymnasiets nationella program"
+  },
+  {
+    "code": "73235474",
+    "name": "Tingvallagymnasiet 1"
+  },
+  {
+    "code": "83354197",
+    "name": "Tingvallagymnasiet 4"
+  },
+  {
+    "code": "28667172",
+    "name": "Tingvallagymnasiet 6"
+  },
+  {
+    "code": "43601850",
+    "name": "Torekällgymnasiet"
+  },
+  {
+    "code": "11294673",
+    "name": "Tornedalsskolan"
+  },
+  {
+    "code": "73171934",
+    "name": "Torsbergsgymnasiet RO4"
+  },
+  {
+    "code": "83474173",
+    "name": "Torsbergsgymnasiet RO5"
+  },
+  {
+    "code": "55150847",
+    "name": "Torsås korrespondensgymnasium 1"
+  },
+  {
+    "code": "90076461",
+    "name": "Torsås Korrespondensgymnasium 2"
+  },
+  {
+    "code": "14799321",
+    "name": "Tranellska gymnasiet"
+  },
+  {
+    "code": "60513602",
+    "name": "Tranemo gymnasieskola"
+  },
+  {
+    "code": "20862637",
+    "name": "Trosa Gymnasium"
+  },
+  {
+    "code": "57350392",
+    "name": "Träutbildningar i Hälsingland"
+  },
+  {
+    "code": "26334561",
+    "name": "Tullinge gymnasium"
+  },
+  {
+    "code": "34277789",
+    "name": "Tullängsgymnasiet BA"
+  },
+  {
+    "code": "76500381",
+    "name": "Tullängsgymnasiet EE"
+  },
+  {
+    "code": "94432887",
+    "name": "Tullängsgymnasiet FT"
+  },
+  {
+    "code": "21779531",
+    "name": "Tullängsgymnasiet IN"
+  },
+  {
+    "code": "69953983",
+    "name": "Tullängsgymnasiet TE"
+  },
+  {
+    "code": "68360133",
+    "name": "Tullängsgymnasiet VF"
+  },
+  {
+    "code": "40386043",
+    "name": "Tumba gymnasium"
+  },
+  {
+    "code": "78875918",
+    "name": "Tycho Braheskolan"
+  },
+  {
+    "code": "91048178",
+    "name": "Tyresö gymnasium"
+  },
+  {
+    "code": "53175499",
+    "name": "Tyska skolan"
+  },
+  {
+    "code": "97265732",
+    "name": "Täby Enskilda gymnasium"
+  },
+  {
+    "code": "86923395",
+    "name": "Täby språkintroduktion"
+  },
+  {
+    "code": "30615080",
+    "name": "Täljegymnasiet"
+  },
+  {
+    "code": "28004794",
+    "name": "Tärnaby Alpina Gymnasium"
+  },
+  {
+    "code": "85800840",
+    "name": "Törnströmska gymnasiet"
+  },
+  {
+    "code": "48846872",
+    "name": "Uddevalla gymnasieskola, Agneberg ASV"
+  },
+  {
+    "code": "95024660",
+    "name": "Uddevalla gymnasieskola, Agneberg EK"
+  },
+  {
+    "code": "16496466",
+    "name": "Uddevalla gymnasieskola, Agneberg GLU"
+  },
+  {
+    "code": "68444514",
+    "name": "Uddevalla gymnasieskola, Agneberg HT"
+  },
+  {
+    "code": "67785826",
+    "name": "Uddevalla gymnasieskola, Agneberg IM"
+  },
+  {
+    "code": "62300682",
+    "name": "Uddevalla gymnasieskola, Agneberg RL"
+  },
+  {
+    "code": "47393891",
+    "name": "Uddevalla gymnasieskola, Agneberg SA"
+  },
+  {
+    "code": "83584125",
+    "name": "Uddevalla gymnasieskola, Sinclair BF"
+  },
+  {
+    "code": "11533776",
+    "name": "Uddevalla gymnasieskola, Sinclair ES"
+  },
+  {
+    "code": "12075195",
+    "name": "Uddevalla gymnasieskola, Sinclair FS"
+  },
+  {
+    "code": "71938440",
+    "name": "Uddevalla gymnasieskola, Östrabo 1 IN"
+  },
+  {
+    "code": "28829503",
+    "name": "Uddevalla gymnasieskola, Östrabo 1 TE"
+  },
+  {
+    "code": "97191332",
+    "name": "Uddevalla gymnasieskola, Östrabo 1 VO"
+  },
+  {
+    "code": "22811839",
+    "name": "Uddevalla gymnasieskola, Östrabo Y BA"
+  },
+  {
+    "code": "33205596",
+    "name": "Uddevalla gymnasieskola, Östrabo Y EE"
+  },
+  {
+    "code": "87005780",
+    "name": "Uddevalla gymnasieskola, Östrabo Y FI"
+  },
+  {
+    "code": "47766541",
+    "name": "Uddevalla gymnasieskola, Östrabo Y FO"
+  },
+  {
+    "code": "19930101",
+    "name": "Uddevalla gymnasieskola, Östrabo Y FT"
+  },
+  {
+    "code": "60727136",
+    "name": "Uddevalla Gymnasieskola, Östrabo Y GLU"
+  },
+  {
+    "code": "45132264",
+    "name": "Uddevalla gymnasieskola, Östrabo Y HV"
+  },
+  {
+    "code": "61647360",
+    "name": "Uddevalla gymnasieskola, Östrabo Y VF"
+  },
+  {
+    "code": "98651664",
+    "name": "Uddevalla gymnasieskola,Östrabo 1 NA"
+  },
+  {
+    "code": "35632014",
+    "name": "Ullvi1"
+  },
+  {
+    "code": "34412858",
+    "name": "Ullvi2"
+  },
+  {
+    "code": "34931041",
+    "name": "Ullvi3"
+  },
+  {
+    "code": "34852224",
+    "name": "Ullvi4"
+  },
+  {
+    "code": "77713695",
+    "name": "Umeå Elitidrottsgymnasium"
+  },
+  {
+    "code": "68006362",
+    "name": "Universitetsholmens gymnasium"
+  },
+  {
+    "code": "53923398",
+    "name": "Upplands-Brogymnasiet"
+  },
+  {
+    "code": "43277545",
+    "name": "Uppsala estetiska gymnasium"
+  },
+  {
+    "code": "76938456",
+    "name": "Uppsala International School (UIS)"
+  },
+  {
+    "code": "37316242",
+    "name": "Uppsala yrkesgymnasium Ekeby"
+  },
+  {
+    "code": "20173336",
+    "name": "Uppsala yrkesgymnasium Jälla"
+  },
+  {
+    "code": "11953769",
+    "name": "Uppvidinge Lärcenter"
+  },
+  {
+    "code": "88573795",
+    "name": "Utsikten, Dals-Eds gymnasium"
+  },
+  {
+    "code": "89630851",
+    "name": "Vackstanäsgymnasiet"
+  },
+  {
+    "code": "14384562",
+    "name": "Vadsbogymnasiet enhet 1"
+  },
+  {
+    "code": "14414747",
+    "name": "Vadsbogymnasiet enhet 2"
+  },
+  {
+    "code": "14550581",
+    "name": "Vadsbogymnasiet enhet 3"
+  },
+  {
+    "code": "70200717",
+    "name": "Valdemarsro gymnasium"
+  },
+  {
+    "code": "85788659",
+    "name": "Vallentuna gymnasium"
+  },
+  {
+    "code": "95340745",
+    "name": "Vansbro utbildningscenter gy."
+  },
+  {
+    "code": "92442684",
+    "name": "Varbergs Enskilda Gymnasieskola 1"
+  },
+  {
+    "code": "66095163",
+    "name": "Varbergs Enskilda Gymnasieskola 2"
+  },
+  {
+    "code": "71262305",
+    "name": "Vasagymnasiet"
+  },
+  {
+    "code": "54965510",
+    "name": "Vasaskolan"
+  },
+  {
+    "code": "34739511",
+    "name": "Vattenfallgymnasiet"
+  },
+  {
+    "code": "11102578",
+    "name": "VBU Högbergsskolan 1"
+  },
+  {
+    "code": "69306209",
+    "name": "VBU Högbergsskolan 2"
+  },
+  {
+    "code": "92651253",
+    "name": "VBU Malmen"
+  },
+  {
+    "code": "12496135",
+    "name": "VBU Smeden"
+  },
+  {
+    "code": "12448823",
+    "name": "Vettergymnasiet Jönköping"
+  },
+  {
+    "code": "11518576",
+    "name": "VFG Jönköping"
+  },
+  {
+    "code": "78023197",
+    "name": "Victum Gymnasium"
+  },
+  {
+    "code": "45164827",
+    "name": "Viktor Rydberg gy. Djursholm"
+  },
+  {
+    "code": "64388538",
+    "name": "Viktor Rydberg gy. Jarlaplan"
+  },
+  {
+    "code": "52153758",
+    "name": "Viktor Rydberg gy. Odenplan"
+  },
+  {
+    "code": "78825169",
+    "name": "Viktor Rydberg gy. Sundbyberg"
+  },
+  {
+    "code": "17846181",
+    "name": "Vilhelm Mobergsgymnasiet"
+  },
+  {
+    "code": "23384476",
+    "name": "Viljan Friskola"
+  },
+  {
+    "code": "44586618",
+    "name": "Vimmerby gymnasium 1"
+  },
+  {
+    "code": "57391913",
+    "name": "Vimmerby gymnasium 2"
+  },
+  {
+    "code": "75374280",
+    "name": "Vimmerby gymnasium 3"
+  },
+  {
+    "code": "58889746",
+    "name": "Virginska gymnasiet BF"
+  },
+  {
+    "code": "28423551",
+    "name": "Virginska gymnasiet EK"
+  },
+  {
+    "code": "20120846",
+    "name": "Virginska gymnasiet FR"
+  },
+  {
+    "code": "24004954",
+    "name": "Virginska gymnasiet HT"
+  },
+  {
+    "code": "61267291",
+    "name": "Virginska gymnasiet NA"
+  },
+  {
+    "code": "34790814",
+    "name": "Virginska gymnasiet RL"
+  },
+  {
+    "code": "75153401",
+    "name": "Virginska gymnasiet SA"
+  },
+  {
+    "code": "25356960",
+    "name": "Viskastrandsgymnasiet A"
+  },
+  {
+    "code": "64284020",
+    "name": "Viskastrandsgymnasiet B"
+  },
+  {
+    "code": "98132436",
+    "name": "Viskastrandsgymnasiet C"
+  },
+  {
+    "code": "67692516",
+    "name": "Viskastrandsgymnasiet D"
+  },
+  {
+    "code": "16050914",
+    "name": "Viskastrandsgymnasiet F"
+  },
+  {
+    "code": "21850904",
+    "name": "Volvogymnasiet Skövde"
+  },
+  {
+    "code": "93497373",
+    "name": "Voxgym 1"
+  },
+  {
+    "code": "63395752",
+    "name": "Voxgym 2"
+  },
+  {
+    "code": "52634142",
+    "name": "Vreta utbildningscentrum"
+  },
+  {
+    "code": "55870331",
+    "name": "Vuxenutbildningen i Karlsborg och Karlsborgs gymnasieskola"
+  },
+  {
+    "code": "64857547",
+    "name": "Vuxenutbildningen Perstorp"
+  },
+  {
+    "code": "29535640",
+    "name": "Vuxenutbildningscentrum IM"
+  },
+  {
+    "code": "68649663",
+    "name": "Vård- och omsorgsgymnasiet Sollentuna AB"
+  },
+  {
+    "code": "21673083",
+    "name": "Vägga gymnasieskola 1b"
+  },
+  {
+    "code": "64574972",
+    "name": "Vägga gymnasieskola 2"
+  },
+  {
+    "code": "19741742",
+    "name": "Vägga gymnasieskola 3"
+  },
+  {
+    "code": "29032715",
+    "name": "Vägga gymnasieskola 4"
+  },
+  {
+    "code": "76007769",
+    "name": "Vänergymnasiet"
+  },
+  {
+    "code": "44412461",
+    "name": "Värmdö gymnasium"
+  },
+  {
+    "code": "34002355",
+    "name": "Värmdö Yrkesgymnasium"
+  },
+  {
+    "code": "20855811",
+    "name": "Väsby Nya Gymnasium"
+  },
+  {
+    "code": "77544055",
+    "name": "Västerhöjd 1"
+  },
+  {
+    "code": "30279258",
+    "name": "Västerhöjd 2"
+  },
+  {
+    "code": "65320354",
+    "name": "Västerhöjd 3"
+  },
+  {
+    "code": "96152872",
+    "name": "Västerviks gymnasium Rektorsområde 1"
+  },
+  {
+    "code": "49576295",
+    "name": "Västerviks gymnasium Rektorsområde 2"
+  },
+  {
+    "code": "70803636",
+    "name": "Västerviks gymnasium Rektorsområde 3"
+  },
+  {
+    "code": "44041939",
+    "name": "Västerviks gymnasium Rektorsområde 4"
+  },
+  {
+    "code": "45111086",
+    "name": "Västerås Idrottsgymnasium"
+  },
+  {
+    "code": "34831349",
+    "name": "Västsvenska Gymnasiet"
+  },
+  {
+    "code": "29209307",
+    "name": "Växjö Fria Fordongymnasium"
+  },
+  {
+    "code": "21778322",
+    "name": "Växjö Fria Gymnasium"
+  },
+  {
+    "code": "64579522",
+    "name": "Wasaskolan"
+  },
+  {
+    "code": "58368956",
+    "name": "Wendesgymnasiet 51"
+  },
+  {
+    "code": "73567152",
+    "name": "Wendesgymnasiet 52"
+  },
+  {
+    "code": "75082798",
+    "name": "Westerlundska gymnasiet"
+  },
+  {
+    "code": "70955448",
+    "name": "Widénska gymnasiet"
+  },
+  {
+    "code": "55871389",
+    "name": "Widerströmska gymnasiet"
+  },
+  {
+    "code": "95069937",
+    "name": "Wilhelm Haglunds Gymnasium"
+  },
+  {
+    "code": "60293532",
+    "name": "Wisbygymnasiet 1"
+  },
+  {
+    "code": "31962829",
+    "name": "Wisbygymnasiet 2"
+  },
+  {
+    "code": "24534350",
+    "name": "Wisbygymnasiet 3"
+  },
+  {
+    "code": "97765838",
+    "name": "Wisbygymnasiet 4"
+  },
+  {
+    "code": "50367034",
+    "name": "Wisbygymnasiet 5"
+  },
+  {
+    "code": "68285560",
+    "name": "YBC, Young Business Creatives"
+  },
+  {
+    "code": "10373112",
+    "name": "Yrkesgymnasiet  Täby"
+  },
+  {
+    "code": "54882637",
+    "name": "Yrkesgymnasiet  Väsby"
+  },
+  {
+    "code": "93221031",
+    "name": "Yrkesgymnasiet Ale"
+  },
+  {
+    "code": "59082395",
+    "name": "Yrkesgymnasiet Borås"
+  },
+  {
+    "code": "90267145",
+    "name": "Yrkesgymnasiet Gävle"
+  },
+  {
+    "code": "63511898",
+    "name": "Yrkesgymnasiet Göteborg"
+  },
+  {
+    "code": "91316177",
+    "name": "Yrkesgymnasiet Helsingborg"
+  },
+  {
+    "code": "92905347",
+    "name": "Yrkesgymnasiet Huddinge"
+  },
+  {
+    "code": "76188501",
+    "name": "Yrkesgymnasiet Jönköping"
+  },
+  {
+    "code": "76195214",
+    "name": "Yrkesgymnasiet Linköping"
+  },
+  {
+    "code": "86762103",
+    "name": "Yrkesgymnasiet Malmö"
+  },
+  {
+    "code": "15100079",
+    "name": "Yrkesgymnasiet Munkedal"
+  },
+  {
+    "code": "67842103",
+    "name": "Yrkesgymnasiet Norrköping"
+  },
+  {
+    "code": "16501673",
+    "name": "Yrkesgymnasiet Skarpnäck"
+  },
+  {
+    "code": "97835550",
+    "name": "Yrkesgymnasiet Skellefteå"
+  },
+  {
+    "code": "81997762",
+    "name": "Yrkesgymnasiet Sollentuna"
+  },
+  {
+    "code": "63437833",
+    "name": "Yrkesgymnasiet Solna"
+  },
+  {
+    "code": "91905819",
+    "name": "Yrkesgymnasiet Umeå"
+  },
+  {
+    "code": "49872493",
+    "name": "Yrkesgymnasiet Uppsala"
+  },
+  {
+    "code": "90685868",
+    "name": "Yrkesgymnasiet Västerås"
+  },
+  {
+    "code": "47692481",
+    "name": "Yrkesgymnasiet Örebro"
+  },
+  {
+    "code": "19878579",
+    "name": "Yrkesskolan, introduktionsprogrammet"
+  },
+  {
+    "code": "25847233",
+    "name": "Ystad Gymnasium, Område 1"
+  },
+  {
+    "code": "62612992",
+    "name": "Ystad Gymnasium, Område 2"
+  },
+  {
+    "code": "85485803",
+    "name": "Ystad Gymnasium, Område 3"
+  },
+  {
+    "code": "16161214",
+    "name": "Ystad Gymnasium, Område 4"
+  },
+  {
+    "code": "92816527",
+    "name": "Ystad Gymnasium, Område 5"
+  },
+  {
+    "code": "69396818",
+    "name": "Zetterbergsgymnasiet"
+  },
+  {
+    "code": "27041885",
+    "name": "Åbyskolan"
+  },
+  {
+    "code": "35035671",
+    "name": "Åkrahällskolan Akra01"
+  },
+  {
+    "code": "12130801",
+    "name": "Åkrahällskolan Akra02"
+  },
+  {
+    "code": "51736304",
+    "name": "Åkrahällskolan Akra03"
+  },
+  {
+    "code": "17008320",
+    "name": "Ållebergsgymnasiet A"
+  },
+  {
+    "code": "56737496",
+    "name": "Ållebergsgymnasiet B"
+  },
+  {
+    "code": "88850910",
+    "name": "Ållebergsgymnasiet C"
+  },
+  {
+    "code": "93939982",
+    "name": "Ållebergsgymnasiet E"
+  },
+  {
+    "code": "77379848",
+    "name": "Årjängs gymnasieskola"
+  },
+  {
+    "code": "61720981",
+    "name": "Åva gymnasium"
+  },
+  {
+    "code": "34421265",
+    "name": "Älvdalens Utbildningscentrum"
+  },
+  {
+    "code": "17221836",
+    "name": "Älvgymnasiet"
+  },
+  {
+    "code": "15791044",
+    "name": "Älvsbyns gymnasium"
+  },
+  {
+    "code": "72127035",
+    "name": "Älvstrandsgymnasiet"
+  },
+  {
+    "code": "28310176",
+    "name": "Älvstrandsgymnasiet2"
+  },
+  {
+    "code": "65392939",
+    "name": "Ängelholms gymnasieskola Ro 2"
+  },
+  {
+    "code": "98696836",
+    "name": "Ängelholms gymnasieskola Ro 3"
+  },
+  {
+    "code": "82160887",
+    "name": "Ängelholms gymnasieskola Ro 4"
+  },
+  {
+    "code": "23175129",
+    "name": "Ängelholms gymnasieskola Ro 5"
+  },
+  {
+    "code": "27527812",
+    "name": "Ängelholms gymnasieskola Ro 6"
+  },
+  {
+    "code": "77358716",
+    "name": "Öckerö Seglande gymnasieskola"
+  },
+  {
+    "code": "34990065",
+    "name": "Öknaskolan"
+  },
+  {
+    "code": "61547652",
+    "name": "Önnestadsgymnasiet"
+  },
+  {
+    "code": "20386768",
+    "name": "Öresundsgymnasiet"
+  },
+  {
+    "code": "28248021",
+    "name": "Öresundsgymnasiet Landskrona"
+  },
+  {
+    "code": "70543431",
+    "name": "Örjanskolan gym"
+  },
+  {
+    "code": "64693272",
+    "name": "Örkelljunga Utb.centrum, gy"
+  },
+  {
+    "code": "11341077",
+    "name": "Örnsköldsviks Gymnasium Alfa"
+  },
+  {
+    "code": "39528347",
+    "name": "Örnsköldsviks Gymnasium Beta"
+  },
+  {
+    "code": "34988313",
+    "name": "Örnsköldsviks Gymnasium Delta"
+  },
+  {
+    "code": "56274556",
+    "name": "Örnsköldsviks Gymnasium Epsilon"
+  },
+  {
+    "code": "85473846",
+    "name": "Örnsköldsviks Gymnasium Gamma"
+  },
+  {
+    "code": "71011494",
+    "name": "Örnsköldsviks Gymnasium Jota"
+  },
+  {
+    "code": "29744774",
+    "name": "Örnsköldsviks Gymnasium Kappa"
+  },
+  {
+    "code": "89690587",
+    "name": "Örnsköldsviks Gymnasium Lambda"
+  },
+  {
+    "code": "28045567",
+    "name": "Örnsköldsviks Gymnasium Omega"
+  },
+  {
+    "code": "20768651",
+    "name": "Örnsköldsviks Gymnasium Sigma"
+  },
+  {
+    "code": "54764253",
+    "name": "Ösby naturbruksgymnasium"
+  },
+  {
+    "code": "47559319",
+    "name": "Östersunds Gymnasieskola"
+  },
+  {
+    "code": "20752831",
+    "name": "Österåkers gymnasium"
+  },
+  {
+    "code": "21702982",
+    "name": "Österänggymnasiet 61"
+  },
+  {
+    "code": "39329121",
+    "name": "Österänggymnasiet 62"
+  },
+  {
+    "code": "87034307",
+    "name": "Österänggymnasiet 63"
+  },
+  {
+    "code": "62104139",
+    "name": "Österänggymnasiet 64"
+  },
+  {
+    "code": "99592025",
+    "name": "Östra gymnasiet"
+  },
+  {
+    "code": "99755443",
+    "name": "Östra Reals gymnasium 99755443"
+  }
+]

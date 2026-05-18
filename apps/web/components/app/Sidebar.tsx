@@ -32,6 +32,7 @@ function itemsFor(role: Role, base: string, dict: Dictionary): NavItem[] {
     { href: `${base}/admin/anvandare`, label: dict.app.sidebar.admin.users },
     { href: `${base}/admin/schema`, label: dict.app.sidebar.admin.schedule },
     { href: `${base}/admin/statistik`, label: dict.app.sidebar.admin.stats },
+    { href: `${base}/admin/intresse`, label: dict.app.sidebar.admin.prospects },
   ];
 }
 
