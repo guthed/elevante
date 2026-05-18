@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { LinkButton } from '@/components/public/Button';
@@ -19,18 +20,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${dict.meta.siteName} — ${dict.meta.tagline}`,
     description:
       locale === 'sv'
-        ? 'Elevante transkriberar lektionen och låter dig fråga om den. På svenska. GDPR-säkert.'
-        : 'Elevante transcribes the lesson and lets you ask about it. In Swedish. GDPR-safe.',
+        ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
+        : 'The teacher records the lesson with two taps. Then students can ask about everything that was said — and get answers with a source, never a guess.',
   };
 }
 
-// Editorial Calm — implementerat enligt Stitch screen 01-landing.png
+// Editorial Calm — startsidan byggd som router: storidé → loop → tre dörrar → trygghet → FAQ → CTA.
 
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
   const sv = locale === 'sv';
+
+  const trustPoints: string[] = sv
+    ? [
+        'All data inom EU. Aldrig i USA.',
+        'Råljudet raderas så fort lektionen transkriberats.',
+        'Personuppgiftsbiträdesavtal innan första uppladdningen.',
+        'Svensk taligenkänning (KB-Whisper), optimerad för svenska.',
+        'Ingen AI tränas på elevdata. Aldrig.',
+      ]
+    : [
+        'All data inside the EU. Never in the US.',
+        'Raw audio is deleted as soon as the lesson is transcribed.',
+        'A data processing agreement signed before the first upload.',
+        'Swedish speech recognition (KB-Whisper), tuned for Swedish.',
+        'No AI is trained on student data. Ever.',
+      ];
 
   const faqs: FaqItem[] = sv
     ? [
@@ -63,8 +80,8 @@ export default async function HomePage({ params }: Props) {
           a: 'Elevante kostar 500 kr per elev och år, och då ingår allt — inspelning, transkribering, AI-chat och support. Det finns inga setup-avgifter och inga tilläggskostnader per lektion eller fråga. Skolor med över 1 000 elever får volymrabatt.',
         },
         {
-          q: 'Vilka skolor använder Elevante?',
-          a: 'Elevante pilottestas på Nacka Gymnasium under 2026 med cirka 2 000 elever. Plattformen är byggd för svenska och nordiska gymnasieskolor. Vill din skola vara med tidigt går det bra att boka en demo.',
+          q: 'Vilka skolor är Elevante till för?',
+          a: 'Elevante är byggt för svenska och nordiska gymnasieskolor och rullas ut för pilot under 2026. Det finns ingen minimigräns — vill din skola vara med tidigt går det bra att boka en demo.',
         },
       ]
     : [
@@ -97,27 +114,35 @@ export default async function HomePage({ params }: Props) {
           a: 'Elevante costs SEK 500 per student per year, and everything is included — recording, transcription, AI chat and support. There are no setup fees and no extra charges per lesson or question. Schools with more than 1,000 students get a volume discount.',
         },
         {
-          q: 'Which schools use Elevante?',
-          a: 'Elevante is being piloted at Nacka Gymnasium during 2026 with around 2,000 students. The platform is built for Swedish and Nordic upper-secondary schools. If your school wants to join early, you are welcome to book a demo.',
+          q: 'Which schools is Elevante for?',
+          a: 'Elevante is built for Swedish and Nordic upper-secondary schools and is rolling out for pilots during 2026. There is no minimum size — if your school wants to join early, you are welcome to book a demo.',
         },
       ];
 
   return (
     <>
-      {/* HERO — asymmetrisk 55/45 */}
+      {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">
           <div className="grid items-center gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-7">
               <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,5rem)] leading-[1.02] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv
-                  ? 'Elevante kommer ihåg allt du missade på lektionen.'
-                  : 'Elevante remembers everything you missed in class.'}
+                {sv ? (
+                  <>
+                    Lektionen tar inte slut{' '}
+                    <span className="italic text-[var(--color-coral)]">när det ringer ut.</span>
+                  </>
+                ) : (
+                  <>
+                    The lesson doesn't end{' '}
+                    <span className="italic text-[var(--color-coral)]">when the bell rings.</span>
+                  </>
+                )}
               </h1>
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
-                  ? 'Elevante transkriberar lektionen och låter dig fråga om den. På svenska. GDPR-säkert.'
-                  : 'Elevante transcribes the lesson and lets you ask about it. In Swedish. GDPR-safe.'}
+                  ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
+                  : 'The teacher records the lesson with two taps. Then students can ask about everything that was said — and get answers with a source, never a guess.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
@@ -129,7 +154,6 @@ export default async function HomePage({ params }: Props) {
               </div>
             </div>
 
-            {/* Device-frame mockup av chatten */}
             <div className="md:col-span-5">
               <ChatMockup locale={locale} />
             </div>
@@ -137,82 +161,149 @@ export default async function HomePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* "Elevante minns. Du fokuserar." — 2-col asymmetrisk */}
-      <section id="hur-det-funkar" className="py-20 md:py-28">
+      {/* LOOPEN — visuell triptyk */}
+      <section id="hur-det-funkar" className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="wide">
-          <div className="grid gap-12 md:grid-cols-12 md:gap-20">
+          <div className="max-w-2xl">
+            <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
+              {sv ? 'Spela in. Minns. Fråga.' : 'Record. Remember. Ask.'}
+            </h2>
+            <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Tre steg, inget krångel. Inga möten med IT, inga installationer — läraren trycker igång, resten sköter sig.'
+                : 'Three steps, no friction. No IT meetings, no installations — the teacher taps start, the rest takes care of itself.'}
+            </p>
+          </div>
+
+          <div className="mt-16 grid gap-8 md:grid-cols-3">
+            <LoopStep
+              number="01"
+              title={sv ? 'Läraren spelar in' : 'The teacher records'}
+              body={
+                sv
+                  ? 'Ett tryck i appen. Schemat vet redan vilken lektion det är.'
+                  : 'One tap in the app. The schedule already knows which lesson it is.'
+              }
+              visual={<RecVisual sv={sv} />}
+            />
+            <LoopStep
+              number="02"
+              title={sv ? 'AI transkriberar' : 'AI transcribes'}
+              body={
+                sv
+                  ? 'Svensk taligenkänning i EU. Råljudet raderas — bara texten sparas.'
+                  : 'Swedish speech recognition in the EU. Raw audio is deleted — only text is kept.'
+              }
+              visual={<TranscribeVisual sv={sv} />}
+            />
+            <LoopStep
+              number="03"
+              title={sv ? 'Eleven frågar' : 'The student asks'}
+              body={
+                sv
+                  ? 'Varje svar pekar tillbaka till exakt var i lektionen det sas.'
+                  : 'Every answer points back to exactly where in the lesson it was said.'
+              }
+              visual={<AskVisual sv={sv} />}
+            />
+          </div>
+
+          <div className="mt-12">
+            <LinkButton href={`${base}/demo`} variant="text" size="md">
+              {sv ? 'Klicka igenom hela demon' : 'Click through the full demo'} →
+            </LinkButton>
+          </div>
+        </Container>
+      </section>
+
+      {/* TRE DÖRRAR — routern */}
+      <section className="border-t border-[var(--color-sand)] bg-[var(--color-surface-soft)] py-20 md:py-28">
+        <Container width="wide">
+          <div className="max-w-2xl">
+            <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
+              {sv
+                ? 'Elevante för skolan, läraren och eleven'
+                : 'Elevante for the school, the teacher and the student'}
+            </h2>
+            <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Samma verktyg, tre perspektiv. Välj din ingång.'
+                : 'One tool, three perspectives. Pick your way in.'}
+            </p>
+          </div>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-3">
+            <DoorCard
+              href={`${base}/for-skolor`}
+              label={sv ? 'För skolan' : 'For the school'}
+              headline={sv ? 'Riskfritt att införa.' : 'Risk-free to roll out.'}
+              body={
+                sv
+                  ? 'Ingen hårdvara, inget IT-projekt, ingen inlåsning — och GDPR löst från start.'
+                  : 'No hardware, no IT project, no lock-in — and GDPR solved from the start.'
+              }
+              cta={sv ? 'För skolor' : 'For schools'}
+            />
+            <DoorCard
+              href={`${base}/for-larare`}
+              label={sv ? 'För läraren' : 'For the teacher'}
+              headline={sv ? 'Du behåller kontrollen.' : 'You stay in control.'}
+              body={
+                sv
+                  ? 'Du bestämmer när du spelar in. Inget övervakningsverktyg — tid och överblick tillbaka.'
+                  : 'You decide when to record. Not a surveillance tool — time and oversight back.'
+              }
+              cta={sv ? 'För lärare' : 'For teachers'}
+            />
+            <DoorCard
+              href={`${base}/for-elever`}
+              label={sv ? 'För eleven' : 'For the student'}
+              headline={sv ? 'Du missar inget.' : 'You miss nothing.'}
+              body={
+                sv
+                  ? 'Lektionen finns kvar. Fråga om allt — svaret kommer ur det läraren faktiskt sa.'
+                  : 'The lesson stays. Ask about anything — the answer comes from what the teacher actually said.'
+              }
+              cta={sv ? 'För elever' : 'For students'}
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* TRYGGHET */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
+        <Container width="wide">
+          <div className="grid gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-5">
-              <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv ? 'Elevante minns. Du fokuserar.' : 'Elevante remembers. You focus.'}
+              <p className="eyebrow mb-6">{sv ? 'Tryggt' : 'Safe'}</p>
+              <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
+                {sv ? 'Byggt i Sverige. Lagras i EU.' : 'Built in Sweden. Stored in the EU.'}
               </h2>
-            </div>
-            <div className="space-y-8 md:col-span-7">
-              <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Tre steg. Inga möten med IT. Inga installationer. Läraren börjar spela in, AI transkriberar lektionen, eleverna får svar med exakt referens till var i lektionen det sades.'
-                  : 'Three steps. No IT meetings. No installations. Teacher records, AI transcribes, students get answers referenced back to where it was said.'}
+                  ? 'GDPR är inte ett påslag på Elevante — det är hela arkitekturen.'
+                  : "GDPR isn't an add-on to Elevante — it's the architecture."}
               </p>
-              <ol className="space-y-6">
-                <NumberedStep
-                  number="01"
-                  title={sv ? 'Läraren spelar in lektionen' : 'The teacher records the lesson'}
-                  body={
-                    sv
-                      ? 'Ett tryck i appen. Schemat hämtas automatiskt — läraren behöver inte tagga lektionen.'
-                      : 'One tap in the app. The schedule loads automatically — no tagging required.'
-                  }
-                />
-                <NumberedStep
-                  number="02"
-                  title={sv ? 'AI transkriberar och förstår' : 'AI transcribes and understands'}
-                  body={
-                    sv
-                      ? 'Svensk taligenkänning (KB-Whisper) i EU. Råljudet raderas. Bara texten sparas.'
-                      : 'Swedish speech recognition (KB-Whisper) in the EU. Raw audio is deleted. Only text is kept.'
-                  }
-                />
-                <NumberedStep
-                  number="03"
-                  title={sv ? 'Du frågar — Elevante svarar med källa' : 'You ask — Elevante answers with source'}
-                  body={
-                    sv
-                      ? 'Strikt RAG. Aldrig påhittat. Varje svar pekar tillbaka till exakt minutsekvens där läraren förklarade.'
-                      : 'Strict RAG. Never hallucinated. Every answer points back to the exact moment in the lesson.'
-                  }
-                />
-              </ol>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Pricing teaser — ink box */}
-      <section className="py-20 md:py-28">
-        <Container width="wide">
-          <div className="rounded-[20px] bg-[var(--color-ink)] p-10 md:p-16">
-            <div className="grid items-center gap-8 md:grid-cols-12 md:gap-12">
-              <div className="md:col-span-8">
-                <p className="font-serif text-[clamp(2rem,3vw+1rem,3.5rem)] leading-tight text-[var(--color-canvas)]">
-                  {sv ? '500 kr per elev per år' : 'SEK 500 per student per year'}
-                </p>
-                <p className="mt-3 text-[1rem] text-[var(--color-canvas)]/70">
-                  {sv ? 'Allt ingår. Inga dolda kostnader.' : 'Everything included. No hidden fees.'}
-                </p>
-              </div>
-              <div className="md:col-span-4 md:text-right">
-                <Link
-                  href={`${base}/priser`}
-                  className="inline-flex items-center gap-2 rounded-[12px] border border-[var(--color-canvas)]/30 px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-canvas)] hover:text-[var(--color-ink)]"
-                >
-                  {sv ? 'Se prisplaner' : 'See pricing'} →
-                </Link>
+            <div className="md:col-span-7">
+              <div className="rounded-[20px] bg-[var(--color-surface)] p-8 md:p-10">
+                <ul className="divide-y divide-[var(--color-sand)]">
+                  {trustPoints.map((point) => (
+                    <li key={point} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+                      <span className="status-dot status-dot--sage mt-2.5" aria-hidden="true" />
+                      <span className="text-[0.9375rem] leading-relaxed text-[var(--color-ink)]">
+                        {point}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* FAQ — AEO-motorn */}
+      {/* FAQ */}
       <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="content">
           <Faq
@@ -226,36 +317,158 @@ export default async function HomePage({ params }: Props) {
           />
         </Container>
       </section>
+
+      {/* CTA */}
+      <section className="border-t border-[var(--color-sand)] pb-24 pt-20 md:pb-32 md:pt-28">
+        <Container width="content">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
+              {sv ? 'Se Elevante med era egna lektioner' : 'See Elevante with your own lessons'}
+            </h2>
+            <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? '500 kr per elev och år, allt ingår. Boka en demo så visar vi hur det funkar.'
+                : "SEK 500 per student per year, everything included. Book a demo and we'll show you how it works."}
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                {sv ? 'Boka demo' : 'Book demo'}
+              </LinkButton>
+              <LinkButton href={`${base}/priser`} variant="ghost" size="lg">
+                {sv ? 'Se prisplaner' : 'See pricing'} →
+              </LinkButton>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }
 
-function NumberedStep({
+/* ── Loop-triptyk ──────────────────────────────────────────────── */
+function LoopStep({
   number,
   title,
   body,
+  visual,
 }: {
   number: string;
   title: string;
   body: string;
+  visual: ReactNode;
 }) {
   return (
-    <li className="flex gap-5">
-      <span className="font-serif text-[1.125rem] text-[var(--color-ink-muted)] tabular-nums">
-        {number}
-      </span>
-      <div>
-        <h3 className="font-serif text-[1.25rem] leading-snug text-[var(--color-ink)]">
-          {title}
-        </h3>
-        <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
-          {body}
-        </p>
+    <article className="flex flex-col">
+      <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5">
+        {visual}
       </div>
-    </li>
+      <p className="mt-6 font-serif text-[1.25rem] leading-none text-[var(--color-coral)]">
+        {number}
+      </p>
+      <h3 className="mt-3 font-serif text-[1.25rem] leading-snug text-[var(--color-ink)]">
+        {title}
+      </h3>
+      <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+        {body}
+      </p>
+    </article>
   );
 }
 
+function RecVisual({ sv }: { sv: boolean }) {
+  return (
+    <div className="rounded-[12px] bg-[var(--color-ink)] p-4">
+      <div className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-2 py-0.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-coral)]" aria-hidden="true" />
+        <span className="text-[0.625rem] uppercase tracking-[0.1em] text-white/80">REC</span>
+      </div>
+      <p className="mt-3 font-serif text-[0.9375rem] leading-tight text-[var(--color-canvas)]">
+        {sv ? 'Integralberäkning' : 'Integrals'}
+      </p>
+      <p className="mt-0.5 text-[0.6875rem] text-white/50">
+        {sv ? '10:15 · Matematik 4' : '10:15 · Math 4'}
+      </p>
+    </div>
+  );
+}
+
+function TranscribeVisual({ sv }: { sv: boolean }) {
+  const bars = [40, 70, 30, 85, 55, 25, 60, 90, 45, 35, 75, 50, 65, 30, 80, 45];
+  return (
+    <div className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] p-4">
+      <div className="flex h-9 items-center gap-[3px]" aria-hidden="true">
+        {bars.map((h, i) => (
+          <span
+            key={i}
+            className="w-[3px] rounded-full bg-[var(--color-coral)]/70"
+            style={{ height: `${h}%` }}
+          />
+        ))}
+      </div>
+      <p className="mt-3 text-[0.75rem] italic leading-relaxed text-[var(--color-ink-secondary)]">
+        {sv
+          ? '"…arean under kurvan mellan a och b…"'
+          : '"…the area under the curve between a and b…"'}
+      </p>
+    </div>
+  );
+}
+
+function AskVisual({ sv }: { sv: boolean }) {
+  return (
+    <div className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] p-4">
+      <div className="flex justify-end">
+        <div className="max-w-[85%] rounded-[12px] bg-[var(--color-ink)] px-3 py-1.5 text-[0.6875rem] leading-snug text-[var(--color-canvas)]">
+          {sv ? 'Vad menades med integral?' : 'What did integral mean?'}
+        </div>
+      </div>
+      <div className="mt-2.5">
+        <span className="source-pill">
+          <span className="status-dot status-dot--sage" />
+          {sv ? 'Lektion · 10:15' : 'Lesson · 10:15'}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Målgruppsdörr ─────────────────────────────────────────────── */
+function DoorCard({
+  href,
+  label,
+  headline,
+  body,
+  cta,
+}: {
+  href: string;
+  label: string;
+  headline: string;
+  body: string;
+  cta: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group flex flex-col rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 transition-colors hover:border-[var(--color-ink-muted)]"
+    >
+      <p className="eyebrow">{label}</p>
+      <h3 className="mt-5 font-serif text-[1.5rem] leading-snug text-[var(--color-ink)]">
+        {headline}
+      </h3>
+      <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+        {body}
+      </p>
+      <span className="mt-6 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-[var(--color-ink)]">
+        {cta}{' '}
+        <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+          →
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+/* ── Chattmockup i hjälten ─────────────────────────────────────── */
 function ChatMockup({ locale }: { locale: string }) {
   const sv = locale === 'sv';
   return (
@@ -268,13 +481,11 @@ function ChatMockup({ locale }: { locale: string }) {
           Matematik 4
         </span>
       </div>
-      {/* Student message */}
       <div className="mb-4 flex justify-end">
         <div className="max-w-[80%] rounded-[16px] bg-[var(--color-ink)] px-4 py-2.5 text-[0.875rem] text-[var(--color-canvas)]">
           {sv ? 'Vad var poängen med integralerna idag?' : 'What was the point of integrals today?'}
         </div>
       </div>
-      {/* AI response */}
       <div className="space-y-3">
         <p className="text-[0.875rem] leading-relaxed text-[var(--color-ink)]">
           {sv
