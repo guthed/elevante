@@ -176,46 +176,34 @@ export default async function PricingPage({ params }: Props) {
       </section>
 
       <section className="pb-20 md:pb-28">
-        <Container width="wide">
-          <div className="grid gap-12 md:grid-cols-12 md:gap-16">
-            <nav className="md:col-span-4">
-              <ul className="space-y-1">
-                <PlanItem name={sv ? 'Pilot' : 'Pilot'} subtitle={sv ? '1 klass' : '1 class'} />
-                <PlanItem name={sv ? 'Skola' : 'School'} subtitle={sv ? 'En enskild skola' : 'A single school'} active />
-                <PlanItem name={sv ? 'Huvudman' : 'Operator'} subtitle={sv ? 'Flera skolor / kommun' : 'Multiple schools / municipality'} />
-              </ul>
-            </nav>
+        <Container width="content">
+          <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+            {sv ? 'Skola' : 'School'}
+          </h2>
+          <p className="mt-6 font-serif text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)]">
+            {sv ? '500 kr per elev per år' : 'SEK 500 per student per year'}
+          </p>
+          <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? 'För en hel skola. Alla lärare och alla elever ingår. Allt vi bygger, ingår.'
+              : 'For a whole school. All teachers and all students included. Everything we build, included.'}
+          </p>
 
-            <div className="md:col-span-8">
-              <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-                {sv ? 'Skola' : 'School'}
-              </h2>
-              <p className="mt-6 font-serif text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)]">
-                {sv ? '500 kr per elev per år' : 'SEK 500 per student per year'}
-              </p>
-              <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                {sv
-                  ? 'För en hel skola. Alla lärare och alla elever ingår. Allt vi bygger, ingår.'
-                  : 'For a whole school. All teachers and all students included. Everything we build, included.'}
-              </p>
+          <ul className="mt-10 space-y-3">
+            {inclusions.map((item, i) => (
+              <li
+                key={i}
+                className="border-l-2 border-[var(--color-sand)] pl-5 text-[1rem] leading-relaxed text-[var(--color-ink)]"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
 
-              <ul className="mt-10 space-y-3">
-                {inclusions.map((item, i) => (
-                  <li
-                    key={i}
-                    className="border-l-2 border-[var(--color-sand)] pl-5 text-[1rem] leading-relaxed text-[var(--color-ink)]"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-10">
-                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                  {sv ? 'Boka demo' : 'Book demo'}
-                </LinkButton>
-              </div>
-            </div>
+          <div className="mt-10">
+            <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+              {sv ? 'Boka demo' : 'Book demo'}
+            </LinkButton>
           </div>
         </Container>
       </section>
@@ -290,27 +278,6 @@ export default async function PricingPage({ params }: Props) {
         </Container>
       </section>
     </>
-  );
-}
-
-function PlanItem({
-  name,
-  subtitle,
-  active = false,
-}: {
-  name: string;
-  subtitle: string;
-  active?: boolean;
-}) {
-  return (
-    <li
-      className={`rounded-[12px] px-4 py-4 transition-colors ${
-        active ? 'bg-[var(--color-sand)]/40' : 'hover:bg-[var(--color-surface-soft)]'
-      }`}
-    >
-      <p className="font-serif text-[1.125rem] text-[var(--color-ink)]">{name}</p>
-      <p className="mt-1 text-[0.875rem] text-[var(--color-ink-muted)]">{subtitle}</p>
-    </li>
   );
 }
 
