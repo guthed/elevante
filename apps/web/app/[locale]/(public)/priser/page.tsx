@@ -200,9 +200,12 @@ export default async function PricingPage({ params }: Props) {
             ))}
           </ul>
 
-          <div className="mt-10">
+          <div className="mt-10 flex flex-wrap items-center gap-5">
             <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
               {sv ? 'Boka demo' : 'Book demo'}
+            </LinkButton>
+            <LinkButton href={`${base}/vad-kostar-elevante`} variant="text" size="lg">
+              {sv ? 'Räkna ut vad det kostar för just er skola →' : 'Work out the cost for your school →'}
             </LinkButton>
           </div>
         </Container>
