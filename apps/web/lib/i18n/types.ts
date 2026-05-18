@@ -186,6 +186,7 @@ export type Dictionary = {
         users: string;
         schedule: string;
         stats: string;
+        prospects: string;
       };
     };
     pages: {

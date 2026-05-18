@@ -49,7 +49,7 @@ async function syncNotion(prospectId: string, row: ProspectRow) {
   }
 }
 
-async function enrichProspect(code: string, name: string, students: number | null, locale: string) {
+async function enrichProspect(code: string, name: string, students: number | null) {
   const supabase = createSupabaseServiceRoleClient();
   const now = new Date().toISOString();
 
@@ -119,7 +119,7 @@ export async function getSchoolEstimate(
   }
   after(async () => {
     try {
-      await enrichProspect(code, name, students, locale);
+      await enrichProspect(code, name, students);
     } catch (err) {
       console.error('[campaign] enrichProspect misslyckades:', err);
     }
@@ -155,10 +155,14 @@ export async function submitCampaignLead(
     });
     // Upsert so the lead is never silently dropped even if enrichProspect hasn't run yet.
     // On conflict only the supplied columns are updated; existing enrichment data is untouched.
+    // Manual entries (code starts with "manual-") are never passed through enrichProspect,
+    // so mark them done immediately to avoid a perpetual "pending" badge in the admin view.
+    const isManual = code.startsWith('manual-');
     await supabase.from('school_prospects').upsert(
       { school_unit_code: code, school_name: name, students: Math.round(students),
         latest_lead_email: email, latest_lead_message: message, latest_lead_at: now,
-        updated_at: now },
+        updated_at: now,
+        ...(isManual ? { enrichment_status: 'done' } : {}) },
       { onConflict: 'school_unit_code' },
     );
   } catch (err) {

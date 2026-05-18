@@ -339,6 +339,7 @@ const sv: Dictionary = {
         users: 'Användare',
         schedule: 'Schema',
         stats: 'Statistik',
+        prospects: 'Intresseanmälningar',
       },
     },
     pages: {

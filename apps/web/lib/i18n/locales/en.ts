@@ -339,6 +339,7 @@ const en: Dictionary = {
         users: 'Users',
         schedule: 'Schedule',
         stats: 'Statistics',
+        prospects: 'Prospects',
       },
     },
     pages: {

@@ -27,6 +27,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
   // Selected school + student count
   const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
   const [manualMode, setManualMode] = useState(false);
+  const [manualCode, setManualCode] = useState('');
   const [manualSchoolName, setManualSchoolName] = useState('');
   const [students, setStudents] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
   const bigSchool = validStudents && studentCount! >= 5000;
 
   const schoolName = manualMode ? manualSchoolName : (selectedSchool?.name ?? '');
-  const schoolCode = manualMode ? 'MANUAL' : (selectedSchool?.code ?? '');
+  const schoolCode = manualMode ? manualCode : (selectedSchool?.code ?? '');
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -122,6 +123,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
 
   function enterManualMode() {
     setManualMode(true);
+    setManualCode(`manual-${crypto.randomUUID()}`);
     setSelectedSchool(null);
     setQuery('');
     setStudents('');
@@ -130,6 +132,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
 
   function exitManualMode() {
     setManualMode(false);
+    setManualCode('');
     setManualSchoolName('');
     setStudents('');
   }
