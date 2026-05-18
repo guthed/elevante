@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n/config';
-import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getCampaignProspects } from '@/lib/data/admin';
@@ -29,7 +28,6 @@ export default async function AdminIntressePage({ params }: Props) {
   const profile = await getCurrentProfile();
   if (!profile || profile.role !== 'admin') redirect(`/${locale}/app`);
 
-  await getDictionary(locale);
   const { prospects, total } = await getCampaignProspects();
   const sv = locale === 'sv';
 
