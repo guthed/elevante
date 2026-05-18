@@ -238,6 +238,84 @@ type LearnerProfileInsert = {
   updated_at?: string;
 };
 
+// Kampanj: prisförfrågningar (rå logg) — globalt, ej school-scoped.
+export type SchoolLookup = {
+  id: string;
+  created_at: string;
+  school_unit_code: string;
+  school_name: string;
+  students: number | null;
+  price_sek: number | null;
+  locale: string;
+  lead_email: string | null;
+  lead_message: string | null;
+};
+
+type SchoolLookupInsert = {
+  school_unit_code: string;
+  school_name: string;
+  locale: string;
+  students?: number | null;
+  price_sek?: number | null;
+  lead_email?: string | null;
+  lead_message?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
+// Kampanj: anrikade skol-prospekt — deduplicerade, ett per school_unit_code.
+export type SchoolProspect = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  school_unit_code: string;
+  school_name: string;
+  contact_address: string | null;
+  contact_phone: string | null;
+  contact_email: string | null;
+  contact_web: string | null;
+  municipality: string | null;
+  principal_type: string | null;
+  huvudman_name: string | null;
+  school_orientation: string | null;
+  students: number | null;
+  ai_brief: string | null;
+  enrichment_status: string;
+  first_seen_at: string;
+  last_seen_at: string;
+  lookup_count: number;
+  latest_lead_email: string | null;
+  latest_lead_message: string | null;
+  latest_lead_at: string | null;
+  notion_page_id: string | null;
+};
+
+type SchoolProspectInsert = {
+  school_unit_code: string;
+  school_name: string;
+  contact_address?: string | null;
+  contact_phone?: string | null;
+  contact_email?: string | null;
+  contact_web?: string | null;
+  municipality?: string | null;
+  principal_type?: string | null;
+  huvudman_name?: string | null;
+  school_orientation?: string | null;
+  students?: number | null;
+  ai_brief?: string | null;
+  enrichment_status?: string;
+  first_seen_at?: string;
+  last_seen_at?: string;
+  lookup_count?: number;
+  latest_lead_email?: string | null;
+  latest_lead_message?: string | null;
+  latest_lead_at?: string | null;
+  notion_page_id?: string | null;
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
 type TableDef<R, I> = {
   Row: R;
   Insert: I;
@@ -363,6 +441,8 @@ export type Database = {
       lesson_views: TableDef<LessonView, LessonViewInsert>;
       practice_tests: TableDef<PracticeTest, PracticeTestInsert>;
       learner_profiles: TableDef<LearnerProfile, LearnerProfileInsert>;
+      school_lookups: TableDef<SchoolLookup, SchoolLookupInsert>;
+      school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
