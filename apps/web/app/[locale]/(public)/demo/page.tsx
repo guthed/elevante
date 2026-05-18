@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { Container } from '@/components/public/Container';
 import { LinkButton } from '@/components/public/Button';
-import { MobileAppDemo } from '@/components/public/MobileAppDemo';
+import { AppDemo } from '@/components/public/AppDemo';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -15,18 +15,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
-    title: sv ? 'Lärar-appen — Elevante' : 'Teacher app — Elevante',
+    title: 'Demo — Elevante',
     description: sv
-      ? 'Spela in lektionen med ett tryck. Klicka igenom hur appen funkar.'
-      : 'Record the lesson with one tap. Click through how the app works.',
+      ? 'Klicka igenom hela Elevante — från lärarens inspelning till elevens svar med källa.'
+      : 'Click through all of Elevante — from the teacher\'s recording to the student\'s sourced answer.',
     robots: { index: false, follow: false },
   };
 }
 
-// Demo-sida som låter säljare visa mobil-flödet via webben.
+// Demo-sida som låter säljare klicka igenom hela Elevante-loopen via webben.
 // Inte indexerad — den är ett verktyg, inte marknadsmaterial.
 
-export default async function LararAppDemoPage({ params }: Props) {
+export default async function DemoPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
@@ -37,19 +37,19 @@ export default async function LararAppDemoPage({ params }: Props) {
       <section className="pt-12 pb-8 md:pt-20 md:pb-10">
         <Container width="wide">
           <p className="eyebrow mb-6">
-            {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'}
+            {sv ? 'Klicka igenom Elevante' : 'Click through Elevante'}
           </p>
           <div className="grid items-end gap-6 md:grid-cols-12 md:gap-12">
             <div className="md:col-span-7">
               <h1 className="font-serif text-[clamp(2.5rem,4.5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv ? 'Två tryck. Lektionen är inspelad.' : 'Two taps. The lesson is recorded.'}
+                {sv ? 'Två tryck. Sen minns Elevante.' : 'Two taps. Then Elevante remembers.'}
               </h1>
             </div>
             <div className="md:col-span-5">
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Det här är inte en video — det är riktiga skärmar. Klicka igenom flödet som om du höll telefonen.'
-                  : 'Not a video — these are the real screens. Click through the flow as if you were holding the phone.'}
+                  ? 'Inte en video — riktiga skärmar. Följ hela vägen: läraren spelar in, och samma kväll får eleven svar med källa.'
+                  : 'Not a video — real screens. Follow the whole path: the teacher records, and that evening the student gets an answer with a source.'}
               </p>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default async function LararAppDemoPage({ params }: Props) {
 
       <section className="pb-20 md:pb-28">
         <Container width="wide">
-          <MobileAppDemo locale={locale} />
+          <AppDemo locale={locale} />
         </Container>
       </section>
 

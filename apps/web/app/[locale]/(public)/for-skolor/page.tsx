@@ -24,11 +24,59 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Editorial Calm — Stitch screen 04-for-skolor.png
 
+type AdoptionPoint = { lead: string; body: string };
+
 export default async function ForSchoolsPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
   const sv = locale === 'sv';
+
+  const adoptionPoints: AdoptionPoint[] = sv
+    ? [
+        {
+          lead: 'Ingen hårdvara att beställa.',
+          body: 'Elevante använder den mobil läraren redan har. Inga mikrofoner i klassrummet, ingen utrustning att underhålla.',
+        },
+        {
+          lead: 'Inget IT-projekt.',
+          body: 'Ingen installation och ingen integration som kräver IT-avdelningen. GDPR-avtal påskrivet, schema inläst — sedan kan lärarna börja.',
+        },
+        {
+          lead: 'Ingen lärarutbildning behövs.',
+          body: 'Två tryck per lektion, inget efterarbete. Det finns inget att lära sig — och därför inget att glömma bort.',
+        },
+        {
+          lead: 'Schemat sköter införandet.',
+          body: 'Lektionsförslagen kommer ur skolans eget schema. Elevante göms inte i en meny — det dyker upp när lektionen börjar.',
+        },
+        {
+          lead: 'Ingen tvingas, alla kan.',
+          body: 'Läraren väljer själv när den spelar in, eleven väljer själv när den frågar. Verktyg som mandateras fram blir hyllvärmare — Elevante används för att lärare och elever faktiskt vill.',
+        },
+      ]
+    : [
+        {
+          lead: 'No hardware to order.',
+          body: 'Elevante uses the phone the teacher already has. No microphones in the classroom, no equipment to maintain.',
+        },
+        {
+          lead: 'No IT project.',
+          body: 'No installation and no integration that needs the IT department. Sign the GDPR agreement, load the schedule — then teachers can start.',
+        },
+        {
+          lead: 'No teacher training needed.',
+          body: 'Two taps per lesson, no follow-up work. There is nothing to learn — and therefore nothing to forget.',
+        },
+        {
+          lead: 'The schedule drives adoption.',
+          body: 'Lesson prompts come from the school’s own timetable. Elevante isn’t buried in a menu — it appears when the lesson begins.',
+        },
+        {
+          lead: 'No one is forced, everyone can.',
+          body: 'Teachers choose when to record, students choose when to ask. Tools pushed through by mandate gather dust — Elevante gets used because teachers and students actually want it.',
+        },
+      ];
 
   const faqs: FaqItem[] = sv
     ? [
@@ -118,43 +166,70 @@ export default async function ForSchoolsPage({ params }: Props) {
 
   return (
     <>
-      {/* HERO — 60/40 asymmetrisk */}
+      {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">
-          <div className="grid items-end gap-12 md:grid-cols-12 md:gap-16">
-            <div className="md:col-span-7">
-              <p className="eyebrow mb-6">
-                {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
-              </p>
-              <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv ? 'Lyft hela skolan. Inte bara en klass.' : 'Lift the whole school. Not just one class.'}
-              </h1>
-              <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                {sv
-                  ? 'Elevante ger eleverna ett verktyg som faktiskt fungerar. Och lärarna mindre administration.'
-                  : 'Elevante gives students a tool that actually works. And teachers less admin.'}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-5">
-                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                  {sv ? 'Boka demo' : 'Book demo'}
-                </LinkButton>
-                <LinkButton href={`${base}/lararappen`} variant="text" size="lg">
-                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
-                </LinkButton>
-              </div>
+          <div className="max-w-3xl">
+            <p className="eyebrow mb-6">
+              {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
+            </p>
+            <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+              {sv ? 'Lyft hela skolan. Inte bara en klass.' : 'Lift the whole school. Not just one class.'}
+            </h1>
+            <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Elevante ger eleverna ett verktyg som faktiskt fungerar. Och lärarna mindre administration.'
+                : 'Elevante gives students a tool that actually works. And teachers less admin.'}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                {sv ? 'Boka demo' : 'Book demo'}
+              </LinkButton>
+              <LinkButton href={`${base}/demo`} variant="text" size="lg">
+                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
+              </LinkButton>
             </div>
+          </div>
+        </Container>
+      </section>
 
-            {/* Pull-stat 94% */}
+      {/* BLIR INTE HYLLVÄRMARE — avväpnar skolledarens införanderädsla */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
+        <Container width="wide">
+          <div className="grid gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-5">
-              <div className="border-l-2 border-[var(--color-coral)] pl-8">
-                <p className="font-serif text-[clamp(4.5rem,7vw+1rem,7rem)] leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)]">
-                  94%
-                </p>
-                <p className="mt-4 max-w-[18rem] text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                  {sv
-                    ? 'av eleverna i pilotklassen vill fortsätta använda Elevante.'
-                    : 'of pilot students want to keep using Elevante.'}
-                </p>
+              <p className="eyebrow mb-6">{sv ? 'Tryggt att införa' : 'Safe to roll out'}</p>
+              <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
+                {sv
+                  ? 'Det här blir inte ännu ett system som ingen använder.'
+                  : 'This won’t become one more system nobody uses.'}
+              </h2>
+              <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {sv
+                  ? 'Skolor har köpt verktyg förr som tyst rann ut i sanden. Elevante kan inte misslyckas på det sättet — för det kräver ingenting av någon.'
+                  : 'Schools have bought tools before that quietly fizzled out. Elevante can’t fail that way — because it asks nothing of anyone.'}
+              </p>
+            </div>
+            <div className="md:col-span-7">
+              <div className="rounded-[20px] bg-[var(--color-surface)] p-8 md:p-10">
+                <ul className="divide-y divide-[var(--color-sand)]">
+                  {adoptionPoints.map((point) => (
+                    <li
+                      key={point.lead}
+                      className="flex items-start gap-4 py-5 first:pt-0 last:pb-0"
+                    >
+                      <span className="status-dot status-dot--sage mt-2" />
+                      <div>
+                        <p className="font-serif text-[1.125rem] leading-snug text-[var(--color-ink)]">
+                          {point.lead}
+                        </p>
+                        <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                          {point.body}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -218,10 +293,10 @@ export default async function ForSchoolsPage({ params }: Props) {
               </p>
               <div className="mt-8">
                 <Link
-                  href={`${base}/lararappen`}
+                  href={`${base}/demo`}
                   className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-canvas)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-ink)] transition-opacity hover:opacity-90"
                 >
-                  {sv ? 'Klicka igenom lärar-appen' : 'Click through the teacher app'} →
+                  {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
                 </Link>
               </div>
             </div>

@@ -6,6 +6,7 @@ import { SITE_URL } from '@/lib/site';
 import { Header } from '@/components/public/Header';
 import { Footer } from '@/components/public/Footer';
 import { JsonLd } from '@/components/public/JsonLd';
+import { Analytics } from '@/components/public/Analytics';
 
 type Props = {
   children: ReactNode;
@@ -49,6 +50,7 @@ export default async function PublicLayout({ children, params }: Props) {
 
   return (
     <>
+      <Analytics />
       <JsonLd data={[orgSchema, websiteSchema]} />
       <a
         href="#main-content"

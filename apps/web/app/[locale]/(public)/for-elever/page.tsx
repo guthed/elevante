@@ -245,8 +245,8 @@ export default async function ForStudentsPage({ params }: Props) {
               <LinkButton href={`${base}/kontakt?topic=elev`} size="lg">
                 {sv ? 'Skicka tips till skolan' : 'Send a tip to the school'}
               </LinkButton>
-              <LinkButton href={`${base}/lararappen`} variant="ghost" size="lg">
-                {sv ? 'Visa lärar-appen' : 'Show the teacher app'} →
+              <LinkButton href={`${base}/demo`} variant="ghost" size="lg">
+                {sv ? 'Visa Elevante-demon' : 'Show the Elevante demo'} →
               </LinkButton>
             </div>
             <p className="mt-4 text-[0.875rem] text-[var(--color-ink-muted)]">
