@@ -67,8 +67,8 @@ export default async function LararAppDemoPage({ params }: Props) {
           <div className="mx-auto max-w-xl text-center">
             <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
               {sv
-                ? 'Vill du se det här på en riktig skola?'
-                : 'Want to see this at a real school?'}
+                ? 'Vill du se det här på din riktiga skola?'
+                : 'Want to see this at your school?'}
             </h2>
             <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv

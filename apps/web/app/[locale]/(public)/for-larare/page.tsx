@@ -87,7 +87,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'Slipp upprepa dig',
-          body: 'AI:n svarar på "kan du ta det där igen?". Du får tiden tillbaka till det som faktiskt kräver en lärare.',
+          body: 'AI:n svarar på "kan du ta det där igen?". En lärare svarar i snitt på samma fråga ett trettiotal gånger per termin — den tiden får du tillbaka till det som faktiskt kräver en lärare.',
         },
         {
           title: 'Se vad klassen fastnat på',
@@ -121,7 +121,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'No more repeating yourself',
-          body: 'The AI answers the "can you go over that again?" questions. You get time back for what actually needs a teacher.',
+          body: 'The AI answers the "can you go over that again?" questions. A teacher answers the same question around thirty times a term — that time comes back to you for what actually needs a teacher.',
         },
         {
           title: 'See what the class got stuck on',
@@ -183,6 +183,10 @@ export default async function ForTeachersPage({ params }: Props) {
           q: 'Ersätter Elevante mig som lärare?',
           a: 'Nej, och det är inte meningen. Elevante svarar på upprepade frågor och hjälper eleven repetera — men relationen, bedömningen och undervisningen är din. Elevante ger dig tillbaka tid att vara just lärare.',
         },
+        {
+          q: 'Hur kommer jag igång med Elevante?',
+          a: 'Din skola behöver ett avtal med Elevante. Har skolan inte det än kan du tipsa skolledningen eller boka en demo med oss — vi visar hela flödet på en halvtimme.',
+        },
       ]
     : [
         {
@@ -216,6 +220,10 @@ export default async function ForTeachersPage({ params }: Props) {
         {
           q: 'Does Elevante replace me as a teacher?',
           a: 'No, and it is not meant to. Elevante answers repeated questions and helps students revise — but the relationship, the assessment and the teaching are yours. Elevante gives you back time to be exactly that: a teacher.',
+        },
+        {
+          q: 'How do I get started with Elevante?',
+          a: 'Your school needs an agreement with Elevante. If the school does not have one yet, you can tip off the leadership or book a demo with us — we show the whole flow in half an hour.',
         },
       ];
 
