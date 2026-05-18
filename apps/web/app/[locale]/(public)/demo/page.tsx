@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
-    title: sv ? 'Demo — Elevante' : 'Demo — Elevante',
+    title: 'Demo — Elevante',
     description: sv
       ? 'Klicka igenom hela Elevante — från lärarens inspelning till elevens svar med källa.'
       : 'Click through all of Elevante — from the teacher\'s recording to the student\'s sourced answer.',
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Demo-sida som låter säljare visa mobil-flödet via webben.
+// Demo-sida som låter säljare klicka igenom hela Elevante-loopen via webben.
 // Inte indexerad — den är ett verktyg, inte marknadsmaterial.
 
-export default async function LararAppDemoPage({ params }: Props) {
+export default async function DemoPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const base = `/${locale}`;
