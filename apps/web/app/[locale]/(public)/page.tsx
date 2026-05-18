@@ -6,6 +6,7 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
+import { RotatingHeadline } from '@/components/public/RotatingHeadline';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -126,19 +127,7 @@ export default async function HomePage({ params }: Props) {
         <Container width="wide">
           <div className="grid items-center gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-7">
-              <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,5rem)] leading-[1.02] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv ? (
-                  <>
-                    Lektionen tar inte slut{' '}
-                    <span className="italic text-[var(--color-coral)]">när det ringer ut.</span>
-                  </>
-                ) : (
-                  <>
-                    The lesson doesn't end{' '}
-                    <span className="italic text-[var(--color-coral)]">when the bell rings.</span>
-                  </>
-                )}
-              </h1>
+              <RotatingHeadline locale={locale} />
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
                   ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
