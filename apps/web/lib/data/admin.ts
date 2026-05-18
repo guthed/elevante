@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { TranscriptStatus, UserRole } from '@/lib/supabase/database';
+import type { SchoolProspect, TranscriptStatus, UserRole } from '@/lib/supabase/database';
 
 export type AdminOverview = {
   schoolsCount: number;
@@ -118,6 +118,37 @@ export type AdminStats = {
     admins: number;
   };
 };
+
+export type CampaignProspectsResult = {
+  prospects: SchoolProspect[];
+  total: number;
+};
+
+export async function getCampaignProspects(): Promise<CampaignProspectsResult> {
+  const supabase = await createSupabaseServerClient();
+
+  const [prospectsRes, countRes] = await Promise.all([
+    supabase
+      .from('school_prospects')
+      .select(
+        'id, school_unit_code, school_name, municipality, huvudman_name, students, ' +
+        'lookup_count, ai_brief, enrichment_status, contact_address, contact_phone, ' +
+        'contact_email, latest_lead_email, first_seen_at, last_seen_at, ' +
+        'created_at, updated_at, contact_web, principal_type, school_orientation, ' +
+        'latest_lead_message, latest_lead_at, notion_page_id',
+      )
+      .order('last_seen_at', { ascending: false })
+      .limit(200),
+    supabase
+      .from('school_prospects')
+      .select('id', { count: 'exact', head: true }),
+  ]);
+
+  return {
+    prospects: ((prospectsRes.data ?? []) as unknown as SchoolProspect[]),
+    total: countRes.count ?? 0,
+  };
+}
 
 export async function getAdminStats(): Promise<AdminStats> {
   const supabase = await createSupabaseServerClient();
