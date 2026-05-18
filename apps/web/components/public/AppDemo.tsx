@@ -38,9 +38,23 @@ export function AppDemo({ locale }: Props) {
     step === 'schedule' || step === 'recording' || step === 'processing';
   const phases = sv ? PHASES.sv : PHASES.en;
 
+  const currentTitle =
+    step === 'schedule'
+      ? sv ? 'Läraren börjar dagen' : 'The teacher starts the day'
+      : step === 'recording'
+        ? sv ? 'En knapp. Spelar in.' : 'One button. Recording.'
+        : step === 'processing'
+          ? sv ? 'Lektionen sparar sig själv' : 'The lesson saves itself'
+          : step === 'chat' && !chatAnswered
+            ? sv ? 'Eleven frågar hemma' : 'The student asks from home'
+            : step === 'chat' && chatAnswered
+              ? sv ? 'Svaret — med källa' : 'The answer — with a source'
+              : sv ? 'Det här är hela Elevante.' : 'This is all of Elevante.';
+
   return (
     <div>
-      <ProgressRail phases={phases} active={phaseOf(step)} />
+      <p className="sr-only" aria-live="polite">{currentTitle}</p>
+      <ProgressRail phases={phases} active={phaseOf(step)} sv={sv} />
 
       <div className="mt-10 grid items-start gap-12 md:grid-cols-12 md:gap-16">
         {/* Enhet */}
@@ -162,14 +176,19 @@ export function AppDemo({ locale }: Props) {
 function ProgressRail({
   phases,
   active,
+  sv,
 }: {
   phases: readonly string[];
   active: number;
+  sv: boolean;
 }) {
   return (
-    <ol className="flex flex-wrap items-center gap-x-3 gap-y-2">
+    <ol
+      className="flex flex-wrap items-center gap-x-3 gap-y-2"
+      aria-label={sv ? 'Demofaser' : 'Demo phases'}
+    >
       {phases.map((label, i) => (
-        <li key={label} className="flex items-center gap-3">
+        <li key={label} aria-current={i === active ? 'step' : undefined} className="flex items-center gap-3">
           <span
             className={[
               'flex h-6 w-6 items-center justify-center rounded-full text-[0.75rem] font-medium transition-colors',
@@ -328,9 +347,9 @@ function ScheduleScreen({ sv, onRecord }: { sv: boolean; onRecord: () => void })
             <p className="text-[0.75rem] text-[var(--color-ink-muted)]">
               {sv ? 'Tisdag 13 maj' : 'Tuesday May 13'}
             </p>
-            <h1 className="mt-0.5 font-serif text-[1.75rem] leading-none text-[var(--color-ink)]">
+            <h2 className="mt-0.5 font-serif text-[1.75rem] leading-none text-[var(--color-ink)]">
               {sv ? 'Idag' : 'Today'}
-            </h1>
+            </h2>
           </div>
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-sand)] text-[0.6875rem] font-medium text-[var(--color-ink)]">
             AB
@@ -339,9 +358,9 @@ function ScheduleScreen({ sv, onRecord }: { sv: boolean; onRecord: () => void })
       </div>
 
       <ul className="mt-4 flex-1 overflow-y-auto">
-        {lessons.map((lesson, idx) => (
+        {lessons.map((lesson) => (
           <li
-            key={idx}
+            key={lesson.time}
             className="flex items-center gap-3 border-t border-[var(--color-sand)] px-5 py-3.5 last:border-b"
           >
             <div className="w-12 shrink-0">
@@ -386,7 +405,7 @@ function ScheduleScreen({ sv, onRecord }: { sv: boolean; onRecord: () => void })
           {sv ? 'Spela in nästa lektion' : 'Record next lesson'} →
         </button>
 
-        <nav className="mt-4 flex items-center justify-around border-t border-[var(--color-sand)] pt-3">
+        <nav aria-label={sv ? 'App-navigation' : 'App navigation'} className="mt-4 flex items-center justify-around border-t border-[var(--color-sand)] pt-3">
           <span className="text-[0.75rem] font-medium text-[var(--color-ink)]">
             {sv ? 'Schema' : 'Schedule'}
           </span>
@@ -413,9 +432,9 @@ function RecordingScreen({ sv, onStop }: { sv: boolean; onStop: () => void }) {
             {sv ? 'Inspelar lektion' : 'Recording lesson'}
           </span>
         </div>
-        <h1 className="mt-4 font-serif text-[1.5rem] leading-tight">
+        <h2 className="mt-4 font-serif text-[1.5rem] leading-tight">
           {sv ? 'Integralberäkning — del 2' : 'Integrals — part 2'}
-        </h1>
+        </h2>
         <p className="mt-1 text-[0.75rem] text-white/60">
           {sv ? 'Matematik 4 · NA3a · 10:15' : 'Math 4 · NA3a · 10:15'}
         </p>
@@ -489,9 +508,9 @@ function ProcessingScreen({ sv }: { sv: boolean }) {
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-sage)]/30">
           <span className="h-3 w-3 rounded-full bg-[var(--color-sage)]" />
         </div>
-        <h1 className="mt-6 font-serif text-[1.5rem] leading-tight text-[var(--color-ink)]">
+        <h2 className="mt-6 font-serif text-[1.5rem] leading-tight text-[var(--color-ink)]">
           {sv ? 'Lektionen sparas' : 'Saving the lesson'}
-        </h1>
+        </h2>
         <p className="mt-2 max-w-[15rem] text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
           {sv
             ? 'Ljudet laddas upp och transkriberas automatiskt.'
