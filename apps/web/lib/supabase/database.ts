@@ -280,7 +280,7 @@ export type SchoolProspect = {
   school_orientation: string | null;
   students: number | null;
   ai_brief: string | null;
-  enrichment_status: string;
+  enrichment_status: 'pending' | 'done' | 'failed';
   first_seen_at: string;
   last_seen_at: string;
   lookup_count: number;
@@ -303,7 +303,7 @@ type SchoolProspectInsert = {
   school_orientation?: string | null;
   students?: number | null;
   ai_brief?: string | null;
-  enrichment_status?: string;
+  enrichment_status?: 'pending' | 'done' | 'failed';
   first_seen_at?: string;
   last_seen_at?: string;
   lookup_count?: number;
