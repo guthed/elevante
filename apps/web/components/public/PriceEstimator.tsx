@@ -14,6 +14,8 @@ export function PriceEstimator({ locale }: { locale: string }) {
   const sv = locale === 'sv';
   const inputId = useId();
   const listboxId = useId();
+  const manualSchoolNameId = useId();
+  const studentCountId = useId();
   const comboboxRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
@@ -30,7 +32,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
   const [loading, setLoading] = useState(false);
 
   // Lead form
-  const [leadState, leadAction] = useActionState(submitCampaignLead, INITIAL_LEAD);
+  const [leadState, leadAction, isPending] = useActionState(submitCampaignLead, INITIAL_LEAD);
   const [showLead, setShowLead] = useState(false);
 
   const trimmedQuery = query.trim();
@@ -41,7 +43,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
           .slice(0, 8)
       : [];
 
-  const studentCount = students === '' ? null : parseInt(students, 10);
+  const studentCount = students === '' ? null : Math.round(Number(students));
   const validStudents = studentCount !== null && Number.isFinite(studentCount) && studentCount > 0;
   const estimatedPrice = validStudents ? estimateAnnualPrice(studentCount!) : null;
   const bigSchool = validStudents && studentCount! >= 5000;
@@ -95,6 +97,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!open || suggestions.length === 0) {
       if (e.key === 'ArrowDown' && suggestions.length > 0) {
+        e.preventDefault();
         setOpen(true);
         setActiveIndex(0);
       }
@@ -149,6 +152,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
               type="text"
               role="combobox"
               aria-autocomplete="list"
+              aria-haspopup="listbox"
               aria-expanded={open && suggestions.length > 0}
               aria-controls={listboxId}
               aria-activedescendant={
@@ -199,7 +203,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
           <button
             type="button"
             onClick={enterManualMode}
-            className="text-[0.875rem] text-[var(--color-ink-secondary)] underline underline-offset-4 transition-colors hover:text-[var(--color-ink)]"
+            className="inline-block py-1.5 text-[0.875rem] text-[var(--color-ink-secondary)] underline underline-offset-4 transition-colors hover:text-[var(--color-ink)]"
           >
             {sv ? 'Hittar du inte din skola?' : "Can't find your school?"}
           </button>
@@ -213,10 +217,14 @@ export function PriceEstimator({ locale }: { locale: string }) {
               : 'Enter your school name and student count manually.'}
           </div>
           <div className="space-y-2">
-            <label className="block text-[0.9375rem] font-medium text-[var(--color-ink)]">
+            <label
+              htmlFor={manualSchoolNameId}
+              className="block text-[0.9375rem] font-medium text-[var(--color-ink)]"
+            >
               {sv ? 'Skolans namn' : 'School name'}
             </label>
             <input
+              id={manualSchoolNameId}
               type="text"
               value={manualSchoolName}
               onChange={(e) => setManualSchoolName(e.target.value)}
@@ -227,7 +235,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
           <button
             type="button"
             onClick={exitManualMode}
-            className="text-[0.875rem] text-[var(--color-ink-secondary)] underline underline-offset-4 transition-colors hover:text-[var(--color-ink)]"
+            className="inline-block py-1.5 text-[0.875rem] text-[var(--color-ink-secondary)] underline underline-offset-4 transition-colors hover:text-[var(--color-ink)]"
           >
             {sv ? '← Sök bland gymnasieskolor' : '← Search among upper secondary schools'}
           </button>
@@ -238,7 +246,10 @@ export function PriceEstimator({ locale }: { locale: string }) {
       {(selectedSchool !== null || manualMode) && (
         <div className="space-y-4">
           <div>
-            <label className="block text-[0.9375rem] font-medium text-[var(--color-ink)]">
+            <label
+              htmlFor={studentCountId}
+              className="block text-[0.9375rem] font-medium text-[var(--color-ink)]"
+            >
               {sv ? 'Antal elever' : 'Number of students'}
             </label>
             {loading ? (
@@ -255,6 +266,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
                   </p>
                 )}
                 <input
+                  id={studentCountId}
                   type="number"
                   min={1}
                   step={1}
@@ -335,7 +347,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
             {/* Hidden fields */}
             <input type="hidden" name="schoolUnitCode" value={schoolCode} />
             <input type="hidden" name="schoolName" value={schoolName} />
-            <input type="hidden" name="students" value={students} />
+            <input type="hidden" name="students" value={validStudents && studentCount !== null ? String(studentCount) : ''} />
             <input type="hidden" name="locale" value={locale} />
 
             <div>
@@ -391,9 +403,11 @@ export function PriceEstimator({ locale }: { locale: string }) {
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 rounded-[12px] bg-[var(--color-ink)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-all duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#0f1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-2"
+              disabled={isPending}
+              aria-disabled={isPending}
+              className="inline-flex items-center justify-center gap-2 rounded-[12px] bg-[var(--color-ink)] px-6 py-3 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-all duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#0f1020] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {sv ? 'Skicka' : 'Send'}
+              {isPending ? (sv ? 'Skickar…' : 'Sending…') : (sv ? 'Skicka' : 'Send')}
             </button>
           </form>
         </div>
