@@ -465,14 +465,14 @@ export type MiniLessonRow = {
 };
 
 export async function getRecentLessonInsightRows(
-  schoolId: string,
+  teacherId: string,
   limit = 3,
 ): Promise<MiniLessonRow[]> {
   const supabase = await createSupabaseServerClient();
   const { data: lessons } = await supabase
     .from('lessons')
     .select('id, title, recorded_at')
-    .eq('school_id', schoolId)
+    .eq('teacher_id', teacherId)
     .eq('transcript_status', 'ready')
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(limit);

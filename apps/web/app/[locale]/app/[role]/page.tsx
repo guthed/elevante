@@ -34,9 +34,7 @@ export default async function RoleOverviewPage({ params }: Props) {
     if (!profile) notFound();
     const [data, insightRows] = await Promise.all([
       getTeacherOverview(profile.id),
-      profile.school_id
-        ? getRecentLessonInsightRows(profile.school_id, 3)
-        : Promise.resolve([]),
+      getRecentLessonInsightRows(profile.id, 3),
     ]);
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
