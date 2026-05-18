@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { Container } from '@/components/public/Container';
 import { LinkButton } from '@/components/public/Button';
-import { MobileAppDemo } from '@/components/public/MobileAppDemo';
+import { AppDemo } from '@/components/public/AppDemo';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -58,7 +58,7 @@ export default async function LararAppDemoPage({ params }: Props) {
 
       <section className="pb-20 md:pb-28">
         <Container width="wide">
-          <MobileAppDemo locale={locale} />
+          <AppDemo locale={locale} />
         </Container>
       </section>
 
