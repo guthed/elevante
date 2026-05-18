@@ -282,7 +282,7 @@ export default async function HomePage({ params }: Props) {
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'GDPR är inte ett påslag på Elevante — det är hela arkitekturen.'
-                  : "GDPR isn't an add-on to Elevante — it's the architecture."}
+                  : 'GDPR isn’t an add-on to Elevante — it’s the architecture.'}
               </p>
             </div>
             <div className="md:col-span-7">
@@ -328,7 +328,7 @@ export default async function HomePage({ params }: Props) {
             <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
                 ? '500 kr per elev och år, allt ingår. Boka en demo så visar vi hur det funkar.'
-                : "SEK 500 per student per year, everything included. Book a demo and we'll show you how it works."}
+                : 'SEK 500 per student per year, everything included. Book a demo and we’ll show you how it works.'}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
