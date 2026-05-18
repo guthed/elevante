@@ -359,7 +359,10 @@ function LoopStep({
 }) {
   return (
     <article className="flex flex-col">
-      <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5">
+      <div
+        className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5"
+        aria-hidden="true"
+      >
         {visual}
       </div>
       <p className="mt-6 font-serif text-[1.25rem] leading-none text-[var(--color-coral)]">
@@ -494,11 +497,11 @@ function ChatMockup({ locale }: { locale: string }) {
         </p>
         <div className="flex flex-wrap gap-2">
           <span className="source-pill">
-            <span className="status-dot status-dot--sage" />
+            <span className="status-dot status-dot--sage" aria-hidden="true" />
             {sv ? 'Lektion 12 · 23:14' : 'Lesson 12 · 23:14'}
           </span>
           <span className="source-pill">
-            <span className="status-dot status-dot--sage" />
+            <span className="status-dot status-dot--sage" aria-hidden="true" />
             {sv ? 'Lektion 12 · 28:47' : 'Lesson 12 · 28:47'}
           </span>
         </div>
