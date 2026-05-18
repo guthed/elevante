@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-// Hjälterubriken varvar mellan tre rubriker — en slumpas fram per sidladdning.
-// Server renderar alltid första rubriken (deterministiskt, ingen hydration-mismatch),
-// klienten väljer slumpmässigt vid mount.
+// Hjälterubriken roterar långsamt mellan tre rubriker.
+// Startar alltid med den första (deterministiskt — samma varje gång, ingen hydration-mismatch).
+// Auto-rotationen pausas helt för användare med prefers-reduced-motion.
 
 type Headline = { lead: string; tail: string };
+
+const ROTATE_MS = 7000;
 
 const HEADLINES: Record<'sv' | 'en', Headline[]> = {
   sv: [
@@ -26,15 +28,21 @@ export function RotatingHeadline({ locale }: { locale: string }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    setIndex(Math.floor(Math.random() * list.length));
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % list.length);
+    }, ROTATE_MS);
+    return () => clearInterval(id);
   }, [list.length]);
 
   const { lead, tail } = list[index];
 
   return (
     <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,5rem)] leading-[1.02] tracking-[-0.01em] text-[var(--color-ink)]">
-      {lead}{' '}
-      <span className="italic text-[var(--color-coral)]">{tail}</span>
+      <span key={index} className="block animate-page-in">
+        {lead}{' '}
+        <span className="italic text-[var(--color-coral)]">{tail}</span>
+      </span>
     </h1>
   );
 }
