@@ -2,7 +2,7 @@
 
 import { useActionState, useId, useRef, useState, useEffect } from 'react';
 import { getSchoolEstimate, submitCampaignLead, type LeadState } from '@/app/actions/campaign';
-import { estimateAnnualPrice, formatSEK } from '@/lib/pricing';
+import { estimateAnnualPrice, formatSEK, PRICE_PER_STUDENT_MONTH_SEK } from '@/lib/pricing';
 import schoolsRaw from '@/lib/data/schools.json';
 
 type School = { code: string; name: string };
@@ -310,6 +310,11 @@ export function PriceEstimator({ locale }: { locale: string }) {
                   {sv
                     ? `${studentCount} elever × 500 kr / år`
                     : `${studentCount} students × SEK 500 / year`}
+                </p>
+                <p className="mt-1 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                  {sv
+                    ? `Det blir ca ${formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)} per elev och månad.`
+                    : `That's about ${formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)} per student per month.`}
                 </p>
                 {bigSchool && (
                   <div className="mt-4 rounded-[10px] border border-[var(--color-coral)]/30 bg-[var(--color-coral)]/8 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)]">
