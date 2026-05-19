@@ -28,7 +28,7 @@ const en: Dictionary = {
   },
   home: {
     hero: {
-      title: 'School in your pocket',
+      title: 'Ask Elevante what was said in class',
       subtitle:
         'Elevante records, transcribes and remembers every classroom lesson — so students can review whenever they need.',
       ctaPrimary: 'Book a demo',

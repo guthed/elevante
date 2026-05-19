@@ -28,7 +28,7 @@ const sv: Dictionary = {
   },
   home: {
     hero: {
-      title: 'Skolan i fickan',
+      title: 'Fråga Elevante vad som sas på lektionen',
       subtitle:
         'Elevante spelar in, transkriberar och minns allt som sägs i klassrummet — så att eleverna kan repetera när det passar dem.',
       ctaPrimary: 'Boka demo',
