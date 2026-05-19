@@ -1,4 +1,5 @@
 export const PRICE_PER_STUDENT_SEK = 500;
+export const PRICE_PER_STUDENT_MONTH_SEK = Math.round(PRICE_PER_STUDENT_SEK / 12);
 
 // Inget rabattpåslag — alltid fullt pris (beslut i specen).
 export function estimateAnnualPrice(students: number): number {

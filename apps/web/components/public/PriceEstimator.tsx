@@ -2,7 +2,7 @@
 
 import { useActionState, useId, useRef, useState, useEffect } from 'react';
 import { getSchoolEstimate, submitCampaignLead, type LeadState } from '@/app/actions/campaign';
-import { estimateAnnualPrice, formatSEK } from '@/lib/pricing';
+import { estimateAnnualPrice, formatSEK, PRICE_PER_STUDENT_MONTH_SEK } from '@/lib/pricing';
 import schoolsRaw from '@/lib/data/schools.json';
 
 type School = { code: string; name: string };
@@ -149,6 +149,15 @@ export function PriceEstimator({ locale }: { locale: string }) {
             {sv ? 'Sök din skola' : 'Search for your school'}
           </label>
           <div className="relative">
+            <svg
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-ink-muted)]"
+            >
+              <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.6" />
+              <path d="m14 14 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
             <input
               id={inputId}
               ref={comboboxRef}
@@ -167,9 +176,9 @@ export function PriceEstimator({ locale }: { locale: string }) {
               onFocus={() => {
                 if (trimmedQuery.length >= 2) setOpen(true);
               }}
-              placeholder={sv ? 'T.ex. Nacka Gymnasium' : 'E.g. Nacka Gymnasium'}
+              placeholder={sv ? 'Skriv skolans namn…' : "Type your school's name…"}
               autoComplete="off"
-              className="w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3 text-[1rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] outline-none transition-all duration-[240ms] focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-ink)]/10"
+              className="w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] py-4 pl-12 pr-4 text-[1.0625rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] outline-none transition-all duration-[240ms] focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-ink)]/10"
             />
             {/* Dropdown */}
             {open && suggestions.length > 0 && (
@@ -203,6 +212,11 @@ export function PriceEstimator({ locale }: { locale: string }) {
               </ul>
             )}
           </div>
+          <p className="text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
+            {sv
+              ? 'Börja skriva så söker vi bland Sveriges gymnasieskolor — välj din skola i listan, så fyller vi i elevantalet åt dig.'
+              : "Start typing and we'll search Sweden's upper-secondary schools — pick yours from the list and we'll fill in the student count for you."}
+          </p>
           <button
             type="button"
             onClick={enterManualMode}
@@ -286,17 +300,34 @@ export function PriceEstimator({ locale }: { locale: string }) {
           <div aria-live="polite" aria-atomic="true">
             {validStudents && estimatedPrice !== null && (
               <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
-                <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-                  {sv ? 'Ungefärlig årskostnad' : 'Estimated annual cost'}
-                </p>
-                <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
-                  {formatSEK(estimatedPrice, locale)}
-                </p>
-                <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
-                  {sv
-                    ? `${studentCount} elever × 500 kr / år`
-                    : `${studentCount} students × SEK 500 / year`}
-                </p>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                      {sv ? 'Ungefärlig årskostnad' : 'Estimated annual cost'}
+                    </p>
+                    <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
+                      {formatSEK(estimatedPrice, locale)}
+                    </p>
+                    <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                      {sv
+                        ? `${studentCount} elever × 500 kr / år`
+                        : `${studentCount} students × SEK 500 / year`}
+                    </p>
+                  </div>
+                  <div className="sm:border-l sm:border-[var(--color-sand)] sm:pl-6">
+                    <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                      {sv ? 'Per elev och månad' : 'Per student per month'}
+                    </p>
+                    <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
+                      {formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)}
+                    </p>
+                    <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                      {sv
+                        ? 'Samma pris oavsett skolans storlek'
+                        : 'Same price regardless of school size'}
+                    </p>
+                  </div>
+                </div>
                 {bigSchool && (
                   <div className="mt-4 rounded-[10px] border border-[var(--color-coral)]/30 bg-[var(--color-coral)]/8 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)]">
                     {sv
