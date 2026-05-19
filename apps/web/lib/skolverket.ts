@@ -1,3 +1,7 @@
+import municipalitiesRaw from '@/lib/data/municipalities.json';
+
+const municipalities = municipalitiesRaw as Record<string, string>;
+
 export type SchoolFacts = {
   address: string | null;
   phone: string | null;
@@ -62,7 +66,9 @@ export async function fetchSchoolFacts(code: string): Promise<SchoolFacts | null
       phone: c.telephone ?? null,
       email: c.email ?? null,
       web: c.web ?? null,
-      municipality: b?.geographicalAreaCode ?? null,
+      municipality: b?.geographicalAreaCode
+        ? (municipalities[b.geographicalAreaCode] ?? b.geographicalAreaCode)
+        : null,
       principalType: b?.principalOrganizerType ?? null,
       huvudman: b?.corporationName ?? null,
       orientation: Array.isArray(b?.schoolOrientation)
