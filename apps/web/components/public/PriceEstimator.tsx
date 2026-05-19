@@ -149,6 +149,15 @@ export function PriceEstimator({ locale }: { locale: string }) {
             {sv ? 'Sök din skola' : 'Search for your school'}
           </label>
           <div className="relative">
+            <svg
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-ink-muted)]"
+            >
+              <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.6" />
+              <path d="m14 14 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
             <input
               id={inputId}
               ref={comboboxRef}
@@ -167,9 +176,9 @@ export function PriceEstimator({ locale }: { locale: string }) {
               onFocus={() => {
                 if (trimmedQuery.length >= 2) setOpen(true);
               }}
-              placeholder={sv ? 'T.ex. Nacka Gymnasium' : 'E.g. Nacka Gymnasium'}
+              placeholder={sv ? 'Skriv skolans namn…' : "Type your school's name…"}
               autoComplete="off"
-              className="w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3 text-[1rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] outline-none transition-all duration-[240ms] focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-ink)]/10"
+              className="w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] py-4 pl-12 pr-4 text-[1.0625rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] outline-none transition-all duration-[240ms] focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-ink)]/10"
             />
             {/* Dropdown */}
             {open && suggestions.length > 0 && (
@@ -203,6 +212,11 @@ export function PriceEstimator({ locale }: { locale: string }) {
               </ul>
             )}
           </div>
+          <p className="text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
+            {sv
+              ? 'Börja skriva så söker vi bland Sveriges gymnasieskolor — välj din skola i listan, så fyller vi i elevantalet åt dig.'
+              : "Start typing and we'll search Sweden's upper-secondary schools — pick yours from the list and we'll fill in the student count for you."}
+          </p>
           <button
             type="button"
             onClick={enterManualMode}
