@@ -300,22 +300,34 @@ export function PriceEstimator({ locale }: { locale: string }) {
           <div aria-live="polite" aria-atomic="true">
             {validStudents && estimatedPrice !== null && (
               <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
-                <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-                  {sv ? 'Ungefärlig årskostnad' : 'Estimated annual cost'}
-                </p>
-                <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
-                  {formatSEK(estimatedPrice, locale)}
-                </p>
-                <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
-                  {sv
-                    ? `${studentCount} elever × 500 kr / år`
-                    : `${studentCount} students × SEK 500 / year`}
-                </p>
-                <p className="mt-1 text-[0.875rem] text-[var(--color-ink-secondary)]">
-                  {sv
-                    ? `Det blir ca ${formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)} per elev och månad.`
-                    : `That's about ${formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)} per student per month.`}
-                </p>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                      {sv ? 'Ungefärlig årskostnad' : 'Estimated annual cost'}
+                    </p>
+                    <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
+                      {formatSEK(estimatedPrice, locale)}
+                    </p>
+                    <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                      {sv
+                        ? `${studentCount} elever × 500 kr / år`
+                        : `${studentCount} students × SEK 500 / year`}
+                    </p>
+                  </div>
+                  <div className="sm:border-l sm:border-[var(--color-sand)] sm:pl-6">
+                    <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                      {sv ? 'Per elev och månad' : 'Per student per month'}
+                    </p>
+                    <p className="mt-2 font-serif text-[clamp(2rem,4vw+1rem,3rem)] leading-none tracking-[-0.02em] text-[var(--color-ink)]">
+                      {formatSEK(PRICE_PER_STUDENT_MONTH_SEK, locale)}
+                    </p>
+                    <p className="mt-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                      {sv
+                        ? 'Samma pris oavsett skolans storlek'
+                        : 'Same price regardless of school size'}
+                    </p>
+                  </div>
+                </div>
                 {bigSchool && (
                   <div className="mt-4 rounded-[10px] border border-[var(--color-coral)]/30 bg-[var(--color-coral)]/8 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)]">
                     {sv
