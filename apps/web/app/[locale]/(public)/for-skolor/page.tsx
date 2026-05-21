@@ -52,7 +52,7 @@ export default async function ForSchoolsPage({ params }: Props) {
         },
         {
           lead: 'Ingen tvingas, alla kan.',
-          body: 'Läraren väljer själv när den spelar in, eleven väljer själv när den frågar. Verktyg som mandateras fram blir hyllvärmare — Elevante används för att lärare och elever faktiskt vill.',
+          body: 'Läraren väljer själv när den spelar in, eleven väljer själv när den frågar. Verktyg som tvingas på folk blir hyllvärmare — Elevante används för att lärare och elever faktiskt vill.',
         },
       ]
     : [
@@ -174,7 +174,7 @@ export default async function ForSchoolsPage({ params }: Props) {
               {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
             </p>
             <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Lyft hela skolan. Inte bara en klass.' : 'Lift the whole school. Not just one class.'}
+              {sv ? 'Hela skolan, inte bara en klass.' : 'The whole school, not just one class.'}
             </h1>
             <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -201,8 +201,8 @@ export default async function ForSchoolsPage({ params }: Props) {
               <p className="eyebrow mb-6">{sv ? 'Tryggt att införa' : 'Safe to roll out'}</p>
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
                 {sv
-                  ? 'Det här blir inte ännu ett system som ingen använder.'
-                  : 'This won’t become one more system nobody uses.'}
+                  ? 'Det här används faktiskt.'
+                  : 'This one actually gets used.'}
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv

@@ -14,12 +14,12 @@ const HEADLINES: Record<'sv' | 'en', Headline[]> = {
   sv: [
     { lead: 'Lektionen tar inte slut', tail: 'när det ringer ut.' },
     { lead: 'Elevante minns', tail: 'allt du missade i skolan.' },
-    { lead: 'Du behöver inte komma ihåg allt.', tail: 'Det gör Elevante.' },
+    { lead: 'Du behöver inte minnas allt.', tail: 'Det gör Elevante.' },
   ],
   en: [
     { lead: 'The lesson doesn’t end', tail: 'when the bell rings.' },
     { lead: 'Elevante remembers', tail: 'everything you missed at school.' },
-    { lead: 'You don’t have to remember everything.', tail: 'Elevante does.' },
+    { lead: 'You don’t need to remember.', tail: 'Elevante does.' },
   ],
 };
 

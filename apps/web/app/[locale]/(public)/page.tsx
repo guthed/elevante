@@ -155,7 +155,7 @@ export default async function HomePage({ params }: Props) {
         <Container width="wide">
           <div className="max-w-2xl">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Spela in. Minns. Fråga.' : 'Record. Remember. Ask.'}
+              {sv ? 'Spela in. Spara. Fråga.' : 'Record. Save. Ask.'}
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -211,8 +211,8 @@ export default async function HomePage({ params }: Props) {
           <div className="max-w-2xl">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
               {sv
-                ? 'Elevante för skolan, läraren och eleven'
-                : 'Elevante for the school, the teacher and the student'}
+                ? 'Tre vyer på samma lektion'
+                : 'Three views of the same lesson'}
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -312,7 +312,7 @@ export default async function HomePage({ params }: Props) {
         <Container width="content">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
-              {sv ? 'Se Elevante med era egna lektioner' : 'See Elevante with your own lessons'}
+              {sv ? 'Se Elevante live på en halvtimme.' : 'See Elevante live in 30 minutes.'}
             </h2>
             <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv

@@ -69,8 +69,8 @@ export default async function PriceEstimatePage({ params }: Props) {
               </h1>
               <p className="mt-6 max-w-md text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Sök din skola nedan — elevantalet hämtas automatiskt och du ser ert uppskattade årspris direkt.'
-                  : 'Search for your school below — the student count is fetched automatically and you see your estimated annual price right away.'}
+                  ? 'Sök er skola nedan — antalet elever hämtas automatiskt och ni ser årspriset direkt.'
+                  : 'Search for your school below — the student count is fetched automatically and you see the annual price right away.'}
               </p>
             </div>
             <div className="md:col-span-6">
@@ -181,13 +181,13 @@ export default async function PriceEstimatePage({ params }: Props) {
           <div className="max-w-xl">
             <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-snug text-[var(--color-ink)]">
               {sv
-                ? 'Priset ovan är ungefärligt — boka en demo för en exakt offert.'
-                : 'The price above is approximate — book a demo for an exact quote.'}
+                ? 'Vill ni ha exakt pris?'
+                : 'Want an exact price?'}
             </h2>
             <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
-                ? 'Vi går igenom er skola, ert schema och era behov. Ni får ett personligt förslag med exakt prisuppgift.'
-                : 'We’ll go through your school, your schedule and your needs. You’ll get a personalised proposal with an exact price.'}
+                ? 'Boka en demo så går vi igenom er skola och tar fram en offert för just er.'
+                : 'Book a demo and we’ll walk through your school and put together a quote.'}
             </p>
             <div className="mt-8">
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">

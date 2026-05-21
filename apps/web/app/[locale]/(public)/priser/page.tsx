@@ -164,7 +164,7 @@ export default async function PricingPage({ params }: Props) {
           <div className="text-center">
             <p className="eyebrow mb-6">{sv ? 'Priser' : 'Pricing'}</p>
             <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'En tydlig kostnad. Allt ingår.' : 'A clear price. Everything included.'}
+              {sv ? 'Ett pris. Allt ingår.' : 'One price. Everything included.'}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -185,8 +185,8 @@ export default async function PricingPage({ params }: Props) {
           </p>
           <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv
-              ? 'För en hel skola. Alla lärare och alla elever ingår. Allt vi bygger, ingår.'
-              : 'For a whole school. All teachers and all students included. Everything we build, included.'}
+              ? 'För en hel skola. Alla lärare och alla elever ingår. Allt vi bygger ingår.'
+              : 'For a whole school. All teachers and all students included. Everything we build is included.'}
           </p>
 
           <ul className="mt-10 space-y-3">

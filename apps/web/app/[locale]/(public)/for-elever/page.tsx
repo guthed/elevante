@@ -129,8 +129,8 @@ export default async function ForStudentsPage({ params }: Props) {
               </h1>
               <p className="mt-8 max-w-lg text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Lektionen finns kvar. På riktigt. Du frågar — vi svarar med exakt vad läraren sa, och var det sas.'
-                  : 'The lesson stays. Really. You ask — we answer with exactly what the teacher said, and where.'}
+                  ? 'Lektionen finns kvar. På riktigt. Du frågar — Elevante svarar med exakt vad läraren sa, och var det sas.'
+                  : 'The lesson stays. Really. You ask — Elevante answers with exactly what the teacher said, and where.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=elev`} size="lg">

@@ -76,8 +76,8 @@ export default async function ContactPage({ params, searchParams }: Props) {
                   </p>
                   <p className="mt-3 text-[1rem] leading-relaxed text-[var(--color-ink)]">
                     {sv
-                      ? 'Inom en arbetsdag. Bokningar för demo går oftast inom samma dag.'
-                      : 'Within one business day. Demo bookings usually same day.'}
+                      ? 'Inom en arbetsdag. Demo-bokningar svarar vi oftast samma dag.'
+                      : 'Within one business day. Demo bookings usually the same day.'}
                   </p>
                 </div>
 

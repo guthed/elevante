@@ -242,8 +242,8 @@ export default async function ForTeachersPage({ params }: Props) {
               </h1>
               <p className="mt-8 max-w-xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Du spelar in lektionen när du vill — två tryck, sen är du klar. Elevante gör den sökbar för dina elever och ger dig tid och överblick tillbaka. Inspelningen är din.'
-                  : 'You record the lesson whenever you want — two taps and you’re done. Elevante makes it searchable for your students and gives you time and oversight back. The recording is yours.'}
+                  ? 'Du spelar in lektionen när du vill — två tryck, sen är du klar. Elevante gör den sökbar för dina elever och ger dig tillbaka tid och överblick. Inspelningen är din.'
+                  : 'You record the lesson whenever you want — two taps and you’re done. Elevante makes it searchable for your students and gives you back time and oversight. The recording is yours.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
@@ -310,7 +310,7 @@ export default async function ForTeachersPage({ params }: Props) {
           <div className="max-w-2xl">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] text-[var(--color-ink)]">
               {sv
-                ? 'Åtta skäl att läraren faktiskt vill ha det här'
+                ? 'Åtta skäl till att lärare faktiskt vill ha det här'
                 : 'Eight reasons teachers actually want this'}
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
