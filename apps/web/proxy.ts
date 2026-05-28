@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { defaultLocale, isLocale, locales } from './lib/i18n/config';
+import { defaultLocale, isLocale } from './lib/i18n/config';
 
 // Svenska är alltid default. Språkväljaren i headern byter till /en.
 function pickLocale(): string {
@@ -60,12 +60,18 @@ export async function proxy(request: NextRequest) {
   }
 
   // Steg 1: locale-redirect
+  // Endast root `/` redirectar till default-locale (308 permanent).
+  // Okända top-level-segment (t.ex. `/no`, `/fr`) släpps igenom så Next
+  // returnerar 404 i stället för att skapa mjuka 404:or via `/sv/no`.
   const firstSegment = pathname.split('/')[1];
-  if (!firstSegment || !isLocale(firstSegment)) {
+  if (!firstSegment) {
     const locale = pickLocale();
     const url = request.nextUrl.clone();
-    url.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
-    return NextResponse.redirect(url);
+    url.pathname = `/${locale}`;
+    return NextResponse.redirect(url, 308);
+  }
+  if (!isLocale(firstSegment)) {
+    return NextResponse.next();
   }
 
   const locale = firstSegment;

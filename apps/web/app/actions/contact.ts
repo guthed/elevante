@@ -69,7 +69,7 @@ export async function sendContact(
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? 'john@guthed.se';
+  const to = process.env.CONTACT_TO_EMAIL ?? 'john@elevante.se';
 
   // Om Resend inte är konfigurerat: logga till server-konsolen och
   // behandla som success. Används under lokal utveckling innan

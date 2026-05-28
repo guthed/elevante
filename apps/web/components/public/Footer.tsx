@@ -39,6 +39,16 @@ export function Footer({ locale, pathname, dict }: Props) {
           <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {dict.meta.tagline}
           </p>
+          <address className="mt-6 not-italic text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            Elevante AB<br />
+            Stockholm, Sverige<br />
+            <a
+              href="mailto:john@elevante.se"
+              className="underline-offset-4 hover:underline"
+            >
+              john@elevante.se
+            </a>
+          </address>
           <p className="mt-6 text-xs uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
             {locale === 'sv'
               ? 'GDPR-säkert · Data i Stockholm'

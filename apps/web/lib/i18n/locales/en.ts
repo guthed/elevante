@@ -3,7 +3,7 @@ import type { Dictionary } from '../types';
 const en: Dictionary = {
   meta: {
     siteName: 'Elevante',
-    tagline: 'Elevante remembers everything you learn at school',
+    tagline: 'Remembers everything you learn at school',
     description:
       'Elevante records, transcribes and remembers every classroom lesson — so students can review whenever they need.',
   },
@@ -52,13 +52,13 @@ const en: Dictionary = {
       submit: 'Send',
       submitting: 'Sending…',
       success: "Thanks! We'll get back to you shortly.",
-      errorGeneric: 'Something went wrong. Please try again, or email john@guthed.se directly.',
+      errorGeneric: 'Something went wrong. Please try again, or email john@elevante.se directly.',
       errorRateLimit: 'Too many attempts. Wait a minute and try again.',
       errorMissing: 'Please fill in every field before sending.',
     },
     alternatives: {
       title: 'Or email us directly',
-      email: 'john@guthed.se',
+      email: 'john@elevante.se',
     },
   },
   auth: {

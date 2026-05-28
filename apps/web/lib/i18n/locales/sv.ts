@@ -3,7 +3,7 @@ import type { Dictionary } from '../types';
 const sv: Dictionary = {
   meta: {
     siteName: 'Elevante',
-    tagline: 'Elevante minns allt du lär dig i skolan',
+    tagline: 'Minns allt du lär dig i skolan',
     description:
       'Elevante spelar in, transkriberar och minns allt som sägs i klassrummet — så att eleverna kan repetera när det passar dem.',
   },
@@ -52,13 +52,13 @@ const sv: Dictionary = {
       submit: 'Skicka',
       submitting: 'Skickar…',
       success: 'Tack! Vi hör av oss inom kort.',
-      errorGeneric: 'Något gick fel. Försök igen eller mejla john@guthed.se direkt.',
+      errorGeneric: 'Något gick fel. Försök igen eller mejla john@elevante.se direkt.',
       errorRateLimit: 'För många försök. Vänta en minut och testa igen.',
       errorMissing: 'Fyll i alla fält innan du skickar.',
     },
     alternatives: {
       title: 'Eller maila oss direkt',
-      email: 'john@guthed.se',
+      email: 'john@elevante.se',
     },
   },
   auth: {

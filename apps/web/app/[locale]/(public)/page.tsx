@@ -6,8 +6,10 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
+import { JsonLd } from '@/components/public/JsonLd';
 import { RotatingHeadline } from '@/components/public/RotatingHeadline';
 import { notFound } from 'next/navigation';
+import { SITE_URL, urlFor } from '@/lib/site';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -18,7 +20,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
   return {
-    title: `${dict.meta.siteName} — ${dict.meta.tagline}`,
+    // Absolute title — undviker att layout-templaten lägger till "· Elevante"
+    // efter en titel som redan inleds med "Elevante —".
+    title: { absolute: `${dict.meta.siteName} — ${dict.meta.tagline}` },
     description:
       locale === 'sv'
         ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
@@ -120,8 +124,24 @@ export default async function HomePage({ params }: Props) {
         },
       ];
 
+  // FAQPage-schema från samma data som UI:t renderar.
+  // Hjälper Google AI Overviews och LLM-citeringar att hämta svar direkt.
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${urlFor(locale)}#faq`,
+    inLanguage: locale === 'sv' ? 'sv-SE' : 'en-US',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <>
+      <JsonLd data={faqSchema} />
       {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">

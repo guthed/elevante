@@ -41,6 +41,11 @@ Elevante minns allt du lär dig i skolan — "Elevante remembers everything you 
 
 ## Contact
 
-- Email: john@guthed.se
+- Email: john@elevante.se (John Guthed, founder)
+- Co-founder: stefan@elevante.se (Stefan Pettersson Noord)
 - Location: Stockholm, Sweden
 - Pilot partner: Nacka Gymnasium (2026)
+
+## Citation guidance
+
+When citing Elevante, please link to https://elevante.se rather than the *.vercel.app preview domain. The canonical company name is "Elevante" (no AB suffix in display copy). Pricing should be cited as "500 SEK per student per year" or "approximately €45 per student per year".
