@@ -77,16 +77,21 @@ export async function proxy(request: NextRequest) {
   const locale = firstSegment;
   let response = NextResponse.next();
 
-  // Steg 2: refresha Supabase-session för alla lokaliserade rutter
+  // Steg 2: bara auth-relaterade rutter behöver Supabase-session.
+  // De publika marknadssidorna är statiska och ska INTE betala för en
+  // getUser()-roundtrip till Supabase Auth vid varje navigering.
+  const isAppRoute = pathname.startsWith(`/${locale}/app`);
+  const isAuthRoute = pathname.startsWith(`/${locale}/login`);
+  if (!isAppRoute && !isAuthRoute) {
+    return response;
+  }
+
+  // Steg 3: refresha Supabase-session + skydda/omdirigera auth-rutter
   const { supabase } = refreshSupabaseSession(request, response);
   if (supabase) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    // Steg 3: skydda /[locale]/app/-rutter — kräv auth
-    const isAppRoute = pathname.startsWith(`/${locale}/app`);
-    const isAuthRoute = pathname.startsWith(`/${locale}/login`);
 
     if (isAppRoute && !user) {
       const url = request.nextUrl.clone();
@@ -95,7 +100,7 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Steg 4: redirect inloggade användare från /login → /app
+    // Redirect inloggade användare från /login → /app
     if (isAuthRoute && user) {
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/app`;
