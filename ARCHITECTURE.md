@@ -1,6 +1,6 @@
 # ARCHITECTURE — Elevante
 
-Senast uppdaterad: 2026-05-15 (övningsprov + lärprofil)
+Senast uppdaterad: 2026-05-29 (kampanj/lead-gen, SEO, lärarprivat insikt, middleware-perf)
 
 > Detta dokument speglar Notion-sidan **ARCHITECTURE** (`33e84c8f289e8191b9b1d2e35309da3f`).
 
@@ -43,6 +43,8 @@ Allt bor i `public`-schemat. Migrationer i `supabase/migrations/`.
 | `lesson_views` | Telemetry per elev × lektion (view_count, first_viewed_at, last_viewed_at) |
 | `practice_tests` | AI-genererade övningsprov — `questions`/`submission` jsonb, score, `shared_with_teacher` |
 | `learner_profiles` | Elevens lärprofil — `strengths`/`growth_areas` jsonb, `summary`. En rad per elev |
+| `school_lookups` | Kampanj: rå logg per prisförfrågan (skolkod, elevantal, pris, lead-mail). Global tabell |
+| `school_prospects` | Kampanj: anrikat skol-prospekt, en rad per skola (`school_unit_code` unik), kontakt + `ai_brief` + `enrichment_status` + `notion_page_id`. Global tabell |
 
 ### RLS
 
@@ -54,7 +56,8 @@ Alla tabeller har RLS på. Helper-funktioner:
 **Policy-mönster:**
 - Alla ser bara sin egen skolas data.
 - Admin skriver, lärare skriver sina egna lektioner.
-- `chats`/`chat_messages`: ägaren ser sina egna OCH lärare/admin i samma skola ser elev-chats (för insikt-vyn). Privacy-trade-off — kräver explicit samtycke vid pilot mot riktig skola (`20260515090200_teacher_chat_read_for_insight.sql`).
+- `chats`/`chat_messages`/`lesson_views`: ägaren ser sina egna, OCH **bara den lärare som äger lektionen** (`lessons.teacher_id`) ser elev-datan för den lektionen — för insikt-heatmapen. Admin och kollegor har ingen åtkomst (`20260517170000_teacher_private_insight.sql` ersatte den bredare Fas 8-policyn `20260515090200`). Heatmapen använder bara lesson-scope-chattar. Privacy-trade-off kvarstår — kräver explicit samtycke vid pilot mot riktig skola.
+- `school_lookups`/`school_prospects` (kampanj): globala tabeller, ingen skol-scoping. Bara admin läser (`current_user_role() = 'admin'`); service-role-klienten skriver och kringgår RLS — inga insert/update-policys finns.
 
 `is_synthetic` på `lessons` märker demo-genererade lektioner (AI-skrivna transkript) så de kan filtreras bort innan en riktig pilotskola. `lesson_ids` på `chats` håller lektionsurvalet för en `selection`-chat (Provplugg).
 
@@ -83,8 +86,10 @@ Signup → e-postverifiering → /api/auth/callback → exchangeCodeForSession �
 Login → signInWithPassword → session-cookie → redirect /app
 /app/page.tsx → läser profil → redirect till /app/[role]
 [role]/layout.tsx → validerar URL-roll = profilroll
-proxy.ts → refreshar session per request + skyddar /app/* → redirect /login
+proxy.ts → refreshar session + skyddar /app/* → redirect /login
 ```
+
+`proxy.ts` kör Supabase-session (`getUser`) **bara** på `/[locale]/app/*` och `/[locale]/login` — publika rutter slipper Auth-roundtrippen och serveras statiskt (perf, 2026-05-29).
 
 ---
 
@@ -160,6 +165,26 @@ bättre feedback nästa gång.
 
 ---
 
+## Kampanj / lead-gen (publik kalkylator → prospekt)
+
+Fristående säljflöde, oberoende av elev/lärar-appen. Sida: `/[locale]/vad-kostar-elevante`.
+
+```
+publik kalkylator → sök gymnasieskola (Skolverket planned-educations v3)
+   → autofyll elevantal + skolfakta (lib/skolverket.ts)
+   → estimateAnnualPrice (lib/pricing.ts, 500 SEK/elev/år, inget rabattpåslag)
+   → lead-formulär (e-post + meddelande)
+campaign.ts (Server Action, service-role-klient):
+   → upsert school_lookups (rå logg) + school_prospects (race-säkert)
+   → bakgrundsanrikning: Skolverket-fakta → Claude säljbrief (lib/campaign-brief.ts)
+   → upsert till Notion-databas (lib/notion.ts) → enrichment_status='done'
+admin → /admin/intresse → läser school_prospects (admin-read RLS)
+```
+
+`municipalities.json` (290 kommuner) översätter Skolverkets `geographicalAreaCode` → kommunnamn. `scripts/fetch-schools.ts` snapshottar gymnasieskolor (skolenhetskod rensas ur namnet).
+
+---
+
 ## Deploy
 
 | Komponent | Hur |
@@ -177,6 +202,7 @@ Vercel env vars (Production + Preview + Development, ej Sensitive-flaggade så A
 - `ANTHROPIC_API_KEY`
 - `BERGET_AI_API_KEY`
 - `RESEND_API_KEY` (graceful fallback om saknas)
+- `NOTION_TOKEN` + `NOTION_LEADS_DATABASE_ID` (kampanj-prospekt → Notion; graceful om saknas)
 
 ---
 
@@ -186,7 +212,7 @@ Vercel env vars (Production + Preview + Development, ej Sensitive-flaggade så A
 - **Vercel Functions**: arn1 (Stockholm).
 - **Storage**: eu-central-2.
 - **Audio**: raderas efter transkribering.
-- **Chat-privacy**: ägaren + lärare/admin i samma skola. Vid pilot mot skola krävs explicit föräldra-/elev-samtycke (separat Notion-task).
+- **Chat-privacy**: ägaren + den lärare som äger lektionen (lärarprivat insikt). Vid pilot mot skola krävs explicit föräldra-/elev-samtycke (separat Notion-task).
 - **Embeddings + transcribering**: Berget AI (EU, GDPR).
 - **Kvarstående risk**: Anthropic Claude API (USA) — DPA / AWS Bedrock-EU-granskning krävs innan production-pilot.
 
@@ -209,9 +235,13 @@ elevante/
 │   │   │   └── app/{role}/     # role-specifika komponenter
 │   │   └── lib/
 │   │       ├── ai/             # anthropic.ts, berget.ts
-│   │       ├── data/           # teacher.ts, student.ts, admin.ts
-│   │       ├── supabase/       # ssr + browser-klienter
-│   │       └── i18n/
+│   │       ├── data/           # teacher.ts, student.ts, admin.ts, municipalities.json
+│   │       ├── supabase/       # ssr + browser + service-role-klienter
+│   │       ├── i18n/
+│   │       ├── skolverket.ts   # kampanj: skolfakta + elevantal
+│   │       ├── notion.ts       # kampanj: prospekt → Notion
+│   │       ├── campaign-brief.ts # kampanj: Claude säljbrief
+│   │       └── pricing.ts      # kampanj: prisuppskattning
 │   └── mobile/             # Expo SDK 52
 ├── supabase/
 │   ├── migrations/

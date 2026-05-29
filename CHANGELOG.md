@@ -16,6 +16,83 @@ Format per entry:
 
 ---
 
+## [Prestanda — middleware-scoping] — 2026-05-29
+
+### Byggt
+- **`proxy.ts` kör Supabase-session bara på auth-rutter**: tidigare anropades `supabase.auth.getUser()` på *varje* lokaliserad route — även de statiska publika sidorna — vilket lade en seriell nätverks-roundtrip till Supabase Auth (Zurich) före varje klick. Session-refresh + auth-skydd är nu scopat till `/[locale]/app/*` och `/[locale]/login`. Övriga publika rutter returnerar direkt efter locale-logiken och serveras statiskt från Vercels CDN.
+
+### Tekniska beslut
+- **Token-refresh på publika sidor offras medvetet**: access-tokens lever 1 h och nästa `/app`-navigering refreshar ändå. Vinsten — ingen Auth-roundtrip per publikt klick — väger tyngre för en sajt där de flesta sidor är publika och statiska.
+
+---
+
+## [SEO & säkerhet] — 2026-05-28
+
+### Byggt
+- **Säkerhetsheaders** i `next.config`: CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy, HSTS.
+- **Strukturerad data utökad**: JSON-LD för `Organization`+`EducationalOrganization` (logo, sameAs, legalName), `WebSite` med publisher, `SoftwareApplication` med `Offer` (500 SEK/elev/år) och `FAQPage` på startsidan från befintliga FAQ-items.
+- **AI-crawlers**: `robots` släpper explicit in GPTBot/ClaudeBot/PerplexityBot m.fl., blockerar `/app`, `/login`, `/signup`, `/api`.
+- **Analytics lazy**: GTM/GA laddas `lazyOnload` (~160 kB bort från initial JS).
+- **og:image + twitter:image** explicit i metadata med alt-text; titel kortad så "Elevante" inte upprepas (absolute title).
+- **E-post bytt** `john@guthed.se` → `john@elevante.se` överallt (UI, schema, llms.txt, kontaktformulär, `.env.example`). Footer fick adress-block (Elevante AB, Stockholm) med klickbar e-post.
+
+---
+
+## [Copy-revision] — 2026-05-21
+
+### Byggt
+- **Vassare rubriker** på publika sajten (7 platser): "Spela in. Spara. Fråga.", "Det här används faktiskt.", "Tre vyer på samma lektion", "Ett pris. Allt ingår." m.fl.
+- **Språkfixar** (8 platser): tar bort direktöversättningar och subjektsbyten — "Elevante svarar" (inte "vi svarar"), "tvingas på folk" (inte "mandateras fram"), du/ni-mix rätad.
+- **Dictionary-städning**: döda `home`/`forSchools`/`forStudents`/`about`/`pricing` borttagna ur i18n (kvarlevor sedan Editorial Calm). Eliminerade samtidigt tysta konflikter (gammalt "privat AI-lärare"-löfte, €45 i EN mot live SEK 500). −208 rader per locale.
+
+---
+
+## [Kampanj — prisuppskattning, skol-prospekt & lead-gen] — 2026-05-19
+
+### Byggt
+- **Kampanjsida `/vad-kostar-elevante`** (PR #21–24): publik kalkylator där en gymnasieskola söks fram, elevantalet fylls i automatiskt från Skolverket och en ungefärlig årskostnad + pris per elev/månad visas. Lead-formulär (e-post + meddelande). Säljig layout — tiltade fotografier, mörkt kontrastband ("kostnaden av att inte göra något"), strukturerad "det här ingår"-lista.
+- **Databasgrund** (migrationer `20260518210000` + `_constraints`): två globala tabeller — `school_lookups` (rå logg per prisförfrågan) och `school_prospects` (anrikat prospekt, en rad per skola, `enrichment_status` pending/done/failed + `updated_at`-trigger). RLS: bara admin läser, service-role skriver (kringgår RLS — inga insert/update-policys).
+- **Skolverket-integration** (`lib/skolverket.ts`): hämtar elevantal + skolfakta (adress, telefon, e-post, huvudman, inriktning) via planned-educations v3. Statisk uppslagstabell `municipalities.json` (Sveriges 290 kommuner) översätter `geographicalAreaCode` → kommunnamn. `scripts/fetch-schools.ts` snapshottar gymnasieskolor; skolenhetskod rensas ur skolnamnet.
+- **AI-säljbrief** (`lib/campaign-brief.ts`): Claude genererar en kort säljbrief per prospekt utifrån skolfakta.
+- **Notion-sync** (`lib/notion.ts`): varje prospekt upsertas till en Notion-databas (`NOTION_TOKEN` + `NOTION_LEADS_DATABASE_ID`); Kontakt delas i Telefon/E-post/Adress.
+- **Server Actions** (`app/actions/campaign.ts`): race-säker prospekt-upsert + lead-koppling, bakgrundsanrikning (Skolverket → brief → Notion), `enrichment_status='done'` direkt för manuella koder. `lib/supabase/service-role.ts` ny service-role-klient.
+- **Admin-vy `/admin/intresse`** (PR #20–21): listar skol-prospekt med kontaktkolumner; nav-länk i admin-sidebaren.
+
+### QA-fynd
+- **Manuella prospekt krockade på `school_unit_code UNIQUE`** → `PriceEstimator` genererar `manual-<uuid>` per session.
+- `ALTER`/constraint bröts ut till följdmigration (`_constraints`) separat från tabellskapandet.
+
+### Tekniska beslut
+- **Globala tabeller, inte skol-scopade**: prospekt är säljdata, inte kunddata — ingen `school_id`/RLS-per-skola, bara admin-read + service-role-write.
+- **Inget rabattpåslag** (`lib/pricing.ts`): alltid fullt pris 500 SEK/elev/år (beslut i specen).
+- **Skolverket-kod → kommunnamn via statisk tabell**, inte API-anrop per uppslag — koden ger bara `geographicalAreaCode`.
+
+---
+
+## [Publik sajt v2 — startsida som router] — 2026-05-18
+
+### Byggt
+- **Startsidan ombyggd som router** (PR #20): storidé → loop-visualisering → "tre dörrar" (elev/lärare/skola) → trygghetssektion.
+- **Varvande hjälterubrik**: tre rubriker som roterar långsamt (inte slump per laddning).
+- **Hovermarkör i menyn**: coral understrykning som tonar in.
+- **Pris-sidan städad**: gratis-pilot-erbjudandet borttaget, den klickbara-men-inte-klickbara planväljaren borttagen.
+- **Om-oss**: TBD-platshållare i teamet borttagna.
+
+### Tekniska beslut
+- **A11y**: `aria-hidden` på dekorativa visuals i loop + hjälte, typografiska apostrofer i engelsk copy.
+
+---
+
+## [Insikt blir lärarprivat] — 2026-05-17
+
+### Byggt
+- **Förståelsekartan är nu lärarprivat** (migration `20260517170000_teacher_private_insight.sql`): bara läraren som äger lektionen (`lessons.teacher_id`) ser insikts-datan. Admin och kollegor förlorar åtkomsten. Policys `chats_owning_teacher_select`, `chat_messages_owning_teacher_select`, `lesson_views_owning_teacher_select` ersätter de bredare `*_teacher_admin_school_select`/`lesson_views_school_select` från Fas 8.
+
+### Tekniska beslut
+- **Vänder Fas 8-beslutet medvetet**: den breda läsåtkomsten (alla lärare/admin i skolan) gjorde en minderårigs förståelse-/engagemangsdata synlig för skolledning och kollegor. Heatmapen använder bara lesson-scope-chattar, så avgränsningen via `teacher_id` täcker behovet. Elevernas self-select-policys är orörda.
+
+---
+
 ## [Övningsprov & lärprofil] — 2026-05-15
 
 ### Byggt
