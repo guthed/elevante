@@ -1,0 +1,762 @@
+/* Elevante — Rektorspresentation deck. Ported from the Claude Design bundle. */
+/* Authored at 1920×1080; DeckStage scales the canvas to fit the viewport. */
+
+.host {
+  position: fixed;
+  inset: 0;
+  background: #1d1b16;
+  overflow: hidden;
+  user-select: none;
+}
+
+.canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+
+  /* palette */
+  --ivory: #faf7f2;
+  --ivory-2: #f3eee5;
+  --paper: #fffdf9;
+  --ink: #1a1a2e;
+  --ink-70: rgba(26, 26, 46, 0.7);
+  --ink-55: rgba(26, 26, 46, 0.55);
+  --ink-40: rgba(26, 26, 46, 0.4);
+  --ink-12: rgba(26, 26, 46, 0.12);
+  --ink-08: rgba(26, 26, 46, 0.08);
+  --coral: #ff7a6b;
+  --sage: #b8c5a6;
+  --sage-deep: #8fa178;
+  --sand: #e8dcc4;
+
+  /* type scale (1920×1080) */
+  --type-eyebrow: 24px;
+  --type-display: 132px;
+  --type-title: 78px;
+  --type-lead: 52px;
+  --type-subtitle: 40px;
+  --type-body: 32px;
+  --type-small: 26px;
+  --type-num: 96px;
+
+  /* spacing */
+  --pad-top: 104px;
+  --pad-bottom: 92px;
+  --pad-x: 130px;
+  --gap-title: 44px;
+  --gap-item: 28px;
+
+  /* fonts — wired to the app's loaded font variables */
+  --serif: var(--font-newsreader), 'Newsreader', Georgia, 'Times New Roman', serif;
+  --sans: var(--font-geist), 'Geist', 'Helvetica Neue', Arial, sans-serif;
+
+  --shadow-soft: 0 24px 60px -28px rgba(60, 44, 24, 0.3),
+    0 4px 14px -6px rgba(60, 44, 24, 0.14);
+  --radius: 24px;
+
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+.canvas *,
+.canvas *::before,
+.canvas *::after {
+  box-sizing: border-box;
+}
+
+.slot {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.canvas :global(section) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--sans);
+  overflow: hidden;
+}
+
+/* ---------- shared building blocks ---------- */
+.canvas :global(.frame) {
+  position: absolute;
+  inset: 0;
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas :global(.eyebrow) {
+  font-family: var(--sans);
+  font-size: var(--type-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+}
+.canvas :global(.eyebrow)::before {
+  content: '';
+  width: 38px;
+  height: 2px;
+  background: var(--coral);
+  display: inline-block;
+}
+
+.canvas :global(.title) {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--type-title);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  margin: 0;
+  max-width: 19ch;
+}
+.canvas :global(.title em) {
+  font-style: italic;
+  color: var(--coral);
+}
+
+.canvas :global(.lead) {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: var(--type-lead);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink);
+  max-width: 24ch;
+}
+
+.canvas :global(.body) {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: var(--type-body);
+  line-height: 1.5;
+  color: var(--ink-70);
+  margin: 0;
+  max-width: 40ch;
+}
+
+.canvas :global(.small) {
+  font-size: var(--type-small);
+  line-height: 1.5;
+  color: var(--ink-55);
+  margin: 0;
+}
+
+.canvas :global(.header) {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.canvas :global(.header .title) {
+  margin-top: 6px;
+}
+
+.canvas :global(.spacer) {
+  flex: 1;
+}
+
+/* page number footer */
+.canvas :global(.pagefoot) {
+  position: absolute;
+  left: var(--pad-x);
+  bottom: 52px;
+  font-family: var(--sans);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--ink-40);
+  font-weight: 500;
+}
+.canvas :global(.brandfoot) {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: 52px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--ink-40);
+}
+
+/* cards */
+.canvas :global(.card) {
+  background: var(--paper);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ---------- slide 1: title ---------- */
+.canvas :global(.s-title) {
+  background: var(--ivory);
+}
+.canvas :global(.s-title .frame) {
+  justify-content: center;
+}
+.canvas :global(.wordmark) {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: var(--type-display);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin: 0;
+}
+.canvas :global(.wordmark .dot) {
+  color: var(--coral);
+}
+.canvas :global(.tagline) {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 46px;
+  color: var(--ink-70);
+  margin: 32px 0 0;
+  letter-spacing: -0.01em;
+}
+.canvas :global(.title-sub) {
+  font-family: var(--sans);
+  font-size: var(--type-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  margin: 56px 0 0;
+  font-weight: 500;
+}
+.canvas :global(.title-intro) {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.55;
+  color: var(--ink-70);
+  margin: 48px 0 0;
+  max-width: 58ch;
+  padding-top: 40px;
+  border-top: 1px solid var(--ink-12);
+}
+
+/* ---------- product screenshots ---------- */
+.canvas :global(.shot) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid var(--ink-08);
+  box-shadow: var(--shadow-soft);
+  background: var(--paper);
+}
+.canvas :global(.shot-frame) {
+  position: relative;
+}
+.canvas :global(.feat) {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 32px;
+  border-top: 2px solid var(--sage);
+}
+.canvas :global(.feat:nth-child(2)) {
+  border-top-color: var(--coral);
+}
+.canvas :global(.shot-cap) {
+  font-family: var(--sans);
+  font-size: 24px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  font-weight: 500;
+  margin: 22px 0 0;
+}
+
+/* ---------- generic columns ---------- */
+.canvas :global(.cols-3) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+}
+.canvas :global(.cols-2) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.canvas :global(.step-num) {
+  font-family: var(--serif);
+  font-size: var(--type-num);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--coral);
+  letter-spacing: -0.02em;
+}
+.canvas :global(.step-h) {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.12;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.canvas :global(.persona) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 38px;
+}
+.canvas :global(.persona .who) {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}
+.canvas :global(.persona .desc) {
+  font-size: 25px;
+  line-height: 1.5;
+  color: var(--ink-55);
+  margin: 0;
+}
+.canvas :global(.persona .tag) {
+  font-family: var(--sans);
+  font-size: 24px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  font-weight: 500;
+}
+
+/* benefit list */
+.canvas :global(.blist) {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 30ch;
+}
+.canvas :global(.bitem) {
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+}
+.canvas :global(.bmark) {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: 14px;
+  background: var(--sage-deep);
+}
+.canvas :global(.bitem h4) {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.canvas :global(.bitem p) {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.45;
+  color: var(--ink-55);
+}
+
+/* Q&A */
+.canvas :global(.qa) {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.canvas :global(.qa-row) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 34px 40px;
+}
+.canvas :global(.qa-q) {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.2;
+}
+.canvas :global(.qa-a) {
+  font-size: 25px;
+  line-height: 1.5;
+  color: var(--ink-70);
+  margin: 0;
+}
+.canvas :global(.qa-a b) {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* understanding map */
+.canvas :global(.umap) {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 22px 26px;
+  align-items: center;
+}
+.canvas :global(.umap .klass) {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.canvas :global(.chiprow) {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.canvas :global(.chip) {
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 500;
+  padding: 13px 22px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--sage);
+  white-space: nowrap;
+}
+.canvas :global(.chip.mid) {
+  background: var(--sand);
+}
+.canvas :global(.chip.hot) {
+  background: var(--coral);
+  color: #fff;
+}
+.canvas :global(.legend) {
+  display: flex;
+  gap: 34px;
+  align-items: center;
+}
+.canvas :global(.legend .li) {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 24px;
+  color: var(--ink-55);
+}
+.canvas :global(.legend .sw) {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+/* metric cards */
+.canvas :global(.metric) {
+  padding: 38px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 230px;
+}
+.canvas :global(.metric .mi) {
+  font-family: var(--sans);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--coral);
+  font-weight: 600;
+}
+.canvas :global(.metric .mh) {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.canvas :global(.metric .mp) {
+  font-size: 25px;
+  line-height: 1.45;
+  color: var(--ink-55);
+  margin: 0;
+}
+
+/* metric rows (slide 11 — expanded) */
+.canvas :global(.metric-row) {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.canvas :global(.metric-row .mi) {
+  font-family: var(--sans);
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--coral);
+  font-weight: 600;
+}
+.canvas :global(.metric-row .mh) {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.12;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.canvas :global(.metric-row .mp) {
+  font-size: 26px;
+  line-height: 1.5;
+  color: var(--ink-55);
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* trust list */
+.canvas :global(.trust) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px 56px;
+}
+.canvas :global(.trust .ti) {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+}
+.canvas :global(.trust .tnum) {
+  font-family: var(--serif);
+  font-size: 30px;
+  color: var(--sage-deep);
+  line-height: 1.1;
+  flex: none;
+  width: 38px;
+}
+.canvas :global(.trust h4) {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  line-height: 1.1;
+}
+.canvas :global(.trust p) {
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-55);
+  margin: 0;
+}
+
+/* not-chatgpt contrast */
+.canvas :global(.contrast) {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 34ch;
+}
+.canvas :global(.crow) {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.canvas :global(.ck) {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(184, 197, 166, 0.4);
+  color: var(--sage-deep);
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-family: var(--serif);
+}
+.canvas :global(.crow h4) {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+.canvas :global(.crow p) {
+  font-size: 25px;
+  line-height: 1.45;
+  color: var(--ink-55);
+  margin: 0;
+}
+.canvas :global(.fn) {
+  font-size: 0.6em;
+  vertical-align: super;
+  color: var(--coral);
+  font-weight: 600;
+}
+.canvas :global(.footnote) {
+  font-family: var(--sans);
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--ink-40);
+  margin: 0 0 40px;
+  max-width: 120ch;
+  padding-top: 26px;
+  border-top: 1px solid var(--ink-08);
+}
+.canvas :global(.footnote .fn-mark) {
+  color: var(--coral);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* statement slide (06) */
+.canvas :global(.s-statement .frame) {
+  justify-content: center;
+}
+.canvas :global(.statement) {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 92px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 20ch;
+}
+.canvas :global(.statement em) {
+  font-style: italic;
+  color: var(--coral);
+}
+
+/* kom igång / CTA */
+.canvas :global(.cta) {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 30px;
+  padding: 26px 48px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.canvas :global(.cta .arr) {
+  color: var(--coral);
+  font-size: 34px;
+}
+.canvas :global(.pilotline) {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  font-size: 28px;
+  color: var(--ink-70);
+}
+.canvas :global(.pilotline b) {
+  color: var(--ink);
+  font-weight: 600;
+}
+.canvas :global(.contact) {
+  font-size: 25px;
+  color: var(--ink-55);
+  line-height: 1.6;
+}
+.canvas :global(.contact b) {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- navigation overlay ---------- */
+.overlay {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: rgba(26, 26, 46, 0.55);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-geist), 'Geist', sans-serif;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.overlayCount {
+  color: #faf7f2;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.overlayHint {
+  color: rgba(250, 247, 242, 0.6);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot {
+    transition: none;
+  }
+}
+
+/* ---------- print / Save as PDF ---------- */
+/* Cmd/Ctrl+P (or pressing "P") lays every slide out as its own 16:9 page. */
+@media print {
+  @page {
+    size: 1920px 1080px;
+    margin: 0;
+  }
+
+  .host {
+    position: static !important;
+    inset: auto !important;
+    background: #fff !important;
+    overflow: visible !important;
+  }
+
+  .canvas {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 1920px !important;
+    height: auto !important;
+  }
+
+  /* Override the interactive inline visibility/opacity so all slides print. */
+  .slot {
+    position: static !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    transition: none !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  .slot:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .canvas :global(section) {
+    position: relative !important;
+    inset: auto !important;
+    width: 1920px !important;
+    height: 1080px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    /* Force the ivory canvas, cards and accents to print regardless of the
+       browser's "Background graphics" toggle. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .overlay {
+    display: none !important;
+  }
+}

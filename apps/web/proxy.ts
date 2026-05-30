@@ -29,6 +29,11 @@ function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
   return { supabase, response };
 }
 
+// Subdomän riktad till intresserade skolor. All sidtrafik på denna host
+// servar rektorsdecket (/rektor); assets (_next, bilder) har redan släppts
+// igenom av shouldSkip innan host-kontrollen körs.
+const SCHOOLS_HOST_PREFIX = 'skolor.';
+
 // Paths som ALDRIG ska redirectas av locale-logiken.
 // Matcher i config räcker inte alltid (filnamn med ~ eller andra
 // specialtecken kan glida förbi negative lookahead-regex:en).
@@ -57,6 +62,18 @@ export async function proxy(request: NextRequest) {
   // Steg 0: hoppa över statiska assets helt
   if (shouldSkip(pathname)) {
     return NextResponse.next();
+  }
+
+  // Steg 0.5: skolor.elevante.se → rektorsdecket. Subdomänen är enkelspårig:
+  // all sidtrafik rewritas till /rektor (men URL:en i webbläsaren förblir ren).
+  const host = (request.headers.get('host') ?? '').toLowerCase();
+  if (host.startsWith(SCHOOLS_HOST_PREFIX)) {
+    if (pathname === '/rektor') {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = '/rektor';
+    return NextResponse.rewrite(url);
   }
 
   // Steg 1: locale-redirect
