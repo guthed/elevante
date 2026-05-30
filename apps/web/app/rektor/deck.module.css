@@ -756,6 +756,18 @@
     print-color-adjust: exact;
   }
 
+  /* Blurrade box-shadows rastreras till hårda grå block i PDF (Skia). Byt
+     ut dem mot en knivskarp hårlinje på korten; skärmdumparna blir helt
+     platta. Gäller bara print — skärmversionen behåller sina mjuka skuggor. */
+  .canvas :global(.card) {
+    box-shadow: none !important;
+    border: 1px solid var(--ink-12) !important;
+  }
+  .canvas :global(.shot) {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
   .overlay {
     display: none !important;
   }
