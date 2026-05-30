@@ -285,7 +285,13 @@ export default function SkolanPage() {
       </section>
 
       {/* 07b — SHOWCASE: ELEVENS VY */}
-      <section className="bg-ink py-14 md:flex md:min-h-screen md:items-center md:py-20">
+      <section
+        className="py-16 md:flex md:min-h-screen md:items-center md:py-24"
+        style={{
+          backgroundImage:
+            'radial-gradient(70% 55% at 50% 45%, rgba(232,220,196,0.55), var(--color-canvas) 72%)',
+        }}
+      >
         <div className="mx-auto w-full max-w-[80rem] sm:px-10">
           <Reveal>
             <figure>
@@ -294,9 +300,9 @@ export default function SkolanPage() {
                 alt="Elevens översikt i Elevante med dagens lektioner och senaste chatt"
                 sizes="(max-width: 768px) 100vw, 80vw"
                 placeholder="blur"
-                className="h-auto w-full shadow-2xl ring-1 ring-canvas/10 sm:rounded-2xl"
+                className="h-auto w-full shadow-[0_30px_80px_-32px_rgba(60,44,24,0.35)] ring-1 ring-ink/[0.08] sm:rounded-2xl"
               />
-              <figcaption className="eyebrow mt-6 px-4 text-center text-canvas/55">
+              <figcaption className="eyebrow mt-6 px-4 text-center text-ink-muted">
                 Elevens vy · dagens lektioner
               </figcaption>
             </figure>
@@ -322,7 +328,13 @@ export default function SkolanPage() {
       </section>
 
       {/* 08b — SHOWCASE: FÖRSTÅELSEKARTAN */}
-      <section className="bg-ink py-14 md:flex md:min-h-screen md:items-center md:py-20">
+      <section
+        className="py-16 md:flex md:min-h-screen md:items-center md:py-24"
+        style={{
+          backgroundImage:
+            'radial-gradient(70% 55% at 50% 45%, rgba(232,220,196,0.55), var(--color-canvas) 72%)',
+        }}
+      >
         <div className="mx-auto w-full max-w-[80rem] sm:px-10">
           <Reveal>
             <figure>
@@ -331,9 +343,9 @@ export default function SkolanPage() {
                 alt="Förståelsekarta i Elevante som visar vilka koncept varje elev frågat om"
                 sizes="(max-width: 768px) 100vw, 90vw"
                 placeholder="blur"
-                className="h-auto w-full shadow-2xl ring-1 ring-canvas/10 sm:rounded-2xl"
+                className="h-auto w-full shadow-[0_30px_80px_-32px_rgba(60,44,24,0.35)] ring-1 ring-ink/[0.08] sm:rounded-2xl"
               />
-              <figcaption className="eyebrow mt-6 px-4 text-center text-canvas/55">
+              <figcaption className="eyebrow mt-6 px-4 text-center text-ink-muted">
                 Förståelsekarta · per klass och koncept
               </figcaption>
             </figure>
