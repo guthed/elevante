@@ -1,3 +1,4 @@
+import { after } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type {
   TranscriptStatus,
@@ -170,20 +171,21 @@ export async function getStudentLessonDetail(
   lessonId: string,
 ): Promise<StudentLessonDetail | null> {
   const supabase = await createSupabaseServerClient();
-  const { data: lesson } = await supabase
-    .from('lessons')
-    .select(
-      'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
-    )
-    .eq('id', lessonId)
-    .maybeSingle();
+  const [{ data: lesson }, { data: materials }] = await Promise.all([
+    supabase
+      .from('lessons')
+      .select(
+        'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
+      )
+      .eq('id', lessonId)
+      .maybeSingle(),
+    supabase
+      .from('materials')
+      .select('id, name, storage_path, mime_type, size_bytes, created_at')
+      .eq('lesson_id', lessonId)
+      .order('created_at', { ascending: false }),
+  ]);
   if (!lesson) return null;
-
-  const { data: materials } = await supabase
-    .from('materials')
-    .select('id, name, storage_path, mime_type, size_bytes, created_at')
-    .eq('lesson_id', lessonId)
-    .order('created_at', { ascending: false });
 
   type LessonRow = {
     id: string;
@@ -199,15 +201,18 @@ export async function getStudentLessonDetail(
   };
   const typed = lesson as unknown as LessonRow;
 
-  // Spåra att eleven öppnat lektionen (fire-and-forget, ej critical path)
-  try {
-    const rpcClient = supabase as unknown as {
-      rpc: (n: string, args: Record<string, unknown>) => Promise<{ error: unknown }>;
-    };
-    await rpcClient.rpc('track_lesson_view', { lesson_id_arg: lessonId });
-  } catch (err) {
-    console.warn('track_lesson_view failed:', err);
-  }
+  // Spåra att eleven öppnat lektionen — körs EFTER svaret skickats (after())
+  // så telemetri-skrivningen aldrig blockerar sidladdningen.
+  after(async () => {
+    try {
+      const rpcClient = supabase as unknown as {
+        rpc: (n: string, args: Record<string, unknown>) => Promise<{ error: unknown }>;
+      };
+      await rpcClient.rpc('track_lesson_view', { lesson_id_arg: lessonId });
+    } catch (err) {
+      console.warn('track_lesson_view failed:', err);
+    }
+  });
 
   return {
     id: typed.id,

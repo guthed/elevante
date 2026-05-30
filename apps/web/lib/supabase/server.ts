@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { cookies } from 'next/headers';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import type { Database } from './database';
@@ -40,7 +41,9 @@ export async function createSupabaseServerClient() {
 }
 
 /** Hämta aktuell användare (eller null). Safe för SSG-sidor — fångar fel. */
-export async function getCurrentUser() {
+// cache() dedupar anropet inom samma request — layout och sida frågar båda
+// efter profilen, men nätverksanropen till Supabase Auth + profiles körs en gång.
+export const getCurrentUser = cache(async () => {
   try {
     const supabase = await createSupabaseServerClient();
     const { data } = await supabase.auth.getUser();
@@ -48,10 +51,10 @@ export async function getCurrentUser() {
   } catch {
     return null;
   }
-}
+});
 
 /** Hämta aktuell profil (role, school_id, full_name). */
-export async function getCurrentProfile() {
+export const getCurrentProfile = cache(async () => {
   const user = await getCurrentUser();
   if (!user) return null;
   try {
@@ -66,4 +69,4 @@ export async function getCurrentProfile() {
   } catch {
     return null;
   }
-}
+});
