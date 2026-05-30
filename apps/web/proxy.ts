@@ -30,8 +30,8 @@ function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
 }
 
 // Subdomän riktad till intresserade skolor. All sidtrafik på denna host
-// servar rektorsdecket (/rektor); assets (_next, bilder) har redan släppts
-// igenom av shouldSkip innan host-kontrollen körs.
+// servar scroll-presentationen (/skolan); assets (_next, bilder) har redan
+// släppts igenom av shouldSkip innan host-kontrollen körs.
 const SCHOOLS_HOST_PREFIX = 'skolor.';
 
 // Paths som ALDRIG ska redirectas av locale-logiken.
@@ -64,15 +64,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Steg 0.5: skolor.elevante.se → rektorsdecket. Subdomänen är enkelspårig:
-  // all sidtrafik rewritas till /rektor (men URL:en i webbläsaren förblir ren).
+  // Steg 0.5: skolor.elevante.se → scroll-presentationen för skolor.
+  // Subdomänen är enkelspårig: all sidtrafik rewritas till /skolan (men
+  // URL:en i webbläsaren förblir ren). /rektor-decket nås på huvuddomänen.
   const host = (request.headers.get('host') ?? '').toLowerCase();
   if (host.startsWith(SCHOOLS_HOST_PREFIX)) {
-    if (pathname === '/rektor') {
+    if (pathname === '/skolan') {
       return NextResponse.next();
     }
     const url = request.nextUrl.clone();
-    url.pathname = '/rektor';
+    url.pathname = '/skolan';
     return NextResponse.rewrite(url);
   }
 
