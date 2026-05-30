@@ -240,31 +240,33 @@ export default function SkolanPage() {
 
       {/* 07 — FÖR ELEVEN */}
       <section className="px-6 py-20 sm:px-10 sm:py-28">
-        <div className="container-content grid items-center gap-12 md:grid-cols-2">
+        <div className="container-content">
           <Reveal>
             <Eyebrow>För eleven</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
               Samma lektion, fler chanser
             </h2>
-            <div className="mt-8 flex flex-col gap-7">
-              {[
-                {
-                  h: 'Likvärdig tillgång',
-                  p: 'Varje elev kommer åt varje lektion — oavsett om de var där eller inte.',
-                  coral: false,
-                },
-                {
-                  h: 'Repetition i egen takt',
-                  p: 'Gå tillbaka, fråga om, ta begreppet en gång till. Utan att hålla upp klassen.',
-                  coral: false,
-                },
-                {
-                  h: 'Stöd som gör skillnad',
-                  p: 'Särskilt värdefullt för elever med NPF eller dyslexi — och för nyanlända och SVA, där text att läsa i lugn takt sänker tröskeln in i ämnet.',
-                  coral: true,
-                },
-              ].map((b) => (
-                <div key={b.h} className="flex gap-4">
+          </Reveal>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {[
+              {
+                h: 'Likvärdig tillgång',
+                p: 'Varje elev kommer åt varje lektion — oavsett om de var där eller inte.',
+                coral: false,
+              },
+              {
+                h: 'Repetition i egen takt',
+                p: 'Gå tillbaka, fråga om, ta begreppet en gång till. Utan att hålla upp klassen.',
+                coral: false,
+              },
+              {
+                h: 'Stöd som gör skillnad',
+                p: 'Särskilt värdefullt för elever med NPF eller dyslexi — och för nyanlända och SVA, där text att läsa i lugn takt sänker tröskeln in i ämnet.',
+                coral: true,
+              },
+            ].map((b, i) => (
+              <Reveal key={b.h} delay={i * 90}>
+                <div className="flex gap-4">
                   <span
                     className={`mt-2.5 h-3 w-3 flex-none rounded-full ${
                       b.coral ? 'bg-coral' : 'bg-sage-deep'
@@ -276,19 +278,25 @@ export default function SkolanPage() {
                     <p className="mt-1 text-ink-muted">{b.p}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 07b — SHOWCASE: ELEVENS VY */}
+      <section className="bg-ink py-14 md:flex md:min-h-screen md:items-center md:py-20">
+        <div className="mx-auto w-full max-w-[80rem] sm:px-10">
+          <Reveal>
             <figure>
               <Image
                 src={shotElev}
                 alt="Elevens översikt i Elevante med dagens lektioner och senaste chatt"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 768px) 100vw, 80vw"
                 placeholder="blur"
-                className="h-auto w-full rounded-2xl shadow-lift"
+                className="h-auto w-full shadow-2xl ring-1 ring-canvas/10 sm:rounded-2xl"
               />
-              <figcaption className="eyebrow mt-4">
+              <figcaption className="eyebrow mt-6 px-4 text-center text-canvas/55">
                 Elevens vy · dagens lektioner
               </figcaption>
             </figure>
@@ -298,28 +306,34 @@ export default function SkolanPage() {
 
       {/* 08 — FÖR REKTOR */}
       <section className="bg-surface-soft px-6 py-20 sm:px-10 sm:py-28">
-        <div className="container-content grid items-center gap-12 md:grid-cols-[0.85fr_1.3fr]">
+        <div className="container-content">
           <Reveal>
             <Eyebrow>För dig som rektor</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+            <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">
               En förståelsekarta, inte bara betyg
             </h2>
-            <p className="mt-6 text-lg text-ink-secondary">
+            <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
               Du ser vilka koncept eleverna faktiskt kämpar med — klass för
               klass, medan terminen pågår. Underlag för pedagogiskt ledarskap,
               inte bara betyg i efterhand.
             </p>
           </Reveal>
-          <Reveal delay={120}>
+        </div>
+      </section>
+
+      {/* 08b — SHOWCASE: FÖRSTÅELSEKARTAN */}
+      <section className="bg-ink py-14 md:flex md:min-h-screen md:items-center md:py-20">
+        <div className="mx-auto w-full max-w-[80rem] sm:px-10">
+          <Reveal>
             <figure>
               <Image
                 src={shotKarta}
                 alt="Förståelsekarta i Elevante som visar vilka koncept varje elev frågat om"
-                sizes="(max-width: 768px) 100vw, 60vw"
+                sizes="(max-width: 768px) 100vw, 90vw"
                 placeholder="blur"
-                className="h-auto w-full rounded-2xl shadow-lift"
+                className="h-auto w-full shadow-2xl ring-1 ring-canvas/10 sm:rounded-2xl"
               />
-              <figcaption className="eyebrow mt-4">
+              <figcaption className="eyebrow mt-6 px-4 text-center text-canvas/55">
                 Förståelsekarta · per klass och koncept
               </figcaption>
             </figure>
