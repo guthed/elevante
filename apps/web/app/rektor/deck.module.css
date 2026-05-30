@@ -249,7 +249,7 @@
   width: 100%;
   height: auto;
   border-radius: 18px;
-  border: 1px solid var(--ink-08);
+  /* Ingen ram — den mjuka skuggan ger kort-känslan utan en hård kant i PDF. */
   box-shadow: var(--shadow-soft);
   background: var(--paper);
 }
