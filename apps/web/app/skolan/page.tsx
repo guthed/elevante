@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Reveal from './Reveal';
 import ChatDemo from './ChatDemo';
+import ZoomableShot from './ZoomableShot';
 
 import shotChat from '../../public/rektor/shot-chat-kallor.png';
 import shotElev from '../../public/rektor/shot-elev-oversikt.png';
@@ -109,11 +109,10 @@ export default function SkolanPage() {
           </Reveal>
           <Reveal delay={120}>
             <figure>
-              <Image
+              <ZoomableShot
                 src={shotChat}
                 alt="Elevante-chatt med svar och källhänvisningar ur lektionen"
                 sizes="(max-width: 768px) 100vw, 50vw"
-                placeholder="blur"
                 className="h-auto w-full rounded-2xl shadow-lift"
               />
               <figcaption className="eyebrow mt-4">
@@ -295,11 +294,10 @@ export default function SkolanPage() {
         <div className="mx-auto w-full max-w-[80rem] sm:px-10">
           <Reveal>
             <figure>
-              <Image
+              <ZoomableShot
                 src={shotElev}
                 alt="Elevens översikt i Elevante med dagens lektioner och senaste chatt"
                 sizes="(max-width: 768px) 100vw, 80vw"
-                placeholder="blur"
                 className="h-auto w-full shadow-[0_30px_80px_-32px_rgba(60,44,24,0.35)] ring-1 ring-ink/[0.08] sm:rounded-2xl"
               />
               <figcaption className="eyebrow mt-6 px-4 text-center text-ink-muted">
@@ -338,11 +336,10 @@ export default function SkolanPage() {
         <div className="mx-auto w-full max-w-[80rem] sm:px-10">
           <Reveal>
             <figure>
-              <Image
+              <ZoomableShot
                 src={shotKarta}
                 alt="Förståelsekarta i Elevante som visar vilka koncept varje elev frågat om"
                 sizes="(max-width: 768px) 100vw, 90vw"
-                placeholder="blur"
                 className="h-auto w-full shadow-[0_30px_80px_-32px_rgba(60,44,24,0.35)] ring-1 ring-ink/[0.08] sm:rounded-2xl"
               />
               <figcaption className="eyebrow mt-6 px-4 text-center text-ink-muted">
