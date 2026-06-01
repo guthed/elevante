@@ -46,10 +46,8 @@ export default async function PublicLayout({ children, params }: Props) {
       contactType: 'customer support',
       availableLanguage: ['Swedish', 'English'],
     },
-    sameAs: [
-      // Placeholder — fyll i när konton skapats
-      'https://www.linkedin.com/company/elevante-se',
-    ],
+    // sameAs medvetet utelämnad tills riktiga, verifierbara profiler finns.
+    // En sameAs till en icke-existerande URL försvagar entitetskopplingen.
   };
 
   const websiteSchema = {

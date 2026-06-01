@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { alternatesFor } from '@/lib/site';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
+    alternates: alternatesFor(locale, '/for-larare'),
     title: sv ? 'För lärare — Elevante' : 'For teachers — Elevante',
     description: sv
       ? 'Du bestämmer, du äger inspelningen. Elevante minns lektionen åt dina elever — inte ett övervakningsverktyg.'
@@ -383,6 +385,7 @@ export default async function ForTeachersPage({ params }: Props) {
                 : 'What teachers most often want to know before they start using Elevante.'
             }
             items={faqs}
+            locale={locale}
           />
         </Container>
       </section>

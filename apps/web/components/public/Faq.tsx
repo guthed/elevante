@@ -1,4 +1,5 @@
 import { JsonLd } from './JsonLd';
+import { SITE_URL } from '@/lib/site';
 
 export type FaqItem = { q: string; a: string };
 
@@ -6,14 +7,23 @@ type Props = {
   heading: string;
   items: FaqItem[];
   intro?: string;
+  // Berikar FAQPage-schemat. Skicka med på sidor där FAQ:n är central så att
+  // AI-motorer kan knyta frågorna till rätt sida och språk.
+  locale?: 'sv' | 'en';
+  pageUrl?: string;
 };
 
 // AEO-motorn: renderar accordion + FAQPage-strukturerad data så att
-// AI-sökmotorer kan extrahera fråga/svar-par direkt.
-export function Faq({ heading, items, intro }: Props) {
+// AI-sökmotorer kan extrahera fråga/svar-par direkt. Detta är den ENDA
+// källan till FAQPage-schema per sida — bygg inte ett parallellt schema i
+// sidan, då får sidan två FAQPage-block.
+export function Faq({ heading, items, intro, locale, pageUrl }: Props) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    ...(pageUrl ? { '@id': `${pageUrl}#faq` } : {}),
+    ...(locale ? { inLanguage: locale === 'sv' ? 'sv-SE' : 'en-US' } : {}),
+    isPartOf: { '@id': `${SITE_URL}/#website` },
     mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.q,

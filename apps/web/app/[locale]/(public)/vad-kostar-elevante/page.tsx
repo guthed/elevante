@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { alternatesFor } from '@/lib/site';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { PriceEstimator } from '@/components/public/PriceEstimator';
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
+    alternates: alternatesFor(locale, '/vad-kostar-elevante'),
     title: sv
       ? 'Vad kostar Elevante? — Beräkna ert pris'
       : 'How much does Elevante cost? — Calculate your price',

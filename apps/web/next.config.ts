@@ -44,6 +44,14 @@ const nextConfig: NextConfig = {
         source: '/:path*',
         headers: securityHeaders,
       },
+      {
+        // Vercels preview-/projektdomän (*.vercel.app) ska aldrig indexeras —
+        // den konkurrerar annars med elevante.se om ranking och AI-citat.
+        // Produktionsdomänen (elevante.se) matchar inte och påverkas inte.
+        source: '/:path*',
+        has: [{ type: 'host', value: '.*\\.vercel\\.app' }],
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
     ];
   },
 };

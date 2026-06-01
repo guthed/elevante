@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { alternatesFor } from '@/lib/site';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
+    alternates: alternatesFor(locale, '/priser'),
     title: sv ? 'Priser — Elevante' : 'Pricing — Elevante',
     description: sv
       ? 'En tydlig kostnad. Allt ingår. 500 kr per elev per år.'
@@ -272,6 +274,7 @@ export default async function PricingPage({ params }: Props) {
                 : 'What schools most often want answered before they decide.'
             }
             items={faqs}
+            locale={locale}
           />
         </Container>
       </section>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { alternatesFor } from '@/lib/site';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 
@@ -13,6 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
+    alternates: alternatesFor(locale, '/om-oss'),
     title: sv ? 'Om oss — Elevante' : 'About — Elevante',
     description: sv
       ? 'Vi byggde det som saknades i klassrummet.'

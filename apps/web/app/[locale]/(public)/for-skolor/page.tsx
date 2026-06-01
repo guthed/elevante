@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { alternatesFor } from '@/lib/site';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
   return {
+    alternates: alternatesFor(locale, '/for-skolor'),
     title: sv ? 'För skolor — Elevante' : 'For schools — Elevante',
     description: sv
       ? 'Lyft hela skolan. Inte bara en klass. GDPR-säkert, byggt i Sverige.'
@@ -419,6 +421,7 @@ export default async function ForSchoolsPage({ params }: Props) {
                 : 'What school leaders and operators most often want to know before a decision.'
             }
             items={faqs}
+            locale={locale}
           />
         </Container>
       </section>

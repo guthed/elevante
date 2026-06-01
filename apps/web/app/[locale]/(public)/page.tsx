@@ -6,10 +6,9 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
-import { JsonLd } from '@/components/public/JsonLd';
 import { RotatingHeadline } from '@/components/public/RotatingHeadline';
 import { notFound } from 'next/navigation';
-import { SITE_URL, urlFor } from '@/lib/site';
+import { urlFor } from '@/lib/site';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -124,24 +123,11 @@ export default async function HomePage({ params }: Props) {
         },
       ];
 
-  // FAQPage-schema från samma data som UI:t renderar.
-  // Hjälper Google AI Overviews och LLM-citeringar att hämta svar direkt.
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    '@id': `${urlFor(locale)}#faq`,
-    inLanguage: locale === 'sv' ? 'sv-SE' : 'en-US',
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
+  // FAQPage-schemat emitteras av <Faq> nedan (enda källan). Bygg inte ett
+  // parallellt schema här — det ger sidan två identiska FAQPage-block.
 
   return (
     <>
-      <JsonLd data={faqSchema} />
       {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">
@@ -323,6 +309,8 @@ export default async function HomePage({ params }: Props) {
                 : 'What schools, teachers and students most often ask us.'
             }
             items={faqs}
+            locale={locale}
+            pageUrl={urlFor(locale)}
           />
         </Container>
       </section>
