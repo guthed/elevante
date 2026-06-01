@@ -34,11 +34,11 @@ AI hör hemma i punkt 1 och 2. Inte i punkt 3 — det är en ledarskapsfråga.
 
 ## Use cases
 
-### Förstelararen i åttan
+### Försteläraren i åttan
 
 Flyttar rättningstid från kvällar till skoltid med hjälp av AI-utkast. Återfår två kvällar i veckan.
 
-### Mellanstadielararen som varit sjukskriven
+### Mellanstadieläraren som varit sjukskriven
 
 Kommer tillbaka på 75 % men hinner mer än tidigare 100 %. Tröskeln blir lägre att vara på jobbet.
 
@@ -46,7 +46,7 @@ Kommer tillbaka på 75 % men hinner mer än tidigare 100 %. Tröskeln blir lägr
 
 Inför AI-stöd för dokumentation på all personal. Sjuktalet sjunker över terminen.
 
-### Speciallararen med 18 åtgärdsprogram
+### Specialläraren med 18 åtgärdsprogram
 
 Får första utkasten skrivna utifrån lektionsmaterial och elevdialoger. Veckans dokumentationstid halveras.
 

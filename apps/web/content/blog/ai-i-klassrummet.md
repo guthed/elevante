@@ -58,7 +58,7 @@ ChatGPT är mest känt. Skolanpassade verktyg som Elevante växer snabbt.
 De flesta gymnasielärare har använt någon form av AI. Grundskolelärare längre efter.
 
 **Är det dyrt?**
-Skolanpassade lic enser ligger ofta runt skolmåltidsnivå per elev och månad.
+Skolanpassade licenser ligger ofta runt skolmåltidsnivå per elev och månad.
 
 **Behövs ny lärarutbildning?**
 Komplettering ja, total omskolning nej.

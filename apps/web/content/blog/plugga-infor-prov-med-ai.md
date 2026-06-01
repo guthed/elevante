@@ -9,7 +9,7 @@ En gymnasieelev i Örebro sitter med en termins anteckningar utspridda över kö
 
 Det är en av de vanligaste pluggstrategierna idag. Det är också en av de lättaste att göra fel.
 
-## Varför "sammanfattaåt mig" inte funkar
+## Varför "sammanfatta åt mig" inte funkar
 
 När AI:n sammanfattar får eleven en text att läsa. Hen läser den. Hen känner att hen förstått. På provet kan hen inte producera det själv.
 
@@ -78,7 +78,7 @@ Elevante är byggd för ditt material. ChatGPT är mer generell. Båda har sin p
 Börja smalt. En ämneskurs, en provtillfälle. Utvärdera om det funkade.
 
 **Är AI bättre än läxhjälp?**
-Komplementerar. AI tröttnar inte. Läxhjälpen kan se eleven som människa.
+Kompletterar. AI tröttnar inte. Läxhjälpen kan se eleven som människa.
 
 **Vad säger forskningen?**
 Resultaten är tidiga. Aktiv användning (frågor, övningar) ger mer än passiv (sammanfattningar).

@@ -34,11 +34,11 @@ AI är inte specialpedagog. Men AI kan ta basanpassningarna — förklara igen, 
 
 AI läser upp instruktioner, omformulerar långa texter, ger eleven egen takt. Läraren går rond på riktigt — inte bara spring för spring.
 
-### Högstadielararen med en elev med ADHD
+### Högstadieläraren med en elev med ADHD
 
 AI strukturerar uppgiften i steg, påminner om var eleven är. Eleven kommer i mål oftare.
 
-### Speciallararen som handleder kollegor
+### Specialläraren som handleder kollegor
 
 Får syn på var i lektionen anpassningarna fallerar via AI-loggar. Kan ge mer riktad handledning.
 

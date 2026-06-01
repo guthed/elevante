@@ -22,7 +22,7 @@ Det är inte enskilda lärare som gör fel. Det är ramar som inte håller.
 
 ## Varför bristerna återkommer
 
-De handlar nedan om svåraste uppgifterna i yrket. Att fånga upp en elev som behöver mer stöd. Att hålla studiero i en stor klass. Att dokumentera så att tredje part kan följa resonemanget. Allt detta kräver tid som inte finns.
+De handlar om de svåraste uppgifterna i yrket. Att fånga upp en elev som behöver mer stöd. Att hålla studiero i en stor klass. Att dokumentera så att tredje part kan följa resonemanget. Allt detta kräver tid som inte finns.
 
 Skolinspektionens jobb är att påpeka bristerna. Att lösa dem är huvudmännens — men verktygen finns inte alltid på plats.
 

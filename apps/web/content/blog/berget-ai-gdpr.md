@@ -5,7 +5,7 @@ date: "2026-05-08"
 category: "GDPR & juridik"
 ---
 
-En dataskyddsombud i Växjö får en fråga från en rektor: "Kan vi börja använda ChatGPT i undervisningen?". Ombudet skakar på huvudet och tar fram förteckningen över tredjelandsförare. Listan blir längre för varje år.
+En dataskyddsombud i Växjö får en fråga från en rektor: "Kan vi börja använda ChatGPT i undervisningen?". Ombudet skakar på huvudet och tar fram förteckningen över tredjelandsöverföringar. Listan blir längre för varje år.
 
 Det är där många skolor står idag. Vill men kan inte.
 

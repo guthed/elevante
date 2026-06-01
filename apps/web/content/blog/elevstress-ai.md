@@ -1,11 +1,11 @@
 ---
 title: "Elevstress – när hälften av eleverna är stressade flera gånger i veckan"
-description: "Elevstressen ökar i svensk skola. Så ser orsakerna ut, och så kan AI minska tryggheten i klassrummet snarare än att lyfta den."
+description: "Elevstressen ökar i svensk skola. Så ser orsakerna ut, och så kan AI minska stressen i klassrummet snarare än att lyfta den."
 date: "2026-04-30"
 category: "Elever"
 ---
 
-En 16-åring i Uppsala vaknar med ont i magen på måndag morgon. Det är prov i matte på onsdag. Hen har inte hunnit plågga än. Hen vet inte var hen ska börja. Förra provet gick dåligt. Förra året blev hen sjukskriven en hel månad.
+En 16-åring i Uppsala vaknar med ont i magen på måndag morgon. Det är prov i matte på onsdag. Hen har inte hunnit plugga än. Hen vet inte var hen ska börja. Förra provet gick dåligt. Förra året blev hen sjukskriven en hel månad.
 
 Det är ingen ovanlig morgon. Det är en del av en mätbar utveckling.
 
@@ -32,7 +32,7 @@ AI är ingen psykolog. Men den kan påverka stressbilden på fyra sätt:
 1. **Övning utan dömande blick.** Eleven kan börja fråga där hen är utan att andra ser.
 2. **Strukturerat plugg inför prov.** AI hjälper bryta ner till hanterbara steg.
 3. **Snälla, sakliga förklaringar.** Aldrig irriterad, alltid till hands.
-4. **Synlighållen för läraren.** Läraren ser var eleven fastnar och kan rikta sin närvaro.
+4. **Synlig för läraren.** Läraren ser var eleven fastnar och kan rikta sin närvaro.
 
 ## Use cases
 

@@ -35,7 +35,7 @@ Det låter mycket. Men för en skola som kör AI på svensk infrastruktur, med d
 
 ## Tidsfristen som gäller
 
-Högrisk-reglerna gäller från augusti 2026. Det innebär att skolor som använder AI redan måste börja inventära och dokumentera nu. Böterna för icke-efterlevnad kan gå upp till 7 procent av huvudmannens årsomsättning.
+Högrisk-reglerna gäller från augusti 2026. Det innebär att skolor som använder AI redan måste börja inventera och dokumentera nu. Böterna för icke-efterlevnad kan gå upp till 7 procent av huvudmannens årsomsättning.
 
 ## Use cases
 
@@ -98,4 +98,4 @@ Lyfter EU AI Act i sina [stödmaterial](https://www.skolverket.se/sok-publikatio
 
 ## Reflektion
 
-EU AI Act är inte ett hinder för AI i skolan. Det är en strukturering av spelplanen. För skolor som kör på svensk infrastruktur och har mänsklig kontroll på plats är det mer pappersarbete än strategisk omvälvning. För skolor som kör amerikanska tjänster utanför GDPR-området blir det betydligt jobbigare. Det bästa valet just nu är att inventära och planera om — inte att vänta på första böterna.
+EU AI Act är inte ett hinder för AI i skolan. Det är en strukturering av spelplanen. För skolor som kör på svensk infrastruktur och har mänsklig kontroll på plats är det mer pappersarbete än strategisk omvälvning. För skolor som kör amerikanska tjänster utanför GDPR-området blir det betydligt jobbigare. Det bästa valet just nu är att inventera och planera om — inte att vänta på första böterna.

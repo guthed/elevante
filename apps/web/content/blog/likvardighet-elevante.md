@@ -45,7 +45,7 @@ Frågar AI på kvällen. Får samma tillgång som klasskamraten med universitets
 
 ### Specialläraren med stort upptagningsområde
 
-Får data på var stödtjänsterna inte når fram. Kan riktiga insatser dit de behövs.
+Får data på var stödtjänsterna inte når fram. Kan rikta insatser dit de behövs.
 
 ### Huvudmannen som gör kvalitetsuppföljning
 

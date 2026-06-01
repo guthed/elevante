@@ -7,7 +7,7 @@ category: "Elever"
 
 En nia i Malmö har fått en uppgift: skriv en text om Andra världskriget. Eleven har försökt fråga sin storebror, kollat YouTube, börjat och raderat samma stycke fem gånger. Klockan är 22:30. Hen skriver till ChatGPT: "förklara så jag förstår".
 
-Det är inte fusk. Det är en tonig som inte vill misslyckas igen.
+Det är inte fusk. Det är en tonåring som inte vill misslyckas igen.
 
 ## Vad eleverna själva säger
 
@@ -76,7 +76,7 @@ Elevante ersätter inte närvaron i klassrummet — den används under lektioner
 Det är en källkritisk fråga som skolan ska träna, inte undvika.
 
 **Funkar det för konstnärliga ämnen?**
-Bättre på text och teori, sämre på praktiskt håndverk.
+Bättre på text och teori, sämre på praktiskt hantverk.
 
 **Är det fusk att använda AI?**
 Nej, om skolans regler tillåter och eleven använder den som stöd. Ja, om färdig text lämnas in som egen.

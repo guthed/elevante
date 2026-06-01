@@ -72,7 +72,7 @@ ADHD, autismspektrum, språkstörning och dyslexi enligt erfarenheter från sven
 Forskning på AI och NPF är fortfarande ung men flera studier visar förbättrad läsförståelse och minskad stress vid AI-stöd. [OECD TALIS 2024](https://www.oecd.org/en/publications/results-from-talis-2024-country-notes_e127f9e2-en/sweden_95600eec-en.html) noterar att stöd till elever med särskilda behov är en av de största stressorerna för lärare — en sten AI kan lyfta delvis.
 
 **Kan AI ersätta hjälpmedel som Claroread eller Voice Dream?**
-Delvis. AI gör mer, men dedikerade hjälpmedel har specifika styrkor. Komplementarisera, byt inte ut.
+Delvis. AI gör mer, men dedikerade hjälpmedel har specifika styrkor. Komplettera, byt inte ut.
 
 **Är AI:n samma för alla elever?**
 Ja, men varje elev kan be om olika anpassningar. Diskret personalisering.

@@ -37,7 +37,7 @@ Huvudregel: kräver lärarens samtycke. Som anpassning för elev med NPF eller d
 [Skolinspektionen 2024](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/) lyfter att skolor saknar dokumenterade rutiner. För att vara redo bör ni ha:
 
 - En lokal policy som täcker de tre situationerna ovan.
-- Samtyckesmallar för lev, lärare och vårdnadshavare.
+- Samtyckesmallar för elev, lärare och vårdnadshavare.
 - Lagringsrutiner med tidsgränser.
 - Information till elever om hur inspelningar kan användas.
 
@@ -51,7 +51,7 @@ Spelar in sina genomgångar på svensk plattform. Inga elever syns. Eleverna ser
 
 Eleven får spela in lektionen för att kunna lyssna igen. Beslut dokumenteras i åtgärdsprogram.
 
-### Speciallararens uppläsning av text
+### Speciallärarens uppläsning av text
 
 Använder [KB-Whisper](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof) för transkribering på svensk infrastruktur. Lagring i Sverige.
 

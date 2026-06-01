@@ -75,7 +75,7 @@ Ja. Den är tränad på många språk men starkast på svenska.
 **Vad säger ISOF om modellen?**
 Institutet för språk och folkminnen står bakom dataunderlaget och har använt den i egna projekt.
 
-**Är open source mer säkert än stora aktorer?**
+**Är open source mer säkert än stora aktörer?**
 Inte automatiskt. Men det ger granskningsbarhet.
 
 **Vilka språkkluster funkar bäst?**

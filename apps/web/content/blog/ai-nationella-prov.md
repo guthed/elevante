@@ -35,7 +35,7 @@ Skolverkets bedömning är att nationella prov från och med våren 2025 ska gen
 
 Skolverket utreder hur AI ska hanteras i framtida provformat. Tre spår är öppna:
 
-1. **Tighet förbud.** Som idag, men med bättre tekniska låsningar.
+1. **Tight förbud.** Som idag, men med bättre tekniska låsningar.
 2. **Tillåten AI med dokumentation.** Eleven får använda AI men måste redovisa prompts. Bedömningen blir på processen.
 3. **AI-resistenta uppgifter.** Provformer som AI inte klarar bra — muntliga prov, tidsbegränsade samtal, processbedömning över tid.
 
