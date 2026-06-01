@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
@@ -161,6 +162,9 @@ export default async function PricingPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd(locale, '/priser', sv ? 'Priser' : 'Pricing')}
+      />
       <section className="pt-16 pb-12 md:pt-24 md:pb-16">
         <Container width="content">
           <div className="text-center">

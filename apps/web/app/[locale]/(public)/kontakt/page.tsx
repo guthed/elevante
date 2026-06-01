@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { JsonLd } from '@/components/public/JsonLd';
 import { Container } from '@/components/public/Container';
 import { ContactForm } from './ContactForm';
 
@@ -38,6 +39,9 @@ export default async function ContactPage({ params, searchParams }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd(locale, '/kontakt', sv ? 'Kontakt' : 'Contact')}
+      />
       <section className="pt-16 pb-12 md:pt-24 md:pb-16">
         <Container width="content">
           <p className="eyebrow mb-6">{page.hero.eyebrow}</p>

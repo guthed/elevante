@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { PriceEstimator } from '@/components/public/PriceEstimator';
@@ -56,6 +57,13 @@ export default async function PriceEstimatePage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd(
+          locale,
+          '/vad-kostar-elevante',
+          sv ? 'Vad kostar Elevante?' : 'How much does Elevante cost?',
+        )}
+      />
       {/* HERO */}
       <section className="pt-16 pb-16 md:pt-24 md:pb-20">
         <Container width="wide">

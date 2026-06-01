@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
@@ -111,6 +112,9 @@ export default async function ForStudentsPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd(locale, '/for-elever', sv ? 'För elever' : 'For students')}
+      />
       {/* HERO — 50/50 asymmetrisk, varmare ton */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">

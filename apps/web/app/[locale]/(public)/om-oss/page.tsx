@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 
@@ -61,6 +62,9 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd(locale, '/om-oss', sv ? 'Om oss' : 'About')}
+      />
       {/* HERO — manifest */}
       <section className="pt-20 pb-16 md:pt-28 md:pb-20">
         <Container width="wide">

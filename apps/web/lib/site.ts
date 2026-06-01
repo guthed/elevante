@@ -49,3 +49,26 @@ export function alternatesFor(locale: Locale, path = '') {
     },
   };
 }
+
+// BreadcrumbList-JSON-LD för en undersida: Hem → sidan. `name` är sidans namn,
+// `path` en sökväg utan locale-prefix (t.ex. '/priser').
+export function breadcrumbLd(locale: Locale, path: string, name: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: locale === 'sv' ? 'Hem' : 'Home',
+        item: `${SITE_URL}/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name,
+        item: `${SITE_URL}/${locale}${path}`,
+      },
+    ],
+  };
+}

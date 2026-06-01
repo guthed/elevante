@@ -2,6 +2,8 @@
 
 > Elevante is a Swedish ed-tech platform that records, transcribes, and remembers classroom lessons, so every student gets a private AI tutor that only answers from what their teacher actually said.
 
+Full reference for AI engines: https://www.elevante.se/llms-full.txt
+
 Elevante is launching its first school pilots in 2026. The company is based in Stockholm and all data stays inside the EU (GDPR-first). Raw audio is deleted after transcription. The only AI provider used is Anthropic (Claude). The only transcription provider is KB-Whisper via Berget AI.
 
 ## Tagline
