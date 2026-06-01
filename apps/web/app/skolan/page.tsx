@@ -105,7 +105,8 @@ export default function SkolanPage() {
             </p>
             <p className="mt-6 max-w-md text-lg text-ink-secondary">
               Svaren är grundade i lektionen som faktiskt hölls, med citat ur
-              genomgången. Inte i något generellt på nätet.
+              genomgången — eleven möter er undervisning, inte internets.
+              Elevante förstärker lektionen, det ersätter inte läraren.
             </p>
           </Reveal>
           <Reveal delay={120}>
@@ -205,8 +206,8 @@ export default function SkolanPage() {
                 p: 'Varje svar pekar tillbaka till stället i genomgången där det kom ifrån.',
               },
               {
-                h: 'Förstärker läraren',
-                p: 'Bygger på lärarens auktoritet i stället för att ersätta den.',
+                h: 'Förstärker läraren — ersätter den inte',
+                p: 'Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa — lärarens tolkningsföreträde är kvar.',
               },
             ].map((c, i) => (
               <Reveal key={c.h} delay={i * 80}>
@@ -233,6 +234,25 @@ export default function SkolanPage() {
               relevanta avsnitt ur er egen lektion och sedan formulerar svaret
               utifrån dem. Den kan därför inte hitta på fritt — svaret är alltid
               bundet till källan.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 06b — FÖR LÄRAREN */}
+      <section className="px-6 py-24 sm:px-10 sm:py-32">
+        <div className="container-content">
+          <Reveal>
+            <Eyebrow>För läraren</Eyebrow>
+            <p className="mt-6 max-w-3xl font-serif text-4xl leading-tight sm:text-5xl md:text-6xl">
+              Läraren äger lektionen.{' '}
+              <em className="text-coral">Elevante minns den.</em>
+            </p>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-secondary">
+              Inget för- eller efterarbete, max två tryck. Elevante tar de
+              upprepade frågorna efter lektionen — det ger studiero i klassrummet
+              och mer lärartid till det som faktiskt kräver en lärare. Byggt med
+              läraren, inte runt.
             </p>
           </Reveal>
         </div>

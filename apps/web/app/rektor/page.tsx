@@ -84,8 +84,8 @@ export default function RektorPage() {
                 Spelar in, transkriberar <em>på svenska</em> — och svarar på elevens frågor.
               </p>
               <p className="body" style={{ marginTop: '32px', maxWidth: '40ch' }}>
-                Svaren är grundade i lektionen som faktiskt hölls, med citat ur genomgången. Inte i
-                något generellt på nätet.
+                Svaren är grundade i lektionen som faktiskt hölls, med citat ur genomgången —
+                eleven möter er undervisning, inte internets.
               </p>
             </div>
             <div className="shot-frame">
@@ -168,8 +168,8 @@ export default function RektorPage() {
             <div className="crow">
               <div className="ck">✓</div>
               <div>
-                <h4>Förstärker läraren</h4>
-                <p>Bygger på lärarens auktoritet i stället för att ersätta den.</p>
+                <h4>Förstärker läraren — ersätter den inte</h4>
+                <p>Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa — lärarens tolkningsföreträde är kvar.</p>
               </div>
             </div>
           </div>
@@ -189,12 +189,12 @@ export default function RektorPage() {
           <p className="eyebrow">För läraren</p>
           <div className="spacer" style={{ flex: '0 0 40px' }} />
           <p className="statement">
-            Noll friktion. <em>Max två tryck.</em> Inget för- eller efterarbete.
+            Läraren äger lektionen. <em>Elevante minns den.</em>
           </p>
           <div className="spacer" style={{ flex: '0 0 44px' }} />
-          <p className="body" style={{ maxWidth: '44ch' }}>
-            Läraren gör precis som vanligt. Elevantes värde uppstår utan att en enda extra
-            arbetstimme tillkommer.
+          <p className="body" style={{ maxWidth: '46ch' }}>
+            Inget för- eller efterarbete, max två tryck. Elevante förstärker undervisningen —
+            det ersätter aldrig läraren. Byggt med läraren, inte runt.
           </p>
         </div>
         <div className="pagefoot">06</div>
