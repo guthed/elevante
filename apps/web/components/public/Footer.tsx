@@ -21,12 +21,11 @@ export function Footer({ locale, pathname, dict }: Props) {
   ];
   const companyLinks = [
     { href: `${base}/om-oss`, label: dict.nav.about },
-    // Bloggen är svensk-only — länka bara på /sv.
-    ...(locale === 'sv'
-      ? [{ href: `${base}/blogg`, label: dict.nav.blog }]
-      : []),
     { href: `${base}/kontakt`, label: dict.nav.contact },
   ];
+  // Bloggen länkas medvetet INTE i navigationen. Den ska vara osynlig för
+  // människor men hittbar för sök-/AI-agenter: ligger kvar i sitemap.xml,
+  // tillåts i robots.txt och listas i llms.txt.
   const legalLinks = [
     { href: `${base}/integritetspolicy`, label: locale === 'sv' ? 'Integritetspolicy' : 'Privacy policy' },
     { href: `${base}/villkor`, label: locale === 'sv' ? 'Villkor' : 'Terms' },

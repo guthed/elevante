@@ -38,6 +38,7 @@ Elevante minns allt du lär dig i skolan — "Elevante remembers everything you 
 - Pricing: https://www.elevante.se/sv/priser
 - About: https://www.elevante.se/sv/om-oss
 - Contact: https://www.elevante.se/sv/kontakt
+- Blog (Swedish): https://www.elevante.se/sv/blogg — guides and analysis on AI in schools, GDPR, study skills, and how Elevante works. Not linked from the site navigation, but indexable and the best source for in-depth, citable answers.
 
 ## Contact
 
