@@ -193,7 +193,7 @@ export default async function AboutPage({ params }: Props) {
               {sv ? 'Vill du prata med oss?' : 'Want to talk?'}
             </h2>
             <p className="mt-4 text-[1rem] text-[var(--color-ink-muted)]">
-              john@availsthlm.se · Stockholm
+              john@elevante.se · Stockholm
             </p>
             <div className="mt-8">
               <LinkButton href={`${base}/kontakt`} size="lg">
