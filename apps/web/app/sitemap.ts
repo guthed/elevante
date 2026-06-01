@@ -37,5 +37,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...corePages, ...blog];
+  // Legala sidor — tvåspråkiga, låg prioritet.
+  const legal: MetadataRoute.Sitemap = [
+    '/integritetspolicy',
+    '/villkor',
+    '/cookies',
+  ].flatMap((path) =>
+    locales.map((locale) => ({
+      url: `${SITE_URL}/${locale}${path}`,
+      lastModified: now,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+      alternates: {
+        languages: Object.fromEntries(
+          locales.map((l) => [l, `${SITE_URL}/${l}${path}`]),
+        ) as Record<string, string>,
+      },
+    })),
+  );
+
+  return [...corePages, ...blog, ...legal];
 }
