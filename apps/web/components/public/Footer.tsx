@@ -23,9 +23,9 @@ export function Footer({ locale, pathname, dict }: Props) {
     { href: `${base}/om-oss`, label: dict.nav.about },
     { href: `${base}/kontakt`, label: dict.nav.contact },
   ];
-  // Bloggen länkas medvetet INTE i navigationen. Den ska vara osynlig för
-  // människor men hittbar för sök-/AI-agenter: ligger kvar i sitemap.xml,
-  // tillåts i robots.txt och listas i llms.txt.
+  // Bloggen ligger inte i nav-kolumnerna ovan, men har en diskret inlänk i
+  // footerns nedre rad (för crawl/SEO-värde). Även i sitemap.xml, robots.txt
+  // och llms.txt.
   const legalLinks = [
     { href: `${base}/integritetspolicy`, label: locale === 'sv' ? 'Integritetspolicy' : 'Privacy policy' },
     { href: `${base}/villkor`, label: locale === 'sv' ? 'Villkor' : 'Terms' },
@@ -120,6 +120,14 @@ export function Footer({ locale, pathname, dict }: Props) {
             © {year} {dict.meta.siteName}. {dict.footer.rights}
           </p>
           <div className="flex items-center gap-6">
+            {locale === 'sv' ? (
+              <Link
+                href={`${base}/blogg`}
+                className="transition-colors hover:text-[var(--color-ink)]"
+              >
+                {dict.nav.blog}
+              </Link>
+            ) : null}
             <span>{dict.footer.madeIn}</span>
             <LanguageSwitcher
               currentLocale={locale}
