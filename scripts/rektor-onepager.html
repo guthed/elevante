@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Elevante — för dig som rektor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ivory:#FAF7F2;
+    --ink:#1A1A2E;
+    --ink-soft:#4a4a5e;
+    --accent:#4F7FFF;
+    --coral:#FF7A6B;
+    --sage:#B8C5A6;
+    --sand:#E8DCC4;
+    --line:#E7DFD3;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  @page{ size:A4; margin:0; }
+
+  html,body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:"Geist","Helvetica Neue",Arial,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    font-size:10.5pt;
+    line-height:1.55;
+  }
+
+  .page{
+    width:210mm;
+    min-height:297mm;
+    padding:17mm 18mm 14mm;
+    background:var(--ivory);
+    page-break-after:always;
+    position:relative;
+    overflow:hidden;
+  }
+  .page:last-child{ page-break-after:auto; }
+
+  /* ---------- Typography ---------- */
+  .serif{ font-family:"Newsreader",Georgia,"Times New Roman",serif; }
+
+  h1{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:500;
+    font-size:33pt;
+    line-height:1.04;
+    letter-spacing:-0.01em;
+    margin-bottom:10px;
+  }
+  h2{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:500;
+    font-size:17pt;
+    line-height:1.1;
+    margin-bottom:9px;
+    letter-spacing:-0.005em;
+  }
+  h3{
+    font-family:"Geist",sans-serif;
+    font-weight:600;
+    font-size:10pt;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:5px;
+  }
+  p{ color:var(--ink-soft); margin-bottom:9px; }
+  p strong{ color:var(--ink); font-weight:600; }
+
+  .lead{
+    font-size:13pt;
+    line-height:1.5;
+    color:var(--ink);
+    font-weight:400;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:24px;
+  }
+  .wordmark{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:600;
+    font-size:18pt;
+    letter-spacing:-0.01em;
+  }
+  .wordmark .dot{ color:var(--coral); }
+  .kicker{
+    font-size:8.5pt;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+
+  .tagline{
+    font-family:"Newsreader",Georgia,serif;
+    font-style:italic;
+    font-size:13pt;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+
+  /* ---------- Steps ---------- */
+  .steps{
+    display:flex;
+    gap:14px;
+    margin:6px 0 22px;
+  }
+  .step{
+    flex:1;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:15px 15px 16px;
+    box-shadow:0 6px 18px rgba(26,26,46,0.05);
+  }
+  .step .num{
+    font-family:"Newsreader",Georgia,serif;
+    font-size:15pt;
+    color:var(--coral);
+    font-weight:600;
+    display:block;
+    margin-bottom:6px;
+  }
+  .step h4{
+    font-family:"Geist",sans-serif;
+    font-size:10.5pt;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .step p{ font-size:9pt; margin:0; line-height:1.45; }
+
+  /* ---------- Highlight box ---------- */
+  .highlight{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--coral);
+    border-radius:12px;
+    padding:18px 20px;
+    margin:4px 0 0;
+    box-shadow:0 6px 18px rgba(26,26,46,0.05);
+  }
+  .highlight h2{ margin-bottom:7px; }
+  .highlight p:last-child{ margin-bottom:0; }
+
+  /* transcript chip inside highlight */
+  .quote-card{
+    margin-top:12px;
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 13px;
+  }
+  .quote-card .src{
+    font-family:"JetBrains Mono",monospace;
+    font-size:7.5pt;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .quote-card .txt{
+    font-family:"Newsreader",Georgia,serif;
+    font-style:italic;
+    font-size:10pt;
+    color:var(--ink);
+  }
+
+  /* ---------- Two column ---------- */
+  .cols{ display:flex; gap:22px; margin-top:4px; }
+  .col{ flex:1; }
+
+  .feature{ margin-bottom:16px; }
+  .feature h3{ display:flex; align-items:center; gap:8px; }
+  .tick{
+    width:7px; height:7px; border-radius:50%;
+    display:inline-block; flex:none;
+  }
+  .c-coral{ background:var(--coral); }
+  .c-accent{ background:var(--accent); }
+  .c-sage{ background:var(--sage); }
+  .c-sand{ background:var(--sand); }
+
+  /* ---------- GDPR panel ---------- */
+  .panel{
+    background:linear-gradient(180deg,#F3F2E8 0%,#EFEEE2 100%);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:6px 0 20px;
+  }
+  .panel h2{ margin-bottom:10px; }
+  .gdpr-grid{ display:flex; flex-wrap:wrap; gap:9px 22px; margin-top:4px; }
+  .gdpr-grid .item{
+    flex:1 1 44%;
+    font-size:9.5pt;
+    color:var(--ink);
+    padding-left:16px;
+    position:relative;
+    line-height:1.4;
+  }
+  .gdpr-grid .item::before{
+    content:"✓";
+    position:absolute; left:0; top:0;
+    color:#5f7a3f; font-weight:700; font-size:9pt;
+  }
+
+  /* ---------- Price + CTA ---------- */
+  .priceline{
+    display:flex; align-items:baseline; gap:12px;
+    margin:2px 0 6px;
+  }
+  .price{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:600;
+    font-size:26pt;
+    color:var(--ink);
+    line-height:1;
+  }
+  .price small{ font-size:11pt; color:var(--ink-soft); font-weight:400; }
+
+  .cta{
+    margin-top:14px;
+    background:var(--ink);
+    color:var(--ivory);
+    border-radius:14px;
+    padding:18px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+  .cta h2{ color:var(--ivory); margin-bottom:4px; }
+  .cta p{ color:rgba(250,247,242,0.78); margin:0; font-size:9.5pt; }
+  .cta .btn{
+    flex:none;
+    background:var(--coral);
+    color:#fff;
+    font-weight:600;
+    font-size:10pt;
+    padding:11px 18px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+
+  /* ---------- Footer ---------- */
+  .foot{
+    position:absolute;
+    left:18mm; right:18mm; bottom:11mm;
+    display:flex; justify-content:space-between;
+    font-size:8pt; color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:8px;
+  }
+  .foot .sep{ color:var(--coral); }
+
+  .sectlabel{
+    font-size:8.5pt; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--coral); font-weight:600; margin-bottom:7px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<section class="page">
+  <div class="masthead">
+    <div class="wordmark">Elevante<span class="dot">.</span></div>
+    <div class="kicker">För dig som rektor</div>
+  </div>
+
+  <div class="tagline">"Elevante minns allt du lär dig i skolan."</div>
+
+  <h1>Varje lektion,<br>kvar för varje elev.</h1>
+
+  <p class="lead">
+    Eleven som var sjuk. Eleven som inte hänger med i tempot. Eleven som pluggar inför
+    provet kvällen innan och inte minns vad läraren sa. Idag googlar de — eller frågar
+    ChatGPT, och får svar som inte har <em>någonting</em> att göra med vad som faktiskt sas på lektionen.
+  </p>
+  <p>
+    Elevante spelar in det läraren redan säger, transkriberar det automatiskt på svenska,
+    och låter eleverna ställa frågor om innehållet efteråt. Svaren bygger <strong>bara</strong>
+    på vad läraren faktiskt lärde ut — alltid med hänvisning till lektionen.
+  </p>
+
+  <div class="sectlabel" style="margin-top:18px;">Så funkar det</div>
+  <div class="steps">
+    <div class="step">
+      <span class="num">1</span>
+      <h4>Läraren trycker REC</h4>
+      <p>Schemat vet redan vilken lektion det är. Två tryck på mobilen — sedan undervisar läraren som vanligt.</p>
+    </div>
+    <div class="step">
+      <span class="num">2</span>
+      <h4>Vi transkriberar</h4>
+      <p>Lektionen blir text på svenska. Råljudet raderas så fort transkriberingen är klar.</p>
+    </div>
+    <div class="step">
+      <span class="num">3</span>
+      <h4>Eleven ställer frågor</h4>
+      <p>När som helst, i sin egen takt — och får svar grundade i lektionen, med citat ur det läraren sa.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <h2 class="serif">Det här är inte ChatGPT</h2>
+    <p style="margin-bottom:0;">
+      Det är tvärtom. Elevante kan <strong>inte hitta på</strong>. Det svarar enbart utifrån
+      er undervisning och visar alltid var i lektionen svaret kommer ifrån. Det förstärker
+      lärarens auktoritet i stället för att ersätta den — och gör repetition till något
+      eleven faktiskt kan lita på.
+    </p>
+    <div class="quote-card">
+      <div class="src">Källa · Biologi, Ekologi — lektion 3</div>
+      <div class="txt">"…ett ekosystem är alla levande organismer i ett område tillsammans med den icke-levande miljön de påverkas av…"</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Elevante <span class="sep">·</span> AI-stöd för svensk skola</span>
+    <span>elevante.se</span>
+  </div>
+</section>
+
+<!-- ============ PAGE 2 ============ -->
+<section class="page">
+
+  <div class="cols">
+    <div class="col">
+      <div class="feature">
+        <h3><span class="tick c-coral"></span> För läraren — noll friktion</h3>
+        <p>Max två tryck. Inget förarbete, inget efterarbete. Schemat sköter resten, och läraren behåller full kontroll över sin undervisning.</p>
+      </div>
+      <div class="feature">
+        <h3><span class="tick c-accent"></span> För eleven — likvärdig tillgång</h3>
+        <p>Varje elev får tillgång till varje lektion, om och om igen, i sin egen takt. Den som var borta, den som behöver repetition, den med koncentrationssvårigheter — alla får samma chans.</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="feature">
+        <h3><span class="tick c-sage"></span> För dig som rektor — insikt</h3>
+        <p>En förståelsekarta visar vilka koncept eleverna faktiskt kämpar med, klass för klass. Data att leda på medan ni fortfarande kan påverka — inte först när terminen är slut, utan stöd för det pedagogiska ledarskapet.</p>
+      </div>
+      <div class="feature">
+        <h3><span class="tick c-sand"></span> Byggt för svensk skola</h3>
+        <p>Svenskt språk, svensk transkribering och ett verktyg som följer läroplanen — eftersom det utgår från lärarens egen undervisning, lektion för lektion.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="serif">Tryggt med personuppgifter</h2>
+    <p style="margin-bottom:10px;">
+      Vi tar GDPR på största allvar — det är inbyggt i hur Elevante fungerar, inte påklistrat efteråt.
+    </p>
+    <div class="gdpr-grid">
+      <div class="item">All databehandling sker inom EU — ingen amerikansk molnleverantör för personuppgifter.</div>
+      <div class="item">Svensk transkribering via KB-Whisper (Berget AI), anpassad för svenska och GDPR.</div>
+      <div class="item">Råljudet raderas så fort lektionen transkriberats — minimal datalagring.</div>
+      <div class="item">PUB-avtal och tydlig dataägarskapsmodell — skolan äger sina data.</div>
+    </div>
+  </div>
+
+  <div class="sectlabel">Vad det kostar</div>
+  <div class="priceline">
+    <span class="price">500 kr <small>/ elev och år</small></span>
+  </div>
+  <p style="margin-bottom:0;">
+    Ungefär priset på en lärobok — för ett verktyg som följer eleven genom alla ämnen, hela året.
+    En pilot kan börja smått: en klass, en kurs, en månad.
+  </p>
+
+  <div class="cta">
+    <div>
+      <h2 class="serif">Låt oss köra en pilot</h2>
+      <p>En klass, en kurs, en månad. Ni ser resultatet och era lärare testar det — sedan pratar vi om att skala.</p>
+    </div>
+    <div class="btn">Boka en demo →</div>
+  </div>
+
+  <div class="foot">
+    <span>John Guthed <span class="sep">·</span> john@elevante.se</span>
+    <span>Elevante <span class="sep">·</span> elevante.se</span>
+  </div>
+</section>
+
+</body>
+</html>

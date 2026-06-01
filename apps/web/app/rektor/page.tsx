@@ -25,10 +25,10 @@ export default function RektorPage() {
           </h1>
           <p className="tagline">Elevante minns allt du lär dig i skolan.</p>
           <p className="title-intro">
-            Varje dag försvinner timmar av undervisning. En elev är borta, hänger inte med, eller
-            vågar inte fråga — och det finns ingen backup som faktiskt var med i klassrummet. Vi
-            byggde Elevante för att varje elev ska kunna gå tillbaka till lektionen som hölls, inte
-            till ett generellt svar från nätet.
+            Varje dag hålls genomtänkta lektioner — som försvinner i samma stund som det ringer ut.
+            En elev är borta, en annan hänger inte med, en tredje vågar inte fråga — och det finns
+            ingen backup som faktiskt var med i klassrummet. Vi byggde Elevante för att varje elev
+            ska kunna gå tillbaka till lektionen som hölls, inte till ett generellt svar från nätet.
           </p>
         </div>
         <div className="brandfoot">elevante.se</div>
@@ -39,19 +39,19 @@ export default function RektorPage() {
         <div className="frame">
           <div className="header">
             <p className="eyebrow">Problemet</p>
-            <h2 className="title">Tre elever, samma lucka</h2>
+            <h2 className="title">Tre elever, samma behov</h2>
           </div>
           <div className="spacer" style={{ flex: '0 0 56px' }} />
           <div className="cols-3">
             <div className="card persona">
               <span className="tag">Var sjuk</span>
               <p className="who">Eleven som missade veckan</p>
-              <p className="desc">Kommer tillbaka till en genomgång som redan är borta.</p>
+              <p className="desc">Vill ta igen genomgången — men den finns inte kvar någonstans att gå tillbaka till.</p>
             </div>
             <div className="card persona">
               <span className="tag">Hänger inte med</span>
               <p className="who">Eleven som tappar tempot</p>
-              <p className="desc">Hinner inte landa ett begrepp innan nästa redan är igång.</p>
+              <p className="desc">Skulle behöva höra begreppet en gång till — i sin egen takt.</p>
             </div>
             <div className="card persona">
               <span className="tag">Pluggar inför provet</span>
@@ -61,8 +61,8 @@ export default function RektorPage() {
           </div>
           <div className="spacer" />
           <p className="lead" style={{ maxWidth: '42ch' }}>
-            Idag googlar de — eller frågar ChatGPT — och får svar som inte har <em>någonting</em> med
-            er undervisning att göra.
+            Idag googlar de — eller frågar ChatGPT — och får svar som inte har <em>någonting</em> att
+            göra med vad som faktiskt sas på lektionen.
           </p>
         </div>
         <div className="pagefoot">02</div>
@@ -264,7 +264,7 @@ export default function RektorPage() {
         <div className="frame">
           <div className="header">
             <p className="eyebrow">För dig som rektor</p>
-            <h2 className="title">En förståelsekarta, inte bara betyg</h2>
+            <h2 className="title">En levande förståelsekarta</h2>
           </div>
           <div
             className="cols-2"
@@ -278,7 +278,8 @@ export default function RektorPage() {
           >
             <p className="body" style={{ maxWidth: '30ch' }}>
               Du ser vilka koncept eleverna faktiskt kämpar med — klass för klass, medan terminen
-              pågår. Underlag för pedagogiskt ledarskap, inte bara betyg i efterhand.
+              pågår. Underlag för pedagogiskt ledarskap medan ni fortfarande kan påverka — inte
+              först när terminen är slut.
             </p>
             <div className="shot-frame">
               <Image
@@ -310,9 +311,9 @@ export default function RektorPage() {
                 En gemensam grund
               </h3>
               <p className="body" style={{ maxWidth: '38ch' }}>
-                När varje genomgång finns kvar blir undervisningen mindre sårbar — för frånvaro,
-                vikarier och tempo. Skolan får en gemensam, kvalitetssäkrad grund att vila på, inte
-                bara enskilda elever som råkar klara sig.
+                När varje genomgång finns kvar bygger ni en gemensam kunskapsbank som håller —
+                oavsett frånvaro, vikarier och tempo. En kvalitetssäkrad grund som hela skolan kan
+                vila på.
               </p>
             </div>
             <div className="feat">
@@ -320,9 +321,8 @@ export default function RektorPage() {
                 Lärartid som räcker till fler
               </h3>
               <p className="body" style={{ maxWidth: '38ch' }}>
-                Du vet att enskilda elever kan ta väldigt mycket av en lärares tid. Elevante ger
-                varje elev en tålmodig första instans för sina frågor — så att lärarens
-                uppmärksamhet kan fördelas mer likvärdigt, över hela klassen.
+                Vissa frågor återkommer om och om igen. Elevante ger varje elev en tålmodig första
+                instans — så att lärarens tid räcker till det som verkligen kräver en lärare.
               </p>
             </div>
           </div>
