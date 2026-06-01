@@ -11,6 +11,7 @@ export type Dictionary = {
     forStudents: string;
     pricing: string;
     about: string;
+    blog: string;
     contact: string;
     bookDemo: string;
     openMenu: string;

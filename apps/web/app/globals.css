@@ -230,6 +230,105 @@
   .coral-pulse {
     animation: elevante-coral-pulse 2s ease-in-out infinite;
   }
+
+  /* Bloggartikelns brödtext — markdown renderad via <Prose>. Editorial Calm. */
+  .prose-elevante {
+    color: var(--color-ink-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose-elevante > :first-child {
+    margin-top: 0;
+  }
+  .prose-elevante h2 {
+    font-size: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+    line-height: 1.2;
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+    color: var(--color-ink);
+  }
+  .prose-elevante h3 {
+    font-size: 1.375rem;
+    line-height: 1.3;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-ink);
+  }
+  .prose-elevante p {
+    margin-bottom: 1.25rem;
+  }
+  .prose-elevante a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-coral);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+  }
+  .prose-elevante a:hover {
+    color: var(--color-coral);
+  }
+  .prose-elevante strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .prose-elevante ul,
+  .prose-elevante ol {
+    margin: 0 0 1.25rem;
+    padding-left: 1.5rem;
+  }
+  .prose-elevante ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose-elevante ul > li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.625rem;
+  }
+  .prose-elevante ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--color-sage);
+  }
+  .prose-elevante ol {
+    list-style: decimal;
+  }
+  .prose-elevante ol > li {
+    margin-bottom: 0.625rem;
+    padding-left: 0.25rem;
+  }
+  .prose-elevante ol > li::marker {
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .prose-elevante blockquote {
+    margin: 1.75rem 0;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 2px solid var(--color-coral);
+    font-style: italic;
+    color: var(--color-ink);
+  }
+  .prose-elevante code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface-soft);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+  .prose-elevante hr {
+    margin: 2.5rem 0;
+    border: 0;
+    border-top: 1px solid var(--color-sand);
+  }
+  .prose-elevante h2 + p,
+  .prose-elevante h3 + p {
+    margin-top: 0;
+  }
 }
 
 @layer utilities {

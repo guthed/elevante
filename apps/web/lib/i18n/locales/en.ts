@@ -14,6 +14,7 @@ const en: Dictionary = {
     forStudents: 'For students',
     pricing: 'Pricing',
     about: 'About',
+    blog: 'Blog',
     contact: 'Contact',
     bookDemo: 'Book a demo',
     openMenu: 'Open menu',

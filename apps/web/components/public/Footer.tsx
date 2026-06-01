@@ -21,6 +21,10 @@ export function Footer({ locale, pathname, dict }: Props) {
   ];
   const companyLinks = [
     { href: `${base}/om-oss`, label: dict.nav.about },
+    // Bloggen är svensk-only — länka bara på /sv.
+    ...(locale === 'sv'
+      ? [{ href: `${base}/blogg`, label: dict.nav.blog }]
+      : []),
     { href: `${base}/kontakt`, label: dict.nav.contact },
   ];
   const legalLinks = [

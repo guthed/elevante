@@ -14,6 +14,7 @@ const sv: Dictionary = {
     forStudents: 'För elever',
     pricing: 'Priser',
     about: 'Om oss',
+    blog: 'Blogg',
     contact: 'Kontakt',
     bookDemo: 'Boka demo',
     openMenu: 'Öppna meny',
