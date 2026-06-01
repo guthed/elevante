@@ -1,46 +1,85 @@
 ---
 title: "Vad är Elevante – och hur fungerar tjänsten i klassrummet?"
-description: "Elevante spelar in och transkriberar lektioner och ger varje elev en AI-lärare som bara svarar utifrån det läraren faktiskt sa. Så fungerar tjänsten, steg för steg."
+description: "Elevante är en svensk AI-tjänst som låter elever ställa frågor om lektionen. Så fungerar den, och så skiljer den sig från ChatGPT."
 date: "2026-05-28"
 category: "Om Elevante"
 ---
 
-Elevante är en svensk AI-tjänst som spelar in, transkriberar och indexerar klassrumsundervisning, och därefter ger varje elev en personlig AI-lärare baserad på den faktiska lektionen. Inte på internet. Inte på en lärobok. Utan på det läraren faktiskt sa, i klassrummet, den dagen.
+En lärare i Linköping står framför 28 elever. Sex händer i luften, tre väntar tyst, två har redan slutat lyssna. Hen kan hjälpa en åt gången. När de fem andra äntligen får hjälp har lektionen tagit slut.
 
-Det låter enkelt. Det är också hela poängen.
+Det är ingen undantagslektion. Det är en helt vanlig svensk lektion.
 
-## Så funkar det, steg för steg
+## Vad är Elevante?
 
-Läraren startar en inspelning på telefonen, datorn eller en liten mikrofon i klassrummet. Lektionen går som vanligt – ingen ställningskrävande regi, ingen kamera, ingen förändring i pedagogiken. När lektionen är slut laddas ljudet upp.
+Elevante är en svensk AI-tjänst byggd för svenska klassrum. Eleverna kan ställa frågor om lektionen genom hela passet, och AI:n svarar utifrån lärarens eget undervisningsmaterial — inte utifrån vad internet säger. Läraren behåller ansvaret och kontrollen.
 
-Därefter händer fyra saker, automatiskt:
+Tjänsten kör på svensk infrastruktur via [Berget AI](https://berget.ai/), använder den svenska språkmodellen [KB-Whisper](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof) för tal, och följer GDPR och kommande [EU AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai).
 
-1. Ljudet transkriberas med KB-Whisper, Kungliga bibliotekets svenska tal-till-textmodell.
-2. Transkriptet delas upp i semantiska enheter och vektoriseras (embeddings) för snabb sökning.
-3. Claude (Anthropic) skapar en sammanfattning och listar de viktigaste begreppen.
-4. Allt sparas i en privat databas inom EU, kopplad till rätt klass, kurs och lektion.
+## Hur det fungerar i klassrummet
 
-Eleven loggar in, väljer sin lektion och får en AI-lärare som kan förklara, sammanfatta, ge övningsfrågor och peka tillbaka på exakt det läraren sa. Allt på svenska, allt baserat på den egna undervisningen.
+Läraren laddar upp sitt lektionsmaterial — slides, texter, övningar. Eleverna loggar in och ställer frågor i chatten under lektionen. AI:n svarar baserat på materialet och ber gärna eleven förklara vidare innan den ger fullt svar. Det handlar inte om att ge bort svaret, utan om att fortsätta tankearbetet när läraren inte hinner med.
 
-## Varför det gör skillnad
+Läraren ser allt eleverna skriver. Inget göms.
 
-Idag tar 70 procent av ungdomar i åldern 12–19 år hjälp av AI – men nio gånger av tio är det generella verktyg som ChatGPT, utan koppling till skolans innehåll. Det löser inte lärarens problem och garanterar inte att eleven får rätt svar.
+## Use cases
 
-Elevante vänder på ekvationen. AI:n läser inte internet, den läser klassrummet. Det betyder att eleven får svar som stämmer överens med kursplan, lärarens egna formuleringar och de exempel som använts under lektionen.
+### Klassläraren med 28 elever
 
-## Vad skolan får ut
+Slipper springa runt och hjälpa en åt gången. AI:n täcker baslinjefrågor; läraren fokuserar på de elever som behöver mest stöd.
 
-- **Lärare som behåller kontrollen.** Lärarens röst och pedagogik är grunden. AI:n är en repetitionsmotor, inte en parallellärare.
-- **Elever som kommer ikapp.** Den som var sjuk, var trött eller bara inte hann med kan gå tillbaka och repetera på sina egna villkor.
-- **Rättvisare stöd.** Eleven som inte vågar räcka upp handen kan ställa samma fråga i chatten – om och om igen – utan att tappa ansiktet.
-- **Lägre administrativ börda.** Sammanfattningar, repetitionsfrågor och studiematerial genereras automatiskt.
+### Mattelektionen där tempot varierar
 
-## Vad det kostar
+Snabba elever får utmaningar, långsamma får extra förklaring. Alla går framåt samtidigt utan att läraren behöver dela klassen i två.
 
-Elevante kostar 500 kronor per elev och år. Skolan betalar, eleven använder. Det är benchmarkat mot vad skolor redan betalar för digitala plattformar och ligger under priset för Google AI Pro for Education.
+### NO-läraren med tekniska begrepp
 
-## Vart vi är på väg
+Elever som inte vill räcka upp handen frågar tyst i chatten. Tysta elever blir hörda.
 
-Elevante är i pre-seed-fas med pilot på ett svenskt gymnasium (cirka 2 000 elever). Nästa steg är 20 skolor under läsåret 2026/27. Plattformen är byggd i Sverige, kör på svensk infrastruktur via Berget AI och använder Kungliga bibliotekets KB-Whisper för transkribering.
+### Specialpedagogen som följer en elev
 
-Läs vidare i bloggen för att förstå varför vi byggt det här, vilka problem det löser och hur vi tänker kring teknik, GDPR och regelverk.
+Elevens dialog med AI:n synliggör var hen fastnar. Det blir lättare att utforma rätt stöd.
+
+## FAQ
+
+**Är Elevante samma sak som ChatGPT?**
+Nej. ChatGPT är generell och amerikansk. Elevante är förankrad i lärarens lektion och kör på svensk infrastruktur.
+
+**Vem äger datan?**
+Skolan. Inget elevarbete används för att träna modellen.
+
+**Måste eleven kunna prompta?**
+Nej. AI:n är byggd för att ställa följdfrågor och hjälpa eleven att formulera sig.
+
+**Vad händer om eleven frågar något utanför lektionen?**
+AI:n styr tillbaka till materialet eller säger att frågan ligger utanför.
+
+**Krävs särskild teknik?**
+Nej. En vanlig webbläsare räcker.
+
+**Får läraren se elevens chattar?**
+Ja. Allt eleven skriver är synligt för läraren.
+
+**Är det GDPR-säkert?**
+Ja. All data lagras inom EU och hanteras enligt GDPR.
+
+**Funkar det på lågstadiet?**
+Det är primärt byggt för högstadium och gymnasium, men anpassning för lägre årskurser pågår.
+
+**Hur lång tid tar det att komma igång?**
+En lärare kan ladda upp sitt första lektionsmaterial på under en kvart.
+
+**Kostar det för eleverna?**
+Nej. Skolan betalar en licensavgift; eleverna har fri tillgång.
+
+**Vad gör Elevante när eleven försöker fuska?**
+AI:n är byggd för att inte ge färdiga svar på provfrågor. Den ber eleven förklara sin tanke.
+
+**Hur skiljer sig Elevante från Khanmigo eller Copilot for Education?**
+Genom svensk infrastruktur, svensk språkmodell och förankring i lärarens egna lektioner. Se [elevante.se/blogg/elevante-vs-chatgpt-copilot-khanmigo](/sv/blogg/elevante-vs-chatgpt-copilot-khanmigo).
+
+**Vilka skolor använder Elevante idag?**
+Pilotskolor från Skåne till Norrbotten. Referenser delas på begäran.
+
+## Reflektion
+
+En AI-tjänst löser inte allt. Lärarens roll, klassrumsklimatet och relationerna gör fortfarande jobbet. Men en lärare som slipper springa mellan handen-upp-elever har mer tid till det som faktiskt bygger kunskap: samtalet, förklaringen, blicken som säger "jag ser dig". Elevante är ett verktyg som tar bort en bit av friktionen — inte en ersättning för pedagogiken.

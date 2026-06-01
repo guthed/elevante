@@ -5,7 +5,7 @@ date: "2026-06-01"
 category: "AI i skolan"
 ---
 
-Frågan kom upp vid ett föräldraråd. En pappa med ekonomibakgrund lutade sig fram och sa: ”Om ChatGPT kan förklara allt — varför betalar vi 850 000 kronor om året per lärare?”
+Frågan kom upp vid ett föräldraråd. En pappa med ekonomibakgrund lutade sig fram och sa: "Om ChatGPT kan förklara allt — varför betalar vi 850 000 kronor om året per lärare?"
 
 Det är en bra fråga. Den förtjänar ett ärligt svar, inte ett reflexsvar.
 
@@ -50,11 +50,11 @@ Första året, 95 elever, planeringshögtryck. AI hjälper hen att producera mat
 
 ### Eleven med ångest
 
-Vågar inte säga ”jag förstår inte” i klassrummet. Hemma efter skolan ställer hen samma fråga till AI:n. Lär sig konceptet. Återvänder till lektionen mer förberedd. Läraren märker en elev som plötsligt vågar svara.
+Vågar inte säga "jag förstår inte" i klassrummet. Hemma efter skolan ställer hen samma fråga till AI:n. Lär sig konceptet. Återvänder till lektionen mer förberedd. Läraren märker en elev som plötsligt vågar svara.
 
 ### Skolledningens budgetfråga
 
-Rektorn räknar inte längre på ”AI istället för lärare” — utan på ”AI så att lärarna stannar”. Effekten är inte färre tjänster, det är behållna tjänster.
+Rektorn räknar inte längre på "AI istället för lärare" — utan på "AI så att lärarna stannar". Effekten är inte färre tjänster, det är behållna tjänster.
 
 ## FAQ
 
@@ -108,7 +108,7 @@ Elevante körs på svensk infrastruktur, är GDPR-säker, har lärarverktyg för
 
 ### Vad säger eleverna själva?
 
-De kallar AI ”en extra lärare” och rankar AI-stöd högre än fler läxor [(Internetstiftelsen 2025)](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/).
+De kallar AI "en extra lärare" och rankar AI-stöd högre än fler läxor [(Internetstiftelsen 2025)](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/).
 
 ### Vad är största risken?
 
@@ -116,6 +116,6 @@ Att skolan inte agerar. Eleverna använder AI redan. Om skolan inte deltar i hur
 
 ## Reflektion
 
-Frågan ”kan AI ersätta läraren” är ställd från fel håll. Den rätta frågan är: hur använder vi AI så att läraren kan göra mer av det som faktiskt gör skillnad?
+Frågan "kan AI ersätta läraren" är ställd från fel håll. Den rätta frågan är: hur använder vi AI så att läraren kan göra mer av det som faktiskt gör skillnad?
 
 Förälderns fråga på rådet förtjänade ett ärligt svar. Det här är det. AI är ett verktyg. Läraren är yrket. Skolan är platsen där människor möts. Inget av det ändras.

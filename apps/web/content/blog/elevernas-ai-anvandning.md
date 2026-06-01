@@ -1,52 +1,100 @@
 ---
 title: "Elevernas AI-användning är redan här – frågan är på vems villkor"
-description: "70 % av unga använder redan AI – men på generella verktyg utan koppling till skolan. Så kanaliserar Elevante elevernas AI-användning till ett kontrollerat, svenskt sammanhang."
+description: "70 procent av svenska ungdomar använder AI. Frågan är inte om de gör det, utan om skolan är med i samtalet. Så möter du det."
 date: "2026-05-16"
 category: "Elever"
 ---
 
-70 procent av ungdomar i åldern 12–19 år har använt AI. Hälften av gymnasieungdomarna använder AI istället för Google. På ett år har förhållandet svängt: idag använder fler ungdomar AI till skolarbete än på fritiden. Skolan har inte längre valet om AI ska användas i utbildningen – bara om det ska ske på skolans villkor eller på elevernas.
+En åttondeklassare i Västerås förklarar för sin svärmor: "ChatGPT är typ Google fast den fattar frågan". Svärmodern har aldrig själv använt det. Eleven använder det varje dag.
 
-## Vad eleverna gör idag
+Det är 2026 i ett notskal. Eleverna ligger flera steg fram.
 
-[70 % av ungdomar 12–19 har använt AI](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/). 57 procent av barn 8–19 använder AI-verktyg, vilket utklassar vuxna med 20 procentenheter. [57 % av barn 8–19 år använder AI — 20 procentenheter mer än vuxna](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/).
+## Vad ungdomarna faktiskt gör
 
-På gymnasiet är AI redan ett huvudverktyg. [Hälften av gymnasieungdomar använder AI istället för Google](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/). Och något hände mellan 2024 och 2025: [Gymnasieungdomar använder nu AI mer för skolarbete än fritid — omvänt från 2024](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/). Det är en kulturförändring på 12 månader.
+Enligt [Internetstiftelsen 2024–2025](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/) har 70 procent av ungdomar 12–19 år använt AI. Hälften av gymnasieungdomarna använder AI istället för Google. De använder det till:
 
-Samtidigt har bara 17 procent av lärarna aktivt godkänt AI-användning i sin undervisning. [endast 1 av 6 grundskolelärare har låtit elever använda AI](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---grundskolan-forskoleklass-och-fritidshem). Det skapar ett glapp: eleverna använder, läraren vet inte hur eller varför, skolan har inga regler.
+- Förklaringar av läxan
+- Sammanfattningar av kurslitteratur
+- Övningsfrågor inför prov
+- Hjälp att komma igång med inlämningar
+- Förbättringsförslag på egna texter
 
-## Vad eleverna använder AI till
+Det är inte fusk i de flesta fall. Det är digital studieteknik.
 
-Enligt Internetstiftelsen är barn och unga tydliga med vad de vill ha av AI: förklaringar på ett sätt de förstår, sammanfattningar av kurslitteratur, övningsfrågor och förbättringsförslag på inlämningsuppgifter. [Elevernas egen lista på bästa AI-nyttan](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/).
+## Vad skolan ofta missar
 
-Men den AI de använder – ChatGPT, Gemini, Claude i fri version – vet ingenting om deras lärares undervisning. Den hittar på exempel. Den blandar in fel. Den förhåller sig inte till kursplanen. Och den är tränad på engelska, inte på svenska gymnasiekontext.
+En rektor som inte känner till hur eleverna använder AI styr inte heller hur det används. Resultatet blir:
 
-Det här är en av vår tids mest snåriga skolfrågor: hur kombinerar man en teknik som eleverna redan använder med en kvalitetskontroll som skolan har ansvar för?
+- Otydliga regler som tolkas olika av olika lärare.
+- Elever som lär sig från YouTube i stället för från skolan.
+- Likvärdighetsproblem när vissa föräldrar betalar för ChatGPT Plus.
+- Förlorad chans att träna källkritik och promptteknik tillsammans.
 
-## Elevantes svar
+Nyhetsvärdet för "elever fuskar med AI" är borta. Frågan är vad skolan gör med det.
 
-Elevante är inte ett verktyg som står vid sidan av AI:n. Det är ett sätt att kanalisera elevernas AI-användning in i ett system där:
+## Vad som behövs
 
-- AI:n hämtar sin information från lärarens egen lektion, inte från internet.
-- Svar följer den pedagogiska linje läraren lagt.
-- Eleven kan *alltid* se vilken del av lektionen ett svar baseras på.
-- Skolan har full kontroll över vem som har åtkomst till vilken data.
+1. Tydliga, läsbara AI-policys på varje skola.
+2. Verktyg som är förankrade i lektionen, inte fria amerikanska chatbottar.
+3. Lärare som känner till hur eleverna faktiskt använder AI — inte tror sig veta.
+4. Likvärdig tillgång så elever utan föräldraprenumeration inte halkar efter.
 
-Det är AI-användning utan att kompromissa med skolans kvalitetsansvar.
+## Use cases
 
-## Skolan som missar tåget
+### Gymnasieklassen som använder AI inför prov
 
-Många skolor har idag oklara eller obefintliga regler kring AI. [Många skolor saknar regler för AI-användning](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan). Och de lärare som använder AI gör det oftast för att undervisa *om* AI, inte *med* AI. [80 %+ av gymnasielärare som använder AI gör det för att undervisa om AI — inte med AI](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan).
+Läraren bygger in AI som studieteknik i kursplanen. Eleverna lär sig att fråga — inte att kopiera.
 
-Med andra ord: ramverken finns inte, användningen är ad-hoc, och skolan abdikerar från ett verktyg som eleverna redan använder dagligen.
+### Åttan med kraftigt blandad AI-vana
 
-## Vad rektorn kan göra
+Några använder det dagligen, andra aldrig. Skolans AI ger likvärdig tillgång under skoltid.
 
-Elevante ger rektorn en lösning som inte kräver ett policydokument på 60 sidor. Skolan får ett godkänt, GDPR-säkert, svenskt verktyg som hanterar AI-användningen för elevernas räkning. [Berget AI](https://berget.ai/). [EU AI Act (Regulation 2024/1689)](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai).
+### Modersmålsläraren
 
-## Sammanfattning
+Elever pratar och tränar sitt modersmål mot AI:n. Får övning som läraren ensam inte hinner med.
 
-- Eleverna använder AI vare sig skolan vill det eller inte.
-- Generell AI saknar koppling till lärarens undervisning.
-- Elevante kanaliserar användningen in i ett kontrollerat, svenskt och pedagogiskt sammanhang.
-- Skolan återfår kontrollen utan att förbjuda teknik som redan finns där.
+### Studie- och yrkesvägledaren
+
+Möter elever som använder AI för att utforska programval. Hjälper dem värdera svaren kritiskt.
+
+## FAQ
+
+**Hur många elever använder AI idag?**
+70 procent av 12–19-åringarna ([Internetstiftelsen](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/)).
+
+**Vad använder de mest?**
+ChatGPT, sedan Copilot och Gemini.
+
+**Gör skolan något åt det?**
+Skolverket har gett ut stödmaterial både för [grundskolan](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---grundskolan-forskoleklass-och-fritidshem) och [gymnasiet](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan).
+
+**Är det fusk att använda ChatGPT?**
+Beror på skolans regler. Skolan måste sätta dem tydligt.
+
+**Vad säger Skolinspektionen?**
+[Skolinspektionen 2024](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/) konstaterar att skolor saknar likvärdig hantering.
+
+**Hur lär sig lärare om AI?**
+Idag mest på egen hand. Det är en kompetensfråga som behöver tas systematiskt.
+
+**Vad ska föräldrar veta?**
+Att deras barn använder AI redan. Och att samtal hemma är bättre än förbud.
+
+**Funkar fri AI som studieverktyg?**
+Delvis. Den ger inte alltid bra svar och har inte koll på svenska kursplaner.
+
+**Vad gör vi om eleven inte vill använda AI?**
+Ingen ska tvingas. AI ska vara ett valbart stöd.
+
+**Hur skiljer sig Elevante från ChatGPT?**
+Genom förankring i lärarens lektion, svensk infrastruktur och GDPR. Se [elevante.se/blogg/elevante-vs-chatgpt-copilot-khanmigo](/sv/blogg/elevante-vs-chatgpt-copilot-khanmigo).
+
+**Hur påverkar AI-användningen kunskapsresultaten?**
+För tidigt att säga på systemnivå. Tidiga studier visar polariserade effekter — bra användning hjälper, slarvig användning skadar.
+
+**Vad säger eleverna själva?**
+De vill ha tydliga regler och verktyg som funkar i klassrummet, inte förbud.
+
+## Reflektion
+
+Nyhetsvärdet för "elever använder AI" är borta. Det är ett etablerat faktum. Det som återstår är en fråga om vem som tar förarplatsen. Om skolan inte gör det gör TikTok det, eller storföretag i Kalifornien. Att möta eleverna där de redan är är inte att kapitulera — det är att leda.

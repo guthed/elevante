@@ -1,48 +1,97 @@
 ---
 title: "Skolinspektionen 2024: 85 % av skolorna har utvecklingsbehov"
-description: "Skolinspektionen 2024: 85 % av de granskade skolorna fick utvecklingsbehov – oftast på stöd och anpassningar. Så riktar Elevante in sig på exakt de punkterna."
+description: "Skolinspektionens årsrapport 2024 visar att 85 procent av skolorna fått utvecklingsanmärkningar. Så hjälper AI med de vanligaste bristerna."
 date: "2026-05-12"
 category: "Skola & system"
 ---
 
-Skolinspektionen granskade 1 117 skolenheter under 2024. 85 procent av dem fick utvecklingsbehov påpekade. De vanligaste bristerna handlar om extra anpassningar, särskilt stöd och elevhälsa. Det är en bild av ett system som inte gör det det ska, på de punkter som läraren har minst tid för.
+En rektor i Halmstad öppnar Skolinspektionens beslut på måndag morgon. Tre punkter att åtgärda. Två av dem handlar om extra anpassningar. Hen suckar. Det är tredje året i rad.
 
-## Vad granskningen visar
+Det är inte ovanligt. Det är en spegelbild av ett systemproblem.
 
-[93 % av planerade tillsyner 2024 hittade lagbrister](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/). Det handlar inte om kosmetiska brister. Skolinspektionen påpekar utvecklingsbehov när en skola inte når upp till skollagens grundkrav.
+## Vad rapporten säger
 
-De vanligaste bristerna på huvudmannanivå är kränkande behandling, måluppfyllelse och tillgripande av särskilda åtgärder. [Skolor med allvarliga brister får vite på i snitt 2 miljoner kronor](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/). På enhetsnivå är det extra anpassningar och särskilt stöd som ligger överst. [de vanligaste bristerna på skolenhetsnivå — extra anpassningar och särskilt stöd](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/).
+[Skolinspektionens årsrapport 2024](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/) konstaterar att omkring 85 procent av de granskade skolorna fått utvecklingsanmärkningar. De vanligaste är:
 
-Och i tematiska granskningar av just extra anpassningar var bristen genomgående. [På hälften av granskade särskilda undervisningsgrupper anpassas inte stöd och innehåll](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/). Inte på vissa skolor. På alla.
+- Brister i extra anpassningar och särskilt stöd
+- Otillräcklig studiero
+- Bedömning och betygssättning som inte går att följa
+- Brister i likvärdig undervisning
 
-## Där Elevante möter Skolinspektionen
+Det är inte enskilda lärare som gör fel. Det är ramar som inte håller.
 
-De brister inspektionen pekar på är tyvärr inte små saker. Det är skollagens hjärta: alla elever ska få det stöd de behöver för att nå kunskapskraven. När 85 procent av skolorna inte gör det fullt ut, har Sverige ett strukturellt problem.
+## Varför bristerna återkommer
 
-Elevante kan bidra till lösningen på fyra punkter:
+De handlar nedan om svåraste uppgifterna i yrket. Att fånga upp en elev som behöver mer stöd. Att hålla studiero i en stor klass. Att dokumentera så att tredje part kan följa resonemanget. Allt detta kräver tid som inte finns.
 
-- **Tillgänglighet.** Anpassningar i form av förenklade sammanfattningar, repetition i egen takt, alternativa förklaringar – utan att kräva att läraren skriver fyra varianter av samma material.
-- **Spårbarhet.** Varje svar AI:n ger kan kopplas till en specifik del av lektionen. Det gör det lättare att dokumentera hur en elev har fått stöd och vad stödet bestod i.
-- **Likvärdighet.** Tjänsten är tillgänglig för alla elever i en klass, inte bara dem som tar initiativet.
-- **Lärarens fokus.** Läraren får tid för de elever som behöver mest personlig insats, eftersom rutinmässigt stöd delvis tas om hand av AI:n.
+Skolinspektionens jobb är att påpeka bristerna. Att lösa dem är huvudmännens — men verktygen finns inte alltid på plats.
 
-Ingen av punkterna löser hela problemet. Men tillsammans höjer de skolans kapacitet att leva upp till sina egna åtaganden.
+## Var AI faktiskt hjälper
 
-## Lärarna är rädda för Skolinspektionen – och för föräldrarna
+1. **Extra anpassningar:** AI kan ge baslinjeförklaringar och egen takt utan att läraren måste vara på sex ställen samtidigt.
+2. **Studiero:** Färre elever som väntar på hjälp = mindre frustration = lugnare klassrum.
+3. **Dokumentation:** AI ger spår på var eleven faktiskt fick anpassning, vilket gör tillsyn enklare.
+4. **Likvärdighet:** AI ger samma tillgång oavsett föräldrabakgrund.
 
-[Lärare oroar sig för att elever inte förstår AI-svaren](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan). Det är en olycklig kombination. Rädsla skapar reaktiva åtgärder, defensiv dokumentation och en kultur där man håller på med att skydda sig själv istället för att stödja eleven.
+## Use cases
 
-Elevante minskar pressen genom att stödja den underliggande processen – hur eleverna får tillgång till lärarens material, hur de kan repetera, hur de kan få anpassad hjälp. Och när dokumentation krävs finns det loggar och spårbarhet.
+### Rektorn med tre tillsynspunkter
 
-## Vad rektorn bör se
+Kan visa Skolinspektionen elevdialoger som dokumenterar att anpassningar verkställts.
 
-För en rektor som planerar för nästa inspektion eller för en huvudmans uppföljning är Elevante ett konkret verktyg som stödjer skolan i de områden där flest brister hittas. Det är inte ett substitut för lärare, specialpedagoger eller elevhälsa – men det är en multiplikator av deras arbete.
+### Försteläraren för studiero
 
-Mer information finns i [Skolinspektionens årsrapport 2024](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/).
+Låter AI ta baslinjefrågor så läraren kan fokusera på klassrumsledarskap.
 
-## Sammanfattning
+### Specialpedagogen på en stor enhet
 
-- 85 procent av skolorna har utvecklingsbehov, oftast på stöd och anpassningar.
-- Elevante riktar in sig på just de punkterna.
-- Det skapar spårbarhet, höjer kapacitet och ger läraren mer tid för de svåraste fallen.
-- För rektorn är det ett kvalitetsverktyg, inte ett teknikexperiment.
+Får data på var anpassningarna fungerar och var de fallerar.
+
+### Huvudmannen som planerar uppföljning
+
+Får systemnivå-data över förvaltning istället för anekdotiska rapporter.
+
+## FAQ
+
+**Vad är en utvecklingsanmärkning?**
+En punkt skolan måste åtgärda. Inte samma sak som vite eller indragen rektorslegitimation.
+
+**Vad granskar Skolinspektionen?**
+Hela skolans uppdrag, men extra anpassningar, studiero och bedömning återkommer.
+
+**Hur ofta granskas en skola?**
+Regelmässigt vart fjärde till sjätte år, oftare vid signaler.
+
+**Vad händer om man inte åtgärdar?**
+Mer ingripande tillsyn, i värsta fall vite.
+
+**Är 85 procent en alarmerande siffra?**
+Det är en signal om att förutsättningarna inte räcker, inte att skolor inte bryr sig.
+
+**Gör AI bristerna mindre?**
+Delvis. Den löser inte underliggande ramfrågor men frigör tid.
+
+**Vad säger Skolverket?**
+Lyfter AI som stöd i både [grundskolan](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---grundskolan-forskoleklass-och-fritidshem) och [gymnasiet](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan).
+
+**Hur visar man Skolinspektionen att AI hjälpt?**
+Elevdialoger, uppföljningsdata, IUP-dokumentation.
+
+**Är AI ersättning för speciallärare?**
+Nej. Den är komplement, inte ersättning.
+
+**Vilka skolor får flest anmärkningar?**
+Fristlående och kommunala har ungefär likvärdiga nivåer. Socioekonomi och personalomsättning väger tyngre än driftsform.
+
+**Vilka ämnen syns mest i anmärkningar?**
+Betyg och bedömning sticker ut. [Skolverkets bedömningsrapport 2026](https://www.skolverket.se/publikationer?id=13390) ger underlag.
+
+**Vad gör en bra rektor med en anmärkning?**
+Använder den som utåtriktad pedagogisk diskussion, inte som administrativ tickbox.
+
+**Hur lång tid tar en åtgärd?**
+Varierar. Konkreta anpassningsfrågor kan adresseras på en termin. Studiero kan ta längre.
+
+## Reflektion
+
+Skolinspektionens rapport är inte ett betyg på enskilda lärare. Den är en systemröntgenbild av vad som inte håller i en överbelastad organisation. AI lagar inte det grundläggande systemet, men den ger lärare och rektorer en spak att dra i när tiden inte räcker. Det är där 85 procent kan börja sjunka.

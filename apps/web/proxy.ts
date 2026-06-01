@@ -34,6 +34,18 @@ function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
 // släppts igenom av shouldSkip innan host-kontrollen körs.
 const SCHOOLS_HOST_PREFIX = 'skolor.';
 
+// Blogginlägg som bytt slug — gamla URL:er redirectas permanent (308) till nya.
+const BLOG_SLUG_REDIRECTS: Record<string, string> = {
+  'lararens-tid-44-timmarsveckan': 'lararens-tid-44-timmar',
+  'studiero-premiss-for-larande': 'studiero-i-klassrummet',
+  'extra-anpassningar-i-praktiken': 'extra-anpassningar-praktiken',
+  'berget-ai-och-gdpr': 'berget-ai-gdpr',
+  'eu-ai-act-och-skolan': 'eu-ai-act-skolan',
+  likvardighet: 'likvardighet-elevante',
+  elevstress: 'elevstress-ai',
+  'far-man-spela-in-lektioner-gdpr': 'spela-in-lektioner-gdpr',
+};
+
 // Paths som ALDRIG ska redirectas av locale-logiken.
 // Matcher i config räcker inte alltid (filnamn med ~ eller andra
 // specialtecken kan glida förbi negative lookahead-regex:en).
@@ -70,6 +82,14 @@ export async function proxy(request: NextRequest) {
   if (pathname === '/en/blogg' || pathname.startsWith('/en/blogg/')) {
     const url = request.nextUrl.clone();
     url.pathname = pathname.replace('/en/blogg', '/sv/blogg');
+    return NextResponse.redirect(url, 308);
+  }
+
+  // Gamla blogg-slugs → nya (efter omskrivning från Notion).
+  const blogSlugMatch = pathname.match(/^\/sv\/blogg\/([a-z0-9-]+)$/);
+  if (blogSlugMatch && BLOG_SLUG_REDIRECTS[blogSlugMatch[1]]) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/sv/blogg/${BLOG_SLUG_REDIRECTS[blogSlugMatch[1]]}`;
     return NextResponse.redirect(url, 308);
   }
 

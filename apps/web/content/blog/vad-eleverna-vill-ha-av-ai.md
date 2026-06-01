@@ -1,60 +1,92 @@
 ---
 title: "Vad eleverna själva vill ha av AI – och varför Elevante svarar exakt på det"
-description: "Eleverna är tydliga med vad de vill ha av AI: förklaringar, sammanfattningar, övningsfrågor. Så är Elevante byggt kring exakt det – men förankrat i lärarens egen lektion."
+description: "Eleverna vill ha läxhjälp som funkar, provövning som inte dömer, och att få fråga utan att skammen kommer först. Så svarar Elevante på det."
 date: "2026-05-14"
 category: "Elever"
 ---
 
-Innan vi byggde Elevante läste vi vad eleverna själva säger att de vill ha av AI. Det är en av de mest underanvända informationskällorna i hela skol-AI-debatten. Internetstiftelsens undersökning av barn och unga visar en samstämmig bild: eleverna har redan en tydlig idé om vad AI ska göra för dem. Och svaret är påfallande likt det Elevante levererar.
+En nia i Malmö har fått en uppgift: skriv en text om Andra världskriget. Eleven har försökt fråga sin storebror, kollat YouTube, börjat och raderat samma stycke fem gånger. Klockan är 22:30. Hen skriver till ChatGPT: "förklara så jag förstår".
 
-## Det eleverna frågar efter
+Det är inte fusk. Det är en tonig som inte vill misslyckas igen.
 
-Enligt Internetstiftelsens Svenskarna och AI 2024-2025 lyfter unga själva fram följande områden där AI gjort eller skulle kunna göra störst skillnad:
+## Vad eleverna själva säger
 
-- Förklaringar på ett sätt jag förstår
-- Sammanfattningar av lektioner och kurslitteratur
-- Övningsfrågor inför prov
-- Förbättringsförslag på egna inlämningar
-- Hjälp att komma igång när man fastnat
+När [Skolverket](https://www.skolverket.se/publikationer?id=13240) frågar elever vad de vill ha av digitala verktyg återkommer fyra teman:
 
-[Elevernas egen lista på bästa AI-nyttan](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/). Det är inte en formulering vi har vänt på – det är en parafrasering av elevernas egna svar i undersökningen.
+1. "Jag vill kunna fråga utan att verka dum."
+2. "Jag vill ha någon som inte tröttnar."
+3. "Jag vill att det funkar när jag faktiskt pluggar — inte bara på lektionstid."
+4. "Jag vill att den förstår vad vi gör i skolan, inte bara allt på internet."
 
-Och det är värt att ställa mot lärarnas bild: 60 procent av lärarna har en kraftigt negativ syn på elevernas AI-användning. [Skolverket: AI bland elever är ännu ovanlig och många lärare har negativ inställning](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan). Det är två världar som inte talar samma språk.
+Det är exakt det generella chatbottar inte erbjuder.
 
-## Varför generell AI inte räcker
+## Varför det är ett pedagogiskt problem när skolan inte ger det
 
-Problemet är att om en elev går till en allmän AI och ber om en sammanfattning, blir den oftast antingen för ytlig eller för generell. Den kan inte veta:
+När elever inte vågar fråga i klassrummet bygger missförstånd på sig. När de tar sina frågor till ChatGPT får de svar som inte alltid hänger ihop med vad läraren faktiskt undervisar. Klyftan mellan klassrum och hemma växer.
 
-- Vad läraren faktiskt har sagt
-- Vilka exempel som använts
-- Vilka definitioner som gäller på just den kursen
-- Vad provet ska ha för fokus
-- Vilken nivå klassen är på
+## Vad Elevante svarar på
 
-Resultatet är ofta att eleven får ett svar som är "rätt" i ett generellt läroboksperspektiv men fel för just deras kurs. Det skapar hämningar i klassrummet och får läraren att vilja stänga ner hela AI-användningen.
+- En chatt som inte dömer och inte tappar tålamodet.
+- Förklaring kopplad till just lektionens material — inte slumpvis information från internet.
+- Tillgång både under skoltid och hemma.
+- Språknivå som anpassas till eleven.
 
-## Vad Elevante gör annorlunda
+## Use cases
 
-Elevante baserar varje svar på *lärarens egen lektion*, transkriberad lokalt med svenska KB-Whisper. [KB-Whisper](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof). Det betyder:
+### Eleven som aldrig räcker upp handen
 
-- Sammanfattningar följer den dramaturgi läraren har lagt.
-- Övningsfrågor utgår från de begrepp läraren betonat.
-- Nivån kan anpassas, men ursprunget är alltid lektionen.
-- Citat och referenser går att spåra till transkriptet, ner till minutnivå.
+Frågar tyst i chatten. Får förklaring som funkar utan att klassen ser frågan.
 
-Det är en arkitektur som adresserar exakt de bekymmer lärarna har om generell AI samtidigt som den ger eleverna exakt det de frågar efter.
+### Eleven som pluggar hemma på kvällen
 
-## Det här är också en likvärdighetsfråga
+Kan ladda upp dagens slides och träna på dem. Skiljer från ChatGPT som inte vet vad kursen handlar om.
 
-Den elev vars föräldrar kan förklara matematik vid köksbordet har alltid haft en fördel. Den elev som köper extra läxhjälp för 600 kronor i timmen får ytterligare en fördel. Resten har lektionen som enda chans.
+### Eleven med svenska som andraspråk
 
-Elevante är en form av läxhjälp som inte är reserverad för de elever vars familjer har råd. [Eleverna kallar AI ”en extra lärare”](https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/). Och eftersom Elevante går att få tillgänglig för alla i klassen via skolan kostar den eleven ingenting.
+Får förklaringar på sitt starkaste språk och kan växla över till svenska i takt med att hen förstår.
 
-Läs mer i [Skolverkets bedömning av läget i skolväsendet 2026](https://www.skolverket.se/publikationer?id=13390).
+### Eleven inför prov
 
-## Sammanfattning
+Får övningsfrågor som speglar vad läraren faktiskt lärt ut. Mer relevant träning.
 
-- Eleverna är tydliga med vad de vill ha av AI.
-- Generell AI levererar det inte bra eftersom den saknar kontext från lärarens undervisning.
-- Elevante är byggt precis kring elevernas behov – men förankrat i lärarens lektion.
-- Det är en av få produkter som kan ge eleverna det de vill ha utan att kompromissa med lärarens kvalitetsansvar.
+## FAQ
+
+**Gör AI eleverna självständiga eller beroende?**
+Det beror på hur den är byggd. AI som ger färdiga svar gör beroende. AI som ställer följdfrågor gör självständig.
+
+**Vad säger eleverna om Elevante i pilot?**
+De lyfter att de vågar fråga mer och att svaren känns relevanta.
+
+**Använder eleverna AI fel?**
+Några gör det. Många inte. Det är en lärandefråga, inte ett förbudsskall.
+
+**Är AI som privatläxhjälp?**
+Delvis. AI tröttnar inte och kostar inte 600 kr i timmen. Men den ersätter inte en lärares uppmuntran.
+
+**Hur mäter man elevnytta?**
+Elevers självskattning, resultatutveckling och närvarograd i klassrummet.
+
+**Funkar det bättre för vissa elever?**
+Elever med NPF, dyslexi och svenska som andraspråk rapporterar störst nytta.
+
+**Är det inte skadligt att för mycket skärmtid?**
+Elevante ersätter inte närvaron i klassrummet — den används under lektioner och vid pluggtid.
+
+**Vad om eleven litar för mycket på AI?**
+Det är en källkritisk fråga som skolan ska träna, inte undvika.
+
+**Funkar det för konstnärliga ämnen?**
+Bättre på text och teori, sämre på praktiskt håndverk.
+
+**Är det fusk att använda AI?**
+Nej, om skolans regler tillåter och eleven använder den som stöd. Ja, om färdig text lämnas in som egen.
+
+**Vad säger forskningen?**
+Resultaten är tidiga. Eleverna själva uppger ökad trygghet i klassrummet och bättre studieteknik.
+
+**Hur kombineras AI med lärarrelationen?**
+Lärarrelationen är det viktigaste. AI tar bort friktion så läraren kan vara närmare.
+
+## Reflektion
+
+Niån som skriver "förklara så jag förstår" till ChatGPT klockan 22:30 är inte ett problem. Hen är en signal. Skolan kan välja att möta den signalen eller låta amerikanska bolag göra det. Elevante är ett sätt att möta den i klassrummet — på svensk infrastruktur, med material som läraren har valt, och med en chatt som inte tröttnar när eleven behöver fråga för femte gången.

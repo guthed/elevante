@@ -5,7 +5,7 @@ date: "2026-05-31"
 category: "AI i skolan"
 ---
 
-Det är fredag eftermiddag. En svensklärare läser den åttonde inlämningen i en bunt på trettiosex. Texten är välskriven, kanske för välskriven, och varje stycke öppnar med en perfekt övergångsmening. Men ingen 16-åring skriver ”I denna analys kommer vi att undersöka...” om de inte fått en läroboksida som mall. Och eleven brukar skriva korta meningar utan kommatecken.
+Det är fredag eftermiddag. En svensklärare läser den åttonde inlämningen i en bunt på trettiosex. Texten är välskriven, kanske för välskriven, och varje stycke öppnar med en perfekt övergångsmening. Men ingen 16-åring skriver "I denna analys kommer vi att undersöka..." om de inte fått en läroboksida som mall. Och eleven brukar skriva korta meningar utan kommatecken.
 
 Det är fusk. Eller åtminstone — det är en text som inte är elevens egen. Frågan är: vad gör man nu?
 
@@ -13,12 +13,12 @@ Det är fusk. Eller åtminstone — det är en text som inte är elevens egen. F
 
 Generell AI har vissa signaturer som är värda att känna till:
 
-- **Perfekta övergångsmeningar.** ”Detta leder oss till nästa fråga”, ”Sammanfattningsvis kan vi konstatera”. Elever skriver sällan så.
-- **För välbalanserad ton.** AI vill se båda sidor av varje fråga, även när uppgiften är ”argumentera FÖR X”.
-- **Ytliga konkreta exempel.** AI kommer på exempel som ”till exempel i andra världskriget” men kan inte gå djupare.
+- **Perfekta övergångsmeningar.** "Detta leder oss till nästa fråga", "Sammanfattningsvis kan vi konstatera". Elever skriver sällan så.
+- **För välbalanserad ton.** AI vill se båda sidor av varje fråga, även när uppgiften är "argumentera FÖR X".
+- **Ytliga konkreta exempel.** AI kommer på exempel som "till exempel i andra världskriget" men kan inte gå djupare.
 - **Korrekt stavning och grammatik genom hela texten.** Även duktiga elever skriver typiskt minst tre slarvfel per A4.
 - **Inga personliga referenser.** Eleven brukar nämna sin lärobok, sin lärare eller en lektionsdiskussion. AI vet inte om dem.
-- **Universella formuleringar.** ”Det är en komplex fråga som har många aspekter” — innehållslöst men välskrivet.
+- **Universella formuleringar.** "Det är en komplex fråga som har många aspekter" — innehållslöst men välskrivet.
 
 Det här är heuristik, inte bevis. Men kombinerar man flera signaler vet man oftast.
 
@@ -29,8 +29,8 @@ Turnitins AI-detektor, GPTZero, Copyleaks och [Originality.ai](http://Originalit
 Tre konkreta problem:
 
 1. **Falska positiva.** Elever har anklagats för fusk för texter de skrivit själva. Det förstör förtroendet.
-2. **Lätt att kringgå.** Be ChatGPT skriva ”i en 16-årings röst, med tre stavfel” — detektorn missar det.
-3. **Detektorerna är inte bevis.** Du kan inte sätta F på en elev baserat på ”AI-sannolikhet 87 %”.
+2. **Lätt att kringgå.** Be ChatGPT skriva "i en 16-årings röst, med tre stavfel" — detektorn missar det.
+3. **Detektorerna är inte bevis.** Du kan inte sätta F på en elev baserat på "AI-sannolikhet 87 %".
 
 ## Vad som faktiskt fungerar
 
@@ -39,10 +39,10 @@ Det fungerar inte att jaga AI-text. Det fungerar att förändra hur man bedömer
 - **Muntliga uppföljningar.** Eleven får fem minuter att förklara sin text efter inlämning. Den som inte skrivit texten själv märks.
 - **Processdokumentation.** Eleven sparar utkast, anteckningar och källor. Examinationen blir hela processen, inte bara slutprodukten.
 - **Skrivande i klassrummet.** Korta texter under övervakning blir benchmark för elevens språknivå. Stora avvikelser uppmärksammas.
-- **Bättre frågor.** ”Diskutera fördelarna med X” är lätt att fuska med. ”Diskutera fördelarna med X i ljuset av vad vi sa på lektionen tisdag” är svårt — AI vet inte vad ni sa på tisdag.
+- **Bättre frågor.** "Diskutera fördelarna med X" är lätt att fuska med. "Diskutera fördelarna med X i ljuset av vad vi sa på lektionen tisdag" är svårt — AI vet inte vad ni sa på tisdag.
 - **Öppen AI-användning.** Tillåt AI, men kräv att eleven redovisar prompts och svar. Då blir det inte fusk utan källkritik.
 
-På 67 procent av skolorna saknar lärarna förutsättningar att ge extra anpassningar [(Skolverket Attityder 2024 delrapport 3)](https://www.skolverket.se/publikationer?id=13240). Att lägga ovanpå ”jaga AI-fusk” i den ekvationen är inte rimligt. Det handlar om att designa om bedömningen.
+På 67 procent av skolorna saknar lärarna förutsättningar att ge extra anpassningar [(Skolverket Attityder 2024 delrapport 3)](https://www.skolverket.se/publikationer?id=13240). Att lägga ovanpå "jaga AI-fusk" i den ekvationen är inte rimligt. Det handlar om att designa om bedömningen.
 
 ## Det större problemet — varför elever fuskar
 
@@ -62,7 +62,7 @@ Provet är 90 minuter. Läraren tillåter AI men kräver att eleven skickar in s
 
 ### Rektor som skriver policy
 
-Skolan har tre fall av AI-fusk anmälda. Rektorn skriver om policyn till ”AI tillåts vid övning men inte vid bedömning, om inte annat anges”. Tydligheten halverar antalet anmälningar nästa termin.
+Skolan har tre fall av AI-fusk anmälda. Rektorn skriver om policyn till "AI tillåts vid övning men inte vid bedömning, om inte annat anges". Tydligheten halverar antalet anmälningar nästa termin.
 
 ### Elevante i klassrummet
 

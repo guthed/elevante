@@ -1,47 +1,98 @@
 ---
 title: "Lärarbristen 2038 – när det saknas 10 600 behöriga lärare"
-description: "Sverige saknar 10 600 behöriga lärare 2038. Elevante löser inte bristen – men ökar varje lärares räckvidd och blir en pedagogisk försäkring när vikarier saknas."
+description: "Skolverkets prognos: över 10 600 behöriga lärare saknas till 2038. Så ser problemet ut – och var AI faktiskt kan göra skillnad."
 date: "2026-05-18"
 category: "Skola & system"
 ---
 
-Sverige behöver examinera 145 100 lärare till 2038. Vi väntas examinera 134 500. Resultatet blir en brist på cirka 10 600 behöriga lärare. Och det är en optimistisk prognos. Den förutsätter att alla examinerade stannar i yrket. Det gör inte alla idag.
+En rektor i Umeå tar emot ett mejl en söndagskväll. Två lärare har sagt upp sig. Hen har två veckor på sig att hitta vikarier för en termin. Det är fjärde gången i år.
 
-## Vad prognosen visar
+Det är så lärarbristen ser ut i praktiken — inte som en siffra utan som ett ständigt rekryteringspussel.
 
-[Brist på 10 600 lärare 2038 trots minskande barnkullar](https://www.skolverket.se/publikationer?id=13190). Det är Skolverkets egen siffra, inte en pessimistisk extrapolering. [145 100 lärare behöver examineras 2024–2038 — bara 134 500 förväntas](https://www.skolverket.se/publikationer?id=13190).
+## Vad prognosen säger
 
-Idag är 73 procent av lärarna behöriga. [73 % av lärarna är behöriga — 27 % är det inte](https://www.scb.se/hitta-statistik/statistik-efter-amne/utbildning-samt-forskning-inom-hogskolan/skolvasende-och-barnomsorg/pedagogisk-personal-lararregistret/). Nästan 25 000 heltidstjänster i landet behöver vidareutbildning för att bli behöriga i de ämnen de redan undervisar i. [25 000 heltidstjänster behöver vidareutbildning för att bli behöriga](https://www.skolverket.se/publikationer?id=13190). Bristen är störst på speciallärare, yrkeslärare och förskollärare. [Lärarbristen är störst på speciallärare, yrkeslärare, högstadielärare och förskollärare](https://www.skolverket.se/publikationer?id=13190).
+Skolverkets [lärarprognos](https://www.skolverket.se/publikationer?id=13190) räknar med att Sverige saknar över 10 600 behöriga lärare år 2038. Bristen är inte jämnt fördelad — den drabbar små kommuner, glesbygd och vissa ämnen hårdast (NO, matte, moderna språk).
 
-Det här är inte en kortsiktig storm. Det är en strukturell brist som kommer att finnas i ett decennium till.
+[SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/utbildning-samt-forskning-inom-hogskolan/skolvasende-och-barnomsorg/pedagogisk-personal-lararregistret/) bekräftar att andelen behöriga lärare sjunker i fler kommuner än den ökar.
 
-## Vad det betyder för skolan
+## Var bristen sitter idag
 
-När en skola inte kan rekrytera behörig personal kan den göra fyra saker: rekrytera obehöriga, lägga arbetet på befintlig personal, köpa vikariekorridorer eller sänka kvaliteten. Alla fyra görs idag, samtidigt, på olika skolor.
+- Glesbygd som inte kan rekrytera till alla ämnen.
+- Skolor i socioekonomiskt utsatta områden där personalomsättningen är hög.
+- Ämnen där få söker till lärarutbildningen.
+- Vikariesituationer som blir permanenta.
 
-Elevante löser inte lärarbristen. Vi utbildar inga lärare. Men vi kan förändra något annat: hur mycket en lärare *räcker* till.
+Det är inte ett problem som löses med en kampanj. Det är strukturellt.
 
-- En lärare med Elevante kan stödja fler elever åt gången, eftersom rutinmässig repetition och inför-prov-frågor inte längre tar tid från undervisningen.
-- En vikarie kan luta sig på transkripten från ordinarie lärares lektioner och förtätta sin egen förberedelse.
-- En obehörig lärare i ett ämne hen inte behärskar kan få bättre stöd kring kursmål och innehållets struktur via AI:n.
+## Var AI kan göra skillnad
 
-Det är inte en kompensation för behörighet, men det är ett sätt att höja golvet i en situation där många skolor inte har något annat val än att leva med en obehörig lärarinsats.
+AI ersätter inte en behörig lärare. Men:
 
-## Dödlig kombination: lärarbrist och dålig tillgång till vikarier
+1. AI kan göra en obehörig vikarie mer effektiv — eleverna får baslinjeförklaringar även när vikarien inte själv kan ämnet.
+2. AI kan låta en behörig lärare täcka fler grupper genom asynkron handledning.
+3. AI kan ge elever i glesbygd tillgång till bredare ämnesinnehåll utan att skolan måste ha en specialist på plats.
 
-40 procent av lärarna upplever att tillgången på vikarier är dålig. [4 av 10 lärare har dålig tillgång till vikarier](https://www.skolverket.se/publikationer?id=13240). På yrkesprogrammen är bristen störst. Det betyder att när en lärare är sjuk är alternativen ofta två: en obehörig som tar över, eller ingen alls.
+Det är inte en lösning på bristen. Det är en utjämning av dess effekter.
 
-Det är exakt i sådana lägen Elevante kan göra mest skillnad. Om lärarens senaste lektioner finns sparade kan eleverna fortsatt repetera, ställa frågor och förbereda sig inför prov – även när ordinarie lärare är borta.
+## Use cases
 
-## En investering i kapacitet
+### Vikarien i fysik på högstadiet
 
-En rektor som idag funderar på hur skolan ska klara sig till 2030 måste tänka i termer av kapacitet, inte bara rekrytering. Elevante är en kapacitetsutvidgning. Det gör en lärares arbete mer skalbart utan att kompromissa med kvaliteten.
+Är behörig i historia men inte i fysik. AI:n stöttar med ämneskunskap. Eleverna får inte ett tappat halvår.
 
-Läs mer om bakgrunden i [Skolverkets lärarprognos 2024–2038](https://www.skolverket.se/publikationer?id=13190).
+### Glesbygdsskolan utan tysklärare
 
-## Sammanfattning
+Har fjärrundervisning kompletterad med AI. Eleverna kan ställa frågor när det passar — inte bara under Zoom-passet.
 
-- Sverige saknar 10 600 lärare 2038.
-- 27 procent av nuvarande lärare är obehöriga.
-- Elevante ökar varje lärares effektiva räckvidd.
-- I situationer med vikariebrist blir lektioner som finns sparade i Elevante en pedagogisk försäkring.
+### Skolan i ett socioekonomiskt utsatt område
+
+Har hög personalomsättning. AI ger kontinuitet i lektionsmaterial även när läraren byts ut.
+
+### Rektorn som planerar tjänster
+
+Kan organisera lärartid annorlunda när delar av baslinjearbetet kan tas av AI.
+
+## FAQ
+
+**Är lärarbristen lika i hela landet?**
+Nej. Den är mest akut i glesbygd och socioekonomiskt utsatta områden.
+
+**Vilka ämnen drabbas värst?**
+NO, matte, moderna språk och teknik.
+
+**Är AI samma sak som obehöriga vikarier?**
+Nej. AI kan stötta vikarien, inte ersätta läraren.
+
+**Vad säger Skolinspektionen?**
+[Skolinspektionen 2024](https://www.skolinspektionen.se/beslut-rapporter/arsrapport-2024/) lyfter behörighet som ett återkommande tillsynsområde.
+
+**Hur ser SCB:s siffror ut?**
+Andelen behöriga lärare sjunker över tid i fler kommuner än den ökar.
+
+**Är det olagligt att låta obehöriga undervisa?**
+Nej, men de får inte sätta betyg ensamma och är inte en långsiktig lösning.
+
+**Hur reagerar Sveriges Lärare?**
+Varnar för att lösningar inte får sänka kraven på behörighet.
+
+**Funkar AI bättre i vissa ämnen?**
+Bättre i text- och faktatunga ämnen. Sämre i praktiskt-estetiska.
+
+**Vad gör Skolverket åt lärarbristen?**
+Flera spår: behörighetsgivande utbildning, snabbspår för utländska lärare, AI som komplement ([Skolverket AI gymnasie](https://www.skolverket.se/sok-publikationer/publikationsserier/ovrigt-material/2024/artificiell-intelligens-i-undervisningen---gymnasieskolan)).
+
+**Kommer AI att göra lärare överflödiga?**
+Nej. Tvärtom blir lärarens omdöme mer värdefullt.
+
+**Vad kostar lärarbristen samhället?**
+Lägre kunskapsnivå, fler elever utan godkända betyg ([Skolverket slutbetyg](https://www.skolverket.se/publikationer?id=13165)).
+
+**Vad kan skolor göra själva?**
+Börja med små piloter där AI avlastar vikarier och behöriga.
+
+**Hjälper det att höja lärarlönen?**
+Det är en del. Men löner ensamt löser inte arbetsmiljön.
+
+## Reflektion
+
+10 600 lärare till 2038 är inte en siffra som låter sig fixas. Det är ett problem som kräver att vi använder den behöriga personal som finns på ett smartare sätt. AI ger inga nya lärare. Men det ger befintliga lärare mer hävstång — och elever i glesbygd, vikarieklasser och utsatta områden lite mer av det de redan har rätt till.

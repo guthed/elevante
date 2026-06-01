@@ -1,52 +1,95 @@
 ---
 title: "KB-Whisper och svensk AI – därför har Elevante valt svenska modeller"
-description: "Elevante transkriberar med KB-Whisper, Kungliga bibliotekets svenska modell – 47 % färre fel än engelska Whisper, och allt körs på svenska servrar. Därför valde vi svenskt."
+description: "Kungliga biblioteket har släppt en svensk taligenkänningsmodell tränad på dialekter. Så använder Elevante KB-Whisper och varför det spelar roll."
 date: "2026-05-10"
 category: "Teknik"
 ---
 
-När vi byggde Elevante hade vi två alternativ till transkribering. Det ena: använda OpenAI:s Whisper, en bra men engelsk-centrerad modell som körs i amerikansk infrastruktur. Det andra: använda KB-Whisper, Kungliga bibliotekets svenska variant, som körs lokalt på svenska servrar.
+En gymnasielärare i Skellefteå testar OpenAI:s Whisper på en intervju med en äldre författare som pratar västerbottensdialekt. Transkriberingen blir oanvändbar. Hen testar KB-Whisper. Den förstår.
 
-Vi valde KB-Whisper. Här är varför.
+Det är inte en liten skillnad. Det är skillnaden mellan att tekniken funkar och att den inte gör det.
 
 ## Vad KB-Whisper är
 
-KB-Whisper är en svensktränad version av OpenAI:s Whisper, utvecklad av Kungliga biblioteket. Den är tränad på tiotusentals timmar svenskt material och presterar dramatiskt bättre på svensk uttal, dialekter och fackterminologi än den globala motsvarigheten.
+[KB-Whisper](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof) är en svensk taligenkänningsmodell utvecklad av Kungliga biblioteket, tränad på dialektinspelningar från Institutet för språk och folkminnen. Den förstår svenska, svensk-finska, samiska influenser och regionala dialekter på ett sätt amerikanska modeller inte gör.
 
-[KB-Whisper gör 47 % färre fel än OpenAI Whisper på svenska](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof). [KB-Whisper är särskilt bra på svenska namn och fackuttryck](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof). Det är en av de bäst presterande svenska transkriberingsmodellerna som finns idag.
+Den är dessutom open source och kan köras lokalt på svensk infrastruktur.
 
-## Varför det spelar roll i klassrummet
+## Varför en svensk modell spelar roll i skolan
 
-Lärare som undervisar på svenska använder en mix av ord som inte alltid finns i en global engelsk-baserad modell:
+1. **Likvärdighet i dialekt.** En elev från Norrland ska inte missgynnas av att en amerikansk modell inte förstår hens uttal.
+2. **Språkintegritet.** Tal som transkriberas i USA är inte under svensk dataskydd.
+3. **Tillgång för elever med talsvårigheter.** Bra svensk taligenkänning gör AI tillgänglig som stöd.
+4. **Modersmål och svenska som andraspråk.** Anpassningsbar mot fler språkfamiljer.
 
-- Fackterminologi på svenska: ”derivata”, ”syntes”, ”energiprincipen”, ”agrarsamhället”.
-- Dialekter och tonlägen som varierar mellan Skåne, Stockholm och Norrland.
-- Skolspecifika uttryck: kurskod, kunskapskrav, betyg E/C/A, läroplansreferenser.
-- Avbrott, självavbrott, omformuleringar – mycket vanligare i undervisning än i podcasts eller mötesinspelningar.
+## Varför Elevante valt det
 
-En engelsk-tränad modell tappar fler av de här elementen, eller skriver dem fel. För Elevante är det inte acceptabelt. Hela tjänsten bygger på att AI:n kan referera till exakt vad läraren har sagt. Om transkriptet är 91 procent korrekt blir AI:ns svar 91 procent korrekt. Och 91 procent räcker inte i skolan.
+Elevante använder KB-Whisper för alla talinslag (uppläsning, diktering, transkribering). Det gör tjänsten:
 
-## Var det körs
+- Förstår svenska och svenska dialekter på riktigt.
+- Kör på svensk infrastruktur via [Berget AI](https://berget.ai/).
+- Följer GDPR utan extra arbete.
+- Är oberoende av amerikanska bolags prissteg och villkorsändringar.
 
-KB-Whisper körs hos [Berget AI](https://berget.ai/), en svensk leverantör som driver sina GPU:er i Sverige. [KB-Whisper tränad på 50 000+ timmar svensk audio](https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof). Det ger tre saker som amerikansk infrastruktur inte kan ge:
+## Use cases
 
-1. **GDPR-rätt.** Inga personuppgifter passerar EU:s gränser. Inga DPA-bekymmer om Schrems II eller motsvarande problem.
-2. **Lägre latens.** Datan reser inte över Atlanten för att komma tillbaka.
-3. **Suveränitet.** Sverige har en svensk AI-leverantör som vi kan vända oss till.
+### Specialpedagogen och eleven med dyslexi
 
-## Sverige har en chans att leda
+Eleven dikterar sina svar. Modellen förstår oklart uttal bättre än Whisper.
 
-Danmark, Norge och Finland löser AI-frågan på olika sätt. Norge har använt amerikanska tjänster med varierad framgång. Danmark har egna initiativ med Microsoft-koppling. Sverige har KB-Whisper, Berget AI och en stark forskningstradition inom NLP.
+### Modersmålsläraren
 
-[Svenska lärare har bättre infrastruktur än OECD-snittet, men saknar AI-kompetens](https://www.oecd.org/en/publications/results-from-talis-2024-country-notes_e127f9e2-en/sweden_95600eec-en.html). Det är ett tillfälle som inte kommer tillbaka. Och en svensk skola som köper en svensk AI-lösning idag bidrar till att den faktiskt blir en realitet.
+Elever transkriberar samtal på dialekt. Materialet blir användbart i undervisningen.
 
-## En produktväg med svenskt fokus
+### NO-läraren med fysikgenomgång
 
-Elevante använder Anthropic Claude för den narrativa AI-lärardelen. Det är ett medvetet val: Claude är för tillfället den största språkmodellen för svenska. Men hela uppströmskedjan – inspelning, transkribering, lagring av embeddings, själva applikationen – ligger i Sverige.
+Spelar in en lektion, låter KB-Whisper transkribera. Sjuka elever får texten dagen efter.
 
-## Sammanfattning
+### Gymnasieläraren i historia med ljudkällor
 
-- KB-Whisper är mätbart bättre på svenska än den engelska originalmodellen.
-- Hela transkriberingen sker på svenska servrar via Berget AI.
-- Det ger både högre kvalitet och full GDPR-kontroll.
-- En svensk skola som väljer Elevante väljer också att stödja en svensk AI-stack.
+Låter eleverna transkribera äldre svenska röstinspelningar som källkritisk övning.
+
+## FAQ
+
+**Är KB-Whisper bättre än OpenAI Whisper på svenska?**
+På svenska dialekter ja. På standardsvenska är de jämförbara.
+
+**Vem har byggt det?**
+Kungliga biblioteket, baserat på Whisper-arkitekturen men tränat med svenska data.
+
+**Är det gratis?**
+Modellen är open source. Drift kräver hårdvara.
+
+**Var körs den?**
+Elevante kör den på [Berget AI](https://berget.ai/) i Sverige.
+
+**Sparas röstdata?**
+Elevante sparar tal endast så länge som behövs för transkribering, sedan raderas det.
+
+**Är det GDPR-säkert?**
+Ja. Datan lämnar aldrig EU.
+
+**Funkar det med engelska?**
+Ja. Den är tränad på många språk men starkast på svenska.
+
+**Vad säger ISOF om modellen?**
+Institutet för språk och folkminnen står bakom dataunderlaget och har använt den i egna projekt.
+
+**Är open source mer säkert än stora aktorer?**
+Inte automatiskt. Men det ger granskningsbarhet.
+
+**Vilka språkkluster funkar bäst?**
+Nordiska språk, svenska dialekter inklusive samiska influenser.
+
+**Funkar det offline?**
+Kan köras offline lokalt vid behov, men Elevante kör det online via Berget AI.
+
+**Vad kostar det att köra det?**
+Elevante absorberar driftskostnaden i sin licens.
+
+**Vad händer om OpenAI sänker priset på Whisper?**
+Vi byter inte. Lagring i USA är inte ett alternativ för elevdata.
+
+## Reflektion
+
+Svenska elever pratar svenska. Vissa pratar svenska med västerbottensaccent, vissa med arabisk brytning, vissa med tonhöjdsavvikelser. En AI som ska tjäna alla måste förstå alla — inte bara dem som låter som en Hollywoodfilm. KB-Whisper är teknisk infrastruktur som tar likvärdighet på allvar. Det är därför Elevante kör det.

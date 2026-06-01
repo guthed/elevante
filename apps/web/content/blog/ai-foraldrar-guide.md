@@ -83,16 +83,16 @@ Nej. Men skolan har regler om när det är tillåtet i bedömningssammanhang.
 Dina barns konversationer kan användas för att träna AI:n. Var försiktig med personlig information.
 
 **Vad är skillnaden mellan Elevante och ChatGPT?**
-Elevante är förankrad i lärarens egen lektion och kör på svensk infrastruktur via [Berget AI](https://berget.ai/). ChatGPT är generell och amerikansk. Läs mer i [vår jämförelse av Elevante, ChatGPT, Copilot och Khanmigo](/sv/blogg/elevante-vs-chatgpt-copilot-khanmigo).
+Elevante är förankrad i lärarens egen lektion och kör på svensk infrastruktur via [Berget AI](https://berget.ai/). ChatGPT är generell och amerikansk. Läs mer på [elevante.se/blogg/elevante-vs-chatgpt-copilot-khanmigo](/sv/blogg/elevante-vs-chatgpt-copilot-khanmigo).
 
 **Måste barnet kunna prompta för att använda AI?**
 Nej. Att ställa enkla frågor räcker långt.
 
 **Kommer AI att ersätta lärare?**
-Nej. AI klarar information, lärare klarar relation. Se [vår analys av om AI kan ersätta läraren](/sv/blogg/kan-ai-ersatta-lararen) för en utförlig genomgång.
+Nej. AI klarar information, lärare klarar relation. Se [elevante.se/blogg/kan-ai-ersatta-lararen](/sv/blogg/kan-ai-ersatta-lararen) för en utförlig analys.
 
 **Får skolan spela in lektioner med AI?**
-Ja, om GDPR-arbetet är på plats. Se [GDPR-guiden för inspelning av lektioner](/sv/blogg/far-man-spela-in-lektioner-gdpr) för detaljer.
+Ja, om GDPR-arbetet är på plats. Se [elevante.se/blogg/spela-in-lektioner-gdpr](/sv/blogg/spela-in-lektioner-gdpr) för detaljer.
 
 **Hur ska jag som förälder lära mig om AI?**
 Låt ditt barn lära dig. De flesta tonåringar tycker om att vara experter på något.
