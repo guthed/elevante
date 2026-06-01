@@ -11,6 +11,12 @@ type Props = { params: Promise<{ locale: string }> };
 
 const BLOG_URL = `${SITE_URL}/sv/blogg`;
 
+// Bloggen är svensk-only — förrendera bara /sv/blogg. /en/blogg renderas då
+// on-demand och notFound() ger en riktig 404 (inte en mjuk 404 med status 200).
+export function generateStaticParams() {
+  return [{ locale: 'sv' }];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (locale !== 'sv') return {};

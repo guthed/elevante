@@ -64,6 +64,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Bloggen är svensk-only. Eventuella /en/blogg-URL:er redirectas permanent
+  // till den svenska canonical-versionen — undviker mjuk 404 (status 200 på en
+  // förrenderad notFound).
+  if (pathname === '/en/blogg' || pathname.startsWith('/en/blogg/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.replace('/en/blogg', '/sv/blogg');
+    return NextResponse.redirect(url, 308);
+  }
+
   // Steg 0.5: skolor.elevante.se → scroll-presentationen för skolor.
   // Subdomänen är enkelspårig: all sidtrafik rewritas till /skolan (men
   // URL:en i webbläsaren förblir ren). /rektor-decket nås på huvuddomänen.

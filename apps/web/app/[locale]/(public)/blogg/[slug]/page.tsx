@@ -12,8 +12,10 @@ import { SITE_URL } from '@/lib/site';
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
+// Svensk-only: förrendera bara /sv/blogg/<slug>. /en-varianter renderas
+// on-demand och notFound() ger en riktig 404.
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  return getAllPosts().map((post) => ({ locale: 'sv', slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
