@@ -37,8 +37,9 @@ export default function SkolanPage() {
             Elevante minns allt du lär dig i skolan.
           </p>
           <p className="mt-10 max-w-2xl border-t border-ink/10 pt-8 text-lg leading-relaxed text-ink-secondary">
-            Varje dag försvinner timmar av undervisning. En elev är borta, hänger
-            inte med, eller vågar inte fråga — och det finns ingen backup som
+            Varje dag hålls genomtänkta lektioner — som försvinner i samma
+            stund som det ringer ut. En elev är borta, en annan hänger inte med,
+            en tredje vågar inte fråga — och det finns ingen backup som
             faktiskt var med i klassrummet. Vi byggde Elevante för att varje elev
             ska kunna gå tillbaka till lektionen som hölls, inte till ett
             generellt svar från nätet.
@@ -53,7 +54,7 @@ export default function SkolanPage() {
           <Reveal>
             <Eyebrow>Problemet</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
-              Tre elever, samma lucka
+              Tre elever, samma behov
             </h2>
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
@@ -61,12 +62,12 @@ export default function SkolanPage() {
               {
                 tag: 'Var sjuk',
                 who: 'Eleven som missade veckan',
-                desc: 'Kommer tillbaka till en genomgång som redan är borta.',
+                desc: 'Vill ta igen genomgången — men den finns inte kvar någonstans att gå tillbaka till.',
               },
               {
                 tag: 'Hänger inte med',
                 who: 'Eleven som tappar tempot',
-                desc: 'Hinner inte landa ett begrepp innan nästa redan är igång.',
+                desc: 'Skulle behöva höra begreppet en gång till — i sin egen takt.',
               },
               {
                 tag: 'Pluggar inför provet',
@@ -86,8 +87,8 @@ export default function SkolanPage() {
           <Reveal>
             <p className="mt-12 max-w-2xl font-serif text-3xl leading-snug">
               Idag googlar de — eller frågar ChatGPT — och får svar som inte har{' '}
-              <em className="text-coral not-italic">någonting</em> med er
-              undervisning att göra.
+              <em className="text-coral not-italic">någonting</em> att göra med
+              vad som faktiskt sas på lektionen.
             </p>
           </Reveal>
         </div>
@@ -314,12 +315,12 @@ export default function SkolanPage() {
           <Reveal>
             <Eyebrow>För dig som rektor</Eyebrow>
             <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">
-              En förståelsekarta, inte bara betyg
+              En levande förståelsekarta
             </h2>
             <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
               Du ser vilka koncept eleverna faktiskt kämpar med — klass för
-              klass, medan terminen pågår. Underlag för pedagogiskt ledarskap,
-              inte bara betyg i efterhand.
+              klass, medan terminen pågår. Underlag för pedagogiskt ledarskap
+              medan ni fortfarande kan påverka — inte först när terminen är slut.
             </p>
           </Reveal>
         </div>
@@ -364,10 +365,9 @@ export default function SkolanPage() {
               <div className="border-t-2 border-sage pt-7">
                 <h3 className="font-serif text-2xl">En gemensam grund</h3>
                 <p className="mt-4 max-w-md text-ink-secondary">
-                  När varje genomgång finns kvar blir undervisningen mindre
-                  sårbar — för frånvaro, vikarier och tempo. Skolan får en
-                  gemensam, kvalitetssäkrad grund att vila på, inte bara enskilda
-                  elever som råkar klara sig.
+                  När varje genomgång finns kvar bygger ni en gemensam
+                  kunskapsbank som håller — oavsett frånvaro, vikarier och
+                  tempo. En kvalitetssäkrad grund som hela skolan kan vila på.
                 </p>
               </div>
             </Reveal>
@@ -377,10 +377,9 @@ export default function SkolanPage() {
                   Lärartid som räcker till fler
                 </h3>
                 <p className="mt-4 max-w-md text-ink-secondary">
-                  Du vet att enskilda elever kan ta väldigt mycket av en lärares
-                  tid. Elevante ger varje elev en tålmodig första instans för
-                  sina frågor — så att lärarens uppmärksamhet kan fördelas mer
-                  likvärdigt, över hela klassen.
+                  Vissa frågor återkommer om och om igen. Elevante ger varje
+                  elev en tålmodig första instans — så att lärarens tid räcker
+                  till det som verkligen kräver en lärare.
                 </p>
               </div>
             </Reveal>
