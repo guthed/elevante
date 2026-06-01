@@ -1,9 +1,9 @@
 # Design: Bloggstomme (elevante.se)
 
 > Datum: 2026-06-01 · Status: Godkänd design, redo för implementationsplan
-> Scope: Teknisk stomme för en svensk blogg på elevante.se. Innehållet (19 inlägg
-> från Notion) läggs in separat när det levereras — stommen verifieras med ett
-> exempelinlägg.
+> Scope: Teknisk stomme för en svensk blogg på elevante.se. Innehållet (~20–40
+> inlägg över tid, från Notion) läggs in separat när det levereras — stommen
+> verifieras med ett exempelinlägg.
 
 ## Mål
 
@@ -129,7 +129,9 @@ date/category) → tydligt byggfel som pekar ut filen.
 ## Medvetet utelämnat (YAGNI)
 
 - Författar-byline, taggar utöver kategori, kommentarer.
-- Paginering — 19 inlägg ryms på en listsida; läggs till om bloggen växer.
+- Paginering — vid ~20–40 inlägg ryms allt på en listsida med kategori-filter;
+  läggs till (sökvägsbaserad, `/sv/blogg/sida/2`) först om bloggen växer förbi
+  det. Innehållsmodellen behöver inte ändras då.
 - Kategori-landningssidor (`/sv/blogg/kategori/<x>`) — kan läggas till senare
   utan omarbete av innehållsmodellen.
 - Blogg-länk i Headern — bara Footern i v1.
