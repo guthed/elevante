@@ -41,22 +41,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: dict.meta.description,
       url: urlFor(locale),
       locale: locale === 'sv' ? 'sv_SE' : 'en_US',
-      images: [
-        {
-          url: '/opengraph-image',
-          width: 1200,
-          height: 630,
-          alt: locale === 'sv'
-            ? 'Elevante — minns allt du lär dig i skolan'
-            : 'Elevante — remembers everything you learn at school',
-        },
-      ],
+      // og:image sätts per rutt via opengraph-image.tsx (fil-konvention):
+      // app/opengraph-image.tsx som default, och egna under varje marknadssida.
     },
     twitter: {
       card: 'summary_large_image',
       title: `${dict.meta.siteName} — ${dict.meta.tagline}`,
       description: dict.meta.description,
-      images: ['/opengraph-image'],
     },
     robots: { index: true, follow: true },
   };
