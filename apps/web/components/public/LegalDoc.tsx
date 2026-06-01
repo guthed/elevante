@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Container } from './Container';
 
 export type LegalSection = { h: string; p?: string[]; list?: string[] };
@@ -7,10 +8,11 @@ type Props = {
   updated: string; // t.ex. "Senast uppdaterad 1 juni 2026"
   intro?: string;
   sections: LegalSection[];
+  footer?: ReactNode;
 };
 
 // Enkel, läsbar layout för juridiska sidor. Återanvänder .prose-elevante-stilarna.
-export function LegalDoc({ title, updated, intro, sections }: Props) {
+export function LegalDoc({ title, updated, intro, sections, footer }: Props) {
   return (
     <section className="pt-16 pb-24 md:pt-24 md:pb-32">
       <Container width="prose">
@@ -36,6 +38,7 @@ export function LegalDoc({ title, updated, intro, sections }: Props) {
             </div>
           ))}
         </div>
+        {footer ? <div className="mt-12">{footer}</div> : null}
       </Container>
     </section>
   );

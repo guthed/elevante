@@ -4,6 +4,7 @@ import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LegalDoc, type LegalSection } from '@/components/public/LegalDoc';
+import { CookieSettingsButton } from '@/components/public/CookieSettingsButton';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -100,6 +101,11 @@ export default async function CookiesPage({ params }: Props) {
         title={sv ? 'Cookie-policy' : 'Cookie policy'}
         updated={sv ? 'Senast uppdaterad 1 juni 2026' : 'Last updated 1 June 2026'}
         sections={sections}
+        footer={
+          <CookieSettingsButton
+            label={sv ? 'Ändra cookie-inställningar' : 'Change cookie settings'}
+          />
+        }
       />
     </>
   );

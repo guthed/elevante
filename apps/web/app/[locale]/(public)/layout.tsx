@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/site';
 import { Header } from '@/components/public/Header';
 import { Footer } from '@/components/public/Footer';
 import { JsonLd } from '@/components/public/JsonLd';
-import { Analytics } from '@/components/public/Analytics';
+import { CookieConsent } from '@/components/public/CookieConsent';
 
 type Props = {
   children: ReactNode;
@@ -90,7 +90,7 @@ export default async function PublicLayout({ children, params }: Props) {
 
   return (
     <>
-      <Analytics />
+      <CookieConsent locale={locale} />
       <JsonLd data={[orgSchema, websiteSchema, softwareSchema]} />
       <a
         href="#main-content"
