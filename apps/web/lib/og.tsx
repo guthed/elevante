@@ -1,12 +1,13 @@
 import { ImageResponse } from 'next/og';
+import { brandFonts } from './fonts';
 
-// Delad OG-bildsrenderare. Editorial Calm: ivory canvas, ink serif-rubrik,
-// Elevante-ordmärke uppe till vänster, elevante.se nere. Används av den globala
-// OG-bilden och per-sides OG-bilder.
+// Delad OG-bildsrenderare. Editorial Calm: ivory canvas, Newsreader-rubrik
+// (märkets serif), Geist för UI-text. Används av den globala OG-bilden och
+// per-sides OG-bilder.
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = 'image/png';
 
-export function ogImageResponse({
+export async function ogImageResponse({
   eyebrow,
   title,
 }: {
@@ -25,7 +26,7 @@ export function ogImageResponse({
           padding: 80,
           background: '#faf7f2',
           color: '#1a1a2e',
-          fontFamily: 'serif',
+          fontFamily: 'Newsreader',
         }}
       >
         <div
@@ -35,7 +36,7 @@ export function ogImageResponse({
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 38 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 40 }}>
             <span
               style={{
                 width: 14,
@@ -45,13 +46,14 @@ export function ogImageResponse({
                 display: 'block',
               }}
             />
-            <span>Elevante</span>
+            <span style={{ fontWeight: 600 }}>Elevante</span>
           </div>
           <div
             style={{
               display: 'flex',
+              fontFamily: 'Geist',
+              fontWeight: 500,
               fontSize: 24,
-              fontFamily: 'sans-serif',
               textTransform: 'uppercase',
               letterSpacing: 2,
               color: '#6b665f',
@@ -63,9 +65,10 @@ export function ogImageResponse({
         <div
           style={{
             display: 'flex',
-            fontSize: title.length > 48 ? 64 : 82,
-            lineHeight: 1.08,
-            letterSpacing: -1.5,
+            fontWeight: 400,
+            fontSize: title.length > 48 ? 66 : 86,
+            lineHeight: 1.05,
+            letterSpacing: -1,
             maxWidth: 1040,
           }}
         >
@@ -76,8 +79,9 @@ export function ogImageResponse({
             display: 'flex',
             alignItems: 'center',
             gap: 14,
+            fontFamily: 'Geist',
+            fontWeight: 400,
             fontSize: 26,
-            fontFamily: 'sans-serif',
             color: '#1a1a2e',
           }}
         >
@@ -94,6 +98,6 @@ export function ogImageResponse({
         </div>
       </div>
     ),
-    { ...OG_SIZE },
+    { ...OG_SIZE, fonts: await brandFonts() },
   );
 }

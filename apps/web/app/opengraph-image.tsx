@@ -4,7 +4,7 @@ export const alt = 'Elevante — minns allt du lär dig i skolan';
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
   return ogImageResponse({
     eyebrow: '',
     title: 'Minns allt du lär dig i skolan',
