@@ -180,7 +180,7 @@ export default async function ForSchoolsPage({ params }: Props) {
               {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
             </p>
             <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Hela skolan, inte bara en klass.' : 'The whole school, not just one class.'}
+              {sv ? 'Elevante är för hela skolan, inte enskilda elever.' : 'Elevante is for the whole school, not individual students.'}
             </h1>
             <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -273,6 +273,30 @@ export default async function ForSchoolsPage({ params }: Props) {
                 sv
                   ? 'Statistik per kurs visar vad eleverna faktiskt frågar om. Då vet ni var stödet behövs.'
                   : 'Per-course statistics show what students are actually asking. Then you know where support is needed.'
+              }
+            />
+            <SolveItem
+              quote={sv ? 'Pedagogiken är lärarens — inte appens.' : 'The teaching is the teacher’s — not the app’s.'}
+              body={
+                sv
+                  ? 'Elevante hittar inte på en egen metod. Det bär vidare exakt det läraren gick igenom, på lärarens sätt.'
+                  : 'Elevante doesn’t invent its own method. It carries forward exactly what the teacher taught, the teacher’s way.'
+              }
+            />
+            <SolveItem
+              quote={sv ? 'Läraren får tillbaka taktpinnen i klassrummet.' : 'The teacher gets the baton back.'}
+              body={
+                sv
+                  ? 'Ingen plattform som styr tempo eller ordning. Läraren undervisar som vanligt — Elevante lägger sig aldrig i, det fångar bara det som sägs.'
+                  : 'No platform dictating pace or order. The teacher teaches as usual — Elevante never interferes, it only captures what’s said.'
+              }
+            />
+            <SolveItem
+              quote={sv ? 'Lärarens material följer med in i inspelningen.' : 'The teacher’s material follows the recording.'}
+              body={
+                sv
+                  ? 'Till varje inspelning kan läraren ladda upp lektionens slides, uppgifter och anteckningar. Eleven får svar grundade i det — inte i en gissning från nätet.'
+                  : 'For each recording the teacher can upload the lesson’s slides, tasks and notes. Students get answers grounded in that — not a guess from the web.'
               }
             />
           </div>

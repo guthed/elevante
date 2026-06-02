@@ -76,8 +76,8 @@ export default async function AboutPage({ params }: Props) {
           </h1>
           <p className="mt-10 max-w-2xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv
-              ? 'Vi tror att läraren ska få vara lärare och eleven ska få vara elev. Inte assistent åt en kursplattform från 2009. Elevante är ett verktyg byggt för båda.'
-              : 'We believe the teacher should be the teacher and the student should be the student. Not assistants to a 2009 course platform. Elevante is built for both.'}
+              ? 'Vi tror att läraren ska få vara lärare och eleven ska få vara elev. Inte assistenter åt en kursplattform från 2006. Elevante är ett verktyg byggt för båda.'
+              : 'We believe the teacher should be the teacher and the student should be the student. Not assistants to a 2006 course platform. Elevante is built for both.'}
           </p>
         </Container>
       </section>
