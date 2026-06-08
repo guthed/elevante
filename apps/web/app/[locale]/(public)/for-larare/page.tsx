@@ -327,8 +327,8 @@ export default async function ForTeachersPage({ params }: Props) {
           <div className="max-w-2xl">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] text-[var(--color-ink)]">
               {sv
-                ? 'Åtta skäl till att lärare faktiskt vill ha det här'
-                : 'Eight reasons teachers actually want this'}
+                ? 'Åtta anledningar att testa Elevante'
+                : 'Eight reasons to try Elevante'}
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
