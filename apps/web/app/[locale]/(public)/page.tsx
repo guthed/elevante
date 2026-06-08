@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: { absolute: `${dict.meta.siteName} — ${dict.meta.tagline}` },
     description:
       locale === 'sv'
-        ? 'Varje dag hålls miljontals lektioner i svenska klassrum. Mycket av det som sägs försvinner när klockan ringer. Elevante sparar det — och gör kunskapen tillgänglig för varje elev, oavsett hur de lär sig bäst.'
-        : 'Every day, millions of lessons take place in Swedish classrooms. Much of what is said disappears when the bell rings. Elevante saves it — and makes that knowledge available to every student, however they learn best.',
+        ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
+        : 'Elevante records and saves everything said in the classroom. Afterwards, students can go back and ask about anything they don\'t remember, didn\'t understand, or didn\'t think to ask while they were there.',
   };
 }
 
@@ -137,8 +137,8 @@ export default async function HomePage({ params }: Props) {
               <RotatingHeadline locale={locale} />
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
-                  ? 'Varje dag hålls miljontals lektioner i svenska klassrum. Mycket av det som sägs försvinner när klockan ringer. Elevante sparar det — och gör kunskapen tillgänglig för varje elev, oavsett hur de lär sig bäst.'
-                  : 'Every day, millions of lessons take place in Swedish classrooms. Much of what is said disappears when the bell rings. Elevante saves it — and makes that knowledge available to every student, however they learn best.'}
+                  ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
+                  : 'Elevante records and saves everything said in the classroom. Afterwards, students can go back and ask about anything they don\'t remember, didn\'t understand, or didn\'t think to ask while they were there.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
