@@ -34,14 +34,40 @@ export default async function AboutPage({ params }: Props) {
 
   const beliefs = sv
     ? [
-        { title: 'Skolan ska inte vara en plattform att navigera.', body: 'Det är därför vi inte bygger en till portal med menyer i menyer.' },
-        { title: 'AI ska komma ihåg, inte hitta på.', body: 'Strikt RAG. Källhänvisning. Aldrig en gissning som låter rätt.' },
-        { title: 'Elever ska få ställa frågor utan att be om lov.', body: 'Tjugofem dumma frågor är en bra eftermiddag.' },
+        {
+          title: 'Bra mjukvara syns inte. Den bara funkar.',
+          body: 'De flesta verktyg som säljs till skolan handlar om att administrera lärande — inte om att göra det bättre. Läraren loggar in, laddar upp, klickar runt. Eleven loggar in, klickar runt, hittar inte. Det är inte vad skolan är till för. Elevante ska ta så lite plats som möjligt — och ge tillbaka så mycket tid det går.',
+        },
+        {
+          title: 'AI ska komma ihåg, inte hitta på.',
+          body: 'En AI som svarar med säkerhet fast den inte vet är farligare i ett klassrum än ingen AI alls. Elevante svarar bara på det som faktiskt sades i lektionen — med källhänvisning till var och när det sades. Om svaret inte finns i materialet säger vi det rakt ut. Det är inte en begränsning. Det är en princip.',
+        },
+        {
+          title: 'Elever ska få ställa frågor utan att be om lov.',
+          body: 'Många elever ställer inte frågan de har för att den känns för enkel, för sen, eller för fel. De sitter tysta och hoppas att de förstår ändå. Det hoppet är dyrt. Elevante finns där efter lektionen, utan åhörare, utan tidsbrist — och svarar lika seriöst på den tjugofemte frågan om integraler som på den första.',
+        },
+        {
+          title: 'Det finns inte två likadana skolor.',
+          body: 'En skola i Luleå och en i Malmö har olika scheman, olika ämnen, olika sätt att prata med sina elever. Elevante ger dem en gemensam infrastruktur — men styr inte hur de använder den. Det är läraren som vet vad som fungerar i sitt klassrum. Vi bygger verktyget. De bestämmer vad det ska göra.',
+        },
       ]
     : [
-        { title: 'School shouldn\'t be a platform to navigate.', body: 'That\'s why we don\'t build yet another portal with menus inside menus.' },
-        { title: 'AI should remember, not invent.', body: 'Strict RAG. Sources. Never a guess that sounds right.' },
-        { title: 'Students should ask questions without permission.', body: 'Twenty-five dumb questions is a good afternoon.' },
+        {
+          title: 'Good software is invisible. It just works.',
+          body: 'Most tools sold to schools are about administering learning — not improving it. The teacher logs in, uploads, clicks around. The student logs in, clicks around, can\'t find anything. That\'s not what school is for. Elevante should take up as little space as possible — and give back as much time as it can.',
+        },
+        {
+          title: 'AI should remember, not invent.',
+          body: 'An AI that answers with confidence when it doesn\'t know is more dangerous in a classroom than no AI at all. Elevante only answers based on what was actually said in the lesson — with a reference to where and when it was said. If the answer isn\'t in the material, we say so plainly. That\'s not a limitation. It\'s a principle.',
+        },
+        {
+          title: 'Students should ask questions without permission.',
+          body: 'Many students don\'t ask the question they have because it feels too simple, too late, or somehow wrong. They sit quietly and hope they\'ll understand anyway. That hope is costly. Elevante is there after the lesson, without an audience, without time pressure — and takes the twenty-fifth question about integrals just as seriously as the first.',
+        },
+        {
+          title: 'No two schools are alike.',
+          body: 'A school in the north and one in the south have different schedules, different subjects, different ways of talking to their students. Elevante gives them shared infrastructure — but doesn\'t dictate how they use it. The teacher knows what works in their classroom. We build the tool. They decide what it does.',
+        },
       ];
 
   const team = [
