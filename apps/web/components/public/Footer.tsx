@@ -132,7 +132,7 @@ export function Footer({ locale, pathname, dict }: Props) {
             <LanguageSwitcher
               currentLocale={locale}
               pathname={pathname}
-              labels={{ sv: 'Svenska', en: 'English' }}
+              labels={{ sv: 'SE', en: 'EN' }}
               ariaLabel={dict.nav.switchLanguage}
             />
           </div>
