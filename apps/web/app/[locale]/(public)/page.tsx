@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: { absolute: `${dict.meta.siteName} — ${dict.meta.tagline}` },
     description:
       locale === 'sv'
-        ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
-        : 'The teacher records the lesson with two taps. Then students can ask about everything that was said — and get answers with a source, never a guess.',
+        ? 'Varje dag hålls miljontals lektioner i svenska klassrum. Mycket av det som sägs försvinner när klockan ringer. Elevante sparar det — och gör kunskapen tillgänglig för varje elev, oavsett hur de lär sig bäst.'
+        : 'Every day, millions of lessons take place in Swedish classrooms. Much of what is said disappears when the bell rings. Elevante saves it — and makes that knowledge available to every student, however they learn best.',
   };
 }
 
@@ -137,8 +137,8 @@ export default async function HomePage({ params }: Props) {
               <RotatingHeadline locale={locale} />
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
-                  ? 'Läraren spelar in lektionen med två tryck. Sen kan eleven fråga om allt som sas — och få svar med källa, aldrig en gissning.'
-                  : 'The teacher records the lesson with two taps. Then students can ask about everything that was said — and get answers with a source, never a guess.'}
+                  ? 'Varje dag hålls miljontals lektioner i svenska klassrum. Mycket av det som sägs försvinner när klockan ringer. Elevante sparar det — och gör kunskapen tillgänglig för varje elev, oavsett hur de lär sig bäst.'
+                  : 'Every day, millions of lessons take place in Swedish classrooms. Much of what is said disappears when the bell rings. Elevante saves it — and makes that knowledge available to every student, however they learn best.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
