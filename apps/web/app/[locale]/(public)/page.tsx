@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { isLocale } from '@/lib/i18n/config';
@@ -211,6 +212,9 @@ export default async function HomePage({ params }: Props) {
         </Container>
       </section>
 
+      {/* FOTO-REMSA */}
+      <PhotoStrip />
+
       {/* TRE DÖRRAR — routern */}
       <section className="border-t border-[var(--color-sand)] bg-[var(--color-surface-soft)] py-20 md:py-28">
         <Container width="wide">
@@ -238,6 +242,8 @@ export default async function HomePage({ params }: Props) {
                   : 'No hardware, no IT project, no lock-in — and GDPR solved from the start.'
               }
               cta={sv ? 'För skolor' : 'For schools'}
+              imageSrc="/images/linkedin-sales-unsplash.jpg"
+              imageAlt={sv ? 'Lärare och skolledning diskuterar' : 'Teachers and school leadership discussing'}
             />
             <DoorCard
               href={`${base}/for-larare`}
@@ -249,6 +255,8 @@ export default async function HomePage({ params }: Props) {
                   : 'You decide when to record. Not a surveillance tool — time and oversight back.'
               }
               cta={sv ? 'För lärare' : 'For teachers'}
+              imageSrc="/images/amy-hirschi-unsplash.jpg"
+              imageAlt={sv ? 'Lärare i klassrummet' : 'Teacher in the classroom'}
             />
             <DoorCard
               href={`${base}/for-elever`}
@@ -260,6 +268,8 @@ export default async function HomePage({ params }: Props) {
                   : 'The lesson stays. Ask about anything — the answer comes from what the teacher actually said.'
               }
               cta={sv ? 'För elever' : 'For students'}
+              imageSrc="/images/felix-yu-unsplash.jpg"
+              imageAlt={sv ? 'Elev som studerar' : 'Student studying'}
             />
           </div>
         </Container>
@@ -277,8 +287,17 @@ export default async function HomePage({ params }: Props) {
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'GDPR är inte ett påslag på Elevante — det är hela arkitekturen.'
-                  : 'GDPR isn’t an add-on to Elevante — it’s the architecture.'}
+                  : "GDPR isn't an add-on to Elevante — it's the architecture."}
               </p>
+              <div className="mt-8 relative h-48 w-full overflow-hidden rounded-[16px]">
+                <Image
+                  src="/images/brooke-cagle-unsplash.jpg"
+                  alt={sv ? 'Elever i samarbete' : 'Students collaborating'}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 42vw"
+                />
+              </div>
             </div>
             <div className="md:col-span-7">
               <div className="rounded-[20px] bg-[var(--color-surface)] p-8 md:p-10">
@@ -325,7 +344,7 @@ export default async function HomePage({ params }: Props) {
             <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
                 ? '500 kr per elev och år, allt ingår. Boka en demo så visar vi hur det funkar.'
-                : 'SEK 500 per student per year, everything included. Book a demo and we’ll show you how it works.'}
+                : "SEK 500 per student per year, everything included. Book a demo and we'll show you how it works."}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
@@ -432,6 +451,37 @@ function AskVisual({ sv }: { sv: boolean }) {
   );
 }
 
+/* ── Foto-remsa ────────────────────────────────────────────────── */
+function PhotoStrip() {
+  const photos = [
+    { src: '/images/javier-trueba-unsplash.jpg', alt: 'Klassrum' },
+    { src: '/images/felicia-buitenwerf-unsplash.jpg', alt: 'Elev' },
+    { src: '/images/clay-banks-unsplash.jpg', alt: 'Lektion' },
+    { src: '/images/christina-woc-1-unsplash.jpg', alt: 'Lärare' },
+    { src: '/images/dan-dimmock-unsplash.jpg', alt: 'Studerande' },
+  ];
+  return (
+    <div className="border-t border-[var(--color-sand)] py-12">
+      <div className="flex h-52 gap-2 px-4 md:h-64 md:gap-3 md:px-8 lg:px-12">
+        {photos.map((photo, i) => (
+          <div
+            key={i}
+            className="relative flex-1 overflow-hidden rounded-[12px] first:rounded-l-[20px] last:rounded-r-[20px]"
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              className="object-cover transition-transform duration-500 hover:scale-105"
+              sizes="20vw"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Målgruppsdörr ─────────────────────────────────────────────── */
 function DoorCard({
   href,
@@ -439,31 +489,49 @@ function DoorCard({
   headline,
   body,
   cta,
+  imageSrc,
+  imageAlt,
 }: {
   href: string;
   label: string;
   headline: string;
   body: string;
   cta: string;
+  imageSrc?: string;
+  imageAlt?: string;
 }) {
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 transition-colors hover:border-[var(--color-ink-muted)]"
+      className="group flex flex-col overflow-hidden rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] transition-colors hover:border-[var(--color-ink-muted)]"
     >
-      <p className="eyebrow">{label}</p>
-      <h3 className="mt-5 font-serif text-[1.5rem] leading-snug text-[var(--color-ink)]">
-        {headline}
-      </h3>
-      <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
-        {body}
-      </p>
-      <span className="mt-6 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-[var(--color-ink)]">
-        {cta}{' '}
-        <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
-          →
+      {imageSrc && (
+        <div className="relative h-44 w-full overflow-hidden">
+          <Image
+            src={imageSrc}
+            alt={imageAlt ?? ''}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-surface)]/20" />
+        </div>
+      )}
+      <div className="flex flex-1 flex-col p-8">
+        <p className="eyebrow">{label}</p>
+        <h3 className="mt-5 font-serif text-[1.5rem] leading-snug text-[var(--color-ink)]">
+          {headline}
+        </h3>
+        <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          {body}
+        </p>
+        <span className="mt-6 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-[var(--color-ink)]">
+          {cta}{' '}
+          <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+            →
+          </span>
         </span>
-      </span>
+      </div>
     </Link>
   );
 }
