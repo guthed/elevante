@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
@@ -260,7 +261,17 @@ export default async function ForTeachersPage({ params }: Props) {
                 </LinkButton>
               </div>
             </div>
-            <div>
+            <div className="space-y-6">
+              <div className="relative h-56 w-full overflow-hidden rounded-[20px] md:h-64">
+                <Image
+                  src="/images/christina-woc-1-unsplash.jpg"
+                  alt={sv ? 'Lärare i klassrum' : 'Teacher in classroom'}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+              </div>
               <RecordControlCard locale={locale} />
             </div>
           </div>

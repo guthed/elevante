@@ -212,9 +212,6 @@ export default async function HomePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* FOTO-REMSA */}
-      <PhotoStrip />
-
       {/* TRE DÖRRAR — routern */}
       <section className="border-t border-[var(--color-sand)] bg-[var(--color-surface-soft)] py-20 md:py-28">
         <Container width="wide">
@@ -451,37 +448,6 @@ function AskVisual({ sv }: { sv: boolean }) {
   );
 }
 
-/* ── Foto-remsa ────────────────────────────────────────────────── */
-function PhotoStrip() {
-  const photos = [
-    { src: '/images/javier-trueba-unsplash.jpg', alt: 'Klassrum' },
-    { src: '/images/felicia-buitenwerf-unsplash.jpg', alt: 'Elev' },
-    { src: '/images/clay-banks-unsplash.jpg', alt: 'Lektion' },
-    { src: '/images/christina-woc-1-unsplash.jpg', alt: 'Lärare' },
-    { src: '/images/dan-dimmock-unsplash.jpg', alt: 'Studerande' },
-  ];
-  return (
-    <div className="border-t border-[var(--color-sand)] py-12">
-      <div className="flex h-52 gap-2 px-4 md:h-64 md:gap-3 md:px-8 lg:px-12">
-        {photos.map((photo, i) => (
-          <div
-            key={i}
-            className="relative flex-1 overflow-hidden rounded-[12px] first:rounded-l-[20px] last:rounded-r-[20px]"
-          >
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              className="object-cover transition-transform duration-500 hover:scale-105"
-              sizes="20vw"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ── Målgruppsdörr ─────────────────────────────────────────────── */
 function DoorCard({
   href,
@@ -546,7 +512,7 @@ function ChatMockup({ locale }: { locale: string }) {
           Elevante
         </span>
         <span className="text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-          Matematik 4
+          {sv ? 'Matematik 4' : 'Mathematics 4'}
         </span>
       </div>
       <div className="mb-4 flex justify-end">

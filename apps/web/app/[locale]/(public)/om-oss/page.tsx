@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
@@ -71,8 +72,8 @@ export default async function AboutPage({ params }: Props) {
           <p className="eyebrow mb-8">{sv ? 'Om oss' : 'About'}</p>
           <h1 className="font-serif text-[clamp(2.75rem,6vw+1rem,6rem)] leading-[0.98] tracking-[-0.015em] text-[var(--color-ink)]">
             {sv
-              ? 'Vi byggde det som saknades i klassrummet.'
-              : 'We built what was missing in the classroom.'}
+              ? 'Läraren ska få vara lärare.'
+              : 'Teachers deserve to be teachers.'}
           </h1>
           <p className="mt-10 max-w-2xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv
@@ -94,6 +95,15 @@ export default async function AboutPage({ params }: Props) {
                   ? 'Det började med en sak vi hörde om och om igen.'
                   : 'It started with one thing we heard over and over.'}
               </h2>
+              <div className="relative mt-8 h-56 overflow-hidden rounded-[16px]">
+                <Image
+                  src="/images/javier-trueba-unsplash.jpg"
+                  alt={sv ? 'Klassrum' : 'Classroom'}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
             </div>
             <div className="space-y-5 md:col-span-7">
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">

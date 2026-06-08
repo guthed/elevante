@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
@@ -175,25 +176,37 @@ export default async function ForSchoolsPage({ params }: Props) {
       {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">
-          <div className="max-w-3xl">
-            <p className="eyebrow mb-6">
-              {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
-            </p>
-            <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Elevante är för hela skolan, inte enskilda elever.' : 'Elevante is for the whole school, not individual students.'}
-            </h1>
-            <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
-              {sv
-                ? 'Elevante ger eleverna ett verktyg som faktiskt fungerar. Och lärarna mindre administration.'
-                : 'Elevante gives students a tool that actually works. And teachers less admin.'}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-5">
-              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                {sv ? 'Boka demo' : 'Book demo'}
-              </LinkButton>
-              <LinkButton href={`${base}/demo`} variant="text" size="lg">
-                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
-              </LinkButton>
+          <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+            <div>
+              <p className="eyebrow mb-6">
+                {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
+              </p>
+              <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+                {sv ? 'Elevante är för hela skolan, inte enskilda elever.' : 'Elevante is for the whole school, not individual students.'}
+              </h1>
+              <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {sv
+                  ? 'Elevante ger eleverna ett verktyg som faktiskt fungerar. Och lärarna mindre administration.'
+                  : 'Elevante gives students a tool that actually works. And teachers less admin.'}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-5">
+                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                  {sv ? 'Boka demo' : 'Book demo'}
+                </LinkButton>
+                <LinkButton href={`${base}/demo`} variant="text" size="lg">
+                  {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
+                </LinkButton>
+              </div>
+            </div>
+            <div className="relative h-72 overflow-hidden rounded-[20px] md:h-[420px]">
+              <Image
+                src="/images/clay-banks-unsplash.jpg"
+                alt={sv ? 'Elever i klassrum' : 'Students in classroom'}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
             </div>
           </div>
         </Container>

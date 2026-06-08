@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { RotatingPhrase } from '@/components/public/RotatingPhrase';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
@@ -120,23 +122,11 @@ export default async function ForStudentsPage({ params }: Props) {
         <Container width="wide">
           <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
             <div>
-              <h1 className="font-serif text-[clamp(3rem,6vw+1rem,6rem)] leading-[0.95] tracking-[-0.015em] text-[var(--color-ink)]">
-                {sv ? (
-                  <>
-                    Du missar inget.{' '}
-                    <span className="italic text-[var(--color-coral)]">Lovar.</span>
-                  </>
-                ) : (
-                  <>
-                    You miss nothing.{' '}
-                    <span className="italic text-[var(--color-coral)]">Promise.</span>
-                  </>
-                )}
-              </h1>
+              <RotatingPhrase locale={locale} />
               <p className="mt-8 max-w-lg text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Lektionen finns kvar. På riktigt. Du frågar — Elevante svarar med exakt vad läraren sa, och var det sas.'
-                  : 'The lesson stays. Really. You ask — Elevante answers with exactly what the teacher said, and where.'}
+                  ? 'Lektionen finns kvar när du kommer hem. Du kan fråga om allt som sas, repetera inför provet och komma ikapp om du missat något — utan att låna anteckningar eller gissa.'
+                  : 'The lesson is there when you get home. Ask about anything that was said, revise before a test and catch up if you missed something — without borrowing notes or guessing.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=elev`} size="lg">
@@ -170,6 +160,15 @@ export default async function ForStudentsPage({ params }: Props) {
                   : 'Write what you wonder about from today\'s lesson. Elevante answers with what was actually said, not what ChatGPT guesses.'
               }
             />
+            <div className="relative h-64 overflow-hidden rounded-[20px] md:h-80">
+              <Image
+                src="/images/felicia-buitenwerf-unsplash.jpg"
+                alt={sv ? 'Elev som studerar' : 'Student studying'}
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 720px"
+              />
+            </div>
             <StackedBlock
               title={sv ? 'Inför provet — fråga om allt.' : 'Before the test — ask about everything.'}
               body={
