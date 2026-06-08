@@ -50,6 +50,22 @@ export default async function AboutPage({ params }: Props) {
           title: 'Det finns inte två likadana skolor.',
           body: 'En skola i Luleå och en i Malmö har olika scheman, olika ämnen, olika sätt att prata med sina elever. Elevante ger dem en gemensam infrastruktur — men styr inte hur de använder den. Det är läraren som vet vad som fungerar i sitt klassrum. Vi bygger verktyget. De bestämmer vad det ska göra.',
         },
+        {
+          title: 'Läraren är experten. AI:n är sekreteraren.',
+          body: 'Elevante ersätter ingen lärare och försöker inte göra det. Det är läraren som planerar, förklarar och förstår sina elever. Vi ser till att det arbetet inte försvinner när lektionen är slut.',
+        },
+        {
+          title: 'Ingen elev ska behöva låna anteckningar.',
+          body: 'Om du missat en lektion, inte hängt med, eller helt enkelt glömt — ska du inte vara beroende av att någon annan har skrivit ner rätt saker. Lektionen finns kvar. Den är din.',
+        },
+        {
+          title: 'Lärande sker inte alltid när det är schemalagt.',
+          body: 'Förståelsen kommer när den kommer — ibland kvällen innan provet, ibland en vecka senare. Elevante finns där också, inte bara i klassrummet.',
+        },
+        {
+          title: 'Integritet är inte en funktion vi lagt till. Det är hur vi byggt allt.',
+          body: 'GDPR är inte en checkbox för oss. Det är ett designbeslut som påverkar varje val — vad vi lagrar, hur länge, och vem som får se det.',
+        },
       ]
     : [
         {
@@ -67,6 +83,22 @@ export default async function AboutPage({ params }: Props) {
         {
           title: 'No two schools are alike.',
           body: 'A school in the north and one in the south have different schedules, different subjects, different ways of talking to their students. Elevante gives them shared infrastructure — but doesn\'t dictate how they use it. The teacher knows what works in their classroom. We build the tool. They decide what it does.',
+        },
+        {
+          title: 'The teacher is the expert. AI is the assistant.',
+          body: 'Elevante doesn\'t replace any teacher and doesn\'t try to. The teacher plans, explains and understands their students. We make sure that work doesn\'t disappear when the lesson ends.',
+        },
+        {
+          title: 'No student should have to borrow notes.',
+          body: 'If you missed a lesson, didn\'t follow along, or simply forgot — you shouldn\'t depend on someone else having written down the right things. The lesson is still there. It\'s yours.',
+        },
+        {
+          title: 'Learning doesn\'t always happen on schedule.',
+          body: 'Understanding comes when it comes — sometimes the night before a test, sometimes a week later. Elevante is there then too, not just in the classroom.',
+        },
+        {
+          title: 'Privacy isn\'t a feature we added. It\'s how we built everything.',
+          body: 'GDPR isn\'t a checkbox for us. It\'s a design decision that affects every choice — what we store, for how long, and who gets to see it.',
         },
       ];
 
@@ -158,10 +190,10 @@ export default async function AboutPage({ params }: Props) {
           <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
             {sv ? 'Vad vi tror' : 'What we believe'}
           </h2>
-          <div className="mt-16 space-y-12">
+          <div className="mt-16 grid gap-x-16 gap-y-12 md:grid-cols-2">
             {beliefs.map((b, i) => (
               <div key={i} className="border-l-2 border-[var(--color-coral)] pl-6">
-                <p className="font-serif text-[clamp(1.5rem,1.5vw+1rem,2rem)] italic leading-snug text-[var(--color-ink)]">
+                <p className="font-serif text-[clamp(1.25rem,1.25vw+1rem,1.625rem)] italic leading-snug text-[var(--color-ink)]">
                   {b.title}
                 </p>
                 <p className="mt-3 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
