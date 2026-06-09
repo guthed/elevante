@@ -5,6 +5,7 @@ import type { LessonDetail, LessonInsight } from '@/lib/data/teacher';
 import { MaterialList } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialList';
 import { MaterialUploadForm } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialUploadForm';
 import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
+import { TranscriptEditor } from '@/components/app/teacher/TranscriptEditor';
 
 // Editorial Calm — Stitch screen 11 + 12 (Lärare Lektionsdetalj + Material upload)
 
@@ -128,9 +129,11 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }
           <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
           <article className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-8">
             {lesson.status === 'ready' && lesson.transcriptText ? (
-              <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
-                {lesson.transcriptText}
-              </pre>
+              <TranscriptEditor
+                lessonId={lesson.id}
+                initialText={lesson.transcriptText}
+                labels={labels}
+              />
             ) : (
               <div className="rounded-[12px] border border-dashed border-[var(--color-sand)] p-8 text-center">
                 <p className="font-serif text-[1rem] text-[var(--color-ink)]">
