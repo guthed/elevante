@@ -266,6 +266,13 @@ async function processLesson(
       );
     }
 
+    // 6.0 Radera ev. gamla chunks så att re-indexering blir idempotent
+    const { error: delErr } = await supabase
+      .from('lesson_chunks')
+      .delete()
+      .eq('lesson_id', lessonId);
+    if (delErr) throw new Error(`Delete old chunks failed: ${delErr.message}`);
+
     // 6. Spara lesson_chunks
     const chunkRows = chunks.map((content, idx) => ({
       lesson_id: lessonId,
