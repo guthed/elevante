@@ -56,10 +56,14 @@ export function TranscriptEditor({ lessonId, initialText, labels }: Props) {
     setActiveMatch((prev) => (total === 0 ? 0 : Math.min(prev, total - 1)));
   }, [total]);
 
-  // Scrolla aktiv träff in i vyn.
+  // Scrolla aktiv träff in i vyn. Respektera prefers-reduced-motion.
   useEffect(() => {
     if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      activeRef.current.scrollIntoView({
+        block: 'center',
+        behavior: reduce ? 'auto' : 'smooth',
+      });
     }
   }, [activeMatch, query]);
 
