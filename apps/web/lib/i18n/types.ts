@@ -238,6 +238,23 @@ export type Dictionary = {
           transcriptReady: string;
           transcriptFailed: string;
           transcriptComingSoon: string;
+          editTranscript: string;
+          editCancel: string;
+          editSave: string;
+          editSaving: string;
+          clearTranscript: string;
+          clearConfirmTitle: string;
+          clearConfirmBody: string;
+          clearConfirmAction: string;
+          clearConfirmCancel: string;
+          searchPlaceholder: string;
+          searchPrev: string;
+          searchNext: string;
+          searchNoMatches: string;
+          saveSuccess: string;
+          saveError: string;
+          editEmptyError: string;
+          clearSuccess: string;
         };
         statuses: {
           pending: string;
