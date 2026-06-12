@@ -39,12 +39,13 @@ export default async function CookiesPage({ params }: Props) {
           list: [
             'Nödvändiga cookies: håller dig inloggad och säkrar din session i webbappen (Supabase Auth). Dessa krävs för att tjänsten ska fungera och kan inte väljas bort.',
             'Analyscookies: Google Analytics (t.ex. _ga) samlar anonymiserad statistik om hur webbplatsen används, så att vi kan förbättra den.',
+            'Besöksidentifiering: Albacross (t.ex. nQ_cookieId) hjälper oss att se vilka organisationer som besöker webbplatsen, baserat på IP-adress. Används endast på den publika sajten, aldrig i appen.',
           ],
         },
         {
           h: 'Samtycke',
           p: [
-            'Nödvändiga cookies används med stöd av berättigat intresse och kräver inte samtycke. Analyscookies sätts endast med ditt samtycke. Du kan när som helst återkalla ditt samtycke genom att rensa cookies i din webbläsare.',
+            'Nödvändiga cookies används med stöd av berättigat intresse och kräver inte samtycke. Analys- och identifieringscookies sätts endast med ditt samtycke. Du kan när som helst återkalla ditt samtycke genom att rensa cookies i din webbläsare.',
           ],
         },
         {
@@ -72,12 +73,13 @@ export default async function CookiesPage({ params }: Props) {
           list: [
             'Essential cookies: keep you logged in and secure your session in the web app (Supabase Auth). These are required for the service to work and cannot be opted out of.',
             'Analytics cookies: Google Analytics (e.g. _ga) collects anonymised statistics about how the website is used so we can improve it.',
+            'Visitor identification: Albacross (e.g. nQ_cookieId) helps us see which organisations visit the website, based on IP address. Used only on the public site, never in the app.',
           ],
         },
         {
           h: 'Consent',
           p: [
-            'Essential cookies are used on the basis of legitimate interest and do not require consent. Analytics cookies are set only with your consent. You can withdraw your consent at any time by clearing cookies in your browser.',
+            'Essential cookies are used on the basis of legitimate interest and do not require consent. Analytics and identification cookies are set only with your consent. You can withdraw your consent at any time by clearing cookies in your browser.',
           ],
         },
         {
