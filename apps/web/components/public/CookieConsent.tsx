@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from './Button';
-import { GoogleAnalytics } from './Analytics';
+import { Albacross, GoogleAnalytics } from './Analytics';
 
 const STORAGE_KEY = 'elevante-cookie-consent';
 type Consent = 'accepted' | 'rejected';
@@ -44,7 +44,12 @@ export function CookieConsent({ locale }: { locale: 'sv' | 'en' }) {
 
   return (
     <>
-      {consent === 'accepted' ? <GoogleAnalytics /> : null}
+      {consent === 'accepted' ? (
+        <>
+          <GoogleAnalytics />
+          <Albacross />
+        </>
+      ) : null}
       {open ? (
         <div
           role="region"
@@ -54,8 +59,8 @@ export function CookieConsent({ locale }: { locale: 'sv' | 'en' }) {
           <div className="container-content flex flex-col gap-4 rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5 shadow-[0_-8px_30px_-12px_rgba(26,26,46,0.18)] md:flex-row md:items-center md:justify-between md:gap-8 md:p-6">
             <p className="text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
-                ? 'Vi använder nödvändiga cookies för att sajten ska fungera, och – med ditt samtycke – Google Analytics för anonym besöksstatistik. '
-                : 'We use necessary cookies to make the site work and – with your consent – Google Analytics for anonymous visitor statistics. '}
+                ? 'Vi använder nödvändiga cookies för att sajten ska fungera, och – med ditt samtycke – Google Analytics för anonym besöksstatistik samt Albacross för att identifiera vilka organisationer som besöker oss. '
+                : 'We use necessary cookies to make the site work and – with your consent – Google Analytics for anonymous visitor statistics and Albacross to identify which organisations visit us. '}
               <Link
                 href={`/${locale}/cookies`}
                 className="whitespace-nowrap text-[var(--color-ink)] underline underline-offset-4 hover:text-[var(--color-coral)]"
