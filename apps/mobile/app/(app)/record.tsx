@@ -9,7 +9,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useAudioRecorder, RecordingPresets, useAudioRecorderState } from 'expo-audio';
+import {
+  useAudioRecorder,
+  RecordingPresets,
+  useAudioRecorderState,
+  requestRecordingPermissionsAsync,
+  setAudioModeAsync,
+} from 'expo-audio';
 import { fetchProfile, useSession } from '@/lib/auth';
 import { createLesson } from '@/lib/lessons';
 import { enqueueUpload, flushQueue } from '@/lib/queue';
@@ -57,6 +63,14 @@ export default function RecordScreen() {
   const handleStart = async () => {
     setError(null);
     try {
+      const { granted } = await requestRecordingPermissionsAsync();
+      if (!granted) {
+        setError(
+          'Mikrofontillstånd nekades. Tillåt mikrofon för Elevante i telefonens inställningar för att spela in.',
+        );
+        return;
+      }
+      await setAudioModeAsync({ playsInSilentMode: true, allowsRecording: true });
       await recorder.prepareToRecordAsync();
       recorder.record();
       startedAt.current = Date.now();
@@ -203,6 +217,13 @@ export default function RecordScreen() {
               ? 'Tryck för att stoppa och ladda upp'
               : 'Sparar och laddar upp…'}
         </Text>
+
+        {phase === 'idle' ? (
+          <Text style={styles.permissionNote}>
+            Första gången frågar telefonen om mikrofonåtkomst. Inspelningen
+            används bara för transkribering och raderas direkt efteråt.
+          </Text>
+        ) : null}
       </View>
     </SafeAreaView>
   );
@@ -301,5 +322,13 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.7)',
     fontSize: 14,
     marginTop: spacing.md,
+  },
+  permissionNote: {
+    color: 'rgba(255,255,255,0.45)',
+    fontSize: 12,
+    lineHeight: 17,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.lg,
   },
 });

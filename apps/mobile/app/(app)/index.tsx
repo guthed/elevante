@@ -96,13 +96,20 @@ export default function ScheduleScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
-        <View>
+        <View style={styles.headerText}>
           <Text style={styles.eyebrow}>Idag</Text>
           <Text style={styles.title}>
             {profile?.full_name ?? profile?.email ?? '—'}
           </Text>
         </View>
-        <Pressable onPress={handleSignOut}>
+        <Pressable
+          onPress={handleSignOut}
+          hitSlop={8}
+          style={({ pressed }) => [
+            styles.signOutButton,
+            pressed ? styles.signOutButtonPressed : null,
+          ]}
+        >
           <Text style={styles.signOut}>Logga ut</Text>
         </Pressable>
       </View>
@@ -180,11 +187,22 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     paddingBottom: spacing.lg,
   },
+  headerText: { flex: 1, marginRight: spacing.md },
+  signOutButton: {
+    marginTop: spacing.xs,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.bg,
+  },
+  signOutButtonPressed: { borderColor: colors.accent },
   eyebrow: {
     fontSize: 12,
     fontWeight: '700',
