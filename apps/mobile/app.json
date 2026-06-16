@@ -12,17 +12,22 @@
       "supportsTablet": true,
       "bundleIdentifier": "se.elevante.app",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Elevante behöver mikrofonåtkomst för att spela in lektioner. Inspelningarna används endast för transkribering och raderas direkt efteråt."
+        "NSMicrophoneUsageDescription": "Elevante behöver mikrofonåtkomst för att spela in lektioner. Inspelningarna används endast för transkribering och raderas direkt efteråt.",
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
       "package": "se.elevante.app",
       "permissions": [
-        "RECORD_AUDIO"
+        "RECORD_AUDIO",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_MICROPHONE"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#1A1A2E"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FAF7F2"
       }
     },
     "plugins": [
