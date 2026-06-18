@@ -44,6 +44,7 @@ export async function getTeacherOverview(teacherId: string): Promise<TeacherOver
         'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
       )
       .eq('teacher_id', teacherId)
+      .is('archived_at', null)
       .order('recorded_at', { ascending: false, nullsFirst: false })
       .limit(10),
   ]);
@@ -166,6 +167,7 @@ export async function getClassDetail(classId: string): Promise<ClassDetail | nul
         'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
       )
       .eq('class_id', classId)
+      .is('archived_at', null)
       .order('recorded_at', { ascending: false, nullsFirst: false })
       .limit(10),
   ]);
@@ -227,6 +229,7 @@ export async function getTeacherLessons(teacherId: string): Promise<TeacherLesso
       'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
     )
     .eq('teacher_id', teacherId)
+    .is('archived_at', null)
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(100);
 
@@ -277,6 +280,7 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
       'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
     )
     .eq('id', lessonId)
+    .is('archived_at', null)
     .maybeSingle();
   if (!lesson) return null;
 
