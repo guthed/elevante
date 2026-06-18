@@ -28,12 +28,13 @@ export async function getAdminOverview(): Promise<AdminOverview> {
   ] = await Promise.all([
     supabase.from('schools').select('id', { count: 'exact', head: true }),
     supabase.from('profiles').select('id, role'),
-    supabase.from('lessons').select('id, transcript_status'),
+    supabase.from('lessons').select('id, transcript_status').is('archived_at', null),
     supabase
       .from('lessons')
       .select(
         'id, title, recorded_at, transcript_status, courses ( name ), classes ( name )',
       )
+      .is('archived_at', null)
       .order('recorded_at', { ascending: false, nullsFirst: false })
       .limit(8),
   ]);
@@ -160,6 +161,7 @@ export async function getAdminStats(): Promise<AdminStats> {
     supabase
       .from('lessons')
       .select('recorded_at, transcript_status')
+      .is('archived_at', null)
       .gte('recorded_at', oneWeekAgo.toISOString()),
     supabase.from('profiles').select('role'),
   ]);
