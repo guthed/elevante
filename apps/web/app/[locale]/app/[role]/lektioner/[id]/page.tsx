@@ -9,6 +9,7 @@ import { getStudentLessonDetail } from '@/lib/data/student';
 import { generateLessonInsight } from '@/lib/ai/anthropic';
 import { StudentLessonDetail as StudentLessonDetailView } from '@/components/app/student/StudentLessonDetail';
 import { TeacherLessonDetail as TeacherLessonDetailView } from '@/components/app/teacher/TeacherLessonDetail';
+import { DeleteLessonButton } from '@/components/app/teacher/DeleteLessonButton';
 
 type Props = {
   params: Promise<{ locale: string; role: string; id: string }>;
@@ -74,6 +75,18 @@ export default async function LessonDetailPage({ params }: Props) {
         dict={dict}
         insight={insight}
         aiInsight={aiInsight}
+        deleteSlot={
+          <DeleteLessonButton
+            lessonId={lesson.id}
+            locale={locale}
+            labels={{
+              delete: dict.app.pages.teacher.lessons.delete,
+              deleted: dict.app.pages.teacher.lessons.deleted,
+              undo: dict.app.pages.teacher.lessons.undo,
+              deleteError: dict.app.pages.teacher.lessons.deleteError,
+            }}
+          />
+        }
       />
     );
   }
