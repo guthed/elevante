@@ -41,7 +41,10 @@ export function DeleteLessonButton({
         action: {
           label: labels.undo,
           onClick: () => {
-            restoreLesson(lessonId).then(() => router.refresh());
+            restoreLesson(lessonId).then((r) => {
+              if (r.ok) router.refresh();
+              else show({ title: labels.deleteError, tone: 'error' });
+            });
           },
         },
       });
