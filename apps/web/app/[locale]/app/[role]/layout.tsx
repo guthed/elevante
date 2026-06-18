@@ -4,6 +4,7 @@ import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole, type Role } from '@/lib/app/roles';
 import { AppShell } from '@/components/app/AppShell';
+import { ToastProvider } from '@/components/ui';
 import { getCurrentProfile } from '@/lib/supabase/server';
 
 // Layouten är helt dynamisk — den läser session och profil per request.
@@ -34,13 +35,15 @@ export default async function RoleLayout({ children, params }: Props) {
   const typedRole: Role = role;
 
   return (
-    <AppShell
-      locale={locale}
-      role={typedRole}
-      dict={dict}
-      user={{ fullName: profile.full_name, email: profile.email }}
-    >
-      {children}
-    </AppShell>
+    <ToastProvider>
+      <AppShell
+        locale={locale}
+        role={typedRole}
+        dict={dict}
+        user={{ fullName: profile.full_name, email: profile.email }}
+      >
+        {children}
+      </AppShell>
+    </ToastProvider>
   );
 }

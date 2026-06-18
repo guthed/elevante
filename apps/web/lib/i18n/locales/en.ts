@@ -230,6 +230,10 @@ const en: Dictionary = {
           courseLabel: 'Course',
           classLabel: 'Class',
           statusLabel: 'Status',
+          delete: 'Delete lesson',
+          deleted: 'Lesson deleted',
+          undo: 'Undo',
+          deleteError: 'Could not delete the lesson',
         },
         lessonDetail: {
           back: '← All lessons',

@@ -20,6 +20,7 @@ export type Toast = {
   description?: string;
   tone?: Tone;
   duration?: number;
+  action?: { label: string; onClick: () => void };
 };
 
 type ToastContextValue = {
@@ -102,6 +103,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 <p className="text-sm font-medium">{toast.title}</p>
                 {toast.description ? (
                   <p className="mt-1 text-xs opacity-80">{toast.description}</p>
+                ) : null}
+                {toast.action ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toast.action?.onClick();
+                      dismiss(toast.id);
+                    }}
+                    className="mt-1 text-left text-[0.8125rem] font-medium underline underline-offset-2"
+                  >
+                    {toast.action.label}
+                  </button>
                 ) : null}
               </div>
               <button

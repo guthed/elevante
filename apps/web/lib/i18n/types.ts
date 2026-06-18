@@ -214,6 +214,10 @@ export type Dictionary = {
           courseLabel: string;
           classLabel: string;
           statusLabel: string;
+          delete: string;
+          deleted: string;
+          undo: string;
+          deleteError: string;
         };
         lessonDetail: {
           back: string;

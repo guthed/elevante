@@ -44,6 +44,7 @@ export async function getTeacherOverview(teacherId: string): Promise<TeacherOver
         'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
       )
       .eq('teacher_id', teacherId)
+      .is('archived_at', null)
       .order('recorded_at', { ascending: false, nullsFirst: false })
       .limit(10),
   ]);
@@ -166,6 +167,7 @@ export async function getClassDetail(classId: string): Promise<ClassDetail | nul
         'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
       )
       .eq('class_id', classId)
+      .is('archived_at', null)
       .order('recorded_at', { ascending: false, nullsFirst: false })
       .limit(10),
   ]);
@@ -227,6 +229,7 @@ export async function getTeacherLessons(teacherId: string): Promise<TeacherLesso
       'id, title, recorded_at, transcript_status, courses ( name ), classes ( id, name )',
     )
     .eq('teacher_id', teacherId)
+    .is('archived_at', null)
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(100);
 
@@ -277,6 +280,7 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
       'id, title, recorded_at, transcript_status, transcript_text, courses ( id, code, name ), classes ( id, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
     )
     .eq('id', lessonId)
+    .is('archived_at', null)
     .maybeSingle();
   if (!lesson) return null;
 
@@ -341,6 +345,7 @@ export async function getLessonInsight(lessonId: string): Promise<LessonInsight 
     .from('lessons')
     .select('id, title, class_id, concepts')
     .eq('id', lessonId)
+    .is('archived_at', null)
     .maybeSingle();
   if (!lesson) return null;
 
@@ -474,6 +479,7 @@ export async function getRecentLessonInsightRows(
     .select('id, title, recorded_at')
     .eq('teacher_id', teacherId)
     .eq('transcript_status', 'ready')
+    .is('archived_at', null)
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(limit);
 
@@ -517,7 +523,8 @@ export async function getLessonStatusCounts(
   const { data } = await supabase
     .from('lessons')
     .select('transcript_status')
-    .eq('school_id', schoolId);
+    .eq('school_id', schoolId)
+    .is('archived_at', null);
   const counts = { all: 0, ready: 0, processing: 0, pending: 0, failed: 0 };
   for (const row of (data ?? []) as Array<{ transcript_status: string }>) {
     counts.all += 1;

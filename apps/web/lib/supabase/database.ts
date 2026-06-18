@@ -90,6 +90,7 @@ export type Lesson = {
   suggested_questions: string[];
   ai_generated_topic: string | null;
   concepts: string[];
+  archived_at: string | null;
   created_at: string;
 };
 
@@ -387,6 +388,7 @@ type LessonInsert = {
   suggested_questions?: string[];
   ai_generated_topic?: string | null;
   concepts?: string[];
+  archived_at?: string | null;
   id?: string;
   created_at?: string;
 };

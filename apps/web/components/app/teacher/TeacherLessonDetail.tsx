@@ -14,6 +14,7 @@ type Props = {
   dict: Dictionary;
   insight: LessonInsight | null;
   aiInsight: string;
+  deleteSlot?: import('react').ReactNode;
 };
 
 function statusDotClass(status: LessonDetail['status']): string {
@@ -41,7 +42,7 @@ function transcriptSize(text: string | null): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }: Props) {
+export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight, deleteSlot }: Props) {
   const sv = locale === 'sv';
   const labels = dict.app.pages.teacher.lessonDetail;
   const base = `/${locale}/app/teacher`;
@@ -175,6 +176,12 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight }
 
         </aside>
       </div>
+
+      {deleteSlot ? (
+        <div className="mt-8 border-t border-[var(--color-sand)] pt-6">
+          {deleteSlot}
+        </div>
+      ) : null}
     </div>
   );
 }

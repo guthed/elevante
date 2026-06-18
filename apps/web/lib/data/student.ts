@@ -64,6 +64,7 @@ export async function getStudentOverview(
       'id, title, recorded_at, transcript_status, course_id, courses ( id, code, name ), classes ( name )',
     )
     .in('class_id', classIds)
+    .is('archived_at', null)
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(50);
 
@@ -116,6 +117,7 @@ export async function getStudentLibrary(
       'id, title, recorded_at, transcript_status, course_id, courses ( id, code, name ), classes ( name )',
     )
     .in('class_id', classIds)
+    .is('archived_at', null)
     .order('recorded_at', { ascending: false, nullsFirst: false })
     .limit(200);
 
@@ -178,6 +180,7 @@ export async function getStudentLessonDetail(
         'id, title, recorded_at, transcript_status, transcript_text, summary, suggested_questions, ai_generated_topic, courses ( id, code, name ), profiles!lessons_teacher_id_fkey ( id, full_name )',
       )
       .eq('id', lessonId)
+      .is('archived_at', null)
       .maybeSingle(),
     supabase
       .from('materials')
@@ -324,6 +327,7 @@ export async function getStudentCoursesWithLessons(
     .from('lessons')
     .select('id, title, recorded_at, course_id, courses ( id, code, name )')
     .in('class_id', classIds)
+    .is('archived_at', null)
     .eq('transcript_status', 'ready')
     .order('recorded_at', { ascending: true, nullsFirst: false })
     .limit(300);

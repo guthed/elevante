@@ -230,6 +230,10 @@ const sv: Dictionary = {
           courseLabel: 'Kurs',
           classLabel: 'Klass',
           statusLabel: 'Status',
+          delete: 'Radera lektion',
+          deleted: 'Lektionen raderad',
+          undo: 'Ångra',
+          deleteError: 'Kunde inte radera lektionen',
         },
         lessonDetail: {
           back: '← Alla lektioner',
