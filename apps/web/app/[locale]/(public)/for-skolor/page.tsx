@@ -390,7 +390,7 @@ export default async function ForSchoolsPage({ params }: Props) {
           <div className="grid gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-5">
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv ? 'Byggt i Sverige. Lagras i Stockholm.' : 'Built in Sweden. Stored in Stockholm.'}
+                {sv ? 'Byggt i Sverige. Lagras i Berget.' : 'Built in Sweden. Hosted inside a mountain (really).'}
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
