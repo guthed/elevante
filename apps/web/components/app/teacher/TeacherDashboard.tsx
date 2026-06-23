@@ -113,22 +113,22 @@ export function TeacherDashboard({ locale, firstName, data, insightRows, dict }:
         {topInsight ? (
           <Link
             href={`${base}/lektioner/${topInsight.lessonId}`}
-            className="mt-8 flex items-center justify-between gap-4 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(26,26,46,0.12)]"
+            className="mt-8 flex flex-col gap-5 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(26,26,46,0.12)] md:flex-row md:items-center md:justify-between md:gap-6"
           >
             <div className="min-w-0">
               <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-accent)]">
                 {t.heroEyebrow}
               </p>
-              <p className="mt-2 font-serif text-[1.125rem] leading-snug text-[var(--color-ink)]">
+              <p className="mt-2 font-serif text-[1.375rem] leading-tight text-[var(--color-ink)]">
                 {topInsight.studentsAsking} {t.chipsStudents} {t.heroConceptPrefix}{' '}
                 <span className="italic">{topInsight.topConceptName}</span>
               </p>
-              <p className="mt-1 truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
+              <p className="mt-2 text-[0.8125rem] text-[var(--color-ink-muted)]">
                 {topInsight.title} · {topInsight.topConceptQuestionCount}{' '}
                 {t.heroQuestionWord}
               </p>
             </div>
-            <span className="shrink-0 rounded-[12px] bg-[var(--color-ink)] px-4 py-2 text-[0.8125rem] text-[var(--color-canvas)]">
+            <span className="inline-flex shrink-0 items-center justify-center rounded-[12px] bg-[var(--color-ink)] px-4 py-2.5 text-[0.875rem] text-[var(--color-canvas)]">
               {t.heroCtaLabel} →
             </span>
           </Link>
