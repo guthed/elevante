@@ -1,11 +1,7 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
-import type {
-  StudentOverview,
-  StudentLessonRow,
-  ChatHistoryRow,
-} from '@/lib/data/student';
+import type { StudentOverview, StudentLessonRow } from '@/lib/data/student';
 
 // Editorial Calm — dashboard-omdesign Fas B (fråge-ruta + villkorat fortsätt-kort)
 
@@ -14,7 +10,8 @@ type Props = {
   firstName: string;
   data: StudentOverview;
   dict: Dictionary;
-  lastChat: ChatHistoryRow | null;
+  // label = chattens fråga (titel, eller första elevmeddelandet om titeln saknas).
+  lastChat: { id: string; label: string } | null;
 };
 
 function greeting(locale: Locale, name: string): string {
@@ -193,8 +190,8 @@ export function StudentHome({ locale, firstName, data, dict, lastChat }: Props) 
               <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
                 {s.continueLabel}
               </p>
-              <p className="mt-3 font-serif text-[1.125rem] italic text-[var(--color-ink)]">
-                {lastChat.title ?? '—'}
+              <p className="mt-3 line-clamp-2 font-serif text-[1.125rem] italic text-[var(--color-ink)]">
+                {lastChat.label}
               </p>
               <p className="mt-3 inline-flex items-center gap-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
                 {s.continueCta} →
