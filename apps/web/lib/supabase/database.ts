@@ -219,6 +219,78 @@ type PracticeTestInsert = {
   submitted_at?: string | null;
 };
 
+// --- Klassprov (lärar-författade prov tilldelade en klass) ---
+
+export type TestComposition = {
+  closed: number; // multiple_choice
+  open: number; // short_answer + open
+  reasoning: number; // reasoning
+};
+
+export type ClassTestStatus = 'draft' | 'published' | 'closed';
+
+export type ClassTest = {
+  id: string;
+  school_id: string;
+  class_id: string;
+  created_by: string;
+  title: string;
+  lesson_ids: string[];
+  composition: TestComposition;
+  questions: PracticeQuestion[];
+  max_score: number;
+  status: ClassTestStatus;
+  created_at: string;
+  published_at: string | null;
+};
+
+// Elevens svar: PracticeAnswer + bevarad AI-bedömning (lärar-justerbar feedback).
+export type ClassTestAnswer = PracticeAnswer & {
+  ai_points: number;
+  ai_feedback: string;
+};
+
+export type ClassTestSubmissionStatus = 'graded' | 'released';
+
+export type ClassTestSubmission = {
+  id: string;
+  class_test_id: string;
+  school_id: string;
+  student_id: string;
+  answers: ClassTestAnswer[];
+  score: number;
+  max_score: number;
+  overall_feedback: string;
+  status: ClassTestSubmissionStatus;
+  submitted_at: string;
+  graded_at: string | null;
+  released_at: string | null;
+};
+
+// Facit-strippad fråga som eleven ser (från get_published_class_test).
+export type StudentClassTestQuestion = Omit<
+  PracticeQuestion,
+  'answer_key' | 'correct_index'
+>;
+
+export type PublishedClassTestForStudent = {
+  id: string;
+  title: string;
+  class_id: string;
+  max_score: number;
+  questions: StudentClassTestQuestion[];
+};
+
+export type MySubmissionResult = {
+  id: string;
+  class_test_id: string;
+  answers: ClassTestAnswer[];
+  score: number;
+  max_score: number;
+  overall_feedback: string;
+  released_at: string;
+};
+
 export type LearnerProfile = {
   profile_id: string;
   school_id: string;
