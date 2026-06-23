@@ -271,9 +271,9 @@ export function LessonTranscriptDemo({ locale }: { locale: string }) {
           : 'Exempel: en elev frågar Elevante om en lektion och får ett svar med tidsstämplad källa ur lektionstranskriptet.'}
       </p>
 
-      <div aria-hidden="true">
-        {/* Transkript */}
-        <div className="overflow-hidden rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] shadow-[0_2px_8px_-2px_rgba(26,26,46,0.06)]">
+      <div aria-hidden="true" className="flex flex-col gap-5">
+        {/* Transkript — i mobilvyn under chatten, på desktop överst */}
+        <div className="order-2 overflow-hidden rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] shadow-[0_2px_8px_-2px_rgba(26,26,46,0.06)] md:order-1">
           <div className="flex items-center justify-between border-b border-[var(--color-sand)] px-5 py-4">
             <span className="inline-flex items-center gap-2 text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
               <span className="status-dot status-dot--sage" />
@@ -293,8 +293,8 @@ export function LessonTranscriptDemo({ locale }: { locale: string }) {
           </div>
         </div>
 
-        {/* Chat */}
-        <div className="mt-5 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5 shadow-[0_24px_60px_-20px_rgba(26,26,46,0.16)]">
+        {/* Chat — i mobilvyn överst, på desktop under transkriptet */}
+        <div className="order-1 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5 shadow-[0_24px_60px_-20px_rgba(26,26,46,0.16)] md:order-2">
           <span className="font-serif text-[0.9375rem] text-[var(--color-ink)]">Elevante</span>
           <div
             ref={qRowRef}
