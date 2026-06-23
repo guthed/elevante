@@ -82,7 +82,7 @@ export function StudentHome({ locale, firstName, data }: Props) {
   return (
     <div className="container-wide grid gap-12 py-10 md:grid-cols-12 md:py-14">
       {/* MAIN — 8 cols on desktop */}
-      <div className="md:col-span-8">
+      <div className="min-w-0 md:col-span-8">
         <header>
           <h1 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
             {greeting(locale, firstName)}
@@ -175,7 +175,7 @@ export function StudentHome({ locale, firstName, data }: Props) {
       </div>
 
       {/* RIGHT RAIL — 4 cols */}
-      <aside className="md:col-span-4">
+      <aside className="min-w-0 md:col-span-4">
         <div className="sticky top-6 space-y-6">
           {data.courses.length > 0 ? (
             <div className="rounded-[20px] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)]">

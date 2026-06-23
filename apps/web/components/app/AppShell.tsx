@@ -4,6 +4,7 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
+import { MobileNav } from './MobileNav';
 
 type Props = {
   locale: Locale;
@@ -34,10 +35,14 @@ export function AppShell({
       <Sidebar locale={locale} role={role} dict={dict} user={user} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar locale={locale} role={role} dict={dict} user={user} />
-        <main id="app-main" className="flex-1 overflow-y-auto animate-page-in">
+        <main
+          id="app-main"
+          className="flex-1 overflow-y-auto animate-page-in pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"
+        >
           {children}
         </main>
       </div>
+      <MobileNav locale={locale} role={role} dict={dict} />
     </div>
   );
 }

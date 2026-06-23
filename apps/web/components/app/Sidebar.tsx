@@ -5,36 +5,7 @@ import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { signOut } from '@/app/actions/auth';
 import { SidebarNav } from './SidebarNav';
-
-type NavItem = { href: string; label: string };
-
-function itemsFor(role: Role, base: string, dict: Dictionary): NavItem[] {
-  if (role === 'student') {
-    return [
-      { href: `${base}/student`, label: dict.app.sidebar.student.overview },
-      { href: `${base}/student/bibliotek`, label: dict.app.sidebar.student.library },
-      { href: `${base}/student/chat`, label: dict.app.sidebar.student.chat },
-      { href: `${base}/student/provplugg`, label: dict.app.sidebar.student.examPrep },
-      { href: `${base}/student/profil`, label: dict.app.sidebar.student.learnerProfile },
-    ];
-  }
-  if (role === 'teacher') {
-    return [
-      { href: `${base}/teacher`, label: dict.app.sidebar.teacher.overview },
-      { href: `${base}/teacher/klasser`, label: dict.app.sidebar.teacher.classes },
-      { href: `${base}/teacher/lektioner`, label: dict.app.sidebar.teacher.lessons },
-      { href: `${base}/teacher/prov`, label: dict.app.sidebar.teacher.sharedTests },
-    ];
-  }
-  return [
-    { href: `${base}/admin`, label: dict.app.sidebar.admin.overview },
-    { href: `${base}/admin/skolor`, label: dict.app.sidebar.admin.schools },
-    { href: `${base}/admin/anvandare`, label: dict.app.sidebar.admin.users },
-    { href: `${base}/admin/schema`, label: dict.app.sidebar.admin.schedule },
-    { href: `${base}/admin/statistik`, label: dict.app.sidebar.admin.stats },
-    { href: `${base}/admin/intresse`, label: dict.app.sidebar.admin.prospects },
-  ];
-}
+import { navItemsFor } from '@/lib/app/nav';
 
 function roleSubtitle(role: Role, locale: Locale): string {
   if (locale === 'sv') {
@@ -59,7 +30,7 @@ type Props = {
 
 export function Sidebar({ locale, role, dict, user }: Props) {
   const base = `/${locale}/app`;
-  const items = itemsFor(role, base, dict);
+  const items = navItemsFor(role, base, dict);
   const overviewHref = `${base}/${role}`;
   const roleLabel = dict.app.roleTitles[role];
   const displayName = user?.fullName ?? user?.email ?? roleLabel;
@@ -95,15 +66,20 @@ export function Sidebar({ locale, role, dict, user }: Props) {
       {/* User row */}
       <div className="border-t border-[var(--color-sand)]/60 px-4 py-4">
         <div className="flex items-center gap-3">
-          <Avatar name={displayName} size="sm" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
-              {displayName}
-            </p>
-            <p className="truncate text-[0.75rem] text-[var(--color-ink-muted)]">
-              {roleLabel}
-            </p>
-          </div>
+          <Link
+            href={`${base}/${role}/konto`}
+            className="-mx-1 flex min-w-0 flex-1 items-center gap-3 rounded-[12px] px-1 py-1 transition-colors hover:bg-[var(--color-surface-soft)]"
+          >
+            <Avatar name={displayName} size="sm" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
+                {displayName}
+              </p>
+              <p className="truncate text-[0.75rem] text-[var(--color-ink-muted)]">
+                {roleLabel}
+              </p>
+            </div>
+          </Link>
           <form action={signOutWithLocale}>
             <button
               type="submit"

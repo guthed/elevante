@@ -126,6 +126,52 @@ export type Dictionary = {
         prospects: string;
       };
     };
+    // Korta etiketter för mobil bottom-nav (sidebar-etiketterna är för långa).
+    mobileNav: {
+      student: {
+        overview: string;
+        library: string;
+        chat: string;
+        examPrep: string;
+        learnerProfile: string;
+      };
+      teacher: {
+        overview: string;
+        classes: string;
+        lessons: string;
+        sharedTests: string;
+      };
+      admin: {
+        overview: string;
+        schools: string;
+        users: string;
+        schedule: string;
+        stats: string;
+        prospects: string;
+      };
+    };
+    account: {
+      navLabel: string;
+      title: string;
+      subtitle: string;
+      profileHeading: string;
+      nameLabel: string;
+      emailLabel: string;
+      emailHint: string;
+      saveName: string;
+      saving: string;
+      nameSaved: string;
+      securityHeading: string;
+      newPasswordLabel: string;
+      confirmPasswordLabel: string;
+      savePassword: string;
+      passwordSaved: string;
+      languageHeading: string;
+      errorInvalid: string;
+      errorWeak: string;
+      errorMismatch: string;
+      errorGeneric: string;
+    };
     pages: {
       student: {
         overview: {

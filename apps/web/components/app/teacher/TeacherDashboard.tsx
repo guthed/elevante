@@ -85,7 +85,7 @@ export function TeacherDashboard({ locale, firstName, data, insightRows }: Props
   return (
     <div className="container-wide grid gap-12 py-10 md:grid-cols-12 md:py-14">
       {/* MAIN — 8 cols */}
-      <div className="md:col-span-8">
+      <div className="min-w-0 md:col-span-8">
         <header>
           <h1 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
             {greeting(locale, firstName)}
@@ -186,7 +186,7 @@ export function TeacherDashboard({ locale, firstName, data, insightRows }: Props
       </div>
 
       {/* RIGHT RAIL — 4 cols */}
-      <aside className="md:col-span-4">
+      <aside className="min-w-0 md:col-span-4">
         <div className="sticky top-6 space-y-6">
           {/* Klasser */}
           {data.classes.length > 0 ? (
@@ -214,18 +214,6 @@ export function TeacherDashboard({ locale, firstName, data, insightRows }: Props
               </ul>
             </div>
           ) : null}
-
-          {/* Tips */}
-          <div className="rounded-[20px] border border-[var(--color-sand)] p-6">
-            <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-              {sv ? 'Tips' : 'Tip'}
-            </p>
-            <p className="mt-3 font-serif text-[0.9375rem] italic leading-snug text-[var(--color-ink)]">
-              {sv
-                ? '"Eleverna lär sig bäst när de får ställa dumma frågor utan att be om lov. Elevante gör det möjligt."'
-                : '"Students learn best when they can ask dumb questions without permission. Elevante makes it possible."'}
-            </p>
-          </div>
         </div>
       </aside>
     </div>
