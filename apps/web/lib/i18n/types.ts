@@ -126,6 +126,30 @@ export type Dictionary = {
         prospects: string;
       };
     };
+    // Korta etiketter för mobil bottom-nav (sidebar-etiketterna är för långa).
+    mobileNav: {
+      student: {
+        overview: string;
+        library: string;
+        chat: string;
+        examPrep: string;
+        learnerProfile: string;
+      };
+      teacher: {
+        overview: string;
+        classes: string;
+        lessons: string;
+        sharedTests: string;
+      };
+      admin: {
+        overview: string;
+        schools: string;
+        users: string;
+        schedule: string;
+        stats: string;
+        prospects: string;
+      };
+    };
     pages: {
       student: {
         overview: {

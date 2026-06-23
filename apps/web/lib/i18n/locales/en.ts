@@ -135,6 +135,29 @@ const en: Dictionary = {
         prospects: 'Prospects',
       },
     },
+    mobileNav: {
+      student: {
+        overview: 'Home',
+        library: 'Library',
+        chat: 'Ask',
+        examPrep: 'Exam prep',
+        learnerProfile: 'Profile',
+      },
+      teacher: {
+        overview: 'Overview',
+        classes: 'Classes',
+        lessons: 'Lessons',
+        sharedTests: 'Tests',
+      },
+      admin: {
+        overview: 'Overview',
+        schools: 'Schools',
+        users: 'Users',
+        schedule: 'Schedule',
+        stats: 'Stats',
+        prospects: 'Leads',
+      },
+    },
     pages: {
       student: {
         overview: {

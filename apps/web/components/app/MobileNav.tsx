@@ -85,7 +85,7 @@ export function MobileNav({ locale, role, dict }: Props) {
             >
               {ICONS[item.id]}
             </span>
-            <span className="leading-none">{item.label}</span>
+            <span className="leading-none">{item.mobileLabel}</span>
           </Link>
         );
       })}

@@ -135,6 +135,29 @@ const sv: Dictionary = {
         prospects: 'Intresseanmälningar',
       },
     },
+    mobileNav: {
+      student: {
+        overview: 'Hem',
+        library: 'Bibliotek',
+        chat: 'Fråga',
+        examPrep: 'Provplugg',
+        learnerProfile: 'Profil',
+      },
+      teacher: {
+        overview: 'Översikt',
+        classes: 'Klasser',
+        lessons: 'Lektioner',
+        sharedTests: 'Prov',
+      },
+      admin: {
+        overview: 'Översikt',
+        schools: 'Skolor',
+        users: 'Elever',
+        schedule: 'Schema',
+        stats: 'Statistik',
+        prospects: 'Intresse',
+      },
+    },
     pages: {
       student: {
         overview: {
