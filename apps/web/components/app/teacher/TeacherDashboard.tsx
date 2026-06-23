@@ -1,15 +1,17 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
+import type { Dictionary } from '@/lib/i18n/types';
 import type { TeacherOverview, TeacherLessonRow, MiniLessonRow } from '@/lib/data/teacher';
 import { MiniHeatmap } from '@/components/app/teacher/MiniHeatmap';
 
-// Editorial Calm — Stitch screen 10-larare-dashboard.png
+// Editorial Calm — dashboard-omdesign Fas B (hjälte-insikt + chips)
 
 type Props = {
   locale: Locale;
   firstName: string;
   data: TeacherOverview;
   insightRows: MiniLessonRow[];
+  dict: Dictionary;
 };
 
 function greeting(locale: Locale, name: string): string {
@@ -76,46 +78,61 @@ function formatTime(iso: string | null, locale: Locale): string {
   }).format(new Date(iso));
 }
 
-export function TeacherDashboard({ locale, firstName, data, insightRows }: Props) {
+export function TeacherDashboard({ locale, firstName, data, insightRows, dict }: Props) {
   const sv = locale === 'sv';
+  const t = dict.app.pages.teacher.overview;
   const base = `/${locale}/app/teacher`;
   const todaysLessons = data.recentLessons.slice(0, 3);
   const totalStudents = data.classes.reduce((sum, c) => sum + c.studentsCount, 0);
+  const topInsight =
+    insightRows
+      .filter((r) => r.topConceptQuestionCount > 0)
+      .sort((a, b) => b.topConceptQuestionCount - a.topConceptQuestionCount)[0] ?? null;
 
   return (
     <div className="container-wide grid gap-12 py-10 md:grid-cols-12 md:py-14">
       {/* MAIN — 8 cols */}
       <div className="min-w-0 md:col-span-8">
-        <header>
-          <h1 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-            {greeting(locale, firstName)}
-          </h1>
-          <p className="mt-2 text-[0.875rem] text-[var(--color-ink-muted)]">
-            {dateSubtitle(locale)}
-          </p>
+        <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+              {greeting(locale, firstName)}
+            </h1>
+            <p className="mt-2 text-[0.875rem] text-[var(--color-ink-muted)]">
+              {dateSubtitle(locale)}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Chip n={data.courses.length} label={t.chipsCourses} />
+            <Chip n={totalStudents} label={t.chipsStudents} />
+            <Chip n={data.classes.length} label={t.chipsClasses} />
+          </div>
         </header>
 
-        <div className="my-10 h-px bg-[var(--color-sand)]" />
-
-        {/* 4-stat row — vertical columns, not boxy tiles */}
-        <section className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
-          <Stat
-            number={data.courses.length}
-            label={sv ? 'Pågående kurser' : 'Active courses'}
-          />
-          <Stat
-            number={data.recentLessons.length}
-            label={sv ? 'Senaste lektioner' : 'Recent lessons'}
-          />
-          <Stat
-            number={totalStudents}
-            label={sv ? 'Elever totalt' : 'Students total'}
-          />
-          <Stat
-            number={data.classes.length}
-            label={sv ? 'Klasser' : 'Classes'}
-          />
-        </section>
+        {/* Hjälte — veckans insikt */}
+        {topInsight ? (
+          <Link
+            href={`${base}/lektioner/${topInsight.lessonId}`}
+            className="mt-8 flex flex-col gap-5 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(26,26,46,0.12)] md:flex-row md:items-center md:justify-between md:gap-6"
+          >
+            <div className="min-w-0">
+              <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-accent)]">
+                {t.heroEyebrow}
+              </p>
+              <p className="mt-2 font-serif text-[1.375rem] leading-tight text-[var(--color-ink)]">
+                {topInsight.studentsAsking} {t.chipsStudents} {t.heroConceptPrefix}{' '}
+                <span className="italic">{topInsight.topConceptName}</span>
+              </p>
+              <p className="mt-2 text-[0.8125rem] text-[var(--color-ink-muted)]">
+                {topInsight.title} · {topInsight.topConceptQuestionCount}{' '}
+                {t.heroQuestionWord}
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center justify-center rounded-[12px] bg-[var(--color-ink)] px-4 py-2.5 text-[0.875rem] text-[var(--color-canvas)]">
+              {t.heroCtaLabel} →
+            </span>
+          </Link>
+        ) : null}
 
         <div className="my-10 h-px bg-[var(--color-sand)]" />
 
@@ -214,21 +231,41 @@ export function TeacherDashboard({ locale, firstName, data, insightRows }: Props
               </ul>
             </div>
           ) : null}
+
+          {/* Snabbt */}
+          <div className="rounded-[20px] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)]">
+            <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
+              {t.quickHeading}
+            </h3>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <Link
+                  href={`${base}/lektioner`}
+                  className="text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)] hover:underline"
+                >
+                  {t.quickLessons} →
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={`${base}/prov`}
+                  className="text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)] hover:underline"
+                >
+                  {t.quickTests} →
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </aside>
     </div>
   );
 }
 
-function Stat({ number, label }: { number: number; label: string }) {
+function Chip({ n, label }: { n: number; label: string }) {
   return (
-    <div>
-      <p className="font-serif text-[clamp(2rem,2vw+1rem,2.5rem)] leading-none tracking-tight text-[var(--color-ink)] tabular-nums">
-        {number}
-      </p>
-      <p className="mt-2 text-[0.8125rem] text-[var(--color-ink-secondary)]">
-        {label}
-      </p>
-    </div>
+    <span className="inline-flex items-baseline gap-1.5 rounded-full border border-[var(--color-sand)] px-3 py-1 text-[0.8125rem] text-[var(--color-ink-secondary)]">
+      <b className="font-serif text-[var(--color-ink)] tabular-nums">{n}</b> {label}
+    </span>
   );
 }

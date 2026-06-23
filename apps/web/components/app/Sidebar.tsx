@@ -5,18 +5,8 @@ import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { signOut } from '@/app/actions/auth';
 import { SidebarNav } from './SidebarNav';
+import { SchoolBadge } from './SchoolBadge';
 import { navItemsFor } from '@/lib/app/nav';
-
-function roleSubtitle(role: Role, locale: Locale): string {
-  if (locale === 'sv') {
-    if (role === 'student') return 'AI Studiekompis';
-    if (role === 'teacher') return 'För lärare';
-    return 'Admin';
-  }
-  if (role === 'student') return 'AI study companion';
-  if (role === 'teacher') return 'For teachers';
-  return 'Admin';
-}
 
 type Props = {
   locale: Locale;
@@ -26,9 +16,11 @@ type Props = {
     fullName: string | null;
     email: string | null;
   } | null;
+  schoolName: string | null;
+  className: string | null;
 };
 
-export function Sidebar({ locale, role, dict, user }: Props) {
+export function Sidebar({ locale, role, dict, user, schoolName, className }: Props) {
   const base = `/${locale}/app`;
   const items = navItemsFor(role, base, dict);
   const overviewHref = `${base}/${role}`;
@@ -53,9 +45,16 @@ export function Sidebar({ locale, role, dict, user }: Props) {
         >
           Elevante
         </Link>
-        <p className="mt-1.5 text-[0.75rem] text-[var(--color-ink-muted)]">
-          {roleSubtitle(role, locale)}
-        </p>
+        {schoolName ? (
+          <div className="mt-5">
+            <SchoolBadge
+              schoolName={schoolName}
+              roleLabel={roleLabel}
+              className={className}
+              logoSize={30}
+            />
+          </div>
+        ) : null}
       </div>
 
       {/* Nav */}

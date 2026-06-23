@@ -6,6 +6,7 @@ import { isRole, type Role } from '@/lib/app/roles';
 import { AppShell } from '@/components/app/AppShell';
 import { ToastProvider } from '@/components/ui';
 import { getCurrentProfile } from '@/lib/supabase/server';
+import { getAppContext } from '@/lib/data/context';
 
 // Layouten är helt dynamisk — den läser session och profil per request.
 // Vi har INGEN generateStaticParams här eftersom Next.js annars försöker
@@ -33,6 +34,11 @@ export default async function RoleLayout({ children, params }: Props) {
 
   const dict = await getDictionary(locale);
   const typedRole: Role = role;
+  const { schoolName, className } = await getAppContext({
+    id: profile.id,
+    role: typedRole,
+    school_id: profile.school_id,
+  });
 
   return (
     <ToastProvider>
@@ -41,6 +47,8 @@ export default async function RoleLayout({ children, params }: Props) {
         role={typedRole}
         dict={dict}
         user={{ fullName: profile.full_name, email: profile.email }}
+        schoolName={schoolName}
+        className={className}
       >
         {children}
       </AppShell>

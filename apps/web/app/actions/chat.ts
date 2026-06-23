@@ -358,8 +358,13 @@ export async function sendMessage(
     }
   }
 
-  // Bumpa updated_at via en touch-update
-  await supabase.from('chats').update({ title: chat.id }).eq('id', chatId);
+  // Bumpa updated_at så chatten hamnar överst i historiken.
+  // (Tidigare sattes title felaktigt till chat.id här, vilket gjorde att
+  // chattnamn blev en UUID så fort en följdfråga skickades.)
+  await supabase
+    .from('chats')
+    .update({ updated_at: new Date().toISOString() })
+    .eq('id', chatId);
 
   revalidatePath(`/sv/app/student/chat/${chatId}`);
   revalidatePath(`/en/app/student/chat/${chatId}`);

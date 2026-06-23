@@ -5,7 +5,11 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getTeacherOverview, getRecentLessonInsightRows } from '@/lib/data/teacher';
-import { getStudentOverview } from '@/lib/data/student';
+import {
+  getStudentOverview,
+  getUserChatHistory,
+  getChatThread,
+} from '@/lib/data/student';
 import { getAdminOverview } from '@/lib/data/admin';
 import { StudentHome } from '@/components/app/student/StudentHome';
 import { TeacherDashboard } from '@/components/app/teacher/TeacherDashboard';
@@ -32,9 +36,10 @@ export default async function RoleOverviewPage({ params }: Props) {
   if (role === 'teacher') {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
-    const [data, insightRows] = await Promise.all([
+    const [data, insightRows, dict] = await Promise.all([
       getTeacherOverview(profile.id),
       getRecentLessonInsightRows(profile.id, 3),
+      getDictionary(locale),
     ]);
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
@@ -44,6 +49,7 @@ export default async function RoleOverviewPage({ params }: Props) {
         firstName={firstName}
         data={data}
         insightRows={insightRows}
+        dict={dict}
       />
     );
   }
@@ -51,10 +57,42 @@ export default async function RoleOverviewPage({ params }: Props) {
   if (role === 'student') {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
-    const data = await getStudentOverview(profile.id);
+    const [data, chatHistory, dict] = await Promise.all([
+      getStudentOverview(profile.id),
+      getUserChatHistory(),
+      getDictionary(locale),
+    ]);
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
-    return <StudentHome locale={locale} firstName={firstName} data={data} />;
+
+    // Härled en meningsfull etikett: titel om den finns och inte är en UUID
+    // (vissa chattar fick id:t som titel), annars första elevmeddelandet.
+    const latest = chatHistory[0] ?? null;
+    let lastChat: { id: string; label: string } | null = null;
+    if (latest) {
+      const isUuidTitle =
+        !!latest.title &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          latest.title,
+        );
+      let label = latest.title && !isUuidTitle ? latest.title : null;
+      if (!label) {
+        const thread = await getChatThread(latest.id);
+        label =
+          thread?.messages.find((m) => m.role === 'user')?.content ?? null;
+      }
+      if (label) lastChat = { id: latest.id, label };
+    }
+
+    return (
+      <StudentHome
+        locale={locale}
+        firstName={firstName}
+        data={data}
+        dict={dict}
+        lastChat={lastChat}
+      />
+    );
   }
 
   // Admin — Editorial Calm enligt Stitch screen 13
