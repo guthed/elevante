@@ -57,7 +57,16 @@ Ny klientkomponent `components/app/MobileNav.tsx`, renderas i `AppShell` och syn
 
 ### 1.3 Sidomeny (laptop) — oförändrad
 
-`Sidebar` på `md+` behålls som den är. (Eventuella ikoner per nav-item är out of scope.)
+`Sidebar` på `md+` behålls i grunden. (Eventuella ikoner per nav-item är out of scope.) Undantag: namnraden längst ned blir en länk till kontosidan (se 1.4).
+
+### 1.4 Kontosida — delad för alla roller (tillagd 2026-06-23, byggd i Fas A)
+
+Ny route `/app/[role]/konto` med en gemensam vy för elev, lärare och admin (`konto/page.tsx` + klientkomponent `AccountForms.tsx`). Tidigare saknades helt en konto-/inställningsvy.
+
+- **Innehåll:** Profil (namn redigerbart, e-post skrivskyddad), Säkerhet (byt lösenord — nytt + bekräfta, min 8 tecken), Språk (sv/en via `LanguageSwitcher`), Logga ut.
+- **Nås via:** namnraden i sidomenyn (laptop) och konto-ikon till höger i toppraden (mobil). Ligger medvetet **inte** i bottom-nav (full med 5 elev-flikar).
+- **Server actions:** `app/actions/account.ts` — `updateProfileName` (RLS `profiles_update_self`) och `updatePassword` (`supabase.auth.updateUser`). Manuell validering enligt befintligt mönster (auth.ts/admin.ts).
+- **Utanför v1:** byta e-post, notisinställningar, avatar-uppladdning, radera konto.
 
 ---
 
