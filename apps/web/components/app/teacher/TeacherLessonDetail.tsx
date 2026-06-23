@@ -125,7 +125,7 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight, 
       {/* 2-col layout */}
       <div className="mt-12 grid gap-10 md:grid-cols-12">
         {/* LEFT — Transcript (65%) */}
-        <div className="md:col-span-8">
+        <div className="min-w-0 md:col-span-8">
           <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
           <article className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-8">
             {lesson.status === 'ready' && lesson.transcriptText ? (
@@ -152,7 +152,7 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight, 
         </div>
 
         {/* RIGHT — Material + upload zone (35%) */}
-        <aside className="space-y-6 md:col-span-4">
+        <aside className="min-w-0 space-y-6 md:col-span-4">
           {/* Material card */}
           <div className="rounded-[20px] bg-[var(--color-surface)] p-6">
             <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
