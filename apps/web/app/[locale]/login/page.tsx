@@ -63,13 +63,6 @@ export default async function LoginPage({ params, searchParams }: Props) {
           </Link>
         </p>
 
-        <div className="mt-auto pt-10">
-          <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
-            {sv
-              ? 'Data lagras i Stockholm · GDPR-säkert'
-              : 'Data stored in Stockholm · GDPR-safe'}
-          </p>
-        </div>
       </div>
     </div>
   );
