@@ -295,6 +295,9 @@ const en: Dictionary = {
           chipsCourses: 'courses',
           chipsStudents: 'students',
           chipsClasses: 'classes',
+          chipsCourse: 'course',
+          chipsStudent: 'student',
+          chipsClass: 'class',
         },
         classes: {
           title: 'Classes',

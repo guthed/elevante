@@ -281,6 +281,9 @@ export type Dictionary = {
           chipsCourses: string;
           chipsStudents: string;
           chipsClasses: string;
+          chipsCourse: string;
+          chipsStudent: string;
+          chipsClass: string;
         };
         classes: {
           title: string;

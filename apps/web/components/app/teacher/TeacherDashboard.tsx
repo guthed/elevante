@@ -103,9 +103,18 @@ export function TeacherDashboard({ locale, firstName, data, insightRows, dict }:
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Chip n={data.courses.length} label={t.chipsCourses} />
-            <Chip n={totalStudents} label={t.chipsStudents} />
-            <Chip n={data.classes.length} label={t.chipsClasses} />
+            <Chip
+              n={data.courses.length}
+              label={data.courses.length === 1 ? t.chipsCourse : t.chipsCourses}
+            />
+            <Chip
+              n={totalStudents}
+              label={totalStudents === 1 ? t.chipsStudent : t.chipsStudents}
+            />
+            <Chip
+              n={data.classes.length}
+              label={data.classes.length === 1 ? t.chipsClass : t.chipsClasses}
+            />
           </div>
         </header>
 

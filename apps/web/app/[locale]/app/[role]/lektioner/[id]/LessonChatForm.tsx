@@ -44,7 +44,6 @@ export function LessonChatForm({ locale, lessonId, labels, placeholderOverride }
       >
         {pending ? labels.sending : labels.send}
       </Button>
-      <p className="text-xs text-[var(--color-ink-subtle)]">{labels.mockNotice}</p>
     </form>
   );
 }

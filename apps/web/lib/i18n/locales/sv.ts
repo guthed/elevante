@@ -295,6 +295,9 @@ const sv: Dictionary = {
           chipsCourses: 'kurser',
           chipsStudents: 'elever',
           chipsClasses: 'klasser',
+          chipsCourse: 'kurs',
+          chipsStudent: 'elev',
+          chipsClass: 'klass',
         },
         classes: {
           title: 'Klasser',
