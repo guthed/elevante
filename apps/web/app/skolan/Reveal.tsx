@@ -30,6 +30,9 @@ export default function Reveal({
     // Redan synligt vid laddning → animera inte (undviker flimring + hjälper LCP).
     if (el.getBoundingClientRect().top < window.innerHeight * 0.85) return;
 
+    // Avsiktlig synkron setState: vi renderar synligt för SSR/utan-JS och armar
+    // dolt läge först efter mätning av DOM:en — kan inte avgöras vid SSR.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHidden(true);
     const io = new IntersectionObserver(
       (entries) => {

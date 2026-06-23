@@ -104,9 +104,11 @@ export default function DeckStage({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [index, total, go, flashOverlay]);
 
-  // Show overlay briefly on mount and on pointer move.
+  // Show overlay briefly on mount and on pointer move. The overlay starts
+  // visible (initial state), so here we only schedule its auto-hide — avoiding
+  // a synchronous setState mid-effect.
   useEffect(() => {
-    flashOverlay();
+    hideTimer.current = setTimeout(() => setOverlayVisible(false), OVERLAY_HIDE_MS);
     const onMove = () => flashOverlay();
     window.addEventListener('pointermove', onMove);
     return () => {

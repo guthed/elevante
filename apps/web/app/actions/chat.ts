@@ -60,7 +60,7 @@ async function ragAnswer(
   };
   // Cast supabase till any för RPC-anropen — match_*_chunks finns i schemat
   // men deklareras inte i Database-typen (se kommentar i database.ts).
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const rpcClient = supabase as unknown as { rpc: (name: string, args: Record<string, unknown>) => Promise<{ data: MatchRow[] | null }> };
   let matches: MatchRow[] = [];
   if (scopeContext.scope === 'lesson' && scopeContext.lessonId) {

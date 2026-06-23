@@ -122,7 +122,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const locale = firstSegment;
-  let response = NextResponse.next();
+  const response = NextResponse.next();
 
   // Steg 2: bara auth-relaterade rutter behöver Supabase-session.
   // De publika marknadssidorna är statiska och ska INTE betala för en

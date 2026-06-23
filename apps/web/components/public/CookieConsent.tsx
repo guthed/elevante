@@ -20,6 +20,9 @@ export function CookieConsent({ locale }: { locale: 'sv' | 'en' }) {
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === 'accepted' || stored === 'rejected') {
+      // Avsiktlig synkron setState: samtycket bor i localStorage (klient-bara)
+      // och kan inte läsas vid SSR — vi måste hydrera det efter montering.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(stored);
     } else {
       setOpen(true);

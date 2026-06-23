@@ -28,8 +28,6 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
  */
 export default function ZoomableShot({ src, alt, sizes, className }: Props) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
 
   return (
     <>
@@ -51,7 +49,7 @@ export default function ZoomableShot({ src, alt, sizes, className }: Props) {
           Zooma
         </span>
       </button>
-      {mounted && open && createPortal(<Lightbox src={src.src} alt={alt} onClose={() => setOpen(false)} />, document.body)}
+      {open && createPortal(<Lightbox src={src.src} alt={alt} onClose={() => setOpen(false)} />, document.body)}
     </>
   );
 }
@@ -61,13 +59,15 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
   const closeRef = useRef<HTMLButtonElement>(null);
   const [t, setT] = useState({ s: 1, x: 0, y: 0 });
   const tRef = useRef(t);
-  tRef.current = t;
+  useEffect(() => {
+    tRef.current = t;
+  }, [t]);
 
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinch = useRef<{ dist: number } | null>(null);
   const pan = useRef<{ x: number; y: number } | null>(null);
   const lastTap = useRef(0);
-  const gestureActive = useRef(false);
+  const [gesturing, setGesturing] = useState(false);
 
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
@@ -120,7 +120,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    gestureActive.current = true;
+    setGesturing(true);
     if (pointers.current.size === 1) {
       pan.current = { x: e.clientX, y: e.clientY };
       const now = Date.now();
@@ -162,7 +162,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
       pan.current = { x: p.x, y: p.y };
     } else if (pointers.current.size === 0) {
       pan.current = null;
-      gestureActive.current = false;
+      setGesturing(false);
     }
   }
 
@@ -207,7 +207,7 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
           style={{
             transform: `translate(${t.x}px, ${t.y}px) scale(${t.s})`,
             transformOrigin: 'center',
-            transition: gestureActive.current ? 'none' : 'transform 0.18s ease-out',
+            transition: gesturing ? 'none' : 'transform 0.18s ease-out',
           }}
         />
       </div>
