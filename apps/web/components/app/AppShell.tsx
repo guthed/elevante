@@ -14,6 +14,8 @@ type Props = {
     fullName: string | null;
     email: string | null;
   } | null;
+  schoolName: string | null;
+  className: string | null;
   children: ReactNode;
 };
 
@@ -22,6 +24,8 @@ export function AppShell({
   role,
   dict,
   user,
+  schoolName,
+  className,
   children,
 }: Props) {
   return (
@@ -32,9 +36,23 @@ export function AppShell({
       >
         {locale === 'sv' ? 'Hoppa till innehåll' : 'Skip to content'}
       </a>
-      <Sidebar locale={locale} role={role} dict={dict} user={user} />
+      <Sidebar
+        locale={locale}
+        role={role}
+        dict={dict}
+        user={user}
+        schoolName={schoolName}
+        className={className}
+      />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar locale={locale} role={role} dict={dict} user={user} />
+        <Topbar
+          locale={locale}
+          role={role}
+          dict={dict}
+          user={user}
+          schoolName={schoolName}
+          className={className}
+        />
         <main
           id="app-main"
           className="flex-1 overflow-y-auto animate-page-in pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"

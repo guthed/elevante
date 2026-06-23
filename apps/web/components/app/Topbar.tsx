@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
+import { SchoolBadge } from './SchoolBadge';
 
 type Props = {
   locale: Locale;
@@ -11,20 +12,32 @@ type Props = {
     fullName: string | null;
     email: string | null;
   } | null;
+  schoolName: string | null;
+  className: string | null;
 };
 
-// Mobil: visar varumärket (sidomenyn är dold < md) + konto-genväg till höger.
-// Laptop: dold helt (varumärket finns i sidomenyn) — sidinnehållet börjar högst upp.
+// Mobil: visar skol-identiteten (sidomenyn är dold < md) + konto-genväg till höger.
+// Laptop: dold helt (identiteten finns i sidomenyn) — sidinnehållet börjar högst upp.
 // De tidigare placeholder-ikonerna (sök/notiser) är borttagna; global sök byggs senare.
-export function Topbar({ locale, role, dict }: Props) {
+export function Topbar({ locale, role, dict, schoolName, className }: Props) {
+  const roleLabel = dict.app.roleTitles[role];
   return (
-    <header className="flex h-[52px] items-center justify-between px-5 md:hidden">
-      <Link
-        href={`/${locale}`}
-        className="font-serif text-[1.25rem] leading-none tracking-tight text-[var(--color-ink)]"
-      >
-        Elevante
-      </Link>
+    <header className="flex h-[60px] items-center justify-between px-5 md:hidden">
+      {schoolName ? (
+        <SchoolBadge
+          schoolName={schoolName}
+          roleLabel={roleLabel}
+          className={className}
+          logoSize={30}
+        />
+      ) : (
+        <Link
+          href={`/${locale}`}
+          className="font-serif text-[1.25rem] leading-none tracking-tight text-[var(--color-ink)]"
+        >
+          Elevante
+        </Link>
+      )}
       <Link
         href={`/${locale}/app/${role}/konto`}
         aria-label={dict.app.account.navLabel}
