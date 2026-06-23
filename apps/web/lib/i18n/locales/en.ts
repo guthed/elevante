@@ -158,6 +158,29 @@ const en: Dictionary = {
         prospects: 'Leads',
       },
     },
+    navDescriptions: {
+      student: {
+        overview: "Today's lessons and your latest chat",
+        library: 'All your lessons, searchable',
+        chat: 'Ask questions about a lesson',
+        examPrep: 'Practise and take mock tests',
+        learnerProfile: 'Your strengths and growth areas',
+      },
+      teacher: {
+        overview: "Insight of the week and today's lessons",
+        classes: 'Your classes and students',
+        lessons: 'Recorded lessons and transcripts',
+        sharedTests: 'Tests students shared with you',
+      },
+      admin: {
+        overview: 'Key numbers for the school',
+        schools: 'Manage schools',
+        users: 'Manage roles and accounts',
+        schedule: 'Upload the lesson schedule',
+        stats: 'Usage and activity',
+        prospects: 'Incoming interest requests',
+      },
+    },
     account: {
       navLabel: 'Account',
       title: 'Account',

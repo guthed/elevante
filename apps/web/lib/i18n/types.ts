@@ -150,6 +150,29 @@ export type Dictionary = {
         prospects: string;
       };
     };
+    navDescriptions: {
+      student: {
+        overview: string;
+        library: string;
+        chat: string;
+        examPrep: string;
+        learnerProfile: string;
+      };
+      teacher: {
+        overview: string;
+        classes: string;
+        lessons: string;
+        sharedTests: string;
+      };
+      admin: {
+        overview: string;
+        schools: string;
+        users: string;
+        schedule: string;
+        stats: string;
+        prospects: string;
+      };
+    };
     account: {
       navLabel: string;
       title: string;

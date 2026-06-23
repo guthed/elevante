@@ -158,6 +158,29 @@ const sv: Dictionary = {
         prospects: 'Intresse',
       },
     },
+    navDescriptions: {
+      student: {
+        overview: 'Dagens lektioner och din senaste chatt',
+        library: 'Alla dina lektioner, sökbara',
+        chat: 'Ställ frågor om en lektion',
+        examPrep: 'Öva och gör övningsprov inför prov',
+        learnerProfile: 'Dina styrkor och utvecklingsområden',
+      },
+      teacher: {
+        overview: 'Veckans insikt och dagens lektioner',
+        classes: 'Dina klasser och elever',
+        lessons: 'Inspelade lektioner och transkript',
+        sharedTests: 'Prov som elever delat med dig',
+      },
+      admin: {
+        overview: 'Nyckeltal för skolan',
+        schools: 'Hantera skolor',
+        users: 'Hantera roller och konton',
+        schedule: 'Ladda upp lektionsschema',
+        stats: 'Användning och aktivitet',
+        prospects: 'Inkomna intresseanmälningar',
+      },
+    },
     account: {
       navLabel: 'Konto',
       title: 'Konto',
