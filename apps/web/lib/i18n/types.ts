@@ -183,6 +183,17 @@ export type Dictionary = {
           coursesHeading: string;
           chatCta: string;
           openLibrary: string;
+          askEyebrow: string;
+          askTitle: string;
+          askPlaceholder: string;
+          askCta: string;
+          askExample1: string;
+          askExample2: string;
+          continueHeading: string;
+          continueLabel: string;
+          continueCta: string;
+          examQuickHeading: string;
+          examQuickCta: string;
         };
         library: {
           title: string;
@@ -237,6 +248,16 @@ export type Dictionary = {
           recentLessonsHeading: string;
           studentsCount: string;
           lessonsCount: string;
+          heroEyebrow: string;
+          heroCtaLabel: string;
+          heroQuestionWord: string;
+          heroConceptPrefix: string;
+          quickHeading: string;
+          quickLessons: string;
+          quickTests: string;
+          chipsCourses: string;
+          chipsStudents: string;
+          chipsClasses: string;
         };
         classes: {
           title: string;
