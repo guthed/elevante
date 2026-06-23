@@ -194,7 +194,7 @@ const en: Dictionary = {
           chatCta: 'Ask Elevante',
           openLibrary: 'Open library',
           askEyebrow: 'Ask Elevante',
-          askTitle: "What are you wondering about what you've learned?",
+          askTitle: 'Ask a question about a lesson',
           askPlaceholder: 'Type your question…',
           askCta: 'Ask',
           askExample1: "Summarise today's lesson",

@@ -194,7 +194,7 @@ const sv: Dictionary = {
           chatCta: 'Fråga Elevante',
           openLibrary: 'Öppna biblioteket',
           askEyebrow: 'Fråga Elevante',
-          askTitle: 'Vad undrar du om det du lärt dig?',
+          askTitle: 'Ställ en fråga om en lektion',
           askPlaceholder: 'Skriv din fråga…',
           askCta: 'Fråga',
           askExample1: 'Sammanfatta dagens lektion',
