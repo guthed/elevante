@@ -153,7 +153,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
               viewBox="0 0 20 20"
               fill="none"
               aria-hidden="true"
-              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-ink-muted)]"
+              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-coral)]"
             >
               <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.6" />
               <path d="m14 14 4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -178,7 +178,7 @@ export function PriceEstimator({ locale }: { locale: string }) {
               }}
               placeholder={sv ? 'Skriv skolans namn…' : "Type your school's name…"}
               autoComplete="off"
-              className="w-full rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] py-4 pl-12 pr-4 text-[1.0625rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] outline-none transition-all duration-[240ms] focus:border-[var(--color-ink)] focus:ring-2 focus:ring-[var(--color-ink)]/10"
+              className="w-full rounded-[12px] border-2 border-[var(--color-ink)]/15 bg-[var(--color-surface)] py-4 pl-12 pr-4 text-[1.0625rem] text-[var(--color-ink)] placeholder-[var(--color-ink-muted)] shadow-[var(--shadow-lift)] outline-none transition-all duration-[240ms] focus:border-[var(--color-coral)] focus:ring-4 focus:ring-[var(--color-coral)]/15"
             />
             {/* Dropdown */}
             {open && suggestions.length > 0 && (
