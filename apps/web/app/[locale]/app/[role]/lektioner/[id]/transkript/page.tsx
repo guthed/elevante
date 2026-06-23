@@ -5,6 +5,7 @@ import { isLocale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getStudentLessonDetail } from '@/lib/data/student';
+import { CopyButton } from '@/components/app/CopyButton';
 
 type Props = {
   params: Promise<{ locale: string; role: string; id: string }>;
@@ -40,14 +41,21 @@ export default async function TranscriptPage({ params }: Props) {
           {sv ? '← Tillbaka till lektionen' : '← Back to lesson'}
         </Link>
       </nav>
-      <header className="mb-8">
-        <p className="eyebrow">{sv ? 'Transkript' : 'Transcript'}</p>
-        <h1 className="mt-2 font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-          {lesson.title ?? lesson.course?.name ?? lesson.id}
-        </h1>
+      <header className="mb-8 flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="eyebrow">{sv ? 'Transkript' : 'Transcript'}</p>
+          <h1 className="mt-2 font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+            {lesson.title ?? lesson.course?.name ?? lesson.id}
+          </h1>
+        </div>
+        <CopyButton
+          text={lesson.transcriptText}
+          labelCopy={sv ? 'Kopiera' : 'Copy'}
+          labelCopied={sv ? 'Kopierat' : 'Copied'}
+        />
       </header>
       <article className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-10">
-        <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
+        <pre className="whitespace-pre-wrap break-words font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
           {lesson.transcriptText}
         </pre>
       </article>

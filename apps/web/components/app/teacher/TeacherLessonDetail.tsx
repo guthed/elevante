@@ -5,6 +5,7 @@ import type { LessonDetail, LessonInsight } from '@/lib/data/teacher';
 import { MaterialList } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialList';
 import { MaterialUploadForm } from '@/app/[locale]/app/[role]/lektioner/[id]/MaterialUploadForm';
 import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
+import { CopyButton } from '@/components/app/CopyButton';
 
 // Editorial Calm — Stitch screen 11 + 12 (Lärare Lektionsdetalj + Material upload)
 
@@ -126,10 +127,19 @@ export function TeacherLessonDetail({ locale, lesson, dict, insight, aiInsight, 
       <div className="mt-12 grid gap-10 md:grid-cols-12">
         {/* LEFT — Transcript (65%) */}
         <div className="min-w-0 md:col-span-8">
-          <p className="eyebrow mb-4">{labels.transcriptHeading}</p>
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <p className="eyebrow">{labels.transcriptHeading}</p>
+            {lesson.status === 'ready' && lesson.transcriptText ? (
+              <CopyButton
+                text={lesson.transcriptText}
+                labelCopy={sv ? 'Kopiera' : 'Copy'}
+                labelCopied={sv ? 'Kopierat' : 'Copied'}
+              />
+            ) : null}
+          </div>
           <article className="rounded-[20px] bg-[var(--color-surface)] p-6 md:p-8">
             {lesson.status === 'ready' && lesson.transcriptText ? (
-              <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
+              <pre className="whitespace-pre-wrap break-words font-mono text-[0.875rem] leading-[1.7] text-[var(--color-ink)]">
                 {lesson.transcriptText}
               </pre>
             ) : (

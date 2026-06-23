@@ -60,7 +60,6 @@ export function CourseChatStarter({ locale, courses, labels }: Props) {
       >
         {pending ? labels.sending : labels.send}
       </Button>
-      <p className="text-xs text-[var(--color-ink-subtle)]">{labels.mockNotice}</p>
     </form>
   );
 }

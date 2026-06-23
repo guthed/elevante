@@ -134,13 +134,13 @@ export default async function StudentLibraryPage({ params, searchParams }: Props
       </div>
 
       {/* RIGHT RAIL — 4 cols */}
-      <aside className="md:col-span-4">
+      <aside className="min-w-0 md:col-span-4">
         <div className="sticky top-6">
           <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
             {sv ? 'Kurser i fokus' : 'Courses in focus'}
           </h3>
           <ul className="mt-4 space-y-5">
-            {overview.courses.slice(0, 4).map((course) => (
+            {overview.courses.map((course) => (
               <li key={course.id}>
                 <p className="font-serif text-[1rem] text-[var(--color-ink)]">
                   {course.name}

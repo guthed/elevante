@@ -41,9 +41,6 @@ export function StudentProfileCard({ student, concepts, aiInsight, onClose }: Pr
           <h2 className="font-serif text-[1.25rem] text-[var(--color-ink)]">
             {student.fullName}
           </h2>
-          <p className="mt-0.5 text-[0.8125rem] text-[var(--color-ink-muted)]">
-            NA1A · Biologi 1
-          </p>
         </div>
         <button
           type="button"

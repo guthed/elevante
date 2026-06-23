@@ -72,9 +72,6 @@ export function ChatThread({ chatId, initialMessages, labels }: Props) {
         className="sticky bottom-0 -mx-4 border-t border-[var(--color-sand)] bg-[var(--color-canvas)]/95 px-4 pb-6 pt-4 backdrop-blur md:-mx-0"
       >
         <input type="hidden" name="chat_id" value={chatId} />
-        <p className="mb-2 text-center text-[0.75rem] text-[var(--color-ink-muted)]">
-          {labels.mockNotice}
-        </p>
         <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-3 focus-within:border-[var(--color-ink-secondary)]">
           <Textarea
             id="chat-question"

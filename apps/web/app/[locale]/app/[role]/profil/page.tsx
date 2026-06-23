@@ -36,7 +36,7 @@ export default async function LearnerProfilePage({ params }: Props) {
 
   return (
     <div className="container-wide py-10 md:py-14">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-3xl">
         <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
           {sv ? 'Din lärprofil' : 'Your learner profile'}
         </h1>
