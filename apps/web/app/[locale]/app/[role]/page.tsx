@@ -5,7 +5,7 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getTeacherOverview, getRecentLessonInsightRows } from '@/lib/data/teacher';
-import { getStudentOverview } from '@/lib/data/student';
+import { getStudentOverview, getUserChatHistory } from '@/lib/data/student';
 import { getAdminOverview } from '@/lib/data/admin';
 import { StudentHome } from '@/components/app/student/StudentHome';
 import { TeacherDashboard } from '@/components/app/teacher/TeacherDashboard';
@@ -32,9 +32,10 @@ export default async function RoleOverviewPage({ params }: Props) {
   if (role === 'teacher') {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
-    const [data, insightRows] = await Promise.all([
+    const [data, insightRows, dict] = await Promise.all([
       getTeacherOverview(profile.id),
       getRecentLessonInsightRows(profile.id, 3),
+      getDictionary(locale),
     ]);
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
@@ -44,6 +45,7 @@ export default async function RoleOverviewPage({ params }: Props) {
         firstName={firstName}
         data={data}
         insightRows={insightRows}
+        dict={dict}
       />
     );
   }
@@ -51,10 +53,23 @@ export default async function RoleOverviewPage({ params }: Props) {
   if (role === 'student') {
     const profile = await getCurrentProfile();
     if (!profile) notFound();
-    const data = await getStudentOverview(profile.id);
+    const [data, chatHistory, dict] = await Promise.all([
+      getStudentOverview(profile.id),
+      getUserChatHistory(),
+      getDictionary(locale),
+    ]);
+    const lastChat = chatHistory[0] ?? null;
     const firstName =
       profile.full_name?.split(' ')[0] ?? profile.email?.split('@')[0] ?? 'du';
-    return <StudentHome locale={locale} firstName={firstName} data={data} />;
+    return (
+      <StudentHome
+        locale={locale}
+        firstName={firstName}
+        data={data}
+        dict={dict}
+        lastChat={lastChat}
+      />
+    );
   }
 
   // Admin — Editorial Calm enligt Stitch screen 13

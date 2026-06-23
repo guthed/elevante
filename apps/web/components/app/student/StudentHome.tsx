@@ -1,13 +1,20 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
-import type { StudentOverview, StudentLessonRow } from '@/lib/data/student';
+import type { Dictionary } from '@/lib/i18n/types';
+import type {
+  StudentOverview,
+  StudentLessonRow,
+  ChatHistoryRow,
+} from '@/lib/data/student';
 
-// Editorial Calm — Stitch screen 02-student-home.png
+// Editorial Calm — dashboard-omdesign Fas B (fråge-ruta + villkorat fortsätt-kort)
 
 type Props = {
   locale: Locale;
   firstName: string;
   data: StudentOverview;
+  dict: Dictionary;
+  lastChat: ChatHistoryRow | null;
 };
 
 function greeting(locale: Locale, name: string): string {
@@ -74,8 +81,9 @@ function formatTime(iso: string | null, locale: Locale): string {
   }).format(new Date(iso));
 }
 
-export function StudentHome({ locale, firstName, data }: Props) {
+export function StudentHome({ locale, firstName, data, dict, lastChat }: Props) {
   const sv = locale === 'sv';
+  const s = dict.app.pages.student.overview;
   const base = `/${locale}/app/student`;
   const todaysLessons = data.recentLessons.slice(0, 3);
 
@@ -84,13 +92,42 @@ export function StudentHome({ locale, firstName, data }: Props) {
       {/* MAIN — 8 cols on desktop */}
       <div className="min-w-0 md:col-span-8">
         <header>
-          <h1 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+          <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
             {greeting(locale, firstName)}
           </h1>
           <p className="mt-2 text-[0.875rem] text-[var(--color-ink-muted)]">
             {dateSubtitle(locale)}
           </p>
         </header>
+
+        {/* Hjälte — fråga Elevante */}
+        <Link
+          href={`${base}/chat`}
+          className="mt-8 block rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(26,26,46,0.12)]"
+        >
+          <p className="text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--color-accent)]">
+            {s.askEyebrow}
+          </p>
+          <p className="mt-2 font-serif text-[1.25rem] leading-snug text-[var(--color-ink)]">
+            {s.askTitle}
+          </p>
+          <div className="mt-4 flex items-center gap-3 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3">
+            <span className="min-w-0 flex-1 truncate text-[0.9375rem] text-[var(--color-ink-muted)]">
+              {s.askPlaceholder}
+            </span>
+            <span className="shrink-0 rounded-[8px] bg-[var(--color-ink)] px-3 py-1.5 text-[0.8125rem] text-[var(--color-canvas)]">
+              {s.askCta} →
+            </span>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded-full border border-[var(--color-sand)] px-3 py-1 text-[0.8125rem] text-[var(--color-ink-secondary)]">
+              {s.askExample1}
+            </span>
+            <span className="rounded-full border border-[var(--color-sand)] px-3 py-1 text-[0.8125rem] text-[var(--color-ink-secondary)]">
+              {s.askExample2}
+            </span>
+          </div>
+        </Link>
 
         <div className="my-10 h-px bg-[var(--color-sand)]" />
 
@@ -143,35 +180,28 @@ export function StudentHome({ locale, firstName, data }: Props) {
           </p>
         </section>
 
-        {/* Fortsätt där du slutade */}
-        <section className="mt-14">
-          <h2 className="font-serif text-[1.5rem] leading-tight text-[var(--color-ink)]">
-            {sv ? 'Fortsätt där du slutade' : 'Pick up where you left off'}
-          </h2>
-          <Link
-            href={`${base}/chat`}
-            className="mt-6 block rounded-[20px] bg-[var(--color-surface)] p-6 shadow-[0_8px_24px_-8px_rgba(26,26,46,0.08)] transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,26,46,0.12)]"
-          >
-            <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-              {sv ? 'Senaste chatten' : 'Last chat'}
-            </p>
-            <p className="mt-3 font-serif text-[1.125rem] italic text-[var(--color-ink)]">
-              {sv
-                ? '"Vad var poängen med integralerna idag?"'
-                : '"What was the point of integrals today?"'}
-            </p>
-            <div className="mt-4 rounded-[12px] bg-[var(--color-sage)]/25 p-4">
-              <p className="text-[0.9375rem] leading-relaxed text-[var(--color-ink)]">
-                {sv
-                  ? 'En integral räknar ihop små bitar till en helhet. På dagens lektion räknade ni…'
-                  : 'An integral sums tiny pieces into a whole. Today you computed…'}
+        {/* Fortsätt där du slutade — endast om en riktig chatt finns */}
+        {lastChat ? (
+          <section className="mt-14">
+            <h2 className="font-serif text-[1.5rem] leading-tight text-[var(--color-ink)]">
+              {s.continueHeading}
+            </h2>
+            <Link
+              href={`${base}/chat/${lastChat.id}`}
+              className="mt-6 block rounded-[20px] bg-[var(--color-surface)] p-6 shadow-[0_4px_16px_-4px_rgba(26,26,46,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(26,26,46,0.12)]"
+            >
+              <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                {s.continueLabel}
               </p>
-            </div>
-            <p className="mt-3 inline-flex items-center gap-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
-              {sv ? 'Öppna chatten' : 'Open chat'} →
-            </p>
-          </Link>
-        </section>
+              <p className="mt-3 font-serif text-[1.125rem] italic text-[var(--color-ink)]">
+                {lastChat.title ?? '—'}
+              </p>
+              <p className="mt-3 inline-flex items-center gap-2 text-[0.875rem] text-[var(--color-ink-secondary)]">
+                {s.continueCta} →
+              </p>
+            </Link>
+          </section>
+        ) : null}
       </div>
 
       {/* RIGHT RAIL — 4 cols */}
@@ -204,14 +234,15 @@ export function StudentHome({ locale, firstName, data }: Props) {
           ) : null}
 
           <div className="rounded-[20px] border border-[var(--color-sand)] p-6">
-            <p className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-              {sv ? 'Tips för veckan' : 'Tip of the week'}
-            </p>
-            <p className="mt-3 font-serif text-[1rem] italic leading-snug text-[var(--color-ink)]">
-              {sv
-                ? '"Skriv frågan så som du faktiskt undrar — Elevante svarar bäst när du är dig själv."'
-                : '"Write the question the way you actually wonder it — Elevante answers best when you\'re yourself."'}
-            </p>
+            <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
+              {s.examQuickHeading}
+            </h3>
+            <Link
+              href={`${base}/provplugg`}
+              className="mt-3 inline-flex text-[0.9375rem] text-[var(--color-ink-secondary)] transition-colors hover:text-[var(--color-ink)] hover:underline"
+            >
+              {s.examQuickCta} →
+            </Link>
           </div>
         </div>
       </aside>
