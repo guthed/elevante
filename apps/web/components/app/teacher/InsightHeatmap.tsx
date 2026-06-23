@@ -67,15 +67,15 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-[20px] bg-[var(--color-surface)] p-6">
+      <div className="overflow-x-auto rounded-[20px] bg-[var(--color-surface)] p-4 md:p-6">
         <div
           className="grid gap-1 text-[0.75rem]"
           style={{
-            gridTemplateColumns: `140px repeat(${insight.concepts.length}, minmax(72px, 1fr)) 56px`,
+            gridTemplateColumns: `120px repeat(${insight.concepts.length}, minmax(72px, 1fr)) 56px`,
           }}
         >
           {/* Header-rad: tom hörna + koncept-rubriker + "Σ" totals-kolumn */}
-          <div />
+          <div className="sticky left-0 z-10 bg-[var(--color-surface)]" />
           {insight.concepts.map((c) => (
             <button
               key={c}
@@ -101,7 +101,7 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
           ))}
 
           {/* Total-rad nederst */}
-          <div className="mt-2 border-t border-[var(--color-sand)] pt-3 text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+          <div className="sticky left-0 z-10 mt-2 border-t border-[var(--color-sand)] bg-[var(--color-surface)] pt-3 text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
             Per koncept
           </div>
           {insight.concepts.map((c) => (
@@ -193,7 +193,7 @@ function Row({
       <button
         type="button"
         onClick={onClick}
-        className="flex items-center text-left text-[0.8125rem] text-[var(--color-ink)] underline-offset-2 hover:underline"
+        className="sticky left-0 z-10 flex items-center bg-[var(--color-surface)] pr-2 text-left text-[0.8125rem] text-[var(--color-ink)] underline-offset-2 hover:underline"
       >
         <span className="truncate">{student.fullName}</span>
       </button>

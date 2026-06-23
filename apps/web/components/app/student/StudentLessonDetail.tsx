@@ -92,7 +92,7 @@ export function StudentLessonDetail({ locale, lesson, dict }: Props) {
       {/* 2-col layout */}
       <div className="mt-10 grid gap-10 md:grid-cols-12">
         {/* LEFT — Summary + Suggested questions + Chat input (7 col) */}
-        <div className="md:col-span-7 space-y-6">
+        <div className="min-w-0 md:col-span-7 space-y-6">
           {lesson.summary ? (
             <LessonSummary summary={lesson.summary} />
           ) : (
@@ -138,7 +138,7 @@ export function StudentLessonDetail({ locale, lesson, dict }: Props) {
         </div>
 
         {/* RIGHT — Materials + transcript link (5 col) */}
-        <aside className="space-y-6 md:col-span-5">
+        <aside className="min-w-0 space-y-6 md:col-span-5">
           <div className="rounded-[20px] border border-[var(--color-sand)] p-6">
             <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
               {labels.materialsHeading}

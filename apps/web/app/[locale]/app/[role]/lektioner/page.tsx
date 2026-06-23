@@ -76,7 +76,43 @@ export default async function TeacherLessonsPage({ params, searchParams }: Props
         <EmptyState title={labels.empty} />
       ) : (
       <Card padded={false}>
-        <div className="overflow-x-auto">
+        {/* Mobil: staplade radkort (tabellen scrollar fult i sidled) */}
+        <ul className="divide-y divide-[var(--color-border)] md:hidden">
+          {lessons.map((lesson) => (
+            <li key={lesson.id}>
+              <Link
+                href={`${base}/lektioner/${lesson.id}`}
+                className="flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-[var(--color-bg-subtle)]"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-[var(--color-primary)]">
+                    {lesson.title ??
+                      (lesson.recordedAt
+                        ? new Date(lesson.recordedAt).toLocaleDateString(
+                            locale === 'sv' ? 'sv-SE' : 'en-GB',
+                          )
+                        : dict.app.pages.teacher.lessonDetail.notRecorded)}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs text-[var(--color-ink-muted)]">
+                    {[lesson.courseName, lesson.className].filter(Boolean).join(' · ') ||
+                      '—'}
+                    {lesson.recordedAt
+                      ? ` · ${new Date(lesson.recordedAt).toLocaleDateString(
+                          locale === 'sv' ? 'sv-SE' : 'en-GB',
+                        )}`
+                      : ''}
+                  </p>
+                </div>
+                <LessonStatusBadge
+                  status={lesson.status}
+                  labels={dict.app.pages.teacher.statuses}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        {/* Laptop: tabell */}
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-[var(--color-border)] text-xs uppercase tracking-wider text-[var(--color-ink-subtle)]">
               <tr>

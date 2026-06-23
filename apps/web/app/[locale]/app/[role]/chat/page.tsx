@@ -46,8 +46,8 @@ export default async function StudentChatLandingPage({ params }: Props) {
 
   return (
     <div className="container-wide grid gap-12 py-10 md:grid-cols-12 md:py-14">
-      {/* HISTORY SIDEBAR — 4 cols */}
-      <aside className="md:col-span-3">
+      {/* HISTORY SIDEBAR — 4 cols. På mobil hamnar den under prompten (order-last). */}
+      <aside className="order-last min-w-0 md:order-none md:col-span-3">
         <h2 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
           {sv ? 'Senaste' : 'Recent'}
         </h2>
@@ -79,7 +79,7 @@ export default async function StudentChatLandingPage({ params }: Props) {
       </aside>
 
       {/* MAIN — 9 cols, centered prompt */}
-      <main className="md:col-span-9">
+      <main className="min-w-0 md:col-span-9">
         <div className="mx-auto max-w-2xl py-8 md:py-16">
           <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
             {sv ? 'Vad undrar du om?' : 'What are you wondering about?'}
