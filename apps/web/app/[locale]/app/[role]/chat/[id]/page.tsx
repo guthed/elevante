@@ -48,7 +48,7 @@ export default async function StudentChatThreadPage({ params }: Props) {
   return (
     <div className="container-wide grid gap-12 py-10 md:grid-cols-12 md:py-14">
       {/* History sidebar — 3 cols */}
-      <aside className="md:col-span-3">
+      <aside className="min-w-0 md:col-span-3">
         <Link
           href={`${base}/chat`}
           className="inline-flex items-center gap-2 rounded-[12px] bg-[var(--color-ink)] px-4 py-2 text-[0.875rem] font-medium text-[var(--color-canvas)] transition-opacity hover:opacity-90"
@@ -84,7 +84,7 @@ export default async function StudentChatThreadPage({ params }: Props) {
       </aside>
 
       {/* Chat main — 9 cols, max-w-2xl centered */}
-      <main className="md:col-span-9">
+      <main className="min-w-0 md:col-span-9">
         <div className="mx-auto max-w-3xl px-2">
           {thread.chat.scope === 'selection' && thread.chat.lesson_ids ? (
             <p className="mb-3 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
