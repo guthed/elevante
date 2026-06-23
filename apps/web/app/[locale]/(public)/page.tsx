@@ -8,6 +8,7 @@ import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
 import { Faq, type FaqItem } from '@/components/public/Faq';
 import { RotatingHeadline } from '@/components/public/RotatingHeadline';
+import { LessonTranscriptDemo } from '@/components/public/LessonTranscriptDemo';
 import { notFound } from 'next/navigation';
 import { urlFor } from '@/lib/site';
 
@@ -132,26 +133,29 @@ export default async function HomePage({ params }: Props) {
       {/* HERO */}
       <section className="pt-16 pb-20 md:pt-24 md:pb-28">
         <Container width="wide">
-          <div className="grid items-center gap-12 md:grid-cols-12 md:gap-16">
-            <div className="md:col-span-7">
+          {/* Mobil-ordning: rubrik → demo → knappar. På desktop ligger knapparna
+              kvar under texten (rad 2) med demon centrerad i högerkolumnen. */}
+          <div className="grid gap-10 md:grid-cols-12 md:gap-x-16 md:gap-y-6">
+            <div className="md:col-span-7 md:col-start-1 md:row-start-1 md:self-end">
               <RotatingHeadline locale={locale} />
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
                   ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
                   : 'Elevante records and saves everything said in the classroom. Afterwards, students can go back and ask about anything they don\'t remember, didn\'t understand, or didn\'t think to ask while they were there.'}
               </p>
-              <div className="mt-10 flex flex-wrap items-center gap-5">
-                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                  {sv ? 'Boka demo' : 'Book demo'}
-                </LinkButton>
-                <LinkButton href={`${base}/demo`} variant="text" size="lg">
-                  {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
-                </LinkButton>
-              </div>
             </div>
 
-            <div className="md:col-span-5">
-              <ChatMockup locale={locale} />
+            <div className="md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-2 md:self-center">
+              <LessonTranscriptDemo locale={locale} />
+            </div>
+
+            <div className="flex flex-wrap items-center gap-5 md:col-span-7 md:col-start-1 md:row-start-2 md:self-start">
+              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                {sv ? 'Boka demo' : 'Book demo'}
+              </LinkButton>
+              <LinkButton href={`${base}/demo`} variant="text" size="lg">
+                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
+              </LinkButton>
             </div>
           </div>
         </Container>
@@ -279,12 +283,17 @@ export default async function HomePage({ params }: Props) {
             <div className="md:col-span-5">
               <p className="eyebrow mb-6">{sv ? 'Tryggt' : 'Safe'}</p>
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv ? 'Byggt i Sverige. Lagras i Berget.' : 'Built in Sweden. Stored in the mountain.'}
+                {sv ? 'Byggt i Sverige. Lagras i Berget.' : 'Built in Sweden. Hosted inside a mountain (really).'}
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'GDPR är inte ett påslag på Elevante — det är hela arkitekturen.'
                   : "GDPR isn't an add-on to Elevante — it's the architecture."}
+              </p>
+              <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {sv
+                  ? 'Hela vår AI-pipeline körs hos Berget — en svensk leverantör vars servrar bokstavligen står inne i ett berg. För skolan betyder det att inspelningar och transkript stannar i Sverige, under svensk lag och fysiskt skyddade. Ingenting lämnas över till amerikanska moln, och ingen utländsk myndighet kan begära ut elevernas data.'
+                  : 'Our entire AI pipeline runs on Berget — a Swedish provider whose servers literally sit inside a mountain. For the school that means recordings and transcripts stay in Sweden, under Swedish law and physically protected. Nothing is handed off to US clouds, and no foreign authority can request your students’ data.'}
               </p>
               <div className="mt-8 relative h-48 w-full overflow-hidden rounded-[16px]">
                 <Image
@@ -499,44 +508,5 @@ function DoorCard({
         </span>
       </div>
     </Link>
-  );
-}
-
-/* ── Chattmockup i hjälten ─────────────────────────────────────── */
-function ChatMockup({ locale }: { locale: string }) {
-  const sv = locale === 'sv';
-  return (
-    <div className="relative mx-auto max-w-md rotate-[-1.5deg] rounded-[24px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5 shadow-[0_24px_60px_-16px_rgba(26,26,46,0.18)] md:rotate-[-2deg]">
-      <div className="mb-3 flex items-center justify-between border-b border-[var(--color-sand)] pb-3">
-        <span className="font-serif text-[0.875rem] text-[var(--color-ink)]">
-          Elevante
-        </span>
-        <span className="text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-          {sv ? 'Matematik 4' : 'Mathematics 4'}
-        </span>
-      </div>
-      <div className="mb-4 flex justify-end">
-        <div className="max-w-[80%] rounded-[16px] bg-[var(--color-ink)] px-4 py-2.5 text-[0.875rem] text-[var(--color-canvas)]">
-          {sv ? 'Vad var poängen med integralerna idag?' : 'What was the point of integrals today?'}
-        </div>
-      </div>
-      <div className="space-y-3">
-        <p className="text-[0.875rem] leading-relaxed text-[var(--color-ink)]">
-          {sv
-            ? 'En integral räknar ihop små bitar till en helhet. På dagens lektion räknade ni arean under en kurva — det är samma idé.'
-            : 'An integral adds up tiny pieces into a whole. Today you computed the area under a curve — same idea.'}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <span className="source-pill">
-            <span className="status-dot status-dot--sage" aria-hidden="true" />
-            {sv ? 'Lektion 12 · 23:14' : 'Lesson 12 · 23:14'}
-          </span>
-          <span className="source-pill">
-            <span className="status-dot status-dot--sage" aria-hidden="true" />
-            {sv ? 'Lektion 12 · 28:47' : 'Lesson 12 · 28:47'}
-          </span>
-        </div>
-      </div>
-    </div>
   );
 }

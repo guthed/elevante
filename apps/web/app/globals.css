@@ -246,6 +246,58 @@
     animation: elevante-coral-pulse 2s ease-in-out infinite;
   }
 
+  /* Hero-demo: lektionstranskript som tänds upp (LessonTranscriptDemo) */
+  .transcript-line {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--color-ink-soft);
+    padding: 0.375rem 0.75rem;
+    margin: 0.125rem 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    transition: background 500ms ease, color 500ms ease, border-color 500ms ease;
+  }
+  .transcript-ts {
+    margin-right: 0.625rem;
+    color: var(--color-ink-soft);
+    opacity: 0.85;
+  }
+  .transcript-line--hot {
+    /* sage-ton av canvas — markerar raden svaret bygger på */
+    background: #eef2e6;
+    color: var(--color-ink);
+    border-left-color: var(--color-coral);
+  }
+  .transcript-line--hot .transcript-ts {
+    color: var(--color-coral);
+    opacity: 1;
+  }
+
+  /* Blinkande skrivmarkör (fråga + svar som skrivs ut) */
+  @keyframes elevante-caret-blink { 50% { opacity: 0; } }
+  .type-caret::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--color-coral);
+    animation: elevante-caret-blink 1s steps(1) infinite;
+  }
+
+  /* Källpiller som tonar in efter svaret */
+  .demo-pill {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 400ms ease, transform 400ms ease;
+  }
+  .demo-pill--show {
+    opacity: 1;
+    transform: none;
+  }
+
   /* Bloggartikelns brödtext — markdown renderad via <Prose>. Editorial Calm. */
   .prose-elevante {
     color: var(--color-ink-secondary);
