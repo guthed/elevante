@@ -16,6 +16,27 @@ Format per entry:
 
 ---
 
+## [Hjälte — självspelande transkript-demo] — 2026-06-23
+
+### Byggt
+- **`LessonTranscriptDemo` ersätter `ChatMockup`** i startsidans hjälte: lektionstranskriptet "tänds upp" på de rader svaret bygger på, eleven skriver frågan tecken för tecken (blinkande coral-markör), en kort "tänk"-paus, och Elevante skriver ut svaret löpande med källpiller som matchar de tända tidsstämplarna.
+- **Fem ämnen loopar** med olika frågetyper: Matematik (poäng), Biologi (begrepp man inte förstod), Historia (orsak), Kemi (missad lektion), Samhällskunskap (hur funkar det). Egna scenarier per locale — `/sv` och `/en` får var sin uppsättning transkript, frågor, svar och piller.
+- **Hjälten omordnad i mobilvyn**: rubrik → transkript+chatt → CTA-knappar (Boka demo / Klicka igenom demon). På desktop ligger knapparna kvar under texten med demon centrerad i högerkolumnen.
+- **Trygghet-sektionen**: engelsk rubrik bytt till "Built in Sweden. Hosted inside a mountain (really)." + ny text (sv/en) om varför AI-pipelinen körs hos Berget och vad det ger skolan (data stannar i Sverige, svensk lag, fysiskt skyddat, ingen amerikansk molnberoende).
+- **Lint-setup lagad för Next 16**: `next lint` är borttaget och kraschade; lint-skriptet bytt till `eslint . --max-warnings 0` och `eslint.config.mjs` förenklad till direkta `eslint-config-next`-importer.
+
+### QA-fynd
+- Verifierat i webbläsaren: sv + en, desktop + mobil (375px), inga konsolfel; typecheck + lint grönt.
+- Mobil-ordning bekräftad via DOM (demo 441–1064px, Boka demo 1104px).
+
+### Tekniska beslut
+- **Imperativ typewriter via refs + `setTimeout`** i stället för state per tecken — undviker en re-render per bokstav.
+- **Hela det korta transkriptet visas och båda källraderna tänds samtidigt**, i stället för att scrolla fram en rad: i den smala 5/12-hjälte-kolumnen radbryts raderna, vilket gjorde scroll-greppet opålitligt (nedre källraden klipptes). Tydligare att visa allt.
+- **Mobil-omordning utan duplicerad markup**: tre grid-syskon (text, demo, CTA) i DOM-ordning text→demo→CTA; desktop placeras explicit med `md:row-start`/`col-start` så knapparna hamnar under texten igen.
+- **`prefers-reduced-motion`** respekteras — visar färdigt tillstånd (fråga, tända rader, svar, piller) utan animering.
+
+---
+
 ## [Prestanda — middleware-scoping] — 2026-05-29
 
 ### Byggt
