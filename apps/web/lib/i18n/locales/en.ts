@@ -158,6 +158,28 @@ const en: Dictionary = {
         prospects: 'Leads',
       },
     },
+    account: {
+      navLabel: 'Account',
+      title: 'Account',
+      subtitle: 'Manage your details, password and language.',
+      profileHeading: 'Profile',
+      nameLabel: 'Name',
+      emailLabel: 'Email',
+      emailHint: 'Your email is managed by your school and can’t be changed here.',
+      saveName: 'Save name',
+      saving: 'Saving…',
+      nameSaved: 'Your name has been saved.',
+      securityHeading: 'Security',
+      newPasswordLabel: 'New password',
+      confirmPasswordLabel: 'Confirm password',
+      savePassword: 'Change password',
+      passwordSaved: 'Your password has been updated.',
+      languageHeading: 'Language',
+      errorInvalid: 'Please enter a name.',
+      errorWeak: 'Password must be at least 8 characters.',
+      errorMismatch: 'Passwords don’t match.',
+      errorGeneric: 'Something went wrong. Please try again.',
+    },
     pages: {
       student: {
         overview: {

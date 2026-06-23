@@ -66,15 +66,20 @@ export function Sidebar({ locale, role, dict, user }: Props) {
       {/* User row */}
       <div className="border-t border-[var(--color-sand)]/60 px-4 py-4">
         <div className="flex items-center gap-3">
-          <Avatar name={displayName} size="sm" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
-              {displayName}
-            </p>
-            <p className="truncate text-[0.75rem] text-[var(--color-ink-muted)]">
-              {roleLabel}
-            </p>
-          </div>
+          <Link
+            href={`${base}/${role}/konto`}
+            className="-mx-1 flex min-w-0 flex-1 items-center gap-3 rounded-[12px] px-1 py-1 transition-colors hover:bg-[var(--color-surface-soft)]"
+          >
+            <Avatar name={displayName} size="sm" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
+                {displayName}
+              </p>
+              <p className="truncate text-[0.75rem] text-[var(--color-ink-muted)]">
+                {roleLabel}
+              </p>
+            </div>
+          </Link>
           <form action={signOutWithLocale}>
             <button
               type="submit"

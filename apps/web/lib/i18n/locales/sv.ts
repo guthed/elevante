@@ -158,6 +158,28 @@ const sv: Dictionary = {
         prospects: 'Intresse',
       },
     },
+    account: {
+      navLabel: 'Konto',
+      title: 'Konto',
+      subtitle: 'Hantera dina uppgifter, lösenord och språk.',
+      profileHeading: 'Profil',
+      nameLabel: 'Namn',
+      emailLabel: 'E-post',
+      emailHint: 'E-postadressen hanteras av din skola och går inte att ändra här.',
+      saveName: 'Spara namn',
+      saving: 'Sparar…',
+      nameSaved: 'Namnet är sparat.',
+      securityHeading: 'Säkerhet',
+      newPasswordLabel: 'Nytt lösenord',
+      confirmPasswordLabel: 'Bekräfta lösenord',
+      savePassword: 'Byt lösenord',
+      passwordSaved: 'Lösenordet är uppdaterat.',
+      languageHeading: 'Språk',
+      errorInvalid: 'Fyll i ett namn.',
+      errorWeak: 'Lösenordet måste vara minst 8 tecken.',
+      errorMismatch: 'Lösenorden matchar inte.',
+      errorGeneric: 'Något gick fel. Försök igen.',
+    },
     pages: {
       student: {
         overview: {

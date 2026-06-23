@@ -150,6 +150,28 @@ export type Dictionary = {
         prospects: string;
       };
     };
+    account: {
+      navLabel: string;
+      title: string;
+      subtitle: string;
+      profileHeading: string;
+      nameLabel: string;
+      emailLabel: string;
+      emailHint: string;
+      saveName: string;
+      saving: string;
+      nameSaved: string;
+      securityHeading: string;
+      newPasswordLabel: string;
+      confirmPasswordLabel: string;
+      savePassword: string;
+      passwordSaved: string;
+      languageHeading: string;
+      errorInvalid: string;
+      errorWeak: string;
+      errorMismatch: string;
+      errorGeneric: string;
+    };
     pages: {
       student: {
         overview: {
