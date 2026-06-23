@@ -16,6 +16,18 @@ Format per entry:
 
 ---
 
+## [Startsida — trim] — 2026-06-23
+
+### Byggt
+- **Dubbla demo-länken borttagen** i hjälten: "Klicka igenom Elevante-demon" konkurrerade med den nya levande demon bredvid. Kvar är "Boka demo" i hjälten + "Klicka igenom hela demon" i Spela-in-sektionen.
+- **FAQ trimmad 8 → 5** (sv/en): kvar är Vad är Elevante, Hittar Elevante på svar (strikt RAG), Är Elevante GDPR-säkert, Ersätter Elevante läraren, Vad kostar Elevante. Bort: "Hur fungerar" (överlappar "Vad är" + visas i hero/triptyk), "hårdvara/installation" (täcks av För skolan-kortet), "vilka skolor".
+- **EU/Berget-dedup**: trust-punkten "All data inom EU. Aldrig i USA." borttagen — det nya Berget-stycket säger det tydligare (data stannar i Sverige, ingen amerikansk molntjänst). Fyra trust-punkter kvar.
+
+### Tekniska beslut
+- **Stockfotona i de tre dörrarna + trygghet behålls** (medvetet val) — övervägdes att bytas mot riktiga produktskärmar/tas bort, men sparas tills riktiga produktbilder finns.
+
+---
+
 ## [Hjälte — självspelande transkript-demo] — 2026-06-23
 
 ### Byggt

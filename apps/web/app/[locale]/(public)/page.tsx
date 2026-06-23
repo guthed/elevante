@@ -41,14 +41,12 @@ export default async function HomePage({ params }: Props) {
 
   const trustPoints: string[] = sv
     ? [
-        'All data inom EU. Aldrig i USA.',
         'Råljudet raderas så fort lektionen transkriberats.',
         'Personuppgiftsbiträdesavtal innan första uppladdningen.',
         'Svensk taligenkänning (KB-Whisper), optimerad för svenska.',
         'Ingen AI tränas på elevdata. Aldrig.',
       ]
     : [
-        'All data inside the EU. Never in the US.',
         'Raw audio is deleted as soon as the lesson is transcribed.',
         'A data processing agreement signed before the first upload.',
         'Swedish speech recognition (KB-Whisper), tuned for Swedish.',
@@ -62,20 +60,12 @@ export default async function HomePage({ params }: Props) {
           a: 'Elevante är en svensk plattform som spelar in och transkriberar lektioner så att eleverna kan ställa frågor om dem efteråt. Läraren trycker på en knapp i mobilappen, AI:n transkriberar lektionen, och eleverna chattar sedan med innehållet. Svaren bygger bara på det som faktiskt sades i klassrummet.',
         },
         {
-          q: 'Hur fungerar Elevante?',
-          a: 'Det sker i tre steg. Läraren spelar in lektionen med ett tryck i appen, svensk taligenkänning transkriberar ljudet inom EU, och eleven ställer frågor i en textchat. Varje svar pekar tillbaka till exakt var i lektionen läraren förklarade saken.',
-        },
-        {
           q: 'Hittar Elevante på svar, som en vanlig chatbot?',
           a: 'Nej. Elevante använder strikt RAG, vilket betyder att AI:n bara får svara utifrån lektionens transkribering. Om något inte togs upp på lektionen säger Elevante det rakt ut istället för att gissa. Varje svar visar dessutom källan så att eleven kan kontrollera den.',
         },
         {
           q: 'Är Elevante GDPR-säkert?',
           a: 'Ja. All data lagras inom EU och råljudet raderas så fort transkriberingen är klar. Vi har ett personuppgiftsbiträdesavtal redo innan första uppladdningen och tränar aldrig AI-modeller på elevernas data.',
-        },
-        {
-          q: 'Behöver skolan installera utrustning eller hårdvara?',
-          a: 'Nej. Läraren laddar ner mobilappen och kan börja spela in samma dag. Det finns ingen utrustning att köpa in, inga installationer och ingen IT-uppsättning.',
         },
         {
           q: 'Ersätter Elevante läraren?',
@@ -85,19 +75,11 @@ export default async function HomePage({ params }: Props) {
           q: 'Vad kostar Elevante?',
           a: 'Elevante kostar 500 kr per elev och år, och då ingår allt — inspelning, transkribering, AI-chat och support. Det finns inga setup-avgifter och inga tilläggskostnader per lektion eller fråga. Skolor med över 1 000 elever får volymrabatt.',
         },
-        {
-          q: 'Vilka skolor är Elevante till för?',
-          a: 'Elevante är byggt för svenska och nordiska gymnasieskolor och rullas ut för pilot under 2026. Det finns ingen minimigräns — vill din skola vara med tidigt går det bra att boka en demo.',
-        },
       ]
     : [
         {
           q: 'What is Elevante?',
           a: 'Elevante is a Swedish platform that records and transcribes classroom lessons so students can ask questions about them afterwards. The teacher taps a button in the mobile app, AI transcribes the lesson, and students then chat with the content. Answers are based only on what was actually said in class.',
-        },
-        {
-          q: 'How does Elevante work?',
-          a: 'It works in three steps. The teacher records the lesson with one tap in the app, Swedish speech recognition transcribes the audio inside the EU, and the student asks questions in a text chat. Every answer points back to exactly where in the lesson the teacher explained it.',
         },
         {
           q: 'Does Elevante make up answers, like a regular chatbot?',
@@ -108,20 +90,12 @@ export default async function HomePage({ params }: Props) {
           a: 'Yes. All data is stored inside the EU and raw audio is deleted as soon as transcription is finished. We have a data processing agreement ready before the first upload and never train AI models on student data.',
         },
         {
-          q: 'Does the school need to install equipment or hardware?',
-          a: 'No. The teacher downloads the mobile app and can start recording the same day. There is no equipment to buy, no installations and no IT setup.',
-        },
-        {
           q: 'Does Elevante replace the teacher?',
           a: 'No. Elevante handles repeated questions after the lesson so the teacher gets time back for what actually needs a teacher. It is a tool that extends the lesson, not a replacement for teaching.',
         },
         {
           q: 'What does Elevante cost?',
           a: 'Elevante costs SEK 500 per student per year, and everything is included — recording, transcription, AI chat and support. There are no setup fees and no extra charges per lesson or question. Schools with more than 1,000 students get a volume discount.',
-        },
-        {
-          q: 'Which schools is Elevante for?',
-          a: 'Elevante is built for Swedish and Nordic upper-secondary schools and is rolling out for pilots during 2026. There is no minimum size — if your school wants to join early, you are welcome to book a demo.',
         },
       ];
 
@@ -152,9 +126,6 @@ export default async function HomePage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-5 md:col-span-7 md:col-start-1 md:row-start-2 md:self-start">
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                 {sv ? 'Boka demo' : 'Book demo'}
-              </LinkButton>
-              <LinkButton href={`${base}/demo`} variant="text" size="lg">
-                {sv ? 'Klicka igenom Elevante-demon' : 'Click through the Elevante demo'} →
               </LinkButton>
             </div>
           </div>
