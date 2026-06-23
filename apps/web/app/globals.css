@@ -186,15 +186,16 @@
   .status-dot--sand { background: #c9b88a; }
   .status-dot--ink { background: var(--color-ink); }
 
-  /* Sidinnehåll fade-in */
+  /* Sidinnehåll fade-in.
+     OBS: animera bara opacity — ett kvarvarande transform på <main>
+     (via fill-mode) skapar ett containing block som bryter position:fixed
+     för descendenter (t.ex. InsightDrawer/bottom-sheet). */
   @keyframes elevante-fade-in {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 

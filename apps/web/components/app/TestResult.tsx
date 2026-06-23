@@ -39,7 +39,7 @@ export function TestResult({
       {/* Poäng-header */}
       <div className="rounded-[20px] bg-[var(--color-surface)] p-6 text-center">
         <p className="eyebrow">{headerNote ?? (sv ? 'Resultat' : 'Result')}</p>
-        <p className="mt-2 font-serif text-[2.75rem] leading-none text-[var(--color-ink)] tabular-nums">
+        <p className="mt-2 font-serif text-[2.25rem] leading-none text-[var(--color-ink)] tabular-nums md:text-[2.75rem]">
           {score}
           <span className="text-[var(--color-ink-muted)]">/{maxScore}</span>
         </p>
