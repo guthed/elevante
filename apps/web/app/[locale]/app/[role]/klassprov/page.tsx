@@ -8,7 +8,11 @@ import { Badge } from '@/components/ui/Badge';
 import { LinkButton } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getTeacherClassTests } from '@/lib/data/class-test';
+import {
+  getStudentClassTests,
+  getTeacherClassTests,
+  type StudentClassTestRow,
+} from '@/lib/data/class-test';
 import type { ClassTestStatus } from '@/lib/supabase/database';
 
 type Props = {
@@ -36,6 +40,72 @@ function statusTone(status: ClassTestStatus): 'neutral' | 'success' | 'warning' 
   return 'warning';
 }
 
+const studentRowClass =
+  'flex items-center gap-4 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface)] px-5 py-4';
+
+function StudentRowBody({
+  row,
+  labels,
+  sv,
+}: {
+  row: StudentClassTestRow;
+  labels: { awaitingReview: string; released: string };
+  sv: boolean;
+}) {
+  return (
+    <>
+      <div className="min-w-0 flex-1">
+        <p className="font-serif text-[1.0625rem] text-[var(--color-ink)]">
+          {row.title}
+        </p>
+        {row.className ? (
+          <p className="mt-0.5 text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {row.className}
+          </p>
+        ) : null}
+      </div>
+      {row.submissionStatus === 'released' ? (
+        <Badge tone="success" className="shrink-0">
+          {labels.released}
+        </Badge>
+      ) : row.submissionStatus === 'graded' ? (
+        <Badge tone="warning" className="shrink-0">
+          {labels.awaitingReview}
+        </Badge>
+      ) : (
+        <Badge tone="neutral" className="shrink-0">
+          {sv ? 'Att göra' : 'To do'}
+        </Badge>
+      )}
+    </>
+  );
+}
+
+function renderStudentRow(
+  row: StudentClassTestRow,
+  studentBase: string,
+  labels: { awaitingReview: string; released: string },
+  sv: boolean,
+) {
+  // 'graded' = inlämnat men ej släppt → inget resultat ännu, ingen länk.
+  if (row.submissionStatus === 'graded') {
+    return (
+      <div className={studentRowClass}>
+        <StudentRowBody row={row} labels={labels} sv={sv} />
+      </div>
+    );
+  }
+  // null (gör provet) eller 'released' (visa resultat) → länk till detaljvyn.
+  return (
+    <Link
+      href={`${studentBase}/klassprov/${row.testId}`}
+      className={`${studentRowClass} transition-colors hover:bg-[var(--color-surface-soft)]`}
+    >
+      <StudentRowBody row={row} labels={labels} sv={sv} />
+    </Link>
+  );
+}
+
 export default async function ClassTestsPage({ params }: Props) {
   const { locale: rawLocale, role } = await params;
   if (!isLocale(rawLocale) || !isRole(role)) notFound();
@@ -48,14 +118,42 @@ export default async function ClassTestsPage({ params }: Props) {
   const dict = await getDictionary(locale);
   const t = dict.app.klassprov;
 
-  // Studentvyn implementeras i en senare task (Task 11) — minimal placeholder nu.
   if (role === 'student') {
+    const rows = await getStudentClassTests(profile.id);
+    const studentBase = `/${locale}/app/student`;
+
     return (
       <div className="container-wide py-10 md:py-14">
         <div className="mx-auto max-w-3xl">
           <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
             {sv ? 'Klassprov' : 'Class tests'}
           </h1>
+          <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? 'Prov från dina lärare. Gör provet och se ditt resultat när läraren släpper det.'
+              : 'Tests from your teachers. Take the test and see your result once your teacher releases it.'}
+          </p>
+
+          <div className="mt-8">
+            {rows.length === 0 ? (
+              <EmptyState
+                title={sv ? 'Inga klassprov ännu' : 'No class tests yet'}
+                description={
+                  sv
+                    ? 'När en lärare publicerar ett prov till din klass dyker det upp här.'
+                    : 'When a teacher publishes a test to your class, it shows up here.'
+                }
+              />
+            ) : (
+              <ul className="space-y-2">
+                {rows.map((row) => (
+                  <li key={row.testId}>
+                    {renderStudentRow(row, studentBase, t, sv)}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     );

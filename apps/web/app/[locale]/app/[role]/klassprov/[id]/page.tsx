@@ -7,16 +7,23 @@ import { isRole } from '@/lib/app/roles';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { getCurrentProfile } from '@/lib/supabase/server';
+import { LinkButton } from '@/components/ui/Button';
+import { TestResult } from '@/components/app/TestResult';
 import {
   getClassTestForTeacher,
   getClassTestSubmissions,
+  getMySubmissionResult,
+  getPublishedClassTest,
+  getStudentClassTests,
 } from '@/lib/data/class-test';
 import type {
   ClassTestStatus,
   ClassTestSubmissionStatus,
+  PracticeQuestion,
 } from '@/lib/supabase/database';
 import { QuestionEditor } from './QuestionEditor';
 import { CloseTestButton } from './CloseTestButton';
+import { ClassTestRunner } from './ClassTestRunner';
 
 // Publicering rättar inget men editorns spar-/regenereringsanrop kan vara tunga.
 export const maxDuration = 60;
@@ -69,12 +76,120 @@ export default async function ClassTestDetailPage({ params }: Props) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
 
-  if (role === 'student') {
-    redirect(`/${locale}/app/student/klassprov/${id}`);
-  }
-
   const dict = await getDictionary(locale);
   const t = dict.app.klassprov;
+
+  if (role === 'student') {
+    const studentBase = `/${locale}/app/student`;
+    const rows = await getStudentClassTests(profile.id);
+    const row = rows.find((r) => r.testId === id);
+
+    const breadcrumb = (
+      <nav className="mb-6 text-[0.8125rem] text-[var(--color-ink-muted)]">
+        <Link
+          href={`${studentBase}/klassprov`}
+          className="hover:text-[var(--color-ink)]"
+        >
+          {sv ? 'Klassprov' : 'Class tests'}
+        </Link>
+        <span className="px-2 text-[var(--color-sand-strong)]">/</span>
+        <span className="text-[var(--color-ink-secondary)]">
+          {row?.title ?? (sv ? 'Prov' : 'Test')}
+        </span>
+      </nav>
+    );
+
+    // --- Släppt resultat ---
+    if (row?.submissionStatus === 'released' && row.submissionId) {
+      const result = await getMySubmissionResult(row.submissionId);
+      if (result) {
+        // Hämta facit-strippade frågorna för att para ihop question_id → prompt.
+        const published = await getPublishedClassTest(id);
+        const questions: PracticeQuestion[] = (published?.questions ?? []).map(
+          (q) => ({ ...q, answer_key: '', correct_index: null }),
+        );
+
+        return (
+          <div className="container-wide py-10 md:py-14">
+            <div className="mx-auto max-w-3xl">
+              {breadcrumb}
+              <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+                {row.title}
+              </h1>
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {sv
+                  ? 'Läraren har granskat och släppt ditt resultat.'
+                  : 'Your teacher has reviewed and released your result.'}
+              </p>
+              <div className="mt-8">
+                <TestResult
+                  questions={questions}
+                  answers={result.answers}
+                  overallFeedback={result.overall_feedback}
+                  score={result.score}
+                  maxScore={result.max_score}
+                  locale={locale}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      }
+      // Edge: släppt-flagga men inget resultat → fall igenom till väntläge.
+    }
+
+    // --- Inlämnat, väntar på granskning ---
+    if (row?.submissionStatus === 'graded') {
+      return (
+        <div className="container-wide py-10 md:py-14">
+          <div className="mx-auto max-w-3xl">
+            {breadcrumb}
+            <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+              {row.title}
+            </h1>
+            <div className="mt-8">
+              <EmptyState
+                title={sv ? 'Inlämnat' : 'Submitted'}
+                description={t.awaitingReview}
+                action={
+                  <LinkButton href={`${studentBase}/klassprov`} variant="ghost">
+                    {sv ? 'Till klassprov' : 'Back to class tests'}
+                  </LinkButton>
+                }
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- Gör provet ---
+    const test = await getPublishedClassTest(id);
+    if (!test) notFound();
+
+    return (
+      <div className="container-wide py-10 md:py-14">
+        <div className="mx-auto max-w-3xl">
+          {breadcrumb}
+          <h1 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
+            {test.title}
+          </h1>
+          <p className="mb-2 mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? `${test.questions.length} frågor. Svara så gott du kan — läraren granskar innan resultatet släpps.`
+              : `${test.questions.length} questions. Answer as best you can — your teacher reviews before the result is released.`}
+          </p>
+          <div className="mt-8">
+            <ClassTestRunner
+              testId={id}
+              questions={test.questions}
+              locale={locale}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const test = await getClassTestForTeacher(id);
   if (!test) notFound();
