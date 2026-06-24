@@ -168,43 +168,42 @@ export async function getStudentClassTests(
 ): Promise<StudentClassTestRow[]> {
   const supabase = await createSupabaseServerClient();
 
-  const { data: memberRows } = await supabase
-    .from('class_members')
-    .select('class_id')
-    .eq('profile_id', studentId);
-  const classIds = (memberRows ?? []).map(
-    (m) => (m as { class_id: string }).class_id,
-  );
-  if (classIds.length === 0) return [];
-
-  type ClassTestStudentJoin = {
-    id: string;
-    title: string;
-    status: ClassTest['status'];
-    class_id: string;
-    classes: { name: string } | null;
+  // Elever saknar direkt SELECT på class_tests → läs via security-definer-RPC
+  // (returnerar inget facit).
+  const rpc = supabase as unknown as {
+    rpc: (
+      fn: string,
+      args?: Record<string, unknown>,
+    ) => Promise<{
+      data:
+        | {
+            id: string;
+            title: string;
+            status: ClassTest['status'];
+            class_name: string | null;
+            published_at: string | null;
+          }[]
+        | null;
+    }>;
   };
-  const { data: testRows } = await supabase
-    .from('class_tests')
-    .select('id, title, status, class_id, classes ( name )')
-    .in('class_id', classIds)
-    .in('status', ['published', 'closed'])
-    .order('published_at', { ascending: false });
-  const tests = (testRows ?? []) as ClassTestStudentJoin[];
+  const { data: testData } = await rpc.rpc('list_student_class_tests');
+  const tests = testData ?? [];
   if (tests.length === 0) return [];
 
-  type SubRow = {
-    id: string;
-    class_test_id: string;
-    status: ClassTestSubmission['status'];
-  };
   const { data: subRows } = await supabase
     .from('class_test_submissions')
     .select('id, class_test_id, status')
     .eq('student_id', studentId)
-    .in('class_test_id', tests.map((t) => t.id));
+    .in(
+      'class_test_id',
+      tests.map((t) => t.id),
+    );
   const subByTest = new Map(
-    ((subRows ?? []) as SubRow[]).map((s) => [s.class_test_id, s]),
+    ((subRows ?? []) as {
+      id: string;
+      class_test_id: string;
+      status: ClassTestSubmission['status'];
+    }[]).map((s) => [s.class_test_id, s]),
   );
 
   return tests.map((t) => {
@@ -212,7 +211,7 @@ export async function getStudentClassTests(
     return {
       testId: t.id,
       title: t.title,
-      className: t.classes?.name ?? null,
+      className: t.class_name,
       status: t.status,
       submissionId: sub?.id ?? null,
       submissionStatus: sub?.status ?? null,
