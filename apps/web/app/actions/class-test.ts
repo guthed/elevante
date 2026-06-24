@@ -22,16 +22,20 @@ import {
 const MIN_QUESTIONS = 3;
 const MAX_QUESTIONS = 20;
 
-const createSchema = z.object({
-  classId: z.string().uuid(),
-  title: z.string().trim().min(1).max(160),
-  lessonIds: z.array(z.string().uuid()).min(1),
-  total: z.number().int().min(MIN_QUESTIONS).max(MAX_QUESTIONS),
-  closedPct: z.number().int().min(0).max(100),
-  openPct: z.number().int().min(0).max(100),
-  reasoningPct: z.number().int().min(0).max(100),
-  locale: z.enum(['sv', 'en']),
-});
+const createSchema = z
+  .object({
+    classId: z.string().uuid(),
+    title: z.string().trim().min(1).max(160),
+    lessonIds: z.array(z.string().uuid()).min(1),
+    total: z.number().int().min(MIN_QUESTIONS).max(MAX_QUESTIONS),
+    closedPct: z.number().int().min(0).max(100),
+    openPct: z.number().int().min(0).max(100),
+    reasoningPct: z.number().int().min(0).max(100),
+    locale: z.enum(['sv', 'en']),
+  })
+  .refine((d) => d.closedPct + d.openPct + d.reasoningPct > 0, {
+    message: 'Minst en frågetyp måste ha en andel större än noll.',
+  });
 
 /**
  * Räknar om andelar (%) till heltal per typ, summerar till `total`.
@@ -245,7 +249,8 @@ export async function regenerateQuestion(
   const { error } = await supabase
     .from('class_tests')
     .update({ questions, max_score: maxScore })
-    .eq('id', testId);
+    .eq('id', testId)
+    .eq('status', 'draft');
   if (error) return { ok: false };
   return { ok: true, question: replaced };
 }
