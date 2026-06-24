@@ -299,18 +299,41 @@ export async function generatePracticeTest(
   } catch {
     return null;
   }
-  if (!Array.isArray(parsed.questions)) return null;
 
+  const questions = parseGeneratedQuestions(
+    parsed.questions,
+    validLessonIds,
+    lessons[0]!.id,
+  );
+  return questions.length > 0 ? questions : null;
+}
+
+export type ClassTestComposition = {
+  multiple_choice: number;
+  open: number; // täcker short_answer + open
+  reasoning: number;
+};
+
+/**
+ * Parsar modellsvarets questions-array till validerade frågor (utan id).
+ * Delad mellan generatePracticeTest och generateClassTest.
+ */
+function parseGeneratedQuestions(
+  raw: unknown,
+  validLessonIds: Set<string>,
+  fallbackLessonId: string,
+): Omit<PracticeQuestion, 'id'>[] {
+  if (!Array.isArray(raw)) return [];
   const questions: Omit<PracticeQuestion, 'id'>[] = [];
-  for (const raw of parsed.questions) {
-    const q = raw as Record<string, unknown>;
+  for (const item of raw) {
+    const q = item as Record<string, unknown>;
     const type = q.type as PracticeQuestionType;
     if (!PRACTICE_QUESTION_TYPES.includes(type)) continue;
     if (typeof q.prompt !== 'string' || typeof q.answer_key !== 'string') continue;
     const lessonId =
       typeof q.lesson_id === 'string' && validLessonIds.has(q.lesson_id)
         ? q.lesson_id
-        : lessons[0]!.id;
+        : fallbackLessonId;
     const maxPoints =
       typeof q.max_points === 'number' && q.max_points > 0
         ? Math.round(q.max_points)
@@ -343,8 +366,97 @@ export async function generatePracticeTest(
       max_points: maxPoints,
     });
   }
+  return questions;
+}
 
+/**
+ * Genererar ett klassprov med en specifik typ-fördelning. composition anger
+ * exakt antal frågor per kategori (stängda=multiple_choice, öppna=short_answer/
+ * open, resonerande=reasoning). Returnerar null om Anthropic inte är konfigurerat.
+ */
+export async function generateClassTest(
+  lessons: PracticeLessonInput[],
+  composition: ClassTestComposition,
+): Promise<Omit<PracticeQuestion, 'id'>[] | null> {
+  const client = getClient();
+  if (!client || lessons.length === 0) return null;
+
+  const validLessonIds = new Set(lessons.map((l) => l.id));
+  const contextBlock = lessons
+    .map(
+      (l) =>
+        `[Lektion — id: ${l.id} — ${l.title ?? 'okänd'}]\n${l.transcript.slice(0, 8000)}`,
+    )
+    .join('\n\n');
+
+  const userPrompt = `Skapa ett prov utifrån dessa lektioner med EXAKT denna fördelning:
+- ${composition.multiple_choice} st flervalsfrågor (type "multiple_choice")
+- ${composition.open} st öppna frågor (blanda type "short_answer" och "open")
+- ${composition.reasoning} st resonerande frågor (type "reasoning")
+
+${contextBlock}`;
+
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 4096,
+    system: TEST_GENERATION_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+
+  let parsed: { questions?: unknown };
+  try {
+    parsed = JSON.parse(stripFences(textOf(response)));
+  } catch {
+    return null;
+  }
+  const questions = parseGeneratedQuestions(
+    parsed.questions,
+    validLessonIds,
+    lessons[0]!.id,
+  );
   return questions.length > 0 ? questions : null;
+}
+
+/**
+ * Genererar EN ersättningsfråga av en given typ utifrån lektionerna.
+ * Används när läraren regenererar en enskild fråga i editorn.
+ */
+export async function regenerateClassTestQuestion(
+  lessons: PracticeLessonInput[],
+  type: PracticeQuestionType,
+): Promise<Omit<PracticeQuestion, 'id'> | null> {
+  const client = getClient();
+  if (!client || lessons.length === 0) return null;
+
+  const validLessonIds = new Set(lessons.map((l) => l.id));
+  const contextBlock = lessons
+    .map(
+      (l) =>
+        `[Lektion — id: ${l.id} — ${l.title ?? 'okänd'}]\n${l.transcript.slice(0, 8000)}`,
+    )
+    .join('\n\n');
+
+  const userPrompt = `Skapa EXAKT 1 fråga av type "${type}" utifrån dessa lektioner.\n\n${contextBlock}`;
+
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: TEST_GENERATION_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+
+  let parsed: { questions?: unknown };
+  try {
+    parsed = JSON.parse(stripFences(textOf(response)));
+  } catch {
+    return null;
+  }
+  const questions = parseGeneratedQuestions(
+    parsed.questions,
+    validLessonIds,
+    lessons[0]!.id,
+  );
+  return questions[0] ?? null;
 }
 
 export type PracticeGradeInput = {
