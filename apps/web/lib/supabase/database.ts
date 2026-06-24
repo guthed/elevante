@@ -244,6 +244,21 @@ export type ClassTest = {
   published_at: string | null;
 };
 
+type ClassTestInsert = {
+  school_id: string;
+  class_id: string;
+  created_by: string;
+  title: string;
+  lesson_ids: string[];
+  composition: TestComposition;
+  questions?: PracticeQuestion[];
+  max_score?: number;
+  status?: ClassTestStatus;
+  published_at?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
 // Elevens svar: PracticeAnswer + bevarad AI-bedömning (lärar-justerbar feedback).
 export type ClassTestAnswer = PracticeAnswer & {
   ai_points: number;
@@ -514,6 +529,7 @@ export type Database = {
       chat_messages: TableDef<ChatMessage, ChatMessageInsert>;
       lesson_views: TableDef<LessonView, LessonViewInsert>;
       practice_tests: TableDef<PracticeTest, PracticeTestInsert>;
+      class_tests: TableDef<ClassTest, ClassTestInsert>;
       learner_profiles: TableDef<LearnerProfile, LearnerProfileInsert>;
       school_lookups: TableDef<SchoolLookup, SchoolLookupInsert>;
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
