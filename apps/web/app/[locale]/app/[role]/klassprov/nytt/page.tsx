@@ -11,6 +11,11 @@ type Props = {
   params: Promise<{ locale: string; role: string }>;
 };
 
+// Provgenereringen (createClassTestDraft) anropar Claude och kan ta >30 s.
+// vercel.json sätter 30 s default på app/**/*.tsx — höj till 60 s för
+// skapa-rutten, annars 504-timeout vid generering (samma som provplugg).
+export const maxDuration = 60;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const sv = locale === 'sv';
