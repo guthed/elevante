@@ -185,6 +185,7 @@ export async function updateClassTestQuestions(
 ): Promise<{ ok: boolean }> {
   const profile = await getCurrentProfile();
   if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
 
   const parsed = z.array(questionSchema).min(1).safeParse(rawQuestions);
   if (!parsed.success) return { ok: false };
@@ -211,6 +212,7 @@ export async function regenerateQuestion(
 ): Promise<{ ok: boolean; question?: PracticeQuestion }> {
   const profile = await getCurrentProfile();
   if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
 
   const supabase = await createSupabaseServerClient();
   const { data: testRow } = await supabase
@@ -263,6 +265,7 @@ export async function regenerateQuestion(
 export async function publishClassTest(testId: string): Promise<{ ok: boolean }> {
   const profile = await getCurrentProfile();
   if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase
@@ -281,6 +284,7 @@ export async function publishClassTest(testId: string): Promise<{ ok: boolean }>
 export async function closeClassTest(testId: string): Promise<{ ok: boolean }> {
   const profile = await getCurrentProfile();
   if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase
