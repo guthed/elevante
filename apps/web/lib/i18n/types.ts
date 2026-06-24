@@ -1,3 +1,26 @@
+export type KlassprovStrings = {
+  newTest: string;
+  title: string;
+  pickClass: string;
+  pickLessons: string;
+  questionCount: string;
+  closed: string;
+  open: string;
+  reasoning: string;
+  generate: string;
+  publish: string;
+  regenerate: string;
+  takeTest: string;
+  submit: string;
+  awaitingReview: string;
+  release: string;
+  released: string;
+  pendingReview: string;
+  notStarted: string;
+  overallFeedback: string;
+  points: string;
+};
+
 export type Dictionary = {
   meta: {
     siteName: string;
@@ -109,6 +132,7 @@ export type Dictionary = {
         library: string;
         examPrep: string;
         learnerProfile: string;
+        classTests: string;
       };
       teacher: {
         overview: string;
@@ -116,6 +140,7 @@ export type Dictionary = {
         lessons: string;
         materials: string;
         sharedTests: string;
+        classTests: string;
       };
       admin: {
         overview: string;
@@ -134,12 +159,14 @@ export type Dictionary = {
         chat: string;
         examPrep: string;
         learnerProfile: string;
+        classTests: string;
       };
       teacher: {
         overview: string;
         classes: string;
         lessons: string;
         sharedTests: string;
+        classTests: string;
       };
       admin: {
         overview: string;
@@ -157,12 +184,14 @@ export type Dictionary = {
         chat: string;
         examPrep: string;
         learnerProfile: string;
+        classTests: string;
       };
       teacher: {
         overview: string;
         classes: string;
         lessons: string;
         sharedTests: string;
+        classTests: string;
       };
       admin: {
         overview: string;
@@ -412,5 +441,6 @@ export type Dictionary = {
       comingSoon: string;
       loading: string;
     };
+    klassprov: KlassprovStrings;
   };
 };
