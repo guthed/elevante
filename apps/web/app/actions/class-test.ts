@@ -9,14 +9,18 @@ import {
 } from '@/lib/supabase/server';
 import type {
   ClassTest,
+  ClassTestAnswer,
+  ClassTestSubmission,
   PracticeQuestion,
   PracticeQuestionType,
   TestComposition,
 } from '@/lib/supabase/database';
 import {
   generateClassTest,
+  gradePracticeTest,
   regenerateClassTestQuestion,
   type ClassTestComposition,
+  type PracticeGradeInput,
 } from '@/lib/ai/anthropic';
 
 const MIN_QUESTIONS = 3;
@@ -288,5 +292,227 @@ export async function closeClassTest(testId: string): Promise<{ ok: boolean }> {
 
   revalidatePath(`/sv/app/teacher/klassprov/${testId}`);
   revalidatePath(`/en/app/teacher/klassprov/${testId}`);
+  return { ok: true };
+}
+
+const submitSchema = z.array(
+  z.object({ question_id: z.string(), answer: z.string() }),
+);
+
+/**
+ * Elev lämnar in ett klassprov. AI förrättar direkt (flerval i kod, övriga via
+ * Claude). Skapar submission-raden med status='graded' — DOLD för eleven tills
+ * läraren släpper. Idempotent: returnerar ok om eleven redan lämnat in.
+ */
+export async function submitClassTest(
+  testId: string,
+  rawAnswers: { question_id: string; answer: string }[],
+): Promise<{ ok: boolean }> {
+  const profile = await getCurrentProfile();
+  if (!profile || !profile.school_id) return { ok: false };
+
+  const parsed = submitSchema.safeParse(rawAnswers);
+  if (!parsed.success) return { ok: false };
+
+  const supabase = await createSupabaseServerClient();
+
+  // Befintlig inlämning? (unik (test, elev)) → idempotent.
+  const { data: existing } = await supabase
+    .from('class_test_submissions')
+    .select('id')
+    .eq('class_test_id', testId)
+    .eq('student_id', profile.id)
+    .maybeSingle();
+  if (existing) return { ok: true };
+
+  // Hämta FULLA frågorna (med facit) via security-definer-RPC. Eleven saknar
+  // direkt SELECT på class_tests; RPC:n returnerar facit bara för publicerat
+  // prov där eleven är klassmedlem.
+  // get_class_test_for_grading deklareras inte i Database-typen (se kommentar
+  // i database.ts) — vi castar precis som övriga RPC-anrop i projektet.
+  type GradingRow = {
+    questions: PracticeQuestion[];
+    school_id: string;
+    max_score: number;
+  };
+  const gradingRpc = supabase as unknown as {
+    rpc: (
+      fn: string,
+      args: Record<string, unknown>,
+    ) => Promise<{ data: GradingRow | null }>;
+  };
+  const { data: gradingRow } = await gradingRpc.rpc(
+    'get_class_test_for_grading',
+    { p_test_id: testId },
+  );
+  const grading = gradingRow;
+  if (!grading) return { ok: false };
+
+  const answerByQuestion = new Map(
+    parsed.data.map((a) => [a.question_id, a.answer ?? '']),
+  );
+
+  const gradeInputs: PracticeGradeInput[] = [];
+  for (const q of grading.questions) {
+    if (q.type === 'multiple_choice') continue;
+    gradeInputs.push({
+      question_id: q.id,
+      prompt: q.prompt,
+      answer_key: q.answer_key,
+      max_points: q.max_points,
+      student_answer: answerByQuestion.get(q.id) ?? '',
+    });
+  }
+
+  const aiResult =
+    gradeInputs.length > 0 ? await gradePracticeTest(gradeInputs) : null;
+  const gradeByQuestion = new Map(
+    (aiResult?.grades ?? []).map((g) => [g.question_id, g]),
+  );
+
+  const answers: ClassTestAnswer[] = grading.questions.map((q) => {
+    const studentAnswer = answerByQuestion.get(q.id) ?? '';
+    if (q.type === 'multiple_choice') {
+      const selectedIndex = Number.parseInt(studentAnswer, 10);
+      const correct =
+        Number.isInteger(selectedIndex) && selectedIndex === q.correct_index;
+      const chosenLabel =
+        q.options && selectedIndex >= 0 && selectedIndex < q.options.length
+          ? q.options[selectedIndex]!
+          : '';
+      const points = correct ? q.max_points : 0;
+      const fb = correct ? `Rätt. ${q.answer_key}` : `Inte rätt. ${q.answer_key}`;
+      return {
+        question_id: q.id,
+        answer: chosenLabel,
+        points,
+        max_points: q.max_points,
+        correct,
+        feedback: fb,
+        ai_points: points,
+        ai_feedback: fb,
+      };
+    }
+    const grade = gradeByQuestion.get(q.id);
+    const points = grade ? Math.min(grade.points, q.max_points) : 0;
+    const fb = grade?.feedback ?? 'Kunde inte rättas automatiskt.';
+    return {
+      question_id: q.id,
+      answer: studentAnswer,
+      points,
+      max_points: q.max_points,
+      correct: null,
+      feedback: fb,
+      ai_points: points,
+      ai_feedback: fb,
+    };
+  });
+
+  const score = answers.reduce((sum, a) => sum + a.points, 0);
+
+  const { error } = await supabase.from('class_test_submissions').insert({
+    class_test_id: testId,
+    school_id: profile.school_id,
+    student_id: profile.id,
+    answers,
+    score,
+    max_score: grading.max_score,
+    overall_feedback: aiResult?.overall_feedback ?? '',
+    status: 'graded',
+    graded_at: new Date().toISOString(),
+  });
+  if (error) return { ok: false };
+
+  revalidatePath(`/sv/app/student/klassprov/${testId}`);
+  revalidatePath(`/en/app/student/klassprov/${testId}`);
+  return { ok: true };
+}
+
+const gradeUpdateSchema = z.object({
+  answers: z.array(
+    z.object({
+      question_id: z.string(),
+      points: z.number().int().min(0),
+      feedback: z.string(),
+    }),
+  ),
+  overallFeedback: z.string(),
+});
+
+/** Lärarens justeringar av poäng/feedback på en inlämning (skriver över AI). */
+export async function updateSubmissionGrade(
+  submissionId: string,
+  payload: {
+    answers: { question_id: string; points: number; feedback: string }[];
+    overallFeedback: string;
+  },
+): Promise<{ ok: boolean }> {
+  const profile = await getCurrentProfile();
+  if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
+
+  const parsed = gradeUpdateSchema.safeParse(payload);
+  if (!parsed.success) return { ok: false };
+
+  const supabase = await createSupabaseServerClient();
+  const { data: subRow } = await supabase
+    .from('class_test_submissions')
+    .select('*')
+    .eq('id', submissionId)
+    .maybeSingle();
+  const submission = subRow as ClassTestSubmission | null;
+  if (!submission) return { ok: false };
+
+  const overrideByQuestion = new Map(
+    parsed.data.answers.map((a) => [a.question_id, a]),
+  );
+  const answers: ClassTestAnswer[] = submission.answers.map((a) => {
+    const o = overrideByQuestion.get(a.question_id);
+    if (!o) return a;
+    return {
+      ...a,
+      points: Math.min(o.points, a.max_points),
+      feedback: o.feedback,
+    };
+  });
+  const score = answers.reduce((sum, a) => sum + a.points, 0);
+
+  const { error } = await supabase
+    .from('class_test_submissions')
+    .update({
+      answers,
+      score,
+      overall_feedback: parsed.data.overallFeedback,
+    })
+    .eq('id', submissionId);
+  if (error) return { ok: false };
+
+  revalidatePath(`/sv/app/teacher/klassprov/${submission.class_test_id}/${submissionId}`);
+  revalidatePath(`/en/app/teacher/klassprov/${submission.class_test_id}/${submissionId}`);
+  return { ok: true };
+}
+
+/** Släpper en inlämning till eleven (resultatet blir synligt). */
+export async function releaseSubmission(
+  submissionId: string,
+): Promise<{ ok: boolean }> {
+  const profile = await getCurrentProfile();
+  if (!profile) return { ok: false };
+  if (profile.role !== 'teacher' && profile.role !== 'admin') return { ok: false };
+
+  const supabase = await createSupabaseServerClient();
+  const { data: subRow } = await supabase
+    .from('class_test_submissions')
+    .update({ status: 'released', released_at: new Date().toISOString() })
+    .eq('id', submissionId)
+    .select('class_test_id')
+    .maybeSingle();
+  if (!subRow) return { ok: false };
+
+  const classTestId = (subRow as { class_test_id: string }).class_test_id;
+  revalidatePath(`/sv/app/teacher/klassprov/${classTestId}/${submissionId}`);
+  revalidatePath(`/en/app/teacher/klassprov/${classTestId}/${submissionId}`);
+  revalidatePath(`/sv/app/teacher/klassprov/${classTestId}`);
+  revalidatePath(`/en/app/teacher/klassprov/${classTestId}`);
   return { ok: true };
 }

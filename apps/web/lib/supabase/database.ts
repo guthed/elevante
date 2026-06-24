@@ -259,6 +259,21 @@ type ClassTestInsert = {
   created_at?: string;
 };
 
+export type ClassTestSubmissionInsert = {
+  class_test_id: string;
+  school_id: string;
+  student_id: string;
+  answers?: ClassTestAnswer[];
+  score?: number;
+  max_score?: number;
+  overall_feedback?: string;
+  status?: ClassTestSubmissionStatus;
+  submitted_at?: string;
+  graded_at?: string | null;
+  released_at?: string | null;
+  id?: string;
+};
+
 // Elevens svar: PracticeAnswer + bevarad AI-bedömning (lärar-justerbar feedback).
 export type ClassTestAnswer = PracticeAnswer & {
   ai_points: number;
@@ -530,6 +545,7 @@ export type Database = {
       lesson_views: TableDef<LessonView, LessonViewInsert>;
       practice_tests: TableDef<PracticeTest, PracticeTestInsert>;
       class_tests: TableDef<ClassTest, ClassTestInsert>;
+      class_test_submissions: TableDef<ClassTestSubmission, ClassTestSubmissionInsert>;
       learner_profiles: TableDef<LearnerProfile, LearnerProfileInsert>;
       school_lookups: TableDef<SchoolLookup, SchoolLookupInsert>;
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
