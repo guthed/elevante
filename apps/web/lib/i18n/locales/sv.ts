@@ -457,6 +457,8 @@ const sv: Dictionary = {
       notStarted: 'Inte börjat',
       overallFeedback: 'Helhetskommentar',
       points: 'Poäng',
+      save: 'Spara',
+      remove: 'Ta bort',
     },
   },
 };

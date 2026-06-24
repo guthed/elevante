@@ -16,6 +16,28 @@ Format per entry:
 
 ---
 
+## [Klassprov — lärar-författade prov] — 2026-06-24
+
+### Byggt
+- **Nya tabeller** `class_tests` (titel, klass, lektionsurval, frågor jsonb, status draft/published/closed) och `class_test_submissions` (svar jsonb, poäng, AI-genererad feedback, release-flagga). RLS skolscopat på båda.
+- **Provgenerator med reglage**: läraren väljer klass, lektioner, antal frågor och fördelning (stängda/öppna/resonerande via reglage). Largest-remainder-algoritm garanterar att summering alltid landar på exakt valt antal. `generateClassTest` Server Action anropar Claude mot lektionstranskript.
+- **Draft → publicera → inlämning → AI-rättning → granskning → släpp**: flerval rättas deterministiskt i kod, fritextsvar och resonerande av Claude via `gradePracticeTest`. Läraren granskar/justerar och väljer när varje elevs resultat är klart att släppas.
+- **Security-definer-RPC:er**: `get_published_class_test` (strippar `answer_key`/`correct_index` för elever), `get_my_submission_result` (release-gate — returnerar null tills läraren släpper), `get_class_test_for_grading` (lärarskyddad full read), `list_student_class_tests` (elev-scope med submission-status).
+- **Routes**: `/teacher/klassprov` (lista + skapa), `/teacher/klassprov/[id]` (editor i draft, inlämningslista i published/closed), `/teacher/klassprov/[id]/[submissionId]` (GradeReview), `/student/klassprov` (lista), `/student/klassprov/[id]` (TestRunner / väntläge / resultat). `QuestionEditor` + `ClassTestRunner` + `GradeReview` + `CloseTestButton` nya klientkomponenter.
+- **Återanvänder** `TestResult` (fr. Provplugg/delat prov) och `typeLabel`-hjälparen från `lib/app/test-utils.ts`.
+- **Zod** infört för `generateClassTest`- och `submitClassTest`-Server Actions (tidigare saknades validering).
+
+### QA-fynd
+- Largest-remainder krävde explicit off-by-one-test för udda totaltal.
+- `get_my_submission_result` måste köras som security definer för att kringgå att eleven annars inte kan läsa sin submission förrän läraren satt release-flaggan.
+
+### Tekniska beslut
+- **Facit-strippning i RPC, inte i klientkod** — facit når aldrig klienten ens om eleven debuggar nätverkstrafiken.
+- **Release-gate i RPC** — submission-raden (med AI-feedback) är synlig i databasen men returneras inte förrän `released_at IS NOT NULL`. Eleven kan inte läsa resultatet via direktanrop till PostgREST.
+- **Zod på Server Actions** — val framåt: alla nya Actions valideras med Zod. Retroaktiv migrering av äldre actions läggs som separat uppgift.
+
+---
+
 ## [Startsida — trim] — 2026-06-23
 
 ### Byggt

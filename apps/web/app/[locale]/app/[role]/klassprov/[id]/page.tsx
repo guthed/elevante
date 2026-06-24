@@ -238,8 +238,8 @@ export default async function ClassTestDetailPage({ params }: Props) {
                 regenerate: t.regenerate,
                 publish: t.publish,
                 points: t.points,
-                save: sv ? 'Spara' : 'Save',
-                remove: sv ? 'Ta bort' : 'Remove',
+                save: t.save,
+                remove: t.remove,
               }}
             />
           </div>

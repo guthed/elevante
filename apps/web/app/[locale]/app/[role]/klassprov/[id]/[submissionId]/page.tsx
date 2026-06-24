@@ -94,7 +94,7 @@ export default async function GradeReviewPage({ params }: Props) {
               released: t.released,
               overallFeedback: t.overallFeedback,
               points: t.points,
-              save: sv ? 'Spara' : 'Save',
+              save: t.save,
             }}
           />
         </div>

@@ -457,6 +457,8 @@ const en: Dictionary = {
       notStarted: 'Not started',
       overallFeedback: 'Overall comment',
       points: 'Points',
+      save: 'Save',
+      remove: 'Remove',
     },
   },
 };

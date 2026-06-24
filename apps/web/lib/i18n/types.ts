@@ -19,6 +19,8 @@ export type KlassprovStrings = {
   notStarted: string;
   overallFeedback: string;
   points: string;
+  save: string;
+  remove: string;
 };
 
 export type Dictionary = {
