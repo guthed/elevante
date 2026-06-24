@@ -7,6 +7,7 @@ export type NavId =
   | 'chat'
   | 'examPrep'
   | 'learnerProfile'
+  | 'classTests'
   | 'classes'
   | 'lessons'
   | 'sharedTests'
@@ -40,6 +41,7 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary): NavItem
       { id: 'chat', href: `${base}/student/chat`, label: s.chat, mobileLabel: m.chat, description: d.chat },
       { id: 'examPrep', href: `${base}/student/provplugg`, label: s.examPrep, mobileLabel: m.examPrep, description: d.examPrep },
       { id: 'learnerProfile', href: `${base}/student/profil`, label: s.learnerProfile, mobileLabel: m.learnerProfile, description: d.learnerProfile },
+      { id: 'classTests', href: `${base}/student/klassprov`, label: s.classTests, mobileLabel: m.classTests, description: d.classTests },
     ];
   }
   if (role === 'teacher') {
@@ -51,6 +53,7 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary): NavItem
       { id: 'classes', href: `${base}/teacher/klasser`, label: t.classes, mobileLabel: m.classes, description: d.classes },
       { id: 'lessons', href: `${base}/teacher/lektioner`, label: t.lessons, mobileLabel: m.lessons, description: d.lessons },
       { id: 'sharedTests', href: `${base}/teacher/prov`, label: t.sharedTests, mobileLabel: m.sharedTests, description: d.sharedTests },
+      { id: 'classTests', href: `${base}/teacher/klassprov`, label: t.classTests, mobileLabel: m.classTests, description: d.classTests },
     ];
   }
   const a = dict.app.sidebar.admin;
