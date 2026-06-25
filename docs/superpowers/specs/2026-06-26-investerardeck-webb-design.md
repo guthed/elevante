@@ -29,7 +29,8 @@ Mönstret och byggstenarna finns redan:
 ## Bärande principer
 
 1. **Samma princip som `/rektor`.** Återanvänd showcase-biblioteket; bygg bara nytt för det decket har och `/rektor` saknar (data-tunga slides). Editorial Calm, `Eyebrow`/`Reveal`-rytm, mörk CTA på slutet.
-2. **Återanvänd, bygg inte om.** Nya block läggs i `components/showcase/` så de hör till samma familj. Inget chart-bibliotek — div-staplar (samma teknik som `/admin/statistik`).
+2. **Återanvänd, bygg inte om.** Nya block läggs i `components/showcase/` så de hör till samma familj. Inget chart-bibliotek — handrullad SVG.
+5. **Datavisualiseringen ska imponera och växa fram vid scroll** (Johns uttryckliga krav). Signaturgreppet är en **animerad staplad band-kurva** (stil "C", vald via visuell companion 2026-06-26): tre mjuka lager som byggs på varandra och sveper in från vänster när sektionen scrollas in, med uppräknande siffror. Coral/sage/sand. Återkommer på flera scen-stopp så sidan får en igenkännbar rytm. `prefers-reduced-motion` → fullt ritad kurva direkt, ingen rörelse.
 3. **Copy lyfts 1:1 ur deck-källan.** Texten kommer från `build-deck.js` (sv) + `i18n.js` (en). Ingen ny copy uppfinns; vi strukturerar om från slide-layout till scroll.
 4. **`noindex`, utanför `[locale]`.** Sidan ärver inte publika sajtens header/footer — egen immersiv layout som `/rektor`.
 
@@ -73,10 +74,10 @@ En `<main className="bg-canvas text-ink">` med sektioner i samma stil som `/rekt
 | 7 | Datamoat | Nätverkseffekt | Reveal-kort | befintligt |
 | 8 | Differentiering | EU / GDPR | numrerad ikon-rad (som `/rektor` §11) | befintligt |
 | 9 | Avanti / syntetisk lärare | Roadmap (V2/V3) | Reveal-text | befintligt |
-| 10 | Marknad | TAM (Sverige → Norden → EU) | `MarketTiers` | **ny** |
-| 11 | Expansion | TAM-trappa | `TamLadder` (div-staplar) | **ny** |
+| 10 | Marknad | TAM (Sverige → Norden → EU) | `StackedCurve` (band, hjältescen) | **ny** |
+| 11 | Expansion | TAM-trappa | `StackedCurve` (faser staplade) | **ny** |
 | 12 | Affärsmodell | Enhetsekonomi | Reveal-kort / nyckeltal | befintligt |
-| 13 | Affären i siffror | ARR | `ArrChart` (div-staplar) | **ny** |
+| 13 | Affären i siffror | ARR | `StackedCurve` (lager per geografi/ström) | **ny** |
 | 14 | Traction | LOI / Nacka / byggd produkt | Reveal-tidslinje | befintligt |
 | 15 | Positionering | Egen kategori | kort (vs konsument-AI / skolplattformar) | befintligt |
 | 16 | Team | Team | kort | befintligt |
@@ -87,18 +88,22 @@ En `<main className="bg-canvas text-ink">` med sektioner i samma stil som `/rekt
 
 Fotoband från `public/images/` mellan sektioner där det lyfter (frivilligt, som `/rektor`).
 
-### 5. Nya komponenter (4 st) — `components/showcase/`
+### 5. Nya komponenter (2 st) — `components/showcase/`
 
-Alla rena Tailwind, inget externt beroende. Tar redan översatt/strukturerad data som props (ingen copy hårdkodad i komponenten).
+Handrullad SVG + Tailwind, inget externt beroende. Tar redan översatt/strukturerad data som props (ingen copy hårdkodad i komponenten).
 
-| Komponent | Vad | Teknik |
-|-----------|-----|--------|
-| `DeckStats` | 4 statistikkort med stor siffra + källa | grid + `Reveal`, coral-accent på siffra |
-| `MarketTiers` | Marknadsnivåer (SE → Norden → EU + adjacent) | staplade kort/ringar, ökande storlek |
-| `TamLadder` | Expansion/TAM-trappa över faser | horisontella div-staplar med etiketter |
-| `ArrChart` | ARR-prognos per år | vertikala div-staplar (samma teknik som `/admin/statistik`) |
+**`StackedCurve`** — signaturkurvan (stil "C"). Återanvänds på tre scen-stopp: ARR (§13), marknad/TAM (§10), expansion (§11). Props: `series` (array av lager med `label`, `color`, värden per x-punkt), `categories` (x-etiketter, t.ex. årtal), `unit`, valfri `caption`. Renderar:
+- Mjuka staplade band (Catmull-Rom-utjämnad area per lager), färger coral / sage / sand.
+- Topp-linje på den ackumulerade summan.
+- **Animation:** lagren sveper in från vänster (`clip-path: inset(...)` 0→100 %) + topp-siffran räknas upp, triggat när komponenten scrollas in i vy (IntersectionObserver, samma mönster som `Reveal`). `prefers-reduced-motion` → ritad direkt.
+- **Legend** (band-etiketter) under kurvan.
+- **WCAG AA:** alla värden finns som läsbar text (legend + ev. dold tabell/`<title>`), inte bara visuell höjd; `role="img"` + beskrivande `aria-label`; rörelse bara dekorativ.
 
-Alla: WCAG AA (siffror som text, inte bara visuell höjd; `aria-label` på staplar), `prefers-reduced-motion` via `Reveal`, responsivt 375 → 1440.
+**`DeckStats`** — fyra statistikkort (problem-sliden §2): stor siffra (coral, uppräknande) + etikett + källa. Grid + `Reveal`-staggrat. Siffrorna är text (a11y).
+
+Lagersemantik som behöver bekräftas av John innan implementation: TAM staplas **Sverige / Norden / EU**; ARR (§13) staplas förslagsvis per **geografi** (samma tre) för en sammanhängande berättelse — men deckets slide 13 (`slide13_numbers` i `build-deck.js`) kan ha en enklare serie. Implementationsplanen läser den faktiska datan därifrån och väljer lager-uppdelning som stämmer med deckets siffror.
+
+Båda: responsivt 375 → 1440, `prefers-reduced-motion`-respekt.
 
 ### 6. Språkväxlare — `app/investerare/LangToggle.tsx`
 
@@ -110,7 +115,7 @@ Liten klientkomponent: två `<Link>` (SV / `/investerare`, EN / `/investerare/en
 
 - Ingen per-investerar-anpassning (slide 18 utelämnas; `investors.js` rörs inte).
 - Ingen indexering, ingen lösenordsgate — `noindex` + gömd URL.
-- Inget chart-bibliotek — div-staplar räcker.
+- Inget chart-bibliotek — handrullad SVG (`StackedCurve`).
 - Inga nya skärmdumpar — `public/rektor/`-bilderna återanvänds.
 - Ingen ändring av `elevante-deck/` (PowerPoint-källan lever kvar oförändrad; webben är en parallell yta).
 - Ingen scroll-driven animation utöver `Reveal` (samma beslut som `/rektor`).
@@ -131,6 +136,6 @@ Liten klientkomponent: två `<Link>` (SV / `/investerare`, EN / `/investerare/en
 ## Faser (för implementationsplanen)
 
 1. **Innehållsmodul:** `content.ts` med sv/en för alla sektioner, lyft ur `build-deck.js` + `i18n.js`. Mappa varje sektion → källfunktion.
-2. **Nya showcase-komponenter:** `DeckStats`, `MarketTiers`, `TamLadder`, `ArrChart` + `LangToggle`. Verifiera a11y/responsivt isolerat.
+2. **Nya showcase-komponenter:** `StackedCurve` (signaturkurvan, scroll-triggad svep-in) + `DeckStats` + `LangToggle`. Verifiera a11y/responsivt/reduced-motion isolerat.
 3. **Sidan:** `InvestorDeck.tsx` + `app/investerare/page.tsx` + `app/investerare/en/page.tsx`. Komponera alla sektioner ur content + showcase.
 4. **Slutverifiering:** `noindex`, språkväxling, responsivt, a11y, länkar, byggd output (SSG-rutter). Bekräfta att `/rektor` + startsidan är oförändrade.
