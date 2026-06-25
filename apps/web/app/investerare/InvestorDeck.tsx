@@ -306,7 +306,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           </div>
           <div className="mt-14 max-w-xl">
             <Reveal>
-              <NetworkReveal caption={t(lang, COPY.datamoat.caption)} />
+              <NetworkReveal caption={t(lang, COPY.datamoat.caption)} ariaLabel={t(lang, MEDIA.networkAriaLabel)} />
             </Reveal>
           </div>
           <Reveal>
@@ -401,6 +401,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 label: t(lang, r.label),
                 sub: t(lang, r.sub),
               }))}
+              ariaLabel={t(lang, MEDIA.marketAriaLabel)}
             />
           </div>
           <Reveal>
@@ -511,6 +512,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               unit={ARR.unit}
               series={[{ label: 'ARR', color: 'rgba(255,122,107,0.22)', values: ARR.values }]}
               ariaLabel={t(lang, MEDIA.arrAriaLabel)}
+              categoryLabel={t(lang, MEDIA.curveCategory)}
             />
           </Reveal>
         </div>

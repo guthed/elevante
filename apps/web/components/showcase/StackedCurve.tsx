@@ -12,6 +12,8 @@ type Props = {
   /** Tillgänglig beskrivning av hela diagrammet. */
   ariaLabel: string;
   caption?: string;
+  /** Kolumnrubrik för sr-only-tabellen (localiserbar). */
+  categoryLabel?: string;
 };
 
 const W = 560;
@@ -35,7 +37,7 @@ function smooth(pts: { x: number; y: number }[]): string {
   return d;
 }
 
-export default function StackedCurve({ series, categories, unit, ariaLabel, caption }: Props) {
+export default function StackedCurve({ series, categories, unit, ariaLabel, caption, categoryLabel = 'Kategori' }: Props) {
   const [ref, inView] = useInView<HTMLDivElement>();
   const n = categories.length;
   const cumulative = categories.map((_, i) =>
@@ -105,7 +107,7 @@ export default function StackedCurve({ series, categories, unit, ariaLabel, capt
         <caption>{ariaLabel}</caption>
         <thead>
           <tr>
-            <th>Kategori</th>
+            <th>{categoryLabel}</th>
             {series.map((s) => (
               <th key={s.label}>{s.label}</th>
             ))}

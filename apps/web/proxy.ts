@@ -120,6 +120,7 @@ export async function proxy(request: NextRequest) {
         const url = request.nextUrl.clone();
         url.pathname = '/investerare/las-upp';
         url.searchParams.set('next', pathname);
+        url.searchParams.set('lang', pathname.startsWith('/investerare/en') ? 'en' : 'sv');
         return NextResponse.redirect(url);
       }
     }

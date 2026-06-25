@@ -48,7 +48,6 @@ export const EXPANSION = [
 ];
 
 export const ASK = {
-  amount: 14, // MSEK, count-up
   uses: [
     { title: { sv: 'Konvertera piloten', en: 'Convert the pilot' }, desc: { sv: 'Pilot → betalande skolor i Stockholmsregionen.', en: 'Pilot → paying schools across the Stockholm region.' } },
     { title: { sv: 'Härda EU-pipelinen', en: 'Harden the EU pipeline' }, desc: { sv: 'Extern säkerhets- och GDPR-granskning.', en: 'External security and GDPR review.' } },
@@ -1095,4 +1094,7 @@ export const MEDIA = {
   kartaAlt:     { sv: 'Förståelsekarta i Elevante per klass och begrepp', en: 'Understanding map in Elevante per class and concept' },
   kartaCaption: { sv: 'Lärarens förståelsekarta · per klass', en: "Teacher's understanding map · per class" },
   arrAriaLabel: { sv: 'ARR-prognos 2026–2031, från 0 till 100 MSEK.', en: 'ARR forecast 2026–2031, from 0 to 100 MSEK.' },
+  networkAriaLabel: { sv: 'Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.', en: 'Network graph: every new lesson and school strengthens the connections in Elevante’s data model.' },
+  marketAriaLabel: { sv: 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.', en: 'Concentric rings: the market grows from Sweden to the Nordics to the EU.' },
+  curveCategory: { sv: 'Kategori', en: 'Category' },
 } satisfies Record<string, L>;

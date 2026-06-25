@@ -18,10 +18,10 @@ const EDGES: [number, number][] = [
   [1, 6], [1, 8], [3, 8], [4, 7], [2, 5],
 ];
 
-export default function NetworkReveal({ caption }: { caption?: string }) {
+export default function NetworkReveal({ caption, ariaLabel }: { caption?: string; ariaLabel?: string }) {
   const [ref, inView] = useInView<HTMLDivElement>();
   return (
-    <div ref={ref} role="img" aria-label="Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.">
+    <div ref={ref} role="img" aria-label={ariaLabel ?? 'Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.'}>
       <svg viewBox="0 0 360 240" className="block h-auto w-full">
         <g stroke="var(--color-coral)" strokeWidth={1.2} fill="none">
           {EDGES.map(([a, b], i) => {

@@ -11,12 +11,12 @@ export type MarketRing = {
   sub: string;
 };
 
-export default function ConcentricMarket({ rings }: { rings: MarketRing[] }) {
+export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRing[]; ariaLabel?: string }) {
   const [ref, inView] = useInView<HTMLDivElement>();
   const ordered = [...rings].sort((a, b) => b.radius - a.radius);
   return (
     <div ref={ref} className="grid items-center gap-10 md:grid-cols-2">
-      <div role="img" aria-label="Koncentriska ringar: marknaden växer från Sverige till Norden till EU.">
+      <div role="img" aria-label={ariaLabel ?? 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.'}>
         <svg viewBox="0 0 320 320" className="block h-auto w-full">
           {ordered.map((r, i) => (
             <circle
