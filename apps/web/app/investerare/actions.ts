@@ -20,7 +20,8 @@ export async function unlockInvestorDeck(_prev: GateState, formData: FormData): 
   const store = await cookies();
   store.set(INVESTOR_COOKIE, token, {
     httpOnly: true,
-    secure: true,
+    // Secure i produktion (HTTPS); av i lokal dev så cookien fungerar över http://localhost.
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/investerare',
     maxAge: 60 * 60 * 24 * 30, // 30 dagar
