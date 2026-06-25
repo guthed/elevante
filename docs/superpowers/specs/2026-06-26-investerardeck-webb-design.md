@@ -109,6 +109,28 @@ Båda: responsivt 375 → 1440, `prefers-reduced-motion`-respekt.
 
 Liten klientkomponent: två `<Link>` (SV / `/investerare`, EN / `/investerare/en`), aktivt språk via prop. Fixerad position uppe till höger, diskret.
 
+### 7. Animation & mikrointeraktioner (scroll-triggade)
+
+**Princip: återhållsamhet.** Editorial Calm är "andningsbart" — varje animation bär mening, ett fåtal grepp återkommer. Allt triggas när elementet möter vyn (IntersectionObserver, samma mönster som `Reveal`), easing `cubic-bezier(0.22, 1, 0.36, 1)`, 240–320 ms. **`prefers-reduced-motion` → slutläget visas direkt, ingen rörelse** (gäller samtliga punkter nedan).
+
+**Låsta grepp (bygg i v1):**
+
+| # | Grepp | Var | Komponent / not |
+|---|-------|-----|-----------------|
+| 1 | **Uppräknande siffror** | problem-statistik §2, marginal/pris §12, the ask §19 | delad `useCountUp`-hook; tal alltid som läsbar text (a11y) |
+| 2 | **Nätverksgraf som kopplas ihop** | datamoat §7 | **ny** `NetworkReveal` — noder + förbindelser som ritas in; animationen *är* nätverkseffekten |
+| 3 | **Koncentriska ringar som expanderar** | marknad §10 | Sverige → Norden → EU rippl
+ar utåt en i taget; komplement till `StackedCurve` |
+| 4 | **Tidslinje som ritas** | traction §14 | linje dras genom milstolparna (produkt → LOI → pilot hösten 2026), prickar poppar i sekvens |
+| 5 | **Eyebrow-hårstreck växer** | varje sektion | `Eyebrow`-helpern animerar bredden 0 → 36 px vid reveal (idag statiskt i `/rektor`) |
+| 6 | **Scroll-progress** | hela sidan | tunt coral-streck högst upp som visar position i pitchen |
+
+Punkterna 1, 5 och 6 är genomgående rytm; 2–4 är sektions-specifika hjältegrepp. `StackedCurve` (§5 ovan) har sin egen svep-in och hör till samma familj.
+
+**Nya komponenter som detta tillför:** `NetworkReveal` (datamoat), `ConcentricMarket` (ringar §10), `ScrollProgress`, samt hookarna `useCountUp` och `useInView`. `Timeline` (§14) och eyebrow-animationen kan vara lokala i `InvestorDeck`/`Eyebrow`.
+
+**Hålls i reserv** (läggs till bara om sidan känns platt): coral-understruket nyckelord, `ZoomableShot`-lyft (skala 0,97 + djupare skugga). Utelämnade medvetet: parallax, rotation, hover-zoom på siffror, "räkna upp" på allt — drar mot pitch-deck-cliché och bryter lugnet.
+
 ---
 
 ## Det som INTE ingår (YAGNI)
@@ -136,6 +158,6 @@ Liten klientkomponent: två `<Link>` (SV / `/investerare`, EN / `/investerare/en
 ## Faser (för implementationsplanen)
 
 1. **Innehållsmodul:** `content.ts` med sv/en för alla sektioner, lyft ur `build-deck.js` + `i18n.js`. Mappa varje sektion → källfunktion.
-2. **Nya showcase-komponenter:** `StackedCurve` (signaturkurvan, scroll-triggad svep-in) + `DeckStats` + `LangToggle`. Verifiera a11y/responsivt/reduced-motion isolerat.
+2. **Nya showcase-komponenter + animation:** `StackedCurve` (signaturkurvan), `DeckStats`, `NetworkReveal` (datamoat), `ConcentricMarket` (marknadsringar), `ScrollProgress`, `LangToggle` + hookarna `useInView`/`useCountUp`. Eyebrow-animation och `Timeline` (traction). Verifiera a11y/responsivt/reduced-motion isolerat — varje scroll-triggat grepp visar slutläget direkt vid `prefers-reduced-motion`.
 3. **Sidan:** `InvestorDeck.tsx` + `app/investerare/page.tsx` + `app/investerare/en/page.tsx`. Komponera alla sektioner ur content + showcase.
 4. **Slutverifiering:** `noindex`, språkväxling, responsivt, a11y, länkar, byggd output (SSG-rutter). Bekräfta att `/rektor` + startsidan är oförändrade.
