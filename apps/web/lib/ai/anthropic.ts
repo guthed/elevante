@@ -472,6 +472,95 @@ export type PracticeGradeResult = {
   overall_feedback: string;
 };
 
+/** Normaliserar råa grade-objekt till typade poster (kastar ofullständiga). */
+function normalizeGrades(raw: unknown[]): PracticeGradeResult['grades'] {
+  const grades: PracticeGradeResult['grades'] = [];
+  for (const item of raw) {
+    const g = item as Record<string, unknown>;
+    if (typeof g.question_id !== 'string') continue;
+    grades.push({
+      question_id: g.question_id,
+      points: typeof g.points === 'number' ? Math.max(0, Math.round(g.points)) : 0,
+      feedback: typeof g.feedback === 'string' ? g.feedback : '',
+    });
+  }
+  return grades;
+}
+
+/**
+ * Plockar ut varje komplett, balanserat JSON-objekt med ett `question_id` ur
+ * en (möjligen trunkerad/trasig) sträng. String-medveten så att klamrar och
+ * citattecken inuti feedback-texten inte ställer till det. Räddar alla hela
+ * grade-objekt även om modellens svar kapats mitt i det sista.
+ */
+function salvageGradeObjects(text: string): unknown[] {
+  const objects: unknown[] = [];
+  const stack: number[] = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    else if (ch === '{') stack.push(i);
+    else if (ch === '}') {
+      const start = stack.pop();
+      if (start === undefined) continue;
+      try {
+        const obj = JSON.parse(text.slice(start, i + 1));
+        if (
+          obj &&
+          typeof obj === 'object' &&
+          !Array.isArray(obj) &&
+          'question_id' in obj
+        ) {
+          objects.push(obj);
+        }
+      } catch {
+        // Trasigt objekt — hoppa över.
+      }
+    }
+  }
+  return objects;
+}
+
+/**
+ * Tolkar rättnings-JSON tolerant. Försöker först strikt JSON.parse; om svaret
+ * kapats vid token-taket (vanligaste felet) räddar den de kompletta
+ * grade-objekten ur den trasiga strängen istället för att ge upp helt.
+ * Returnerar null bara om ingenting kunde räddas.
+ */
+export function parseGradeResponse(text: string): PracticeGradeResult | null {
+  const cleaned = stripFences(text);
+
+  try {
+    const parsed = JSON.parse(cleaned) as {
+      grades?: unknown;
+      overall_feedback?: unknown;
+    };
+    if (Array.isArray(parsed.grades)) {
+      return {
+        grades: normalizeGrades(parsed.grades),
+        overall_feedback:
+          typeof parsed.overall_feedback === 'string'
+            ? parsed.overall_feedback
+            : '',
+      };
+    }
+  } catch {
+    // Föll igenom till räddning nedan.
+  }
+
+  const salvaged = salvageGradeObjects(cleaned);
+  if (salvaged.length === 0) return null;
+  return { grades: normalizeGrades(salvaged), overall_feedback: '' };
+}
+
 const TEST_GRADING_SYSTEM_PROMPT = `Du är en erfaren och rättvis gymnasielärare i Biologi 1. Du rättar en elevs svar på ett övningsprov.
 
 För varje fråga får du frågetexten, ett facit / bedömningskriterier, maxpoäng och elevens svar. Din uppgift:
@@ -507,37 +596,37 @@ export async function gradePracticeTest(
     ? `${TEST_GRADING_SYSTEM_PROMPT}\n\nDu känner sedan tidigare den här elevens lärprofil: "${personaSummary}" — vinkla feedbacken så den hjälper eleven framåt utifrån just det, men var fortfarande rättvis med poängen.`
     : TEST_GRADING_SYSTEM_PROMPT;
 
-  const response = await client.messages.create({
-    model: MODEL,
-    max_tokens: 3072,
-    system,
-    messages: [{ role: 'user', content: block }],
-  });
+  // Skala token-budgeten efter antal frågor — varje fritextsvar behöver
+  // utrymme för utförlig feedback. Ett för lågt tak kapar JSON-svaret mitt i,
+  // vilket tidigare fällde HELA rättningen (trunkerad JSON → parse-fel → null
+  // → varje fråga fick "Kunde inte rättas automatiskt").
+  const maxTokens = Math.min(8192, 1536 + items.length * 768);
 
-  let parsed: { grades?: unknown; overall_feedback?: unknown };
-  try {
-    parsed = JSON.parse(stripFences(textOf(response)));
-  } catch {
-    return null;
-  }
-  if (!Array.isArray(parsed.grades)) return null;
-
-  const grades: PracticeGradeResult['grades'] = [];
-  for (const raw of parsed.grades) {
-    const g = raw as Record<string, unknown>;
-    if (typeof g.question_id !== 'string') continue;
-    grades.push({
-      question_id: g.question_id,
-      points: typeof g.points === 'number' ? Math.max(0, Math.round(g.points)) : 0,
-      feedback: typeof g.feedback === 'string' ? g.feedback : '',
+  const callOnce = (tokens: number) =>
+    client.messages.create({
+      model: MODEL,
+      max_tokens: tokens,
+      system,
+      messages: [{ role: 'user', content: block }],
     });
+
+  let response = await callOnce(maxTokens);
+  let result = parseGradeResponse(textOf(response));
+
+  // Kapades svaret (eller gick parsningen helt bet) — försök en gång till med
+  // full budget. Den toleranta parsern räddar annars de kompletta objekten.
+  if (
+    maxTokens < 8192 &&
+    (result === null || response.stop_reason === 'max_tokens')
+  ) {
+    response = await callOnce(8192);
+    const retry = parseGradeResponse(textOf(response));
+    if (retry && (result === null || retry.grades.length > result.grades.length)) {
+      result = retry;
+    }
   }
 
-  return {
-    grades,
-    overall_feedback:
-      typeof parsed.overall_feedback === 'string' ? parsed.overall_feedback : '',
-  };
+  return result;
 }
 
 export type LearnerProfileTestInput = {
