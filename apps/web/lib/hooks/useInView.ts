@@ -4,23 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 
 /**
  * Returnerar [ref, inView]. inView blir true första gången elementet syns.
- * once=false → togglar fram och tillbaka. SSR/utan IO → true direkt.
+ * once=false → togglar fram och tillbaka. SSR/utan IO → true (deferrat).
  */
 export function useInView<T extends Element = HTMLDivElement>(
   opts: { once?: boolean; rootMargin?: string; threshold?: number } = {},
 ) {
   const { once = true, rootMargin = '0px 0px -12% 0px', threshold = 0.2 } = opts;
   const ref = useRef<T>(null);
-  // Assume true on SSR or if IntersectionObserver unavailable
-  const [inView, setInView] = useState(
-    typeof window === 'undefined' || typeof IntersectionObserver === 'undefined',
-  );
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (typeof IntersectionObserver === 'undefined') {
-      return;
+      const id = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(id);
     }
     const io = new IntersectionObserver(
       ([entry]) => {
