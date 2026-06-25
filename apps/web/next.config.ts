@@ -37,6 +37,9 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async redirects() {
+    return [{ source: '/skolan', destination: '/rektor', permanent: false }];
+  },
   async headers() {
     return [
       {
