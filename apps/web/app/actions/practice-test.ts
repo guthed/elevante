@@ -150,6 +150,15 @@ export async function submitPracticeTest(
             : undefined,
         )
       : null;
+
+  // Fanns fritextfrågor att rätta men AI-rättningen returnerade null? Då
+  // misslyckades hela anropet. Lås INTE in ett falskt resultat (0 poäng +
+  // "Kunde inte rättas automatiskt" på varje fråga) — låt eleven lämna in
+  // igen. Provet är kvar som 'generated'.
+  if (gradeInputs.length > 0 && aiResult === null) {
+    return { ok: false };
+  }
+
   const gradeByQuestion = new Map(
     (aiResult?.grades ?? []).map((g) => [g.question_id, g]),
   );
