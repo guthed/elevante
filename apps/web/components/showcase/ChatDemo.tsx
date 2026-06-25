@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import styles from './skolan.module.css';
+import styles from './showcase.module.css';
 
 type QA = {
   q: string;

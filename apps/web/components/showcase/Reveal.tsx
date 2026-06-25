@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import styles from './skolan.module.css';
+import styles from './showcase.module.css';
 
 /**
  * Scroll-reveal-wrapper. Progressiv förbättring: innehållet renderas synligt

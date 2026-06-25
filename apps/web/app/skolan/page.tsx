@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import Reveal from './Reveal';
-import ChatDemo from './ChatDemo';
-import ZoomableShot from './ZoomableShot';
+import Reveal from '@/components/showcase/Reveal';
+import ChatDemo from '@/components/showcase/ChatDemo';
+import ZoomableShot from '@/components/showcase/ZoomableShot';
 
 import shotChat from '../../public/rektor/shot-chat-kallor.png';
 import shotElev from '../../public/rektor/shot-elev-oversikt.png';

@@ -1,4 +1,4 @@
-/* Scroll-reveal för /skolan. Progressiv förbättring: utan JS (eller vid
+/* Scroll-reveal för showcase-komponenter. Progressiv förbättring: utan JS (eller vid
    prefers-reduced-motion) ligger .reveal helt synlig — JS armar .hidden bara
    på element under vikningen, så ingen synlig flimring. */
 
@@ -16,10 +16,10 @@
 
 /* Svaret i chatt-demon tonar in. */
 .answerIn {
-  animation: skolan-answer-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: showcase-answer-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes skolan-answer-in {
+@keyframes showcase-answer-in {
   from {
     opacity: 0;
     transform: translateY(6px);
