@@ -75,7 +75,8 @@ export default function RektorPage() {
             <p className="mt-12 max-w-2xl font-serif text-3xl leading-snug">
               Idag googlar de — eller frågar ChatGPT — och får ett svar som inte har{' '}
               <em className="text-coral not-italic">något</em> med lektionen att göra. Den som har
-              stöd hemma klarar sig ändå. Den som inte har det halkar efter.
+              stöd hemma klarar sig ändå. Den som inte har det halkar efter — och det är just den
+              ojämlikheten som skolans kompensatoriska uppdrag ska jämna ut.
             </p>
           </Reveal>
         </div>
@@ -218,6 +219,10 @@ export default function RektorPage() {
           <Reveal>
             <Eyebrow>För eleven</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Samma lektion, fler chanser</h2>
+            <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
+              Det ger en tillgänglig lärmiljö — där repetition och extra anpassningar inte avgörs
+              av tur eller av resurserna hemma.
+            </p>
           </Reveal>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {[
