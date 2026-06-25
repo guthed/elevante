@@ -43,9 +43,9 @@ export const EXPANSION = [
 export const ASK = {
   amount: 14, // MSEK, count-up
   uses: [
-    { title: { sv: 'Konvertera piloten', en: 'Convert the pilot' }, desc: { sv: 'Pilot → betalande skolor i Stockholmsregionen.', en: 'Pilot → paying schools in the Stockholm region.' } },
+    { title: { sv: 'Konvertera piloten', en: 'Convert the pilot' }, desc: { sv: 'Pilot → betalande skolor i Stockholmsregionen.', en: 'Pilot → paying schools across the Stockholm region.' } },
     { title: { sv: 'Härda EU-pipelinen', en: 'Harden the EU pipeline' }, desc: { sv: 'Extern säkerhets- och GDPR-granskning.', en: 'External security and GDPR review.' } },
-    { title: { sv: 'Skala go-to-market', en: 'Scale go-to-market' }, desc: { sv: 'I Sverige och in i Norden.', en: 'In Sweden and into the Nordics.' } },
+    { title: { sv: 'Skala go-to-market', en: 'Scale go-to-market' }, desc: { sv: 'I Sverige och in i Norden.', en: 'Across Sweden and into the Nordics.' } },
   ],
 };
 
