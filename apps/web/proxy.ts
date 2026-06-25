@@ -30,7 +30,7 @@ function refreshSupabaseSession(request: NextRequest, response: NextResponse) {
 }
 
 // Subdomän riktad till intresserade skolor. All sidtrafik på denna host
-// servar scroll-presentationen (/skolan); assets (_next, bilder) har redan
+// servar scroll-presentationen (/rektor); assets (_next, bilder) har redan
 // släppts igenom av shouldSkip innan host-kontrollen körs.
 const SCHOOLS_HOST_PREFIX = 'skolor.';
 
@@ -94,15 +94,15 @@ export async function proxy(request: NextRequest) {
   }
 
   // Steg 0.5: skolor.elevante.se → scroll-presentationen för skolor.
-  // Subdomänen är enkelspårig: all sidtrafik rewritas till /skolan (men
+  // Subdomänen är enkelspårig: all sidtrafik rewritas till /rektor (men
   // URL:en i webbläsaren förblir ren). /rektor-decket nås på huvuddomänen.
   const host = (request.headers.get('host') ?? '').toLowerCase();
   if (host.startsWith(SCHOOLS_HOST_PREFIX)) {
-    if (pathname === '/skolan') {
+    if (pathname === '/rektor') {
       return NextResponse.next();
     }
     const url = request.nextUrl.clone();
-    url.pathname = '/skolan';
+    url.pathname = '/rektor';
     return NextResponse.rewrite(url);
   }
 
