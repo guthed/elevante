@@ -263,8 +263,8 @@ export default async function HomePage({ params }: Props) {
               </p>
               <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
-                  ? 'Hela vår AI-pipeline körs hos Berget — en svensk leverantör vars servrar bokstavligen står inne i ett berg. För skolan betyder det att inspelningar och transkript stannar i Sverige, under svensk lag och fysiskt skyddade. Ingenting lämnas över till amerikanska moln, och ingen utländsk myndighet kan begära ut elevernas data.'
-                  : 'Our entire AI pipeline runs on Berget — a Swedish provider whose servers literally sit inside a mountain. For the school that means recordings and transcripts stay in Sweden, under Swedish law and physically protected. Nothing is handed off to US clouds, and no foreign authority can request your students’ data.'}
+                  ? 'Hela vår AI-pipeline körs hos Berget — en svensk leverantör vars servrar bokstavligen står inne i ett svenskt berg.'
+                  : 'Our entire AI pipeline runs on Berget — a Swedish provider whose servers literally sit inside a Swedish mountain.'}
               </p>
               <div className="mt-8 relative h-48 w-full overflow-hidden rounded-[16px]">
                 <Image
