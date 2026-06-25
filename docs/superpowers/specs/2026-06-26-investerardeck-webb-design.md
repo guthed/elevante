@@ -19,10 +19,11 @@ Mönstret och byggstenarna finns redan:
 
 ## Beslut (bekräftade med John)
 
-1. **Åtkomst:** `noindex` + gömd URL, precis som `/rektor`. Ingen lösenordsgate. "The ask" och siffror ligger på sidan.
+1. **Åtkomst:** `noindex` **+ lösenordsskydd** (uppdaterat 2026-06-26 — ersätter det tidigare "bara gömd URL"). "The ask" och siffror ligger på sidan, men sidan är delad lösenords­gate framför. Se §8.
 2. **Språk:** bilingual sv/en. Billigt eftersom de engelska översättningarna redan finns i `elevante-deck/i18n.js`.
 3. **Per investerare:** nej — en generisk version (deckets `_default`). Slide 18 ("Varför [investerare]") utelämnas helt på webben.
 4. **URL:** `/investerare` (sv) + `/investerare/en` (en).
+5. **Mobil först-klassigt:** sidan ska vara fullt läsbar på mobil (375 px) från start — inklusive kurvor, nätverksgraf och animationer. Inte en efterhandsanpassning. Se §9.
 
 ---
 
@@ -42,12 +43,13 @@ Mönstret och byggstenarna finns redan:
 
 Två routes utanför `[locale]`, båda SSG, båda `noindex`:
 
-| Route | Fil | Språk |
-|-------|-----|-------|
-| `/investerare` | `app/investerare/page.tsx` | sv |
-| `/investerare/en` | `app/investerare/en/page.tsx` | en |
+| Route | Fil | Språk | Skyddad |
+|-------|-----|-------|---------|
+| `/investerare` | `app/investerare/page.tsx` | sv | ja (gate) |
+| `/investerare/en` | `app/investerare/en/page.tsx` | en | ja (gate) |
+| `/investerare/las-upp` | `app/investerare/las-upp/page.tsx` | sv/en | nej (lösenforms-sida) |
 
-Båda renderar samma presentationskomponent `<InvestorDeck lang={…} />`. `metadata.robots = { index: false, follow: false }` på båda.
+Båda deck-routerna renderar samma presentationskomponent `<InvestorDeck lang={…} />`. `metadata.robots = { index: false, follow: false }` på samtliga (även gate-sidan). Lösenordsgrinden ligger i `proxy.ts` — se §8.
 
 **Språkväxlare:** liten fixerad SV/EN-toggle uppe i hörnet (länkar mellan de två routerna). WCAG: riktiga `<Link>`, aktivt språk markerat med `aria-current`.
 
@@ -131,12 +133,43 @@ Punkterna 1, 5 och 6 är genomgående rytm; 2–4 är sektions-specifika hjälte
 
 **Hålls i reserv** (läggs till bara om sidan känns platt): coral-understruket nyckelord, `ZoomableShot`-lyft (skala 0,97 + djupare skugga). Utelämnade medvetet: parallax, rotation, hover-zoom på siffror, "räkna upp" på allt — drar mot pitch-deck-cliché och bryter lugnet.
 
+### 8. Lösenordsskydd
+
+Delad lösenords­gate (inte per-investerar-konton, inte Supabase-auth — investerare är inte användare). Stack-matchande: grinden bor i `proxy.ts` (Next.js 16), samma fil som redan skyddar `/app/*`.
+
+**Flöde:**
+1. Lösenordet ligger i env-var `INVESTOR_DECK_PASSWORD` (sätts i Vercel, aldrig i repot).
+2. `/investerare/las-upp` är en publik sida med ett enkelt lösenforms­fält → Server Action jämför mot env-varianten. Vid träff sätts en **httpOnly, Secure, SameSite=Lax-cookie** (`investor_access`) med ett signerat värde (HMAC av en serverhemlighet, inte lösenordet i klartext), och redirect till `/investerare`.
+3. `proxy.ts` matchar `/investerare` och `/investerare/en`: saknas/ogiltig cookie → redirect till `/investerare/las-upp` (med `?next=`-param för att återvända rätt). `/investerare/las-upp` och statiska assets släpps igenom.
+4. Fel lösenord → formuläret visar diskret felmeddelande (lokaliserat), ingen läckande timing/detalj.
+
+**Noter:**
+- Gate-sidan ärver samma immersiva layout (ingen publik nav), Editorial Calm, bilingual via samma `content.ts`.
+- Cookie-livslängd: t.ex. 30 dagar (investerare slipper logga in om igen mellan sittningar). Justerbart.
+- Detta är "delningsskydd", inte hård säkerhet — men HMAC-cookie + httpOnly hindrar trivial förfalskning, och `noindex` står kvar oavsett.
+- Reversibelt och isolerat: rör bara `proxy.ts`-matcher + ny gate-sida; påverkar inte `/app/*`- eller `/rektor`-flödena.
+
+### 9. Mobil (375 px) — först-klassigt, inte efterhand
+
+Sidan ska läsas lika bra i mobil som på desktop. Konkret per element:
+
+- **Layout:** alla `md:grid-cols-2`-sektioner staplas till en kolumn; generösa men mindre vertikala marginaler; `container-content` med mobilanpassad padding (som `/rektor`).
+- **Typografi:** serif-rubriker skalar ner (`text-4xl` mobil → `text-6xl`+ desktop), bryts snyggt, inga avhuggna ord.
+- **`StackedCurve`:** SVG har responsiv `viewBox` (skalar), färre/glesare x-etiketter på smal skärm, legend wrappar under. Siffror läsbara.
+- **`NetworkReveal`:** förenklas på mobil (färre noder eller tätare layout) så grafen inte blir gröt; rörelsen behålls men inom en mindre canvas.
+- **`ConcentricMarket` / `Timeline`:** ringar/tidslinje roterar till vertikalt flöde på smal skärm där det behövs.
+- **Språkväxlare + scroll-progress:** placeras så de inte krockar med mobilens systemfält; touch-targets ≥ 44 px.
+- **`ZoomableShot`:** tap-to-zoom fungerar på touch; skärmdumpar läsbara i full bredd.
+- **Animation:** samma `prefers-reduced-motion`-regel; tunga effekter (nätverksgraf) får inte tappa frames på mobil — håll nodantal lågt och använd transform/opacity (GPU), inte layout-triggande egenskaper.
+- **Verifiering:** testas på 375 / 414 px utöver 768 / 1280 / 1440 (preview-flödet).
+
 ---
 
 ## Det som INTE ingår (YAGNI)
 
 - Ingen per-investerar-anpassning (slide 18 utelämnas; `investors.js` rörs inte).
-- Ingen indexering, ingen lösenordsgate — `noindex` + gömd URL.
+- Ingen indexering — `noindex` står kvar utöver lösenordsgaten (§8).
+- Ingen per-investerar-inloggning / Supabase-auth — en **delad** lösenordsgate räcker (§8).
 - Inget chart-bibliotek — handrullad SVG (`StackedCurve`).
 - Inga nya skärmdumpar — `public/rektor/`-bilderna återanvänds.
 - Ingen ändring av `elevante-deck/` (PowerPoint-källan lever kvar oförändrad; webben är en parallell yta).
@@ -147,11 +180,12 @@ Punkterna 1, 5 och 6 är genomgående rytm; 2–4 är sektions-specifika hjälte
 ## Kvalitet / acceptans
 
 - WCAG AA: kontrast, `Reveal` respekterar `prefers-reduced-motion`, alt-text på alla shots, `ZoomableShot` tangentbordsåtkomlig, språkväxlare med `aria-current`, sifferdata i charts läsbar som text.
-- Responsivt 375 / 768 / 1280 / 1440.
-- Båda routes `noindex`; verifiera i byggd `robots`-meta.
+- **Mobil först-klassigt:** fullt läsbar och snygg på 375 px — kurvor, nätverksgraf, ringar och tidslinje fungerar och tappar inte frames (§9). Verifieras på 375 / 414 / 768 / 1280 / 1440.
+- **Lösenordsgate (§8):** utan giltig cookie redirectar `/investerare` + `/investerare/en` till `/investerare/las-upp`; rätt lösenord släpper in och cookien består; fel lösenord avvisas utan läckage. `/app/*`- och `/rektor`-flödena opåverkade.
+- Samtliga routes `noindex`; verifiera i byggd `robots`-meta.
 - Inga hårdkodade strängar i presentationskomponenten — allt ur `content.ts` med sv/en.
 - Engelska och svenska sidan renderar samma struktur, rätt språk per route.
-- `/rektor` och startsidan oförändrade (vi rör bara `components/showcase/` additivt).
+- `/rektor` och startsidan oförändrade (vi rör bara `components/showcase/` additivt + `proxy.ts`-matcher).
 
 ---
 
@@ -159,5 +193,6 @@ Punkterna 1, 5 och 6 är genomgående rytm; 2–4 är sektions-specifika hjälte
 
 1. **Innehållsmodul:** `content.ts` med sv/en för alla sektioner, lyft ur `build-deck.js` + `i18n.js`. Mappa varje sektion → källfunktion.
 2. **Nya showcase-komponenter + animation:** `StackedCurve` (signaturkurvan), `DeckStats`, `NetworkReveal` (datamoat), `ConcentricMarket` (marknadsringar), `ScrollProgress`, `LangToggle` + hookarna `useInView`/`useCountUp`. Eyebrow-animation och `Timeline` (traction). Verifiera a11y/responsivt/reduced-motion isolerat — varje scroll-triggat grepp visar slutläget direkt vid `prefers-reduced-motion`.
-3. **Sidan:** `InvestorDeck.tsx` + `app/investerare/page.tsx` + `app/investerare/en/page.tsx`. Komponera alla sektioner ur content + showcase.
-4. **Slutverifiering:** `noindex`, språkväxling, responsivt, a11y, länkar, byggd output (SSG-rutter). Bekräfta att `/rektor` + startsidan är oförändrade.
+3. **Sidan:** `InvestorDeck.tsx` + `app/investerare/page.tsx` + `app/investerare/en/page.tsx`. Komponera alla sektioner ur content + showcase. Mobil-layout verifieras löpande (375 px), inte sist.
+4. **Lösenordsgate:** `proxy.ts`-matcher för `/investerare*`, `/investerare/las-upp`-sida + Server Action, HMAC-cookie, `INVESTOR_DECK_PASSWORD` i env. Verifiera redirect- och unlock-flödet.
+5. **Slutverifiering:** lösenordsgate, `noindex`, språkväxling, responsivt (375 → 1440), a11y/reduced-motion, animations-prestanda på mobil, länkar, byggd output (SSG-rutter). Bekräfta att `/rektor`, `/app/*` + startsidan är oförändrade.
