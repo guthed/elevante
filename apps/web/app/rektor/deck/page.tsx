@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import DeckStage from './DeckStage';
 
-import shotChat from '../../public/rektor/shot-chat-kallor.png';
-import shotElev from '../../public/rektor/shot-elev-oversikt.png';
-import shotKarta from '../../public/rektor/shot-forstaelsekarta.png';
+import shotChat from '../../../public/rektor/shot-chat-kallor.png';
+import shotElev from '../../../public/rektor/shot-elev-oversikt.png';
+import shotKarta from '../../../public/rektor/shot-forstaelsekarta.png';
 
 export const metadata: Metadata = {
   title: 'Elevante — Rektorspresentation',
