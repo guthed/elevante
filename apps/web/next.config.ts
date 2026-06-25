@@ -9,11 +9,11 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.albacross.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com",
+      "connect-src 'self' https://www.google-analytics.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com https://*.albacross.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
