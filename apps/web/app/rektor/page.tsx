@@ -26,9 +26,9 @@ export default function RektorPage() {
           <p className="tagline">Elevante minns allt du lär dig i skolan.</p>
           <p className="title-intro">
             Varje dag hålls genomtänkta lektioner — som försvinner i samma stund som det ringer ut.
-            En elev är borta, en annan hänger inte med, en tredje vågar inte fråga — och det finns
+            En elev är borta, en annan hänger inte med, en tredje vågar inte fråga. Och det finns
             ingen backup som faktiskt var med i klassrummet. Vi byggde Elevante för att varje elev
-            ska kunna gå tillbaka till lektionen som hölls, inte till ett generellt svar från nätet.
+            ska kunna gå tillbaka till lektionen som hölls — inte till ett generellt svar från nätet.
           </p>
         </div>
         <div className="brandfoot">elevante.se</div>
@@ -46,7 +46,7 @@ export default function RektorPage() {
             <div className="card persona">
               <span className="tag">Var sjuk</span>
               <p className="who">Eleven som missade veckan</p>
-              <p className="desc">Vill ta igen genomgången — men den finns inte kvar någonstans att gå tillbaka till.</p>
+              <p className="desc">Vill ta igen genomgången — men det finns inget att gå tillbaka till.</p>
             </div>
             <div className="card persona">
               <span className="tag">Hänger inte med</span>
@@ -61,8 +61,9 @@ export default function RektorPage() {
           </div>
           <div className="spacer" />
           <p className="lead" style={{ maxWidth: '42ch' }}>
-            Idag googlar de — eller frågar ChatGPT — och får svar som inte har <em>någonting</em> att
-            göra med vad som faktiskt sas på lektionen.
+            Idag googlar de — eller frågar ChatGPT — och får ett svar som inte har <em>något</em> med
+            lektionen att göra. Den som har stöd hemma klarar sig ändå. Den som inte har det halkar
+            efter.
           </p>
         </div>
         <div className="pagefoot">02</div>
@@ -84,8 +85,8 @@ export default function RektorPage() {
                 Spelar in, transkriberar <em>på svenska</em> — och svarar på elevens frågor.
               </p>
               <p className="body" style={{ marginTop: '32px', maxWidth: '40ch' }}>
-                Svaren är grundade i lektionen som faktiskt hölls, med citat ur genomgången —
-                eleven möter er undervisning, inte internets.
+                Svaren är grundade i lektionen som faktiskt hölls, med citat ur genomgången.
+                Eleven möter er undervisning — inte ett svar från nätet.
               </p>
             </div>
             <div className="shot-frame">
@@ -162,14 +163,14 @@ export default function RektorPage() {
               <div className="ck">✓</div>
               <div>
                 <h4>Visar alltid källan</h4>
-                <p>Varje svar pekar tillbaka till stället i genomgången där det kom ifrån.</p>
+                <p>Varje svar pekar tillbaka till stället i genomgången där det sas.</p>
               </div>
             </div>
             <div className="crow">
               <div className="ck">✓</div>
               <div>
                 <h4>Förstärker läraren — ersätter den inte</h4>
-                <p>Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa — lärarens tolkningsföreträde är kvar.</p>
+                <p>Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa. Lärarens tolkningsföreträde är kvar.</p>
               </div>
             </div>
           </div>
@@ -222,7 +223,7 @@ export default function RektorPage() {
                 <div className="bmark" />
                 <div>
                   <h4>Likvärdig tillgång</h4>
-                  <p>Varje elev kommer åt varje lektion — oavsett om de var där eller inte.</p>
+                  <p>Varje elev kommer åt varje lektion — oavsett om de var på plats eller inte.</p>
                 </div>
               </div>
               <div className="bitem">
@@ -237,8 +238,9 @@ export default function RektorPage() {
                 <div>
                   <h4>Stöd som gör skillnad</h4>
                   <p>
-                    Särskilt värdefullt för elever med NPF eller dyslexi — och för nyanlända och SVA,
-                    där text att läsa i lugn takt sänker tröskeln in i ämnet.
+                    Särskilt värdefullt för elever i behov av extra anpassningar — vid NPF eller
+                    dyslexi — och för nyanlända och elever i SVA, där text att läsa i lugn takt sänker
+                    tröskeln in i ämnet.
                   </p>
                 </div>
               </div>
@@ -277,9 +279,10 @@ export default function RektorPage() {
             }}
           >
             <p className="body" style={{ maxWidth: '30ch' }}>
-              Du ser vilka koncept eleverna faktiskt kämpar med — klass för klass, medan terminen
-              pågår. Underlag för pedagogiskt ledarskap medan ni fortfarande kan påverka — inte
-              först när terminen är slut.
+              Du ser vilka begrepp eleverna återkommer till och kämpar med — klass för klass, medan
+              terminen pågår. Ett underlag för pedagogiskt ledarskap och systematiskt kvalitetsarbete
+              medan ni fortfarande kan påverka måluppfyllelsen — inte först när terminen är slut.
+              Kartan visar elevernas lärande, inte den enskilda lärarens arbete.
             </p>
             <div className="shot-frame">
               <Image
@@ -290,7 +293,7 @@ export default function RektorPage() {
                 placeholder="blur"
                 priority
               />
-              <p className="shot-cap">Förståelsekarta · per klass och koncept</p>
+              <p className="shot-cap">Förståelsekarta · per klass och begrepp</p>
             </div>
           </div>
         </div>
@@ -364,7 +367,7 @@ export default function RektorPage() {
               <div className="tnum">04</div>
               <div>
                 <h4>PUB-avtal — ni äger datan</h4>
-                <p>Personuppgiftsbiträdesavtal på plats. Skolan äger sin data.</p>
+                <p>Personuppgiftsbiträdesavtal på plats, med huvudmannen som personuppgiftsansvarig. Skolan äger sin data.</p>
               </div>
             </div>
           </div>
@@ -395,17 +398,17 @@ export default function RektorPage() {
             </div>
             <div className="metric-row">
               <span className="mi">02</span>
-              <h3 className="mh">Vilka koncept som repeteras mest</h3>
+              <h3 className="mh">Vilka begrepp som repeteras mest</h3>
               <p className="mp">
                 Vilka begrepp eleverna gång på gång går tillbaka till. Det pekar ut var i kursen
-                lärandet behöver mest stöd — i klartext, klass för klass.
+                lärandet behöver mest stöd — klass för klass.
               </p>
             </div>
             <div className="metric-row">
               <span className="mi">03</span>
               <h3 className="mh">Lärarnas upplevda tidsvinst</h3>
               <p className="mp">
-                Hur mycket repetitionsfrågor och omtagningar som lyfts av läraren. Vi frågar lärarna
+                Hur mycket repetition och omtagning som lyfts från läraren. Vi frågar lärarna
                 direkt — kändes det som mindre friktion i vardagen?
               </p>
             </div>
