@@ -8,7 +8,6 @@ import NetworkReveal from '@/components/showcase/NetworkReveal';
 import ConcentricMarket from '@/components/showcase/ConcentricMarket';
 import Timeline from '@/components/showcase/Timeline';
 import ScrollProgress from '@/components/showcase/ScrollProgress';
-import CountUp from '@/components/showcase/CountUp';
 import LangToggle from './LangToggle';
 import {
   t,
@@ -21,6 +20,7 @@ import {
   EXPANSION,
   ASK,
   TRACTION,
+  MEDIA,
 } from './content';
 
 import shotChat from '../../public/rektor/chat-kallor.png';
@@ -55,7 +55,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <p className="mt-2 text-sm text-ink-muted">
             {t(lang, COPY.hero.traction)}
           </p>
-          <p className="mt-12 text-sm text-ink-muted">{sv ? 'Scrolla ↓' : 'Scroll ↓'}</p>
+          <p className="mt-12 text-sm text-ink-muted">{t(lang, MEDIA.heroScroll)}</p>
         </div>
       </section>
 
@@ -71,10 +71,8 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <DeckStats
             items={PROBLEM_STATS.map((s) => ({
               big: s.big,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              countTo: (s as any).countTo as number | undefined,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              countSuffix: (s as any).countSuffix as string | undefined,
+              countTo: s.countTo,
+              countSuffix: s.countSuffix,
               label: t(lang, s.label),
             }))}
           />
@@ -178,12 +176,12 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             <figure>
               <ZoomableShot
                 src={shotChat}
-                alt={sv ? 'Elevante-chatt med svar och källhänvisningar ur lektionen' : 'Elevante chat with answers and source citations from the lesson'}
+                alt={t(lang, MEDIA.chatAlt)}
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="h-auto w-full rounded-2xl shadow-lift"
               />
               <figcaption className="eyebrow mt-4">
-                {sv ? 'Fråga Elevante · svar med källor' : 'Ask Elevante · answers with sources'}
+                {t(lang, MEDIA.chatCaption)}
               </figcaption>
             </figure>
           </Reveal>
@@ -252,12 +250,12 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               <figure>
                 <ZoomableShot
                   src={shotElev}
-                  alt={sv ? 'Elevens vy i Elevante med dagens lektioner' : "Student view in Elevante with today's lessons"}
+                  alt={t(lang, MEDIA.elevAlt)}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="h-auto w-full rounded-2xl shadow-lift"
                 />
                 <figcaption className="eyebrow mt-4">
-                  {sv ? 'Elevens vy · dagens lektioner' : "Student view · today's lessons"}
+                  {t(lang, MEDIA.elevCaption)}
                 </figcaption>
               </figure>
             </Reveal>
@@ -265,12 +263,12 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               <figure>
                 <ZoomableShot
                   src={shotKarta}
-                  alt={sv ? 'Förståelsekarta i Elevante per klass och begrepp' : 'Understanding map in Elevante per class and concept'}
+                  alt={t(lang, MEDIA.kartaAlt)}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="h-auto w-full rounded-2xl shadow-lift"
                 />
                 <figcaption className="eyebrow mt-4">
-                  {sv ? 'Lärarens förståelsekarta · per klass' : "Teacher's understanding map · per class"}
+                  {t(lang, MEDIA.kartaCaption)}
                 </figcaption>
               </figure>
             </Reveal>
@@ -512,7 +510,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               categories={ARR.categories}
               unit={ARR.unit}
               series={[{ label: 'ARR', color: 'rgba(255,122,107,0.22)', values: ARR.values }]}
-              ariaLabel={sv ? 'ARR-prognos 2026–2031, från 0 till 100 MSEK.' : 'ARR forecast 2026–2031, from 0 to 100 MSEK.'}
+              ariaLabel={t(lang, MEDIA.arrAriaLabel)}
             />
           </Reveal>
         </div>
@@ -674,7 +672,6 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 ))}
               </div>
               <div className="border-t border-canvas/20 pt-6 leading-relaxed text-canvas/60">
-                <CountUp value={ASK.amount} suffix=" MSEK" className="font-serif text-3xl text-coral" />
                 <p className="mt-2 text-sm">{COPY.ask.contact}</p>
               </div>
             </div>

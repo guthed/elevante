@@ -11,12 +11,19 @@ export type L = Record<Lang, string>;
 export const t = (l: Lang, s: L) => s[l];
 
 // ── §2 Problem (slide2_problem) — verbatim ────────────────────────
-export const PROBLEM_STATS = [
+export interface ProblemStat {
+  big: string;
+  countTo?: number;
+  countSuffix?: string;
+  label: L;
+}
+
+export const PROBLEM_STATS: readonly ProblemStat[] = [
   { big: '8 av 10', label: { sv: 'svenska lärare har en orimligt hög arbetsbelastning', en: '8 in 10 Swedish teachers carry an unreasonable workload' } },
   { big: '2 av 3', label: { sv: 'saknar förutsättningar att ge stöd till alla elever', en: '2 in 3 lack the conditions to support every student' } },
   { big: '50 %', countTo: 50, countSuffix: ' %', label: { sv: 'av eleverna kan koncentrera sig på lektionerna', en: 'of students can concentrate during lessons' } },
   { big: '10 600', countTo: 10600, label: { sv: 'lärare beräknas saknas i Sverige år 2038', en: 'teachers projected missing in Sweden by 2038' } },
-] as const;
+];
 export const PROBLEM_SOURCE: L = {
   sv: 'Källor: 8 av 10 — Sveriges Lärare, "Med orimliga förutsättningar" (2024). 2 av 3 & hälften — Skolverket, Attityder till skolan 2024. 10 600 — Skolverket, Lärarprognos 2024.',
   en: 'Sources: 8 in 10 — Sveriges Lärare (2024). 2 in 3 & half — Skolverket, Attitudes to School 2024. 10,600 — Skolverket, Teacher Forecast 2024.',
@@ -1077,3 +1084,15 @@ export const COPY: {
     },
   },
 };
+
+// ── Media alt-texts, captions and UI labels (previously hardcoded) ──
+export const MEDIA = {
+  heroScroll:   { sv: 'Scrolla ↓', en: 'Scroll ↓' },
+  chatAlt:      { sv: 'Elevante-chatt med svar och källhänvisningar ur lektionen', en: 'Elevante chat with answers and source citations from the lesson' },
+  chatCaption:  { sv: 'Fråga Elevante · svar med källor', en: 'Ask Elevante · answers with sources' },
+  elevAlt:      { sv: 'Elevens vy i Elevante med dagens lektioner', en: "Student view in Elevante with today's lessons" },
+  elevCaption:  { sv: 'Elevens vy · dagens lektioner', en: "Student view · today's lessons" },
+  kartaAlt:     { sv: 'Förståelsekarta i Elevante per klass och begrepp', en: 'Understanding map in Elevante per class and concept' },
+  kartaCaption: { sv: 'Lärarens förståelsekarta · per klass', en: "Teacher's understanding map · per class" },
+  arrAriaLabel: { sv: 'ARR-prognos 2026–2031, från 0 till 100 MSEK.', en: 'ARR forecast 2026–2031, from 0 to 100 MSEK.' },
+} satisfies Record<string, L>;
