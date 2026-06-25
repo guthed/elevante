@@ -204,8 +204,9 @@ export default function RektorPage() {
               Läraren äger lektionen. <em className="text-coral">Elevante minns den.</em>
             </p>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-secondary">
-              Inget för- eller efterarbete, max två tryck. Elevante förstärker undervisningen — det
-              ersätter aldrig läraren. Byggt med läraren, inte runt.
+              Inget för- eller efterarbete — du trycker igång inspelningen, sen sköter sig resten.
+              Max två tryck. Elevante förstärker undervisningen — det ersätter aldrig läraren. Byggt
+              med läraren, inte runt.
             </p>
           </Reveal>
         </div>

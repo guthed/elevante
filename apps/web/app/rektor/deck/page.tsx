@@ -194,8 +194,9 @@ export default function RektorPage() {
           </p>
           <div className="spacer" style={{ flex: '0 0 44px' }} />
           <p className="body" style={{ maxWidth: '46ch' }}>
-            Inget för- eller efterarbete, max två tryck. Elevante förstärker undervisningen —
-            det ersätter aldrig läraren. Byggt med läraren, inte runt.
+            Inget för- eller efterarbete — du trycker igång inspelningen, sen sköter sig resten.
+            Max två tryck. Elevante förstärker undervisningen — det ersätter aldrig läraren. Byggt
+            med läraren, inte runt.
           </p>
         </div>
         <div className="pagefoot">06</div>
