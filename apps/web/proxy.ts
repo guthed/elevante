@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { defaultLocale, isLocale } from './lib/i18n/config';
+import { INVESTOR_COOKIE, verifyAccessToken } from './lib/investor-access';
 
 // Svenska är alltid default. Språkväljaren i headern byter till /en.
 function pickLocale(): string {
@@ -104,6 +105,25 @@ export async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/rektor';
     return NextResponse.rewrite(url);
+  }
+
+  // Investerardeck — delad lösenordsgate. Ligger utanför [locale].
+  if (pathname === '/investerare' || pathname.startsWith('/investerare/')) {
+    if (pathname === '/investerare/las-upp') {
+      return NextResponse.next();
+    }
+    const password = process.env.INVESTOR_DECK_PASSWORD;
+    if (password) {
+      const token = request.cookies.get(INVESTOR_COOKIE)?.value;
+      const ok = await verifyAccessToken(token, password);
+      if (!ok) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/investerare/las-upp';
+        url.searchParams.set('next', pathname);
+        return NextResponse.redirect(url);
+      }
+    }
+    return NextResponse.next();
   }
 
   // Steg 1: locale-redirect
