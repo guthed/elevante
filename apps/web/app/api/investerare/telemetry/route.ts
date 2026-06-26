@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   }
 
   const maxScroll = Math.max(0, Math.min(100, Math.round(Number(payload.maxScroll) || 0)));
-  const seconds = Math.max(0, Math.round(Number(payload.seconds) || 0));
+  const seconds = Math.max(0, Math.min(86400, Math.round(Number(payload.seconds) || 0)));
   const reachedAsk = payload.reachedAsk === true;
 
   const supabase = await createSupabaseServerClient();
