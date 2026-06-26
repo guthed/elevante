@@ -10,6 +10,7 @@ import Timeline from '@/components/showcase/Timeline';
 import ScrollProgress from '@/components/showcase/ScrollProgress';
 import DeckTelemetry from '@/components/showcase/DeckTelemetry';
 import LangToggle from './LangToggle';
+import ContactBar from './ContactBar';
 import {
   t,
   type Lang,
@@ -22,6 +23,7 @@ import {
   ASK,
   TRACTION,
   MEDIA,
+  CONTACTS,
 } from './content';
 
 import shotChat from '../../public/rektor/chat-kallor.png';
@@ -32,10 +34,11 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
   const sv = lang === 'sv';
 
   return (
-    <main className="bg-canvas text-ink">
+    <main className="bg-canvas text-ink pb-24 sm:pb-16">
       <ScrollProgress />
       <DeckTelemetry />
       <LangToggle lang={lang} />
+      <ContactBar lang={lang} />
 
       {/* ── §1 HERO ─────────────────────────────────────────────────── */}
       <section className="flex min-h-[88vh] items-center px-6 py-24 sm:px-10">
@@ -675,8 +678,17 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   </div>
                 ))}
               </div>
-              <div className="border-t border-canvas/20 pt-6 leading-relaxed text-canvas/60">
-                <p className="mt-2 text-sm">{COPY.ask.contact}</p>
+              <div className="border-t border-canvas/20 pt-6 text-sm leading-relaxed text-canvas/70">
+                {CONTACTS.map((c) => (
+                  <p key={c.email} className="mt-1">
+                    <span className="font-semibold text-canvas">{c.name}</span>
+                    {' · '}
+                    <a href={`mailto:${c.email}`} className="hover:text-canvas">{c.email}</a>
+                    {' · '}
+                    <a href={`tel:${c.tel}`} className="tabular-nums hover:text-canvas">{t(lang, c.phone)}</a>
+                  </p>
+                ))}
+                <p className="mt-2 text-canvas/50">elevante.se</p>
               </div>
             </div>
           </Reveal>

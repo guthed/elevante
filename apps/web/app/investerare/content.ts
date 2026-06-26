@@ -1098,3 +1098,22 @@ export const MEDIA = {
   marketAriaLabel: { sv: 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.', en: 'Concentric rings: the market grows from Sweden to the Nordics to the EU.' },
   curveCategory: { sv: 'Kategori', en: 'Category' },
 } satisfies Record<string, L>;
+
+// ── Kontaktpersoner (visas i den fästa kontaktraden + i avslutet) ──
+// `phone` är lokaliserad: svenskt format på sv, internationellt på en.
+// `tel` är alltid internationellt (för tel:-länken).
+export type Contact = { name: string; email: string; tel: string; phone: L };
+export const CONTACTS: Contact[] = [
+  {
+    name: 'John Guthed',
+    email: 'john@elevante.se',
+    tel: '+46733383420',
+    phone: { sv: '0733 383420', en: '+46 733 383 420' },
+  },
+  {
+    name: 'Stefan Pettersson Noord',
+    email: 'stefan@elevante.se',
+    tel: '+46708526604',
+    phone: { sv: '0708 526604', en: '+46 708 526 604' },
+  },
+];
