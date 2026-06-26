@@ -8,6 +8,7 @@ import NetworkReveal from '@/components/showcase/NetworkReveal';
 import ConcentricMarket from '@/components/showcase/ConcentricMarket';
 import Timeline from '@/components/showcase/Timeline';
 import ScrollProgress from '@/components/showcase/ScrollProgress';
+import DeckTelemetry from '@/components/showcase/DeckTelemetry';
 import LangToggle from './LangToggle';
 import {
   t,
@@ -33,6 +34,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
   return (
     <main className="bg-canvas text-ink">
       <ScrollProgress />
+      <DeckTelemetry />
       <LangToggle lang={lang} />
 
       {/* ── §1 HERO ─────────────────────────────────────────────────── */}
@@ -640,7 +642,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
       </section>
 
       {/* ── §18 ASK ──────────────────────────────────────────────────── */}
-      <section className="bg-ink px-6 py-24 text-canvas sm:px-10 sm:py-32">
+      <section id="ask" className="bg-ink px-6 py-24 text-canvas sm:px-10 sm:py-32">
         <div className="container-content grid items-center gap-12 md:grid-cols-2">
           <Reveal>
             <p className="eyebrow flex items-center gap-3 text-canvas/60">
