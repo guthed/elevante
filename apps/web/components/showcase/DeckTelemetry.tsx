@@ -15,13 +15,14 @@ export default function DeckTelemetry({ askSelector = '#ask' }: { askSelector?: 
   const dirty = useRef(false);
 
   useEffect(() => {
-    const send = () => {
-      if (!dirty.current) return;
+    const send = (final = false) => {
+      if (!dirty.current && !final) return;
       dirty.current = false;
       const body = JSON.stringify({
         maxScroll: maxScroll.current,
         seconds: seconds.current,
         reachedAsk: reachedAsk.current,
+        final,
       });
       try {
         navigator.sendBeacon?.(
@@ -69,21 +70,22 @@ export default function DeckTelemetry({ askSelector = '#ask' }: { askSelector?: 
       io.observe(askEl);
     }
 
-    const sendTick = setInterval(send, 15000);
+    const sendTick = setInterval(() => send(), 15000);
     const onVisibility = () => {
-      if (document.visibilityState === 'hidden') send();
+      if (document.visibilityState === 'hidden') send(true);
     };
+    const onPageHide = () => send(true);
     document.addEventListener('visibilitychange', onVisibility);
-    window.addEventListener('pagehide', send);
+    window.addEventListener('pagehide', onPageHide);
 
     return () => {
       window.removeEventListener('scroll', computeScroll);
       clearInterval(timeTick);
       clearInterval(sendTick);
       document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener('pagehide', send);
+      window.removeEventListener('pagehide', onPageHide);
       io?.disconnect();
-      send();
+      send(true);
     };
   }, [askSelector]);
 

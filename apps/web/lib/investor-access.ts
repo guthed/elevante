@@ -3,7 +3,7 @@
 
 export const INVESTOR_COOKIE = 'investor_access';
 
-export type InvestorSession = { label: string; sid: string };
+export type InvestorSession = { label: string; sid: string; pid: string };
 
 function toBase64Url(bytes: Uint8Array): string {
   let bin = '';
@@ -60,8 +60,12 @@ export async function verifySession(token: string | undefined): Promise<Investor
   if (diff !== 0) return null;
   try {
     const parsed = JSON.parse(base64UrlToUtf8(body)) as Partial<InvestorSession>;
-    if (typeof parsed.label === 'string' && typeof parsed.sid === 'string') {
-      return { label: parsed.label, sid: parsed.sid };
+    if (
+      typeof parsed.label === 'string' &&
+      typeof parsed.sid === 'string' &&
+      typeof parsed.pid === 'string'
+    ) {
+      return { label: parsed.label, sid: parsed.sid, pid: parsed.pid };
     }
     return null;
   } catch {
