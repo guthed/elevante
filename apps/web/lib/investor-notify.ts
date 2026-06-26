@@ -16,7 +16,9 @@ export async function notifyInvestorEvent(
   meta: Meta = {},
 ): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.INVESTOR_NOTIFY_EMAIL ?? process.env.CONTACT_TO_EMAIL ?? 'john@elevante.se';
+  // Investerarnotiser går alltid till john@elevante.se (ärver inte CONTACT_TO_EMAIL,
+  // som kan peka på en annan inbox). Kan överstyras med INVESTOR_NOTIFY_EMAIL.
+  const to = process.env.INVESTOR_NOTIFY_EMAIL ?? 'john@elevante.se';
   const headline =
     kind === 'open' ? `${label} öppnade investerardecket` : `${label} nådde "the ask"`;
 
