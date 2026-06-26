@@ -2,76 +2,55 @@
 
 import { useInView } from '@/lib/hooks/useInView';
 
-// Dataflywheel: ett nav + två omloppsringar. Ringarna ritas in utåt från
-// navet så det känns som ett svänghjul som tar fart. Deterministiska
-// positioner (viewBox 0 0 440 320, centrum 220/160).
-const HUB = { x: 220, y: 160, r: 12 };
-const INNER = [
-  { x: 220, y: 88 }, { x: 282, y: 124 }, { x: 282, y: 196 },
-  { x: 220, y: 232 }, { x: 158, y: 196 }, { x: 158, y: 124 },
+// Dataflywheel — medvetet asymmetriskt: ett nav + oregelbundet utspridda
+// noder på varierande avstånd, ett par sekundärnav, organisk mesh. Inga
+// perfekta ringar. Deterministiska positioner (viewBox 0 0 440 320).
+const NODES: { x: number; y: number; r: number; hub?: boolean }[] = [
+  { x: 205, y: 168, r: 12, hub: true },
+  { x: 150, y: 90, r: 6 },
+  { x: 250, y: 80, r: 5 },
+  { x: 320, y: 120, r: 6 },
+  { x: 355, y: 195, r: 5 },
+  { x: 300, y: 250, r: 6 },
+  { x: 215, y: 270, r: 5 },
+  { x: 120, y: 250, r: 6 },
+  { x: 70, y: 175, r: 5 },
+  { x: 95, y: 110, r: 4.5 },
+  { x: 190, y: 55, r: 4 },
+  { x: 290, y: 160, r: 7 }, // sekundärnav (höger)
+  { x: 155, y: 200, r: 6.5 }, // sekundärnav (vänster)
+  { x: 255, y: 210, r: 4.5 },
+  { x: 385, y: 130, r: 4 },
+  { x: 40, y: 230, r: 4 },
+  { x: 340, y: 270, r: 4 },
 ];
-const OUTER = [
-  { x: 220, y: 25 }, { x: 299, y: 51 }, { x: 348, y: 118 }, { x: 348, y: 202 },
-  { x: 299, y: 269 }, { x: 220, y: 295 }, { x: 141, y: 269 }, { x: 92, y: 202 },
-  { x: 92, y: 118 }, { x: 141, y: 51 },
-];
-
-type Node = { x: number; y: number; r: number; tier: 0 | 1 | 2 };
-const NODES: Node[] = [
-  { ...HUB, tier: 0 },
-  ...INNER.map((n) => ({ ...n, r: 6, tier: 1 as const })),
-  ...OUTER.map((n) => ({ ...n, r: 4.5, tier: 2 as const })),
-];
-
-// Index: 0 = nav, 1–6 = inre ring, 7–16 = yttre ring.
 const EDGES: [number, number][] = [
-  // nav → inre ring
-  [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6],
-  // inre ring runt
-  [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1],
-  // inre → yttre (ekrar)
-  [1, 7], [1, 16], [2, 8], [2, 9], [3, 9], [3, 10],
-  [4, 11], [4, 12], [5, 13], [5, 14], [6, 15], [6, 16],
-  // yttre ring runt
-  [7, 8], [8, 9], [9, 10], [10, 11], [11, 12],
-  [12, 13], [13, 14], [14, 15], [15, 16], [16, 7],
+  // nav → en delmängd (inte alla — asymmetriskt)
+  [0, 1], [0, 2], [0, 8], [0, 9], [0, 11], [0, 12], [0, 13], [0, 6],
+  // höger kluster runt sekundärnav 11
+  [11, 3], [11, 2], [11, 13], [11, 4], [3, 14], [3, 2], [3, 4], [4, 14], [4, 5], [4, 16],
+  // botten
+  [5, 16], [5, 13], [5, 6], [6, 7], [6, 13], [7, 15], [7, 12],
+  // vänster kluster runt sekundärnav 12
+  [7, 8], [8, 9], [8, 12], [9, 1], [9, 10], [1, 10], [1, 12], [2, 10],
 ];
-
-function nodeDelay(i: number): number {
-  if (i === 0) return 0;
-  if (i <= 6) return 320 + (i - 1) * 55;
-  return 700 + (i - 7) * 45;
-}
 
 export default function NetworkReveal({ caption, ariaLabel }: { caption?: string; ariaLabel?: string }) {
   const [ref, inView] = useInView<HTMLDivElement>();
+  const hub = NODES[0];
   return (
     <div ref={ref} role="img" aria-label={ariaLabel ?? 'Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.'}>
       <svg viewBox="0 0 440 320" className="block h-auto w-full">
-        {/* omloppsbanor (svänghjulets spår) */}
-        {[72, 135].map((r) => (
-          <circle
-            key={r}
-            cx={HUB.x}
-            cy={HUB.y}
-            r={r}
-            fill="none"
-            stroke="var(--color-ink)"
-            strokeOpacity={0.07}
-            strokeDasharray="2 6"
-            style={{ opacity: inView ? 1 : 0, transition: 'opacity .8s ease .2s' }}
-          />
-        ))}
         {/* mjuk gloria bakom navet */}
         <circle
-          cx={HUB.x}
-          cy={HUB.y}
+          cx={hub.x}
+          cy={hub.y}
           r={22}
           fill="var(--color-coral)"
           fillOpacity={0.12}
           style={{ opacity: inView ? 1 : 0, transition: 'opacity .6s ease' }}
         />
-        {/* kanter ritas in utåt */}
+        {/* kanter ritas in */}
         <g stroke="var(--color-coral)" strokeWidth={1.2} fill="none">
           {EDGES.map(([a, b], i) => {
             const len = Math.hypot(NODES[a].x - NODES[b].x, NODES[a].y - NODES[b].y);
@@ -86,27 +65,27 @@ export default function NetworkReveal({ caption, ariaLabel }: { caption?: string
                 strokeDasharray={len}
                 strokeDashoffset={inView ? 0 : len}
                 style={{
-                  transition: `stroke-dashoffset .9s cubic-bezier(0.22,1,0.36,1) ${150 + i * 40}ms`,
+                  transition: `stroke-dashoffset .9s cubic-bezier(0.22,1,0.36,1) ${150 + i * 38}ms`,
                 }}
               />
             );
           })}
         </g>
-        {/* noder skalas in från navet och utåt */}
+        {/* noder skalas in */}
         {NODES.map((nd, i) => (
           <circle
             key={i}
             cx={nd.x}
             cy={nd.y}
             r={nd.r}
-            fill={nd.tier === 0 ? 'var(--color-coral)' : 'var(--color-ink)'}
+            fill={nd.hub ? 'var(--color-coral)' : 'var(--color-ink)'}
             stroke="var(--color-canvas)"
             strokeWidth={2}
             style={{
               opacity: inView ? 1 : 0,
               transform: inView ? 'scale(1)' : 'scale(0)',
               transformOrigin: `${nd.x}px ${nd.y}px`,
-              transition: `opacity .4s ease, transform .55s cubic-bezier(0.22,1,0.36,1) ${nodeDelay(i)}ms`,
+              transition: `opacity .4s ease, transform .55s cubic-bezier(0.22,1,0.36,1) ${nd.hub ? 0 : 280 + i * 40}ms`,
             }}
           />
         ))}
