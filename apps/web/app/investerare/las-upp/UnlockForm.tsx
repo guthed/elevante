@@ -9,6 +9,7 @@ export default function UnlockForm({ next, lang }: { next: string; lang: 'sv' | 
   return (
     <form action={action} className="flex w-full max-w-sm flex-col gap-4">
       <input type="hidden" name="next" value={next} />
+      <input type="hidden" name="lang" value={lang} />
       <label className="eyebrow" htmlFor="password">{sv ? 'Lösenord' : 'Password'}</label>
       <input
         id="password" name="password" type="password" autoFocus required

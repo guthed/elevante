@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { defaultLocale, isLocale } from './lib/i18n/config';
-import { INVESTOR_COOKIE, verifyAccessToken } from './lib/investor-access';
+import { INVESTOR_COOKIE, verifySession } from './lib/investor-access';
 
 // Svenska är alltid default. Språkväljaren i headern byter till /en.
 function pickLocale(): string {
@@ -112,11 +112,10 @@ export async function proxy(request: NextRequest) {
     if (pathname === '/investerare/las-upp') {
       return NextResponse.next();
     }
-    const password = process.env.INVESTOR_DECK_PASSWORD;
-    if (password) {
-      const token = request.cookies.get(INVESTOR_COOKIE)?.value;
-      const ok = await verifyAccessToken(token, password);
-      if (!ok) {
+    const secret = process.env.INVESTOR_DECK_SECRET;
+    if (secret) {
+      const session = await verifySession(request.cookies.get(INVESTOR_COOKIE)?.value);
+      if (!session) {
         const url = request.nextUrl.clone();
         url.pathname = '/investerare/las-upp';
         url.searchParams.set('next', pathname);

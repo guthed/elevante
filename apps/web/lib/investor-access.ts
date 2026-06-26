@@ -1,13 +1,30 @@
-// Delad mellan Server Action (sign) och proxy (verify). Web Crypto → funkar i
-// både Node- och edge-runtime. Token = HMAC_SHA256(lösenord, "granted").
+// Signerad sessions-cookie för investerardecket. Bär { label, sid } signerat
+// med INVESTOR_DECK_SECRET. Web Crypto → funkar i både proxy- och Node-runtime.
 
 export const INVESTOR_COOKIE = 'investor_access';
-const PAYLOAD = 'granted';
+
+export type InvestorSession = { label: string; sid: string };
 
 function toBase64Url(bytes: Uint8Array): string {
   let bin = '';
   for (const b of bytes) bin += String.fromCharCode(b);
   return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function fromBase64Url(s: string): Uint8Array {
+  const b64 = s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4);
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+function utf8ToBase64Url(s: string): string {
+  return toBase64Url(new TextEncoder().encode(s));
+}
+
+function base64UrlToUtf8(s: string): string {
+  return new TextDecoder().decode(fromBase64Url(s));
 }
 
 async function hmac(secret: string, message: string): Promise<string> {
@@ -19,16 +36,35 @@ async function hmac(secret: string, message: string): Promise<string> {
   return toBase64Url(new Uint8Array(sig));
 }
 
-export async function makeAccessToken(password: string): Promise<string> {
-  return hmac(password, PAYLOAD);
+/** Signerar en sessions-payload. Returnerar null om INVESTOR_DECK_SECRET saknas. */
+export async function signSession(payload: InvestorSession): Promise<string | null> {
+  const secret = process.env.INVESTOR_DECK_SECRET;
+  if (!secret) return null;
+  const body = utf8ToBase64Url(JSON.stringify(payload));
+  const sig = await hmac(secret, body);
+  return `${body}.${sig}`;
 }
 
-export async function verifyAccessToken(token: string | undefined, password: string): Promise<boolean> {
-  if (!token) return false;
-  const expected = await makeAccessToken(password);
-  if (token.length !== expected.length) return false;
-  // konstant-tids-jämförelse
+/** Verifierar en token och returnerar payloaden, eller null. */
+export async function verifySession(token: string | undefined): Promise<InvestorSession | null> {
+  const secret = process.env.INVESTOR_DECK_SECRET;
+  if (!secret || !token) return null;
+  const dot = token.lastIndexOf('.');
+  if (dot <= 0) return null;
+  const body = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = await hmac(secret, body);
+  if (sig.length !== expected.length) return null;
   let diff = 0;
-  for (let i = 0; i < token.length; i++) diff |= token.charCodeAt(i) ^ expected.charCodeAt(i);
-  return diff === 0;
+  for (let i = 0; i < sig.length; i++) diff |= sig.charCodeAt(i) ^ expected.charCodeAt(i);
+  if (diff !== 0) return null;
+  try {
+    const parsed = JSON.parse(base64UrlToUtf8(body)) as Partial<InvestorSession>;
+    if (typeof parsed.label === 'string' && typeof parsed.sid === 'string') {
+      return { label: parsed.label, sid: parsed.sid };
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
