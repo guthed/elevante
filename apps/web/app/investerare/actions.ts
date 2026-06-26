@@ -42,7 +42,9 @@ export async function unlockInvestorDeck(_prev: GateState, formData: FormData): 
       // Secure i produktion (HTTPS); av i lokal dev så cookien fungerar över http://localhost.
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/investerare',
+      // path '/' så cookien når både /investerare* (gaten) och
+      // /api/investerare/telemetry (en /investerare-path skulle inte matcha /api/...).
+      path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 dagar
     });
   }
