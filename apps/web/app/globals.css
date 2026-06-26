@@ -417,3 +417,15 @@
     padding-inline: 1.5rem;
   }
 }
+
+/* Dataflywheel (NetworkReveal) — kontinuerlig, subtil rörelse efter draw-in.
+   Den globala prefers-reduced-motion-regeln (animation-duration: 0) fryser dessa. */
+@keyframes flywheel-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(7deg); }
+  75% { transform: rotate(-7deg); }
+}
+@keyframes flywheel-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.13); }
+}

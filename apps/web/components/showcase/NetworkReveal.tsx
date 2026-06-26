@@ -48,8 +48,26 @@ export default function NetworkReveal({ caption, ariaLabel }: { caption?: string
           r={22}
           fill="var(--color-coral)"
           fillOpacity={0.12}
-          style={{ opacity: inView ? 1 : 0, transition: 'opacity .6s ease' }}
+          style={{
+            opacity: inView ? 1 : 0,
+            transition: 'opacity .6s ease',
+            transformBox: 'view-box',
+            transformOrigin: `${hub.x}px ${hub.y}px`,
+            animation: inView ? 'flywheel-breathe 5.5s ease-in-out 1.8s infinite' : undefined,
+          }}
         />
+        {/* hela konstellationen gungar mjukt runt navet efter draw-in */}
+        <g
+          style={
+            inView
+              ? {
+                  transformBox: 'view-box',
+                  transformOrigin: `${hub.x}px ${hub.y}px`,
+                  animation: 'flywheel-sway 12s ease-in-out 1.8s infinite',
+                }
+              : undefined
+          }
+        >
         {/* kanter ritas in */}
         <g stroke="var(--color-coral)" strokeWidth={1.2} fill="none">
           {EDGES.map(([a, b], i) => {
@@ -89,6 +107,7 @@ export default function NetworkReveal({ caption, ariaLabel }: { caption?: string
             }}
           />
         ))}
+        </g>
       </svg>
       {caption && <p className="eyebrow mt-4 text-ink-muted">{caption}</p>}
     </div>
