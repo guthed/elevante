@@ -309,7 +309,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               </Reveal>
             ))}
           </div>
-          <div className="mt-14 max-w-xl">
+          <div className="mt-14 mx-auto max-w-3xl">
             <Reveal>
               <NetworkReveal caption={t(lang, COPY.datamoat.caption)} ariaLabel={t(lang, MEDIA.networkAriaLabel)} />
             </Reveal>
