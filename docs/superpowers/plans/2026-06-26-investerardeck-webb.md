@@ -17,6 +17,7 @@
 - **Designtokens & utility-klasser** (`bg-canvas`, `text-ink`, `text-ink-secondary`, `text-ink-muted`, `bg-surface-soft`, `shadow-soft`, `shadow-lift`, `eyebrow`, `container-content`, `text-coral`, `bg-coral`, `text-sage-deep`, `bg-sage`/`bg-sand`) finns redan i `globals.css` och används av `app/rektor/page.tsx`. **Läs `app/rektor/page.tsx` först** — det är den kanoniska förlagan för sektionsmarkup, `Eyebrow`-rytm och den mörka CTA:n.
 - **Copy-proveniens:** all prosa lyfts **verbatim** ur `elevante-deck/build-deck.js` (svenska, per `slideN_*`-funktion) och dess engelska motsvarighet i `elevante-deck/i18n.js` (nyckel = exakt svensk sträng). Det är inte platshållartext — källan är auktoritativ. Sifferdata för visualiseringarna är redan extraherad och ligger inline i Task 3.
 - **Reduced motion:** varje animerat grepp visar slutläget direkt när `matchMedia('(prefers-reduced-motion: reduce)')` matchar. Detta byggs in i hookarna (Task 2) så komponenterna ärver det.
+- **Lint-regel `react-hooks/set-state-in-effect`:** ESLint (`--max-warnings 0`) flaggar `setState` som anropas **synkront i en `useEffect`-kropp**. Lösning genomgående: deferra sådana anrop via `requestAnimationFrame(() => setX(...))` (med `cancelAnimationFrame`-cleanup) — setState inuti rAF-/event-/observer-callbacks flaggas inte. Gäller hookarna (Task 1–2) och `ScrollProgress` (Task 10).
 - **Commit-konvention:** avsluta varje commit-message med `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. Arbeta på branchen `investerardeck-webb` (redan utcheckad).
 
 ---
