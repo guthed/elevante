@@ -10,7 +10,7 @@ import { findInvestorByCode, pushRollup, deriveStatus } from '@/lib/notion-inves
 export type GateState = { error: boolean };
 
 type CacheRow = { notion_page_id: string; label: string };
-type RollupRow = { max_scroll: number; reached_ask: boolean; last_seen: string | null; sessions: number };
+type RollupRow = { max_scroll: number; reached_ask: boolean; last_seen: string | null; sessions: number; total_seconds: number };
 
 export async function unlockInvestorDeck(_prev: GateState, formData: FormData): Promise<GateState> {
   const code = (formData.get('password') ?? '').toString().trim();
@@ -80,6 +80,7 @@ export async function unlockInvestorDeck(_prev: GateState, formData: FormData): 
       maxScroll: r.max_scroll,
       reachedAsk: r.reached_ask,
       sessions: r.sessions,
+      totalMinutes: Math.round((r.total_seconds / 60) * 10) / 10,
     });
   }
 

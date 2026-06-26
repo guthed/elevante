@@ -6,7 +6,7 @@ import { notifyInvestorEvent } from '@/lib/investor-notify';
 import { pushRollup, deriveStatus } from '@/lib/notion-investor';
 
 type EngagementRow = { newly_reached_ask: boolean; label: string | null };
-type RollupRow = { max_scroll: number; reached_ask: boolean; last_seen: string | null; sessions: number };
+type RollupRow = { max_scroll: number; reached_ask: boolean; last_seen: string | null; sessions: number; total_seconds: number };
 
 export async function POST(request: Request) {
   const store = await cookies();
@@ -54,6 +54,7 @@ export async function POST(request: Request) {
         maxScroll: r.max_scroll,
         reachedAsk: r.reached_ask,
         sessions: r.sessions,
+        totalMinutes: Math.round((r.total_seconds / 60) * 10) / 10,
       });
     }
   }

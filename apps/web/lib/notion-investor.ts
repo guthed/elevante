@@ -54,6 +54,7 @@ export type Rollup = {
   maxScroll: number;
   reachedAsk: boolean;
   sessions: number;
+  totalMinutes: number;
 };
 
 /** Skriver rollup till Notion-raden. Sväljer fel (Supabase har datan). */
@@ -71,6 +72,7 @@ export async function pushRollup(pid: string, rollup: Rollup): Promise<void> {
           'Max scroll %': { number: rollup.maxScroll },
           'Nådde the ask': { checkbox: rollup.reachedAsk },
           'Antal sessioner': { number: rollup.sessions },
+          'Tid på sidan (min)': { number: rollup.totalMinutes },
         },
       }),
     });
