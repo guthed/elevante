@@ -24,13 +24,13 @@ export const PROBLEM_STATS: readonly ProblemStat[] = [
   { big: '50 %', countTo: 50, countSuffix: ' %', label: { sv: 'av eleverna kan koncentrera sig på lektionerna', en: 'of students can concentrate during lessons' } },
   { big: '10 600', countTo: 10600, label: { sv: 'lärare beräknas saknas i Sverige år 2038', en: 'teachers projected missing in Sweden by 2038' } },
   { big: '9 av 10', label: { sv: 'lärare ägnar tid åt annat än undervisning', en: '9 in 10 teachers spend time on things other than teaching' } },
-  { big: '3 av 4', label: { sv: 'lärare känner sig stressade regelbundet', en: '3 in 4 teachers feel stressed regularly' } },
+  { big: '6 av 10', label: { sv: 'lärare säger att elever inte får det särskilda stöd de har rätt till', en: '6 in 10 teachers say students don’t get the special support they’re entitled to' } },
   { big: '1 av 5', label: { sv: 'lärare vill lämna yrket', en: '1 in 5 teachers want to leave the profession' } },
   { big: '1 av 2', label: { sv: 'elever på högstadiet och gymnasiet är stressade flera gånger i veckan', en: '1 in 2 lower- and upper-secondary students are stressed several times a week' } },
 ];
 export const PROBLEM_SOURCE: L = {
-  sv: 'Källor: 8 av 10, 9 av 10 & 1 av 5 — Sveriges Lärare, "Med orimliga förutsättningar" (2024). 2 av 3, 3 av 4, hälften & 1 av 2 (elevstress) — Skolverket, Attityder till skolan 2024. 10 600 — Skolverket, Lärarprognos 2024.',
-  en: 'Sources: 8 in 10, 9 in 10 & 1 in 5 — Sveriges Lärare (2024). 2 in 3, 3 in 4, half & 1 in 2 (student stress) — Skolverket, Attitudes to School 2024. 10,600 — Skolverket, Teacher Forecast 2024.',
+  sv: 'Källor: 8 av 10, 9 av 10 & 1 av 5 — Sveriges Lärare, "Med orimliga förutsättningar" (2024). 2 av 3, hälften, 1 av 2 (elevstress) & 6 av 10 (särskilt stöd) — Skolverket, Attityder till skolan 2024. 10 600 — Skolverket, Lärarprognos 2024.',
+  en: 'Sources: 8 in 10, 9 in 10 & 1 in 5 — Sveriges Lärare (2024). 2 in 3, half, 1 in 2 (student stress) & 6 in 10 (special support) — Skolverket, Attitudes to School 2024. 10,600 — Skolverket, Teacher Forecast 2024.',
 };
 
 export const ARR = {
@@ -42,9 +42,9 @@ export const ARR = {
 export const MARKET_RINGS = [
   // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
   // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
-  { radius: 20, color: 'var(--color-coral)', value: '316 554', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
-  { radius: 43, color: 'var(--color-sage-deep)', value: '1,48 milj.', multiple: '≈ 5×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 5× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 5× the home market. Natural expansion after Swedish validation.' } },
-  { radius: 150, color: 'var(--color-ink)', value: '18,3 milj.', multiple: '≈ 58×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 58× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 58× the home market — the big opportunity. Same language model per market.' } },
+  { radius: 20, color: 'var(--color-coral)', fillOpacity: 0.42, value: '316 554', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
+  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 5×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 5× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 5× the home market. Natural expansion after Swedish validation.' } },
+  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 58×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 58× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 58× the home market — the big opportunity. Same language model per market.' } },
 ];
 
 export const EXPANSION = [
@@ -191,6 +191,7 @@ export interface GapCopy {
     stat: { big: string; label: L };
     body: L;
   };
+  voice: L;
   callout: { part1: L; part2: L };
   source: L;
 }
@@ -257,6 +258,7 @@ export interface ExpansionCopy {
   eyebrow: L;
   title: L;
   anchorStrip: { part1: L; part2: L };
+  nordicStrip: { label: L; body: L };
   perCardSub: L;
   source: L;
 }
@@ -344,6 +346,7 @@ export const FUNDS: FundSegment[] = [
 export interface SourceLine {
   claim: L;
   citation: string;
+  url?: string;
 }
 
 export interface SourcesCopy {
@@ -397,11 +400,11 @@ export const COPY: {
     },
     lede: {
       sv:
-        'Elevante spelar in och transkriberar lektionen — och ger varje elev en personlig AI-handledare ' +
-        'som var i rummet, kan lektionen och kan eleven. Strikt på lärarens egna ord, aldrig påhittat.',
+        'Elevante spelar in och transkriberar lektioner i gymnasiet — och ger varje elev en personlig AI-handledare ' +
+        'som var med i rummet, som kan lektionen och som kan elevens styrkor och svagheter. Eleven frågar Elevante och får korrekta svar, med lärarens egna formuleringar.',
       en:
-        'Elevante records and transcribes the lesson — and gives every student a personal AI tutor ' +
-        'that was in the room, knows the lesson and knows the student. Strictly the teacher’s own words, never made up.',
+        'Elevante records and transcribes upper-secondary lessons — and gives every student a personal AI tutor ' +
+        'that was in the room, that knows the lesson and that knows the student’s strengths and weaknesses. The student asks Elevante and gets correct answers, in the teacher’s own words.',
     },
     traction: {
       sv: '18 månader i utveckling · LOI undertecknad · Pilot startar hösten 2026',
@@ -457,6 +460,10 @@ export const COPY: {
         en: 'Unregulated consumer AI fills the vacuum — no curriculum, no school control.',
       },
     },
+    voice: {
+      sv: 'Eleverna kallar redan AI ”en extra lärare” — och deras egen önskelista på AI-nytta är nästan exakt det Elevante gör.',
+      en: 'Students already call AI “an extra teacher” — and their own wishlist for AI is almost exactly what Elevante does.',
+    },
     callout: {
       part1: {
         sv: 'Skol-AI sköter admin, schema och betyg — ingen är i klassrummet när undervisningen sker. ',
@@ -499,10 +506,10 @@ export const COPY: {
         },
       },
       {
-        title: { sv: 'Läraren får insyn och äger sin data', en: 'Teachers get insight and own their data' },
+        title: { sv: 'Läraren får insyn och styr sin data', en: 'Teachers get insight and control their data' },
         desc: {
-          sv: 'Ser exakt vad eleverna fastnar på. All data stannar hos skolan.',
-          en: 'Sees exactly where students get stuck. All data stays with the school.',
+          sv: 'Ser exakt vad eleverna fastnar på. Läraren väljer om en lektion spelas in och kan redigera eller radera transkript när som helst. All data stannar hos skolan.',
+          en: 'Sees exactly where students get stuck. The teacher chooses whether a lesson is recorded and can edit or delete transcripts at any time. All data stays with the school.',
         },
       },
       {
@@ -518,8 +525,8 @@ export const COPY: {
       en: 'An AI tutor\nthat was in the room.',
     },
     pullQuoteCaption: {
-      sv: 'ChatGPT vet vad osmos är — inte hur din lärare förklarade det i torsdags.',
-      en: 'ChatGPT knows what osmosis is — not how your teacher explained it on Thursday.',
+      sv: 'ChatGPT vet vad osmos är — men inte hur din lärare förklarade det i torsdags.',
+      en: 'ChatGPT knows what osmosis is — but not how your teacher explained it on Thursday.',
     },
   },
 
@@ -546,8 +553,8 @@ export const COPY: {
         num: '02',
         title: { sv: 'Elevante transkriberar', en: 'Elevante transcribes' },
         desc: {
-          sv: 'KB-Whisper transkriberar på svenska och indexerar tillsammans med lärarens material.',
-          en: 'KB-Whisper transcribes Swedish and indexes it with the teacher’s materials.',
+          sv: 'KB-Whisper transkriberar lektionen på svenska och indexerar den med lärarens material.',
+          en: 'KB-Whisper transcribes the lesson in Swedish and indexes it with the teacher’s materials.',
         },
       },
       {
@@ -601,8 +608,8 @@ export const COPY: {
             en: 'Sees which questions students ask — and where they get stuck.',
           },
           {
-            sv: 'Vet kring vilka delar av lektionen frågorna kommer.',
-            en: 'Knows which parts of the lesson the questions cluster around.',
+            sv: 'Ser vilka delar av lektionen som väcker flest frågor.',
+            en: 'Sees which parts of the lesson spark the most questions.',
           },
           {
             sv: 'Följer hur elevernas övningsprov går.',
@@ -633,8 +640,8 @@ export const COPY: {
         en: 'Every recorded lesson becomes structured data. A maths teacher in Stockholm can see how a celebrated teacher in Umeå explains derivatives — ',
       },
       emphasis: {
-        sv: 'och anpassa det.',
-        en: 'and adapt it.',
+        sv: 'och anpassar sin undervisning efter det.',
+        en: 'and adapts their teaching to it.',
       },
       part2: {
         sv: ' Med tiden visar Elevante nya lärare hur de bäst lägger upp sina egna lektioner.',
@@ -746,7 +753,7 @@ export const COPY: {
         heading: { sv: 'Avanti Studios', en: 'Avanti Studios' },
         desc: {
           sv:
-            'Gustaf Hagman (grundare LeoVegas) och Jonas Delin (grundare Authentic Gaming) bygger ' +
+            'Gustaf Hagman (grundare av LeoVegas) och Jonas Delin (grundare av Authentic Gaming) bygger ' +
             'fotorealistiska realtidskloner i Unreal Engine + Metahuman — bevisat i live casino.',
           en:
             'Gustaf Hagman (founder of LeoVegas) and Jonas Delin (founder of Authentic Gaming) build ' +
@@ -782,10 +789,10 @@ export const COPY: {
       en: 'From Swedish upper secondary to 18 million EU students',
     },
     adjacentStrip: {
-      label: { sv: 'Närliggande marknad: ', en: 'Adjacent market: ' },
+      label: { sv: 'Närliggande marknader: ', en: 'Adjacent markets: ' },
       body: {
-        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning undervisar på samma sätt, med högre budget och betalningsvilja.',
-        en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with higher budgets and willingness to pay.',
+        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning undervisar på samma sätt, med högre budget och betalningsvilja. Men vi gör en sak i taget: först bevisar vi Elevante i skolan. När det sitter erbjuder vi samma motor till de närliggande marknaderna — inte tidigare.',
+        en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with higher budgets and willingness to pay. But we do one thing at a time: first we prove Elevante in schools. Once it’s working, we offer the same engine to the adjacent markets — not before.',
       },
     },
     source: {
@@ -814,6 +821,13 @@ export const COPY: {
         en: ' in every country mapped. High-fit markets beyond the Nordics: Poland and Italy.',
       },
     },
+    nordicStrip: {
+      label: { sv: 'Samma problem i grannländerna: ', en: 'The same problem next door: ' },
+      body: {
+        sv: '9 av 10 norska skolledare har ofta för mycket att göra, och danska lärare är dubbelt så emotionellt belastade som arbetsmarknadens snitt (45 % vs 22 %). Lärarsmärtan Elevante avlastar finns i hela Norden — inte bara i Sverige.',
+        en: '9 in 10 Norwegian school leaders often have too much to do, and Danish teachers are twice as emotionally strained as the labour-market average (45% vs 22%). The teacher strain Elevante relieves exists across the Nordics — not only in Sweden.',
+      },
+    },
     perCardSub: {
       sv: 'potentiell marknad vid 500 SEK/elev/år',
       en: 'potential market at 500 SEK/student/year',
@@ -821,10 +835,10 @@ export const COPY: {
     source: {
       sv:
         'Potentiell marknad = elevtal × 500 SEK/elev/år (vid full täckning). Elevtal: Skolverkets gymnasieregister 2024 (SE) + Eurostat 2023, ISCED 3 (Norden, EU27). ' +
-        'Per-elev-finansiering: OECD, Education at a Glance 2024. ARR-prognosen (≈ 14 % av Nordens marknad år 5) är Elevantes estimat.',
+        'Per-elev-finansiering: OECD, Education at a Glance 2024. Norden-jämförelse: Udir TALIS 2024 (Norge), DLF (Danmark). ARR-prognosen (≈ 14 % av Nordens marknad år 5) är Elevantes estimat.',
       en:
         'Potential market = students × 500 SEK/student/year (at full coverage). Students: Skolverket upper-secondary register 2024 (SE) + Eurostat 2023, ISCED 3 (Nordics, EU27). ' +
-        'Per-student funding: OECD, Education at a Glance 2024. The ARR forecast (≈ 14% of the Nordic market in year 5) is Elevante’s estimate.',
+        'Per-student funding: OECD, Education at a Glance 2024. Nordic comparison: Udir TALIS 2024 (Norway), DLF (Denmark). The ARR forecast (≈ 14% of the Nordic market in year 5) is Elevante’s estimate.',
     },
   },
 
@@ -841,23 +855,23 @@ export const COPY: {
     kpis: [
       { value: '500 SEK', label: { sv: 'per elev och år, betald av skolan', en: 'per student per year, paid by the school' } },
       { value: '68 %', label: { sv: 'bruttomarginal i pilot, stärks vid skalning', en: 'gross margin in pilot, strengthens at scale' } },
-      { value: '< 1 mån', label: { sv: 'payback på CAC (branschsnitt 6–18 mån)', en: 'CAC payback (industry avg 6–18 mo)' } },
+      { value: '100 %', label: { sv: 'återkommande intäkt — abonnemang per läsår', en: 'recurring revenue — subscription per school year' } },
       { value: '125×', label: { sv: 'LTV / CAC', en: 'LTV / CAC' } },
     ],
     callout: {
       part1: { sv: '500 SEK är under 0,5 % av skolpengen', en: '500 SEK is under 0.5% of the per-student grant' },
       part2: {
-        sv: ' — och ryms i samma budget som digitala läromedel (500–1 500 SEK), som Elevante kompletterar snarare än ersätter.',
-        en: ' — and fits the same budget as digital textbooks (500–1,500 SEK), which Elevante complements rather than replaces.',
+        sv: ' — en marginell kostnad för ett verktyg som gör lärarens jobb enklare och ger varje elev stöd efter lektionen.',
+        en: ' — a marginal cost for a tool that makes the teacher’s job easier and supports every student after the lesson.',
       },
     },
     source: {
       sv:
-        'Skolpeng/per-elev-finansiering: Skolverkets kostnadsstatistik 2024 (≈ 100 000–130 000 SEK/gymnasieelev). AI-kostnaden är försumbar (under 0,3 MSEK även vid 60 % marknadsandel i Stockholm). ' +
-        'Bruttomarginal, payback och LTV/CAC är Elevantes egna estimat.',
+        'Skolpeng/per-elev-finansiering: Skolverkets kostnadsstatistik 2024 (≈ 100 000–130 000 SEK/gymnasieelev). ' +
+        'Bruttomarginal och LTV/CAC är Elevantes egna estimat.',
       en:
-        'Per-student grant/funding: Skolverket cost statistics 2024 (≈ 100,000–130,000 SEK/upper-secondary student). AI cost is negligible (under 0.3 MSEK even at 60% market share in Stockholm). ' +
-        'Gross margin, payback and LTV/CAC are Elevante’s own estimates.',
+        'Per-student grant/funding: Skolverket cost statistics 2024 (≈ 100,000–130,000 SEK/upper-secondary student). ' +
+        'Gross margin and LTV/CAC are Elevante’s own estimates.',
     },
   },
 
@@ -974,8 +988,8 @@ export const COPY: {
       en: 'Team',
     },
     title: {
-      sv: 'Byggare och kommersialiserare',
-      en: 'Builders and commercializers',
+      sv: 'Den som bygger, den som öppnar dörrar',
+      en: 'The one who builds, the one who opens doors',
     },
     people: [
       {
@@ -1027,15 +1041,15 @@ export const COPY: {
       {
         title: { sv: 'Topp-enhetsekonomi', en: 'Top-tier unit economics' },
         desc: {
-          sv: '125× LTV/CAC och payback under en månad, mot ett branschsnitt på 6–18 månader.',
-          en: '125× LTV/CAC and payback under one month, against a 6–18 month industry benchmark.',
+          sv: '125× LTV/CAC — långt över branschnormen. Återkommande intäkt: skolan abonnerar per läsår.',
+          en: '125× LTV/CAC — well above the industry norm. Recurring revenue: schools subscribe per school year.',
         },
       },
       {
         title: { sv: 'Marginal som skalar', en: 'Margin that scales' },
         desc: {
-          sv: '~68 % bruttomarginal i pilot, mot ~64 % EBITDA år 5. AI-kostnaden är försumbar.',
-          en: '~68% gross margin in pilot, toward ~64% EBITDA by year 5. AI cost is negligible.',
+          sv: '~68 % bruttomarginal i pilot, mot ~64 % EBITDA år 5.',
+          en: '~68% gross margin in pilot, toward ~64% EBITDA by year 5.',
         },
       },
       {
@@ -1048,8 +1062,8 @@ export const COPY: {
       {
         title: { sv: 'Fönstret stängs', en: 'Timing closing fast' },
         desc: {
-          sv: 'Eleverna har tagit AI; skolan inte. Varje månad cementerar konsument-AI som standard.',
-          en: 'Students adopted AI; schools haven’t. Every month cements consumer AI as the default.',
+          sv: 'Eleverna har tagit till sig AI; skolan har det inte. Varje månad cementerar konsument-AI som standard.',
+          en: 'Students have embraced AI; schools haven’t. Every month cements consumer AI as the default.',
         },
       },
       {
@@ -1099,10 +1113,10 @@ export const COPY: {
         body: {
           sv:
             'Strikt RAG svarar på lektionens innehåll — betygsätter inte och styr inte lärande, och hamnar därmed i AI-aktens ”begränsad risk”, inte högrisk (Annex III). ' +
-            'Ingen känsloigenkänning (förbjudet i klassrum sedan 2025). Konkurrenter med adaptiva prov och progress-tracking bär compliance-bördan från aug 2026 — den har vi designat bort. Skärps klassningen ändå finns conformity-budget i V2.',
+            'Ingen känsloigenkänning (förbjudet i klassrum sedan 2025). Konkurrenter med adaptiva prov och progress-tracking bär compliance-bördan från aug 2026 — med böter upp till 35 M€ eller 7 % av omsättningen som insats. Den har vi designat bort. Skärps klassningen ändå finns conformity-budget i V2.',
           en:
             'Strict RAG answers the lesson’s content — it doesn’t grade or steer learning, which places it in the AI Act’s “limited risk”, not high risk (Annex III). ' +
-            'No emotion recognition (banned in classrooms since 2025). Competitors with adaptive tests and progress tracking carry the compliance burden from Aug 2026 — we’ve designed it out. Should the classification still tighten, conformity budget sits in V2.',
+            'No emotion recognition (banned in classrooms since 2025). Competitors with adaptive tests and progress tracking carry the compliance burden from Aug 2026 — with fines up to €35M or 7% of revenue at stake. We’ve designed it out. Should the classification still tighten, conformity budget sits in V2.',
         },
       },
       {
@@ -1135,8 +1149,7 @@ export const COPY: {
   // ── §19 Ask (slide19_ask) ─────────────────────────────────────────
   ask: {
     eyebrow: {
-      // "The ask" is the eyebrow in the source — used verbatim in both langs
-      sv: 'The ask',
+      sv: 'Det vi söker',
       en: 'The ask',
     },
     title: {
@@ -1148,8 +1161,8 @@ export const COPY: {
       en: 'A pre-seed round of 14 MSEK (€1.25M) for 24–30 months of runway — enough to reach operating break-even without new financing.',
     },
     investorWish: {
-      sv: 'Vad vi vill av en investerare: en operativ partner med räckvidd in i skola och utbildning — inte en passiv check.',
-      en: 'What we want from an investor: an operational partner with reach into schools and education — not a passive cheque.',
+      sv: 'Vad vi vill av en investerare: en operativ partner med räckvidd in i skola och utbildning — inte bara kapital.',
+      en: 'What we want from an investor: an operational partner with reach into schools and education — not just capital.',
     },
     plus: {
       label: { sv: 'Plus: ', en: 'Plus: ' },
@@ -1184,13 +1197,15 @@ export const COPY: {
           en: '8 in 10 teachers (unreasonable workload)',
         },
         citation: 'Sveriges Lärare, "Med orimliga förutsättningar" (2024)',
+        url: 'https://www.sverigeslarare.se/om-oss/nyheter/rapport-orimliga-forutsattningar/',
       },
       {
         claim: {
-          sv: '2 av 3 (67 %) saknar förutsättningar',
-          en: '2 in 3 (67%) lack the conditions',
+          sv: '2 av 3 (67 %) saknar förutsättningar · 6 av 10: elever får inte särskilt stöd',
+          en: '2 in 3 (67%) lack the conditions · 6 in 10: students don’t get special support',
         },
         citation: 'Skolverket, Attityder till skolan 2024, delrapport 3 (2025)',
+        url: 'https://www.skolverket.se/publikationer?id=13240',
       },
       {
         claim: {
@@ -1198,6 +1213,7 @@ export const COPY: {
           en: 'Half can concentrate during lessons',
         },
         citation: 'Skolverket, Attityder till skolan 2024',
+        url: 'https://www.skolverket.se/publikationer?id=13208',
       },
       {
         claim: {
@@ -1205,6 +1221,7 @@ export const COPY: {
           en: '10,600 teachers missing by 2038',
         },
         citation: 'Skolverket, Lärarprognos 2024',
+        url: 'https://www.skolverket.se/publikationer?id=13190',
       },
       {
         claim: {
@@ -1212,13 +1229,15 @@ export const COPY: {
           en: '9 in 10 teachers do non-teaching work · 1 in 5 want to leave',
         },
         citation: 'Sveriges Lärare, "Med orimliga förutsättningar" (2024)',
+        url: 'https://www.sverigeslarare.se/om-oss/nyheter/rapport-orimliga-forutsattningar/',
       },
       {
         claim: {
-          sv: '3 av 4 lärare stressade · 1 av 2 gymnasie-/högstadieelever stressade',
-          en: '3 in 4 teachers stressed · 1 in 2 secondary students stressed',
+          sv: '1 av 2 gymnasie-/högstadieelever stressade',
+          en: '1 in 2 secondary students stressed',
         },
         citation: 'Skolverket, Attityder till skolan 2024, delrapport 1',
+        url: 'https://www.skolverket.se/publikationer?id=13184',
       },
       {
         claim: {
@@ -1226,6 +1245,7 @@ export const COPY: {
           en: '70% / 33% AI use among youth',
         },
         citation: 'Internetstiftelsen, Svenskarna och internet 2024',
+        url: 'https://svenskarnaochinternet.se/rapporter/svenskarna-och-internet-2025/ai-artificiell-intelligens/',
       },
       {
         claim: {
@@ -1233,6 +1253,7 @@ export const COPY: {
           en: '78% of teachers lack AI knowledge',
         },
         citation: 'OECD, TALIS 2024 (Sverige)',
+        url: 'https://www.oecd.org/en/publications/results-from-talis-2024-country-notes_e127f9e2-en/sweden_95600eec-en.html',
       },
       {
         claim: {
@@ -1240,6 +1261,23 @@ export const COPY: {
           en: 'KB-Whisper 47% fewer errors',
         },
         citation: 'KBLab, Kungliga biblioteket',
+        url: 'https://www.isof.se/aktuellt/nyheter/nyheter-isof/2025-02-20-kungliga-biblioteket-lanserar-ny-ai-modell-baserad-pa-dialektinspelningar-fran-isof',
+      },
+      {
+        claim: {
+          sv: 'Norden: samma lärarsmärta (Norge)',
+          en: 'Nordics: same teacher strain (Norway)',
+        },
+        citation: 'Udir, TALIS 2024 (Norge) + NIFU',
+        url: 'https://www.udir.no/tall-og-forskning/finn-forskning/rapporter/2025/talis-den-norske-larerrollen-i-endring/',
+      },
+      {
+        claim: {
+          sv: 'Norden: samma lärarsmärta (Danmark)',
+          en: 'Nordics: same teacher strain (Denmark)',
+        },
+        citation: 'DLF + Børne- og Undervisningsministeriet (Danmark)',
+        url: 'https://www.dlf.org/service-menu/tal-og-analyser/laerernes-kompetencer-og-arbejdsmiljoe',
       },
       {
         claim: {
@@ -1247,6 +1285,7 @@ export const COPY: {
           en: 'Market figures (student counts)',
         },
         citation: 'Skolverkets gymnasieregister 2024 + Eurostat 2023 (ISCED 3)',
+        url: 'https://ec.europa.eu/eurostat/databrowser/view/educ_uoe_enrs05/default/table',
       },
     ],
     footer: {

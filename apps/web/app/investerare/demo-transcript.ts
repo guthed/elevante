@@ -6,7 +6,7 @@
 import type { L } from './content';
 
 export const DEMO_SUBJECT: L = { sv: 'Ekologi', en: 'Ecology' };
-export const DEMO_LESSON_TITLE = 'Ekologi — energiflöden och kretslopp';
+export const DEMO_LESSON_TITLE: L = { sv: 'Ekologi — energiflöden och kretslopp', en: 'Ecology — energy flows and cycles' };
 export const DEMO_CONCEPTS = ['Fotosyntes', 'Cellandning', 'Näringskedjor', 'Kolets kretslopp', 'Ekosystem'];
 
 // Transkriptet i tidsstämplade segment — används både som RAG-kontext och som
@@ -22,27 +22,42 @@ export const DEMO_SEGMENTS: TranscriptSegment[] = [
 
 export const DEMO_TRANSCRIPT = DEMO_SEGMENTS.map((s) => `[${s.ts}] ${s.text}`).join('\n\n');
 
-// Förseedad, pågående konversation grundad i transkriptet ovan.
+// Förseedad, pågående konversation grundad i transkriptet ovan. Tvåspråkig så
+// EN-decket visar engelska frågor/svar; live-svar följer frågans språk via RAG.
 export type DemoMessage = {
   role: 'user' | 'assistant';
-  content: string;
-  citation?: { ts: string; quote: string };
+  content: L;
+  citation?: { ts: string; quote: L };
 };
 export const DEMO_SEED: DemoMessage[] = [
-  { role: 'user', content: 'Vad är skillnaden mellan fotosyntes och cellandning?' },
+  {
+    role: 'user',
+    content: {
+      sv: 'Vad är skillnaden mellan fotosyntes och cellandning?',
+      en: 'What’s the difference between photosynthesis and cellular respiration?',
+    },
+  },
   {
     role: 'assistant',
-    content:
-      'Fotosyntesen lagrar energi: växten gör om koldioxid och vatten till glukos och släpper ut syre. Cellandningen gör nästan tvärtom — cellen bryter ner glukosen med syre och frigör energin den behöver, och bildar koldioxid och vatten. Det ena lagrar solens energi, det andra frigör den.',
-    citation: { ts: '09:10', quote: 'Cellandningen är nästan tvärtom mot fotosyntesen. Cellen bryter ner glukosen med hjälp av syre och frigör energin…' },
+    content: {
+      sv: 'Fotosyntesen lagrar energi: växten gör om koldioxid och vatten till glukos och släpper ut syre. Cellandningen gör nästan tvärtom — cellen bryter ner glukosen med syre och frigör energin den behöver, och bildar koldioxid och vatten. Det ena lagrar solens energi, det andra frigör den.',
+      en: 'Photosynthesis stores energy: the plant turns carbon dioxide and water into glucose and releases oxygen. Cellular respiration does almost the opposite — the cell breaks down glucose with oxygen to release the energy it needs, producing carbon dioxide and water. One stores the sun’s energy, the other releases it.',
+    },
+    citation: {
+      ts: '09:10',
+      quote: {
+        sv: 'Cellandningen är nästan tvärtom mot fotosyntesen. Cellen bryter ner glukosen med hjälp av syre och frigör energin…',
+        en: 'Cellular respiration is almost the opposite of photosynthesis. The cell breaks down glucose using oxygen and releases the energy…',
+      },
+    },
   },
 ];
 
-// Förslag att klicka på (hjälper användaren att testa snabbt).
-export const DEMO_SUGGESTIONS: string[] = [
-  'Varför försvinner energi i näringskedjan?',
-  'Vad händer med kolet när en växt dör?',
-  'Vad menas med att ett ekosystem är i balans?',
+// Förslag att klicka på (hjälper användaren att testa snabbt). Tvåspråkiga.
+export const DEMO_SUGGESTIONS: L[] = [
+  { sv: 'Varför försvinner energi i näringskedjan?', en: 'Why does energy disappear in the food chain?' },
+  { sv: 'Vad händer med kolet när en växt dör?', en: 'What happens to the carbon when a plant dies?' },
+  { sv: 'Vad menas med att ett ekosystem är i balans?', en: 'What does it mean for an ecosystem to be in balance?' },
 ];
 
 // ── UI-strängar (bilingualt) ──────────────────────────────────────

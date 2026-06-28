@@ -163,7 +163,12 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             </Reveal>
           </div>
           <Reveal>
-            <p className="mt-10 max-w-3xl font-serif text-2xl leading-snug">
+            <p className="mt-10 max-w-3xl border-l-2 border-coral pl-5 font-serif text-xl italic leading-snug text-ink-secondary">
+              {t(lang, COPY.gap.voice)}
+            </p>
+          </Reveal>
+          <Reveal>
+            <p className="mt-8 max-w-3xl font-serif text-2xl leading-snug">
               {t(lang, COPY.gap.callout.part1)}
               <em className="text-coral not-italic">{t(lang, COPY.gap.callout.part2)}</em>
             </p>
@@ -439,6 +444,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               rings={MARKET_RINGS.map((r) => ({
                 radius: r.radius,
                 color: r.color,
+                fillOpacity: r.fillOpacity,
                 value: r.value,
                 multiple: r.multiple,
                 label: t(lang, r.label),
@@ -492,6 +498,12 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             <p className="mt-10 max-w-2xl text-lg text-ink-secondary">
               {t(lang, COPY.expansion.anchorStrip.part1)}
               <span className="text-coral">{t(lang, COPY.expansion.anchorStrip.part2)}</span>
+            </p>
+          </Reveal>
+          <Reveal>
+            <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
+              <span className="font-semibold text-ink">{t(lang, COPY.expansion.nordicStrip.label)}</span>
+              {t(lang, COPY.expansion.nordicStrip.body)}
             </p>
           </Reveal>
           <Reveal>
@@ -804,7 +816,14 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   <a href={`tel:${c.tel}`} className="tabular-nums hover:text-canvas">{t(lang, c.phone)}</a>
                 </p>
               ))}
-              <p className="mt-2 text-canvas/50">elevante.se</p>
+              <a
+                href="https://elevante.se"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-block font-serif text-2xl text-canvas underline decoration-coral decoration-2 underline-offset-4 transition-colors hover:text-coral sm:text-3xl"
+              >
+                elevante.se
+              </a>
             </div>
           </Reveal>
         </div>
@@ -827,7 +846,18 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   <span>
                     <span className="font-medium text-ink">{t(lang, line.claim)}</span>
                     {' — '}
-                    {line.citation}
+                    {line.url ? (
+                      <a
+                        href={line.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline decoration-ink/25 underline-offset-2 hover:text-ink hover:decoration-coral"
+                      >
+                        {line.citation}
+                      </a>
+                    ) : (
+                      line.citation
+                    )}
                   </span>
                 </li>
               ))}

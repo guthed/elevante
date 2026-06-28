@@ -11,6 +11,8 @@ export type MarketRing = {
   sub: string;
   /** Jämförelse-multipel mot hemmamarknaden (t.ex. "≈ 58×"). Valfri. */
   multiple?: string;
+  /** Fyllnadsopacitet per ring — låter färgerna differentieras tydligare. */
+  fillOpacity?: number;
 };
 
 export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRing[]; ariaLabel?: string }) {
@@ -27,9 +29,9 @@ export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRi
               cy={160}
               r={r.radius}
               fill={r.color}
-              fillOpacity={0.18}
+              fillOpacity={r.fillOpacity ?? 0.18}
               stroke={r.color}
-              strokeWidth={1.5}
+              strokeWidth={2.5}
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? 'scale(1)' : 'scale(0.2)',

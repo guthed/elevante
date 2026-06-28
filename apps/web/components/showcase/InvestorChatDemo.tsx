@@ -8,11 +8,19 @@ import {
   DEMO_SUBJECT,
   DEMO_LESSON_TITLE,
   CHAT_UI,
-  type DemoMessage,
 } from '@/app/investerare/demo-transcript';
 
+// Runtime-meddelande (upplöst till aktuellt språk). Live-svar kommer redan som strängar.
+type Msg = { role: 'user' | 'assistant'; content: string; citation?: { ts: string; quote: string } };
+
 export default function InvestorChatDemo({ lang }: { lang: Lang }) {
-  const [messages, setMessages] = useState<DemoMessage[]>(DEMO_SEED);
+  const [messages, setMessages] = useState<Msg[]>(() =>
+    DEMO_SEED.map((m) => ({
+      role: m.role,
+      content: t(lang, m.content),
+      citation: m.citation ? { ts: m.citation.ts, quote: t(lang, m.citation.quote) } : undefined,
+    })),
+  );
   const [input, setInput] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
@@ -73,7 +81,7 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
         <p className="text-sm text-ink-muted">
           <span className="font-semibold text-ink">{t(lang, CHAT_UI.subjectLabel)}: {t(lang, DEMO_SUBJECT)}</span>
           {' · '}
-          {DEMO_LESSON_TITLE}
+          {t(lang, DEMO_LESSON_TITLE)}
         </p>
         <p className="mt-2 text-sm text-ink-secondary">{t(lang, CHAT_UI.lede)}</p>
 
@@ -158,17 +166,20 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
         {/* Förslag */}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span className="text-xs text-ink-muted">{t(lang, CHAT_UI.suggestionsLabel)}</span>
-          {DEMO_SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => ask(s)}
-              disabled={pending}
-              className="rounded-full border border-ink/15 px-3 py-1.5 text-xs text-ink-secondary transition-colors hover:border-coral hover:text-ink disabled:opacity-40"
-            >
-              {s}
-            </button>
-          ))}
+          {DEMO_SUGGESTIONS.map((s) => {
+            const text = t(lang, s);
+            return (
+              <button
+                key={text}
+                type="button"
+                onClick={() => ask(text)}
+                disabled={pending}
+                className="rounded-full border border-ink/15 px-3 py-1.5 text-xs text-ink-secondary transition-colors hover:border-coral hover:text-ink disabled:opacity-40"
+              >
+                {text}
+              </button>
+            );
+          })}
         </div>
 
         <p className="mt-4 text-xs text-ink-muted">{t(lang, CHAT_UI.note)}</p>

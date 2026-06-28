@@ -62,7 +62,7 @@ export async function POST(req: Request) {
   const q = question.trim().slice(0, 300);
   const result = await answerWithRag(
     q,
-    [{ lessonId: 'demo-ekologi', lessonTitle: DEMO_LESSON_TITLE, content: DEMO_TRANSCRIPT }],
+    [{ lessonId: 'demo-ekologi', lessonTitle: DEMO_LESSON_TITLE.sv, content: DEMO_TRANSCRIPT }],
     DEMO_CONCEPTS,
   );
 
