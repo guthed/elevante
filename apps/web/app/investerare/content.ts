@@ -280,6 +280,7 @@ export interface NumbersCopy {
     eyebrow: L;
     intro: L;
     scenarios: { name: L; cash: L; note: L }[];
+    why: { label: L; body: L };
     source: L;
   };
 }
@@ -941,6 +942,13 @@ export const COPY: {
           note: { sv: 'lägsta kassa · kräver budgetjustering', en: 'lowest cash · requires budget adjustment' },
         },
       ],
+      why: {
+        label: { sv: 'Varför 14 MSEK? ', en: 'Why 14 MSEK? ' },
+        body: {
+          sv: 'Basplanen dippar inte under 8,2 MSEK — men nedsido-scenarierna gör det, ner mot ~4 MSEK. Bufferten är inte slack; den låter oss hålla tempo och absorbera försening, högre kostnader eller lägre adoption utan en nödrunda vid sämsta läge.',
+          en: 'The base plan doesn’t dip below 8.2 MSEK — but the downside scenarios do, toward ~4 MSEK. The buffer isn’t slack; it lets us keep tempo and absorb delay, higher costs or slower adoption without an emergency round at the worst possible moment.',
+        },
+      },
       source: {
         sv: 'Känslighetsanalys (Elevante), 24-månadersmodell. ”Lägsta kassa” = lägsta kassasaldo under perioden; den långsiktiga ARR-banan i kurvan ovan är det konservativa 5-årsbasfallet.',
         en: 'Sensitivity analysis (Elevante), 24-month model. “Lowest cash” = lowest cash balance during the period; the long-term ARR trajectory in the curve above is the conservative 5-year base case.',

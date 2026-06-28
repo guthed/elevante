@@ -589,7 +589,11 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   </div>
                 ))}
               </div>
-              <p className="mt-7 max-w-3xl text-sm text-ink-muted">{t(lang, COPY.numbers.stress.source)}</p>
+              <p className="mt-8 max-w-3xl text-lg text-ink-secondary">
+                <span className="font-semibold text-ink">{t(lang, COPY.numbers.stress.why.label)}</span>
+                {t(lang, COPY.numbers.stress.why.body)}
+              </p>
+              <p className="mt-6 max-w-3xl text-sm text-ink-muted">{t(lang, COPY.numbers.stress.source)}</p>
             </div>
           </Reveal>
         </div>
