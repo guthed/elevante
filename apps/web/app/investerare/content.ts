@@ -23,10 +23,14 @@ export const PROBLEM_STATS: readonly ProblemStat[] = [
   { big: '2 av 3', label: { sv: 'saknar förutsättningar att ge stöd till alla elever', en: '2 in 3 lack the conditions to support every student' } },
   { big: '50 %', countTo: 50, countSuffix: ' %', label: { sv: 'av eleverna kan koncentrera sig på lektionerna', en: 'of students can concentrate during lessons' } },
   { big: '10 600', countTo: 10600, label: { sv: 'lärare beräknas saknas i Sverige år 2038', en: 'teachers projected missing in Sweden by 2038' } },
+  { big: '9 av 10', label: { sv: 'lärare ägnar tid åt annat än undervisning', en: '9 in 10 teachers spend time on things other than teaching' } },
+  { big: '3 av 4', label: { sv: 'lärare känner sig stressade regelbundet', en: '3 in 4 teachers feel stressed regularly' } },
+  { big: '1 av 5', label: { sv: 'lärare vill lämna yrket', en: '1 in 5 teachers want to leave the profession' } },
+  { big: '1 av 2', label: { sv: 'elever på högstadiet och gymnasiet är stressade flera gånger i veckan', en: '1 in 2 lower- and upper-secondary students are stressed several times a week' } },
 ];
 export const PROBLEM_SOURCE: L = {
-  sv: 'Källor: 8 av 10 — Sveriges Lärare, "Med orimliga förutsättningar" (2024). 2 av 3 & hälften — Skolverket, Attityder till skolan 2024. 10 600 — Skolverket, Lärarprognos 2024.',
-  en: 'Sources: 8 in 10 — Sveriges Lärare (2024). 2 in 3 & half — Skolverket, Attitudes to School 2024. 10,600 — Skolverket, Teacher Forecast 2024.',
+  sv: 'Källor: 8 av 10, 9 av 10 & 1 av 5 — Sveriges Lärare, "Med orimliga förutsättningar" (2024). 2 av 3, 3 av 4, hälften & 1 av 2 (elevstress) — Skolverket, Attityder till skolan 2024. 10 600 — Skolverket, Lärarprognos 2024.',
+  en: 'Sources: 8 in 10, 9 in 10 & 1 in 5 — Sveriges Lärare (2024). 2 in 3, 3 in 4, half & 1 in 2 (student stress) — Skolverket, Attitudes to School 2024. 10,600 — Skolverket, Teacher Forecast 2024.',
 };
 
 export const ARR = {
@@ -54,6 +58,57 @@ export const ASK = {
     { title: { sv: 'Skala go-to-market', en: 'Scale go-to-market' }, desc: { sv: 'I Sverige och in i Norden.', en: 'Across Sweden and into the Nordics.' } },
   ],
 };
+
+// ── §17b De-risking: AI Act-riskskala (MiniRiskScale) ─────────────
+// Ordning topp→botten: mest reglerad överst. Elevante vilar tryggt på
+// "Begränsad risk" — med synlig höjd ned till nästa nivå.
+export type RiskTone = 'banned' | 'high' | 'limited' | 'safe';
+export interface RiskRung {
+  level: L;
+  note: L;
+  tone: RiskTone;
+  marker?: L;
+  isElevante?: boolean;
+}
+// Förtydligande för kort 1 (Berget) — tre bevispunkter, var och en avväpnar
+// en delfråga: suveränitet, social proof, inlåsning.
+export const DERISK_PROOF: L[] = [
+  { sv: '100 % i Sverige — immun mot US Cloud Act', en: '100% in Sweden — immune to the US Cloud Act' },
+  { sv: 'Riksbanken är flaggskeppskund', en: 'The Riksbank is a flagship customer' },
+  { sv: 'KB-Whisper är öppen källkod — flyttbar', en: 'KB-Whisper is open source — portable' },
+];
+
+// Förtydligande för kort 3 (evidens) — kontrasten branschen vs Elevante.
+export const DERISK_CONTRAST: { bad: L; good: L } = {
+  bad: { sv: 'De flesta EdTech: lovar resultat utan evidens', en: 'Most EdTech: promise results without evidence' },
+  good: { sv: 'Elevante: mäter effekt i piloten först', en: 'Elevante: measures effect in the pilot first' },
+};
+
+export const RISK_LADDER: RiskRung[] = [
+  {
+    level: { sv: 'Oacceptabel risk', en: 'Unacceptable risk' },
+    note: { sv: 'Känsloigenkänning i klassrum — förbjudet sedan 2025', en: 'Emotion recognition in classrooms — banned since 2025' },
+    tone: 'banned',
+  },
+  {
+    level: { sv: 'Hög risk', en: 'High risk' },
+    note: { sv: 'Conformity assessment + CE-märkning innan lansering', en: 'Conformity assessment + CE marking before launch' },
+    tone: 'high',
+    marker: { sv: 'Verktyg som betygsätter & styr lärande', en: 'Tools that grade & steer learning' },
+  },
+  {
+    level: { sv: 'Begränsad risk', en: 'Limited risk' },
+    note: { sv: 'Bara transparenskrav — strikt RAG, svarar på innehåll', en: 'Transparency duties only — strict RAG, answers content' },
+    tone: 'limited',
+    marker: { sv: 'Elevante', en: 'Elevante' },
+    isElevante: true,
+  },
+  {
+    level: { sv: 'Minimal risk', en: 'Minimal risk' },
+    note: { sv: 'Inga särskilda krav', en: 'No special requirements' },
+    tone: 'safe',
+  },
+];
 
 // ── Traction milestones (slide14_traction) ───────────────────────
 export interface TractionItem {
@@ -228,14 +283,43 @@ export interface InvestCaseCopy {
   source: L;
 }
 
+export interface DeriskCopy {
+  eyebrow: L;
+  title: L;
+  lede: L;
+  cards: { worry: L; heading: L; body: L }[];
+  scaleNote: L;
+  source: L;
+}
+
 export interface AskCopy {
   eyebrow: L;
   title: { part1: L; accent: string };
   lede: L;
   investorWish: L;
   plus: { label: L; body: L };
+  fundsTitle: L;
+  fundsTotal: L;
+  fundsSource: L;
   contact: string;
 }
+
+// ── §18 Use of funds — allokering enligt Affärsplan v2.0 (14,0 MSEK) ──
+export interface FundSegment {
+  label: L;
+  amount: L;
+  pct: number;
+  color: string;
+}
+export const FUNDS: FundSegment[] = [
+  { label: { sv: 'Personal (grundare, CTO, designer, CSO år 2)', en: 'Team (founders, CTO, designer, CSO yr 2)' }, amount: { sv: '5,5 MSEK', en: '5.5 MSEK' }, pct: 39, color: 'var(--color-coral)' },
+  { label: { sv: 'Buffert för år 2 (förseningsrisk)', en: 'Year-2 buffer (delay risk)' }, amount: { sv: '3,0 MSEK', en: '3.0 MSEK' }, pct: 22, color: 'var(--color-sand)' },
+  { label: { sv: 'Marknadsföring och försäljning', en: 'Marketing and sales' }, amount: { sv: '2,5 MSEK', en: '2.5 MSEK' }, pct: 18, color: 'var(--color-sage)' },
+  { label: { sv: 'Produkt och teknik (infra, AI-drift)', en: 'Product and tech (infra, AI ops)' }, amount: { sv: '1,3 MSEK', en: '1.3 MSEK' }, pct: 9, color: 'var(--color-sage-deep)' },
+  { label: { sv: 'Extern teknisk granskning', en: 'External technical review' }, amount: { sv: '0,6 MSEK', en: '0.6 MSEK' }, pct: 4, color: 'rgba(255,122,107,0.5)' },
+  { label: { sv: 'Lokal och hårdvara', en: 'Office and hardware' }, amount: { sv: '0,6 MSEK', en: '0.6 MSEK' }, pct: 4, color: 'rgba(232,220,196,0.55)' },
+  { label: { sv: 'Juridik, bokföring, försäkringar', en: 'Legal, accounting, insurance' }, amount: { sv: '0,5 MSEK', en: '0.5 MSEK' }, pct: 4, color: 'rgba(184,197,166,0.5)' },
+];
 
 export interface SourceLine {
   claim: L;
@@ -271,6 +355,7 @@ export const COPY: {
   positioning: PositioningCopy;
   team: TeamCopy;
   investcase: InvestCaseCopy;
+  derisk: DeriskCopy;
   ask: AskCopy;
   sources: SourcesCopy;
 } = {
@@ -375,8 +460,8 @@ export const COPY: {
       en: 'The solution',
     },
     title: {
-      sv: 'Skolans svar på AI — inte ännu en chatbot',
-      en: 'School’s answer to AI — not just another chatbot',
+      sv: 'Elevante är skolans svar på AI — inte ännu en chatbot',
+      en: 'Elevante is the school’s answer to AI — not just another chatbot',
     },
     points: [
       {
@@ -425,8 +510,8 @@ export const COPY: {
       en: 'How it works',
     },
     title: {
-      sv: 'Tre steg. Två tryck för läraren.',
-      en: 'Three steps. Two taps for the teacher.',
+      sv: 'Tre steg. Två tryck, En lärare.',
+      en: 'Three steps. Two taps, one teacher.',
     },
     steps: [
       {
@@ -961,6 +1046,72 @@ export const COPY: {
     },
   },
 
+  // ── §17b De-risking (slide17b_derisk) ────────────────────────────
+  derisk: {
+    eyebrow: {
+      sv: 'Riskbilden',
+      en: 'The risk picture',
+    },
+    title: {
+      sv: 'Det som brukar oroa — redan avbockat',
+      en: 'What usually worries investors — already handled',
+    },
+    lede: {
+      sv: 'Tre frågor en investerare ställer innan checken. Här är svaren — inte löften, utan saker som redan är på plats.',
+      en: 'Three questions an investor asks before the cheque. Here are the answers — not promises, but things already in place.',
+    },
+    cards: [
+      {
+        worry: { sv: 'Beroende av en ung leverantör?', en: 'Reliant on a young vendor?' },
+        heading: { sv: 'Samma svenska AI-moln som Riksbanken', en: 'The same Swedish AI cloud as the Riksbank' },
+        body: {
+          sv:
+            'Elevante kör på Berget AI — svenskägd, suverän infrastruktur där all data och beräkning sker fysiskt i Sverige, immunt mot US Cloud Act. ' +
+            'Riksbanken är flaggskeppskund och 300+ organisationer kör redan på plattformen. Och skulle något hända: transkriberingsmotorn KB-Whisper är öppen källkod och flyttbar till annan EU-infrastruktur.',
+          en:
+            'Elevante runs on Berget AI — Swedish-owned, sovereign infrastructure where all data and compute sit physically in Sweden, immune to the US Cloud Act. ' +
+            'The Riksbank (Sweden’s central bank) is a flagship customer and 300+ organisations already run on the platform. And if anything happened: the KB-Whisper transcription engine is open source and portable to other EU infrastructure.',
+        },
+      },
+      {
+        worry: { sv: 'EU AI Act då?', en: 'What about the EU AI Act?' },
+        heading: { sv: 'Byggd under högriskgränsen — med flit', en: 'Built below the high-risk line — on purpose' },
+        body: {
+          sv:
+            'Strikt RAG svarar på lektionens innehåll — betygsätter inte och styr inte lärande, och hamnar därmed i AI-aktens ”begränsad risk”, inte högrisk (Annex III). ' +
+            'Ingen känsloigenkänning (förbjudet i klassrum sedan 2025). Konkurrenter med adaptiva prov och progress-tracking bär compliance-bördan från aug 2026 — den har vi designat bort. Skärps klassningen ändå finns conformity-budget i V2.',
+          en:
+            'Strict RAG answers the lesson’s content — it doesn’t grade or steer learning, which places it in the AI Act’s “limited risk”, not high risk (Annex III). ' +
+            'No emotion recognition (banned in classrooms since 2025). Competitors with adaptive tests and progress tracking carry the compliance burden from Aug 2026 — we’ve designed it out. Should the classification still tighten, conformity budget sits in V2.',
+        },
+      },
+      {
+        worry: { sv: 'Ännu en EdTech som lovar guld?', en: 'Another EdTech promising the moon?' },
+        heading: { sv: 'Vi lovar inte utfall vi inte mätt', en: 'We don’t promise outcomes we haven’t measured' },
+        body: {
+          sv:
+            'Forskningen på digitala verktyg i skolan är ärligt talat tunn — de flesta EdTech-pitcher blundar för det. Vi gör tvärtom: piloten är designad för att mäta effekt innan vi säljer på resultat. ' +
+            'Det är så man bygger något skolor litar på — och en egen evidensbas som ingen konkurrent har.',
+          en:
+            'Research on digital tools in schools is, honestly, thin — most EdTech pitches look past it. We do the opposite: the pilot is built to measure effect before we sell on results. ' +
+            'That’s how you build something schools trust — and an evidence base no competitor has.',
+        },
+      },
+    ],
+    scaleNote: {
+      sv: 'Elevante ligger på begränsad risk — långt från högriskkraven konkurrenterna måste klara.',
+      en: 'Elevante sits at limited risk — far from the high-risk requirements competitors must meet.',
+    },
+    source: {
+      sv:
+        'Berget AI (berget.ai): Riksbanken som flaggskeppskund, 300+ kunder, seed 2,1 M€ jan 2026 (Luminar Ventures m.fl.). ' +
+        'EU AI Act (förordning 2024/1689), Annex III — Elevantes klassning är designintention och prövas mot regelverket; conformity-assessment budgeterad i V2. Evidensläge: IFAU, forskningsöversikt om digitala verktyg i skolan.',
+      en:
+        'Berget AI (berget.ai): the Riksbank as flagship customer, 300+ customers, €2.1M seed Jan 2026 (Luminar Ventures et al.). ' +
+        'EU AI Act (Regulation 2024/1689), Annex III — Elevante’s classification is design intent, assessed against the regulation; conformity assessment budgeted in V2. Evidence base: IFAU research review on digital tools in schools.',
+    },
+  },
+
   // ── §19 Ask (slide19_ask) ─────────────────────────────────────────
   ask: {
     eyebrow: {
@@ -986,6 +1137,12 @@ export const COPY: {
         sv: 'Vinnova-bidrag (icke-utspädande) + tillväxtomgång 20–25 MSEK år 2–3 för nordisk expansion.',
         en: 'Vinnova grants (non-dilutive) + a growth round of 20–25 MSEK in years 2–3 for Nordic expansion.',
       },
+    },
+    fundsTitle: { sv: 'Så används kapitalet', en: 'How the capital is used' },
+    fundsTotal: { sv: '14,0 MSEK', en: '14.0 MSEK' },
+    fundsSource: {
+      sv: 'Fördelning enligt Affärsplan v2.0 (14,0 MSEK, 24–30 mån runway till operativ break-even). Icke-utspädande utöver detta: Vinnova 0,5–1,5 MSEK, FoU-avdrag ~0,23 MSEK, EU InvestAI år 2–3.',
+      en: 'Allocation per Business Plan v2.0 (14.0 MSEK, 24–30 mo runway to operating break-even). Non-dilutive on top: Vinnova 0.5–1.5 MSEK, R&D tax credit ~0.23 MSEK, EU InvestAI in years 2–3.',
     },
     contact: 'John Guthed  ·  john@elevante.se  ·  +46 733 383 420  ·  elevante.se',
   },
@@ -1028,6 +1185,20 @@ export const COPY: {
           en: '10,600 teachers missing by 2038',
         },
         citation: 'Skolverket, Lärarprognos 2024',
+      },
+      {
+        claim: {
+          sv: '9 av 10 lärare gör annat än undervisning · 1 av 5 vill lämna yrket',
+          en: '9 in 10 teachers do non-teaching work · 1 in 5 want to leave',
+        },
+        citation: 'Sveriges Lärare, "Med orimliga förutsättningar" (2024)',
+      },
+      {
+        claim: {
+          sv: '3 av 4 lärare stressade · 1 av 2 gymnasie-/högstadieelever stressade',
+          en: '3 in 4 teachers stressed · 1 in 2 secondary students stressed',
+        },
+        citation: 'Skolverket, Attityder till skolan 2024, delrapport 1',
       },
       {
         claim: {
@@ -1093,9 +1264,14 @@ export const MEDIA = {
   elevCaption:  { sv: 'Elevens vy · dagens lektioner', en: "Student view · today's lessons" },
   kartaAlt:     { sv: 'Förståelsekarta i Elevante per klass och begrepp', en: 'Understanding map in Elevante per class and concept' },
   kartaCaption: { sv: 'Lärarens förståelsekarta · per klass', en: "Teacher's understanding map · per class" },
+  kartaLiveChrome: { sv: 'Elevante · Lärarvy', en: 'Elevante · Teacher view' },
+  kartaLiveBadge:  { sv: 'Live-demo', en: 'Live demo' },
+  kartaLiveNote:   { sv: 'Den riktiga produktvyn — inte en bild. Klicka på en elev eller ett koncept. Syntetisk demodata, ingen riktig elevdata.', en: 'The actual product view — not an image. Click a student or a concept. Synthetic demo data, no real student data.' },
   arrAriaLabel: { sv: 'ARR-prognos 2026–2031, från 0 till 100 MSEK.', en: 'ARR forecast 2026–2031, from 0 to 100 MSEK.' },
   networkAriaLabel: { sv: 'Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.', en: 'Network graph: every new lesson and school strengthens the connections in Elevante’s data model.' },
   marketAriaLabel: { sv: 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.', en: 'Concentric rings: the market grows from Sweden to the Nordics to the EU.' },
+  riskLadderAriaLabel: { sv: 'EU AI Act-riskstege i fyra nivåer: minimal, begränsad (där Elevante ligger), hög och oacceptabel risk.', en: 'EU AI Act risk ladder in four levels: minimal, limited (where Elevante sits), high and unacceptable risk.' },
+  fundsAriaLabel: { sv: 'Stapel över kapitalanvändning: personal 39 %, buffert 22 %, marknad 18 %, produkt 9 %, övrigt 12 %.', en: 'Use-of-funds bar: team 39%, buffer 22%, marketing 18%, product 9%, other 12%.' },
   curveCategory: { sv: 'Kategori', en: 'Category' },
 } satisfies Record<string, L>;
 

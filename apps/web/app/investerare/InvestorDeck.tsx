@@ -6,6 +6,10 @@ import StackedCurve from '@/components/showcase/StackedCurve';
 import DeckStats from '@/components/showcase/DeckStats';
 import NetworkReveal from '@/components/showcase/NetworkReveal';
 import ConcentricMarket from '@/components/showcase/ConcentricMarket';
+import AllocationBar from '@/components/showcase/AllocationBar';
+import { ProofTicks, MiniRiskScale, EvidenceContrast } from '@/components/showcase/DeriskClarifiers';
+import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
+import { DEMO_LESSON_INSIGHT, DEMO_AI_INSIGHT } from './demo-insight';
 import Timeline from '@/components/showcase/Timeline';
 import ScrollProgress from '@/components/showcase/ScrollProgress';
 import DeckTelemetry from '@/components/showcase/DeckTelemetry';
@@ -21,6 +25,10 @@ import {
   MARKET_RINGS,
   EXPANSION,
   ASK,
+  FUNDS,
+  RISK_LADDER,
+  DERISK_PROOF,
+  DERISK_CONTRAST,
   TRACTION,
   MEDIA,
   CONTACTS,
@@ -28,7 +36,6 @@ import {
 
 import shotChat from '../../public/rektor/chat-kallor.png';
 import shotElev from '../../public/rektor/elev-oversikt.png';
-import shotKarta from '../../public/rektor/forstaelse-karta.png';
 
 export default function InvestorDeck({ lang }: { lang: Lang }) {
   const sv = lang === 'sv';
@@ -106,7 +113,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 <ul className="mt-4 flex flex-col gap-3">
                   {COPY.gap.studentsCard.stats.map((s) => (
                     <li key={s.big} className="flex items-baseline gap-3">
-                      <span className="font-serif text-3xl text-coral">{s.big}</span>
+                      <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral">{s.big}</span>
                       <span className="text-ink-muted">{t(lang, s.label)}</span>
                     </li>
                   ))}
@@ -120,7 +127,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   {t(lang, COPY.gap.schoolCard.heading)}
                 </h3>
                 <div className="mt-4 flex items-baseline gap-3">
-                  <span className="font-serif text-3xl text-coral">
+                  <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral">
                     {COPY.gap.schoolCard.stat.big}
                   </span>
                   <span className="text-ink-muted">
@@ -250,13 +257,13 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               </Reveal>
             ))}
           </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <div className="mt-12">
             <Reveal>
-              <figure>
+              <figure className="mx-auto max-w-xl">
                 <ZoomableShot
                   src={shotElev}
                   alt={t(lang, MEDIA.elevAlt)}
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 36rem"
                   className="h-auto w-full rounded-2xl shadow-lift"
                 />
                 <figcaption className="eyebrow mt-4">
@@ -264,19 +271,27 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 </figcaption>
               </figure>
             </Reveal>
-            <Reveal delay={90}>
-              <figure>
-                <ZoomableShot
-                  src={shotKarta}
-                  alt={t(lang, MEDIA.kartaAlt)}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="h-auto w-full rounded-2xl shadow-lift"
-                />
-                <figcaption className="eyebrow mt-4">
-                  {t(lang, MEDIA.kartaCaption)}
-                </figcaption>
-              </figure>
-            </Reveal>
+          </div>
+          {/* Lärarens förståelsekarta — den riktiga, interaktiva produktvyn (syntetisk data).
+              OBS: ingen Reveal-wrapper här — .reveal har will-change:transform som skapar en
+              containing block för InsightHeatmaps fixed drawer-paneler och felplacerar dem. */}
+          <div className="mt-10">
+            <div className="overflow-hidden rounded-2xl bg-canvas shadow-lift">
+              <div className="flex items-center gap-2 border-b border-ink/10 px-5 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-coral/70" aria-hidden />
+                <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
+                <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
+                <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
+                <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral">
+                  <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
+                  {t(lang, MEDIA.kartaLiveBadge)}
+                </span>
+              </div>
+              <div className="p-4 sm:p-6">
+                <InsightHeatmap insight={DEMO_LESSON_INSIGHT} aiInsight={DEMO_AI_INSIGHT} />
+              </div>
+            </div>
+            <p className="mt-3 text-sm text-ink-muted">{t(lang, MEDIA.kartaLiveNote)}</p>
           </div>
           <Reveal>
             <p className="mt-6 text-sm text-ink-muted">{t(lang, COPY.product.source)}</p>
@@ -644,32 +659,79 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      {/* ── §18 ASK ──────────────────────────────────────────────────── */}
-      <section id="ask" className="bg-ink px-6 py-24 text-canvas sm:px-10 sm:py-32">
-        <div className="container-content grid items-center gap-12 md:grid-cols-2">
+      {/* ── §17b DE-RISKING ──────────────────────────────────────────── */}
+      <section className="bg-surface-soft px-6 py-20 sm:px-10 sm:py-28">
+        <div className="container-content">
           <Reveal>
-            <p className="eyebrow flex items-center gap-3 text-canvas/60">
-              <span className="inline-block h-px w-9 bg-coral" aria-hidden />
-              {t(lang, COPY.ask.eyebrow)}
-            </p>
-            <h2 className="mt-5 font-serif text-5xl text-canvas sm:text-6xl">
-              {t(lang, COPY.ask.title.part1)}
-              <em className="text-coral not-italic">{COPY.ask.title.accent}</em>
-              <span className="text-coral">.</span>
+            <Eyebrow>{t(lang, COPY.derisk.eyebrow)}</Eyebrow>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+              {t(lang, COPY.derisk.title)}
             </h2>
-            <p className="mt-6 max-w-md text-lg text-canvas/70">
-              {t(lang, COPY.ask.lede)}
-            </p>
-            <p className="mt-6 max-w-md text-canvas/70">
-              {t(lang, COPY.ask.investorWish)}
-            </p>
-            <p className="mt-4 max-w-md text-canvas/70">
-              <span className="font-semibold text-canvas">{t(lang, COPY.ask.plus.label)}</span>
-              {t(lang, COPY.ask.plus.body)}
+            <p className="mt-4 max-w-2xl text-lg text-ink-secondary">
+              {t(lang, COPY.derisk.lede)}
             </p>
           </Reveal>
-          <Reveal delay={120}>
-            <div className="flex flex-col gap-8">
+          <div className="mt-12 grid items-stretch gap-6 md:grid-cols-3">
+            {COPY.derisk.cards.map((card, i) => (
+              <Reveal key={i} delay={i * 90} className="h-full">
+                <div className="flex h-full flex-col rounded-2xl bg-surface p-7 shadow-soft">
+                  <span className="eyebrow text-coral">{t(lang, card.worry)}</span>
+                  <h3 className="mt-3 font-serif text-xl">{t(lang, card.heading)}</h3>
+                  <p className="mt-3 text-ink-muted">{t(lang, card.body)}</p>
+                  <div className="mt-auto">
+                    {i === 0 && <ProofTicks items={DERISK_PROOF.map((p) => t(lang, p))} />}
+                    {i === 1 && (
+                      <MiniRiskScale
+                        steps={[...RISK_LADDER]
+                          .reverse()
+                          .map((r) => ({ level: t(lang, r.level), isElevante: r.isElevante }))}
+                        note={t(lang, COPY.derisk.scaleNote)}
+                        ariaLabel={t(lang, MEDIA.riskLadderAriaLabel)}
+                      />
+                    )}
+                    {i === 2 && (
+                      <EvidenceContrast
+                        bad={t(lang, DERISK_CONTRAST.bad)}
+                        good={t(lang, DERISK_CONTRAST.good)}
+                      />
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <p className="mt-10 text-sm text-ink-muted">{t(lang, COPY.derisk.source)}</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── §18 ASK ──────────────────────────────────────────────────── */}
+      <section id="ask" className="bg-ink px-6 py-24 text-canvas sm:px-10 sm:py-32">
+        <div className="container-content">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <Reveal>
+              <p className="eyebrow flex items-center gap-3 text-canvas/60">
+                <span className="inline-block h-px w-9 bg-coral" aria-hidden />
+                {t(lang, COPY.ask.eyebrow)}
+              </p>
+              <h2 className="mt-5 font-serif text-5xl text-canvas sm:text-6xl">
+                {t(lang, COPY.ask.title.part1)}
+                <em className="text-coral not-italic">{COPY.ask.title.accent}</em>
+                <span className="text-coral">.</span>
+              </h2>
+              <p className="mt-6 max-w-md text-lg text-canvas/70">
+                {t(lang, COPY.ask.lede)}
+              </p>
+              <p className="mt-6 max-w-md text-canvas/70">
+                {t(lang, COPY.ask.investorWish)}
+              </p>
+              <p className="mt-4 max-w-md text-canvas/70">
+                <span className="font-semibold text-canvas">{t(lang, COPY.ask.plus.label)}</span>
+                {t(lang, COPY.ask.plus.body)}
+              </p>
+            </Reveal>
+            <Reveal delay={120}>
               <div className="grid gap-5 sm:grid-cols-1">
                 {ASK.uses.map((use, i) => (
                   <div key={i} className="rounded-2xl bg-canvas/10 p-5">
@@ -678,18 +740,48 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   </div>
                 ))}
               </div>
-              <div className="border-t border-canvas/20 pt-6 text-sm leading-relaxed text-canvas/70">
-                {CONTACTS.map((c) => (
-                  <p key={c.email} className="mt-1">
-                    <span className="font-semibold text-canvas">{c.name}</span>
-                    {' · '}
-                    <a href={`mailto:${c.email}`} className="hover:text-canvas">{c.email}</a>
-                    {' · '}
-                    <a href={`tel:${c.tel}`} className="tabular-nums hover:text-canvas">{t(lang, c.phone)}</a>
-                  </p>
-                ))}
-                <p className="mt-2 text-canvas/50">elevante.se</p>
+            </Reveal>
+          </div>
+
+          {/* Use of funds — faktisk allokering enligt Affärsplan v2.0 */}
+          <Reveal>
+            <div className="mt-16 border-t border-canvas/15 pt-12">
+              <p className="eyebrow flex items-baseline gap-3 text-canvas/60">
+                {t(lang, COPY.ask.fundsTitle)}
+                <span className="font-serif text-base not-italic text-coral">
+                  {t(lang, COPY.ask.fundsTotal)}
+                </span>
+              </p>
+              <div className="mt-6">
+                <AllocationBar
+                  segments={FUNDS.map((f) => ({
+                    label: t(lang, f.label),
+                    amount: t(lang, f.amount),
+                    pct: f.pct,
+                    color: f.color,
+                  }))}
+                  ariaLabel={t(lang, MEDIA.fundsAriaLabel)}
+                />
               </div>
+              <p className="mt-7 max-w-3xl text-sm text-canvas/45">
+                {t(lang, COPY.ask.fundsSource)}
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Kontakt */}
+          <Reveal>
+            <div className="mt-14 border-t border-canvas/20 pt-6 text-sm leading-relaxed text-canvas/70">
+              {CONTACTS.map((c) => (
+                <p key={c.email} className="mt-1">
+                  <span className="font-semibold text-canvas">{c.name}</span>
+                  {' · '}
+                  <a href={`mailto:${c.email}`} className="hover:text-canvas">{c.email}</a>
+                  {' · '}
+                  <a href={`tel:${c.tel}`} className="tabular-nums hover:text-canvas">{t(lang, c.phone)}</a>
+                </p>
+              ))}
+              <p className="mt-2 text-canvas/50">elevante.se</p>
             </div>
           </Reveal>
         </div>
