@@ -320,7 +320,11 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           </div>
           <div className="mt-14 mx-auto max-w-3xl">
             <Reveal>
-              <NetworkReveal caption={t(lang, COPY.datamoat.caption)} ariaLabel={t(lang, MEDIA.networkAriaLabel)} />
+              <NetworkReveal
+                caption={t(lang, COPY.datamoat.caption)}
+                ariaLabel={t(lang, MEDIA.networkAriaLabel)}
+                legend={{ lesson: t(lang, MEDIA.netLessonLabel), question: t(lang, MEDIA.netQuestionLabel) }}
+              />
             </Reveal>
           </div>
           <Reveal>

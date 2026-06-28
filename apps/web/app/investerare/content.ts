@@ -639,8 +639,8 @@ export const COPY: {
     ],
     // caption for the network/flywheel graph
     caption: {
-      sv: 'Dataflywheelen — fler lektioner ger bättre mönster, ger bättre vägledning, lockar fler lärare.',
-      en: 'The data flywheel — more lessons yield better patterns, yield better guidance, attract more teachers.',
+      sv: 'Varje transkriberad lektion samlar sina elevfrågor — fältet tätnar för varje ny lektion och fråga.',
+      en: 'Every transcribed lesson gathers its student questions — the field thickens with each new lesson and question.',
     },
     loopStrip: {
       part1: { sv: '↻  Fler lärare ger fler lektioner. ', en: '↻  More teachers means more lessons. ' },
@@ -764,7 +764,7 @@ export const COPY: {
       en: 'From Swedish upper secondary to 18 million EU students',
     },
     adjacentStrip: {
-      label: { sv: 'Adjacent marknad: ', en: 'Adjacent market: ' },
+      label: { sv: 'Närliggande marknad: ', en: 'Adjacent market: ' },
       body: {
         sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning lär på samma sätt, med högre budget och betalningsvilja.',
         en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with higher budgets and willingness to pay.',
@@ -1270,7 +1270,9 @@ export const MEDIA = {
   kartaLiveBadge:  { sv: 'Live-demo', en: 'Live demo' },
   kartaLiveNote:   { sv: 'Den riktiga produktvyn — inte en bild. Klicka på en elev eller ett koncept. Syntetisk demodata, ingen riktig elevdata.', en: 'The actual product view — not an image. Click a student or a concept. Synthetic demo data, no real student data.' },
   arrAriaLabel: { sv: 'ARR-prognos 2026–2031, från 0 till 100 MSEK.', en: 'ARR forecast 2026–2031, from 0 to 100 MSEK.' },
-  networkAriaLabel: { sv: 'Nätverksgraf: varje ny lektion och skola stärker kopplingarna i Elevantes datamodell.', en: 'Network graph: every new lesson and school strengthens the connections in Elevante’s data model.' },
+  networkAriaLabel: { sv: 'Nätverksfält: transkriberade lektioner (coral) som var och en samlar ett kluster av elevfrågor (ink) — datamoaten tätnar för varje lektion och fråga.', en: 'Network field: transcribed lessons (coral), each gathering a cluster of student questions (ink) — the data moat thickens with every lesson and question.' },
+  netLessonLabel: { sv: 'Transkriberad lektion', en: 'Transcribed lesson' },
+  netQuestionLabel: { sv: 'Elevfråga', en: 'Student question' },
   marketAriaLabel: { sv: 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.', en: 'Concentric rings: the market grows from Sweden to the Nordics to the EU.' },
   riskLadderAriaLabel: { sv: 'EU AI Act-riskstege i fyra nivåer: minimal, begränsad (där Elevante ligger), hög och oacceptabel risk.', en: 'EU AI Act risk ladder in four levels: minimal, limited (where Elevante sits), high and unacceptable risk.' },
   fundsAriaLabel: { sv: 'Stapel över kapitalanvändning: personal 39 %, buffert 22 %, marknad 18 %, produkt 9 %, övrigt 12 %.', en: 'Use-of-funds bar: team 39%, buffer 22%, marketing 18%, product 9%, other 12%.' },
