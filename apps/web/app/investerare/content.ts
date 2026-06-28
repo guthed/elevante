@@ -40,9 +40,11 @@ export const ARR = {
 };
 
 export const MARKET_RINGS = [
-  { radius: 70, color: 'var(--color-coral)', value: '316 554', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Start: Stockholmsregionen — 66 891 elever · 231 skolor.', en: 'Start: Stockholm region — 66,891 students · 231 schools.' } },
-  { radius: 120, color: 'var(--color-sage-deep)', value: '1,48 milj.', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: 'Naturlig expansion efter svensk validering.', en: 'Natural expansion after Swedish validation.' } },
-  { radius: 150, color: 'var(--color-ink)', value: '18,3 milj.', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: 'Samma språkmodell replikeras per marknad.', en: 'The same language model replicated per market.' } },
+  // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
+  // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
+  { radius: 20, color: 'var(--color-coral)', value: '316 554', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
+  { radius: 43, color: 'var(--color-sage-deep)', value: '1,48 milj.', multiple: '≈ 5×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 5× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 5× the home market. Natural expansion after Swedish validation.' } },
+  { radius: 150, color: 'var(--color-ink)', value: '18,3 milj.', multiple: '≈ 58×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 58× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 58× the home market — the big opportunity. Same language model per market.' } },
 ];
 
 export const EXPANSION = [
@@ -304,7 +306,7 @@ export interface AskCopy {
   contact: string;
 }
 
-// ── §18 Use of funds — allokering enligt Affärsplan v2.0 (14,0 MSEK) ──
+// ── §18 Use of funds — kapitalallokering (14,0 MSEK) ──
 export interface FundSegment {
   label: L;
   amount: L;
@@ -400,8 +402,8 @@ export const COPY: {
       en: 'The problem',
     },
     title: {
-      sv: 'Eleverna får inte ut det de borde av tiden i skolan',
-      en: 'Students don’t get what they should from time in class',
+      sv: 'Eleverna får inte ut vad de förtjänar av tiden i skolan',
+      en: 'Students don’t get what they deserve from time in class',
     },
   },
 
@@ -510,8 +512,8 @@ export const COPY: {
       en: 'How it works',
     },
     title: {
-      sv: 'Tre steg. Två tryck, En lärare.',
-      en: 'Three steps. Two taps, one teacher.',
+      sv: 'Tre steg. Två tryck. En lärare.',
+      en: 'Three steps. Two taps. One teacher.',
     },
     steps: [
       {
@@ -978,7 +980,7 @@ export const COPY: {
       },
     ],
     backedBy: {
-      label: { sv: 'Backas av ', en: 'Backed by ' },
+      label: { sv: 'Kompletteras av ', en: 'Backed by ' },
       body: {
         sv: 'en CTO som rekryteras vid lansering, en produktdesigner och en customer-success-roll från år 2 — plus Avanti Studios som röst-/avatar-teknikpartner.',
         en: 'a CTO recruited at launch, a product designer and a customer-success role from year 2 — plus Avanti Studios as voice/avatar technology partner.',
@@ -1141,8 +1143,8 @@ export const COPY: {
     fundsTitle: { sv: 'Så används kapitalet', en: 'How the capital is used' },
     fundsTotal: { sv: '14,0 MSEK', en: '14.0 MSEK' },
     fundsSource: {
-      sv: 'Fördelning enligt Affärsplan v2.0 (14,0 MSEK, 24–30 mån runway till operativ break-even). Icke-utspädande utöver detta: Vinnova 0,5–1,5 MSEK, FoU-avdrag ~0,23 MSEK, EU InvestAI år 2–3.',
-      en: 'Allocation per Business Plan v2.0 (14.0 MSEK, 24–30 mo runway to operating break-even). Non-dilutive on top: Vinnova 0.5–1.5 MSEK, R&D tax credit ~0.23 MSEK, EU InvestAI in years 2–3.',
+      sv: 'Planerad fördelning av kapitalet (14,0 MSEK, 24–30 mån runway till operativ break-even). Icke-utspädande utöver detta: Vinnova 0,5–1,5 MSEK, FoU-avdrag ~0,23 MSEK, EU InvestAI år 2–3.',
+      en: 'Planned allocation of the capital (14.0 MSEK, 24–30 mo runway to operating break-even). Non-dilutive on top: Vinnova 0.5–1.5 MSEK, R&D tax credit ~0.23 MSEK, EU InvestAI in years 2–3.',
     },
     contact: 'John Guthed  ·  john@elevante.se  ·  +46 733 383 420  ·  elevante.se',
   },

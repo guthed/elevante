@@ -8,6 +8,7 @@ import NetworkReveal from '@/components/showcase/NetworkReveal';
 import ConcentricMarket from '@/components/showcase/ConcentricMarket';
 import AllocationBar from '@/components/showcase/AllocationBar';
 import { ProofTicks, MiniRiskScale, EvidenceContrast } from '@/components/showcase/DeriskClarifiers';
+import InvestorChatDemo from '@/components/showcase/InvestorChatDemo';
 import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
 import { DEMO_LESSON_INSIGHT, DEMO_AI_INSIGHT } from './demo-insight';
 import Timeline from '@/components/showcase/Timeline';
@@ -34,7 +35,6 @@ import {
   CONTACTS,
 } from './content';
 
-import shotChat from '../../public/rektor/chat-kallor.png';
 import shotElev from '../../public/rektor/elev-oversikt.png';
 
 export default function InvestorDeck({ lang }: { lang: Lang }) {
@@ -152,12 +152,15 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
 
       {/* ── §4 SOLUTION ─────────────────────────────────────────────── */}
       <section className="bg-surface-soft px-6 py-20 sm:px-10 sm:py-28">
-        <div className="container-content grid items-center gap-12 md:grid-cols-2">
+        <div className="container-content">
           <Reveal>
             <Eyebrow>{t(lang, COPY.solution.eyebrow)}</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+            <h2 className="mt-4 text-balance font-serif text-4xl sm:text-5xl">
               {t(lang, COPY.solution.title)}
             </h2>
+          </Reveal>
+          <div className="mt-10 grid items-start gap-12 md:grid-cols-2">
+          <Reveal>
             <ul className="mt-8 flex flex-col gap-6">
               {COPY.solution.points.map((p, i) => (
                 <li key={i} className="flex gap-4">
@@ -185,18 +188,9 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             </blockquote>
           </Reveal>
           <Reveal delay={120}>
-            <figure>
-              <ZoomableShot
-                src={shotChat}
-                alt={t(lang, MEDIA.chatAlt)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="h-auto w-full rounded-2xl shadow-lift"
-              />
-              <figcaption className="eyebrow mt-4">
-                {t(lang, MEDIA.chatCaption)}
-              </figcaption>
-            </figure>
+            <InvestorChatDemo lang={lang} />
           </Reveal>
+          </div>
         </div>
       </section>
 
@@ -418,6 +412,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 radius: r.radius,
                 color: r.color,
                 value: r.value,
+                multiple: r.multiple,
                 label: t(lang, r.label),
                 sub: t(lang, r.sub),
               }))}
@@ -743,7 +738,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             </Reveal>
           </div>
 
-          {/* Use of funds — faktisk allokering enligt Affärsplan v2.0 */}
+          {/* Use of funds — faktisk kapitalallokering */}
           <Reveal>
             <div className="mt-16 border-t border-canvas/15 pt-12">
               <p className="eyebrow flex items-baseline gap-3 text-canvas/60">
