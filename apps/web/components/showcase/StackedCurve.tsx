@@ -14,6 +14,10 @@ type Props = {
   caption?: string;
   /** Kolumnrubrik för sr-only-tabellen (localiserbar). */
   categoryLabel?: string;
+  /** Fast y-axel-max (annars auto). Används för interaktiv kalkylator så kurvan synligt stiger/sjunker. */
+  maxOverride?: number;
+  /** Styr headline-siffran direkt (utan count-up) — för reglage-driven användning. */
+  displayTotal?: string;
 };
 
 const W = 560;
@@ -37,13 +41,13 @@ function smooth(pts: { x: number; y: number }[]): string {
   return d;
 }
 
-export default function StackedCurve({ series, categories, unit, ariaLabel, caption, categoryLabel = 'Kategori' }: Props) {
+export default function StackedCurve({ series, categories, unit, ariaLabel, caption, categoryLabel = 'Kategori', maxOverride, displayTotal }: Props) {
   const [ref, inView] = useInView<HTMLDivElement>();
   const n = categories.length;
   const cumulative = categories.map((_, i) =>
     series.reduce((sum, s) => sum + (s.values[i] ?? 0), 0),
   );
-  const max = Math.max(...cumulative, 1);
+  const max = maxOverride ?? Math.max(...cumulative, 1);
   const total = cumulative[cumulative.length - 1] ?? 0;
   const animatedTotal = useCountUp(total, inView);
 
@@ -66,7 +70,7 @@ export default function StackedCurve({ series, categories, unit, ariaLabel, capt
     <div ref={ref} role="img" aria-label={ariaLabel}>
       <div className="mb-3 flex items-baseline gap-2">
         <span className="font-serif text-4xl text-ink">
-          {Math.round(animatedTotal).toLocaleString('sv-SE')}
+          {displayTotal ?? Math.round(animatedTotal).toLocaleString('sv-SE')}
         </span>
         {unit && <span className="text-sm text-ink-muted">{unit}</span>}
       </div>

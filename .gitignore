@@ -45,3 +45,4 @@ coverage
 # scratch: skärmdumps-beskärning (källfiler + mellansteg, ej i repo)
 /screenshots-raw/
 /screenshots-cropped/
+.env*

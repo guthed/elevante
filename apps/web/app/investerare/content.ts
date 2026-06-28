@@ -39,16 +39,26 @@ export const ARR = {
   unit: 'MSEK ARR',
 };
 
+// Interaktiv ARR-kalkylator (§13). ARR = elever × pris. Bas: 500 kr × 200 000 = 100 MSEK år 5.
+export const CALC = {
+  priceLabel: { sv: 'Pris per elev och år', en: 'Price per student per year' } as L,
+  reachLabel: { sv: 'Elever år 5', en: 'Students by year 5' } as L,
+  note: {
+    sv: 'Prova själv — dra i reglagen. Basscenario: 500 kr × 200 000 elever = 100 MSEK ARR. ARR = elever × pris; ett estimat att utforska, inte en utlovad prognos.',
+    en: 'Try it — drag the sliders. Base case: 500 SEK × 200,000 students = 100 MSEK ARR. ARR = students × price; an estimate to explore, not a promised forecast.',
+  } as L,
+};
+
 export const MARKET_RINGS = [
   // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
   // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
-  { radius: 20, color: 'var(--color-coral)', fillOpacity: 0.42, value: '316 554', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
-  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 5×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 5× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 5× the home market. Natural expansion after Swedish validation.' } },
-  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 58×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 58× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 58× the home market — the big opportunity. Same language model per market.' } },
+  { radius: 27, color: 'var(--color-coral)', fillOpacity: 0.42, value: '574 724', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
+  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 2,6×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 2,6× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 2.6× the home market. Natural expansion after Swedish validation.' } },
+  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 32×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 32× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 32× the home market — the big opportunity. Same language model per market.' } },
 ];
 
 export const EXPANSION = [
-  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '316 554 elever', en: '316,554 students' }, tam: '≈ 158 MSEK' },
+  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '574 724 elever', en: '574,724 students' }, tam: '≈ 287 MSEK' },
   { tag: { sv: 'FAS 2 · FÖRSTAMARKNAD', en: 'PHASE 2 · FIRST MARKET' }, region: { sv: 'Norden', en: 'The Nordics' }, students: { sv: '1,48 milj. elever', en: '1.48M students' }, tam: '≈ 740 MSEK' },
   { tag: { sv: 'FAS 3 · EXPANSION', en: 'PHASE 3 · EXPANSION' }, region: { sv: 'Europa · EU27', en: 'Europe · EU27' }, students: { sv: '18,3 milj. elever', en: '18.3M students' }, tam: '≈ 9,1 mdSEK' },
 ];
@@ -803,8 +813,8 @@ export const COPY: {
       },
     },
     source: {
-      sv: 'Sverige/Stockholm: Skolverkets gymnasieregister 2024. Norden/EU: Eurostat 2023 (ISCED 3) — på den basen rymmer Sverige 574 724 elever.',
-      en: 'Sweden/Stockholm: Skolverket upper-secondary register 2024. Nordics/EU: Eurostat 2023 (ISCED 3) — on that basis Sweden holds 574,724 students.',
+      sv: 'Elevtal på samma bas: Eurostat 2023 (ISCED 3) — Sverige 574 724, Norden 1,48 milj., EU27 18,3 milj. Stockholmsregionen ur Skolverkets gymnasieregister 2024.',
+      en: 'Student counts on one basis: Eurostat 2023 (ISCED 3) — Sweden 574,724, Nordics 1.48M, EU27 18.3M. Stockholm region from Skolverket upper-secondary register 2024.',
     },
   },
 
@@ -831,7 +841,7 @@ export const COPY: {
     nordicStrip: {
       label: { sv: 'Samma problem i grannländerna: ', en: 'The same problem next door: ' },
       body: {
-        sv: '9 av 10 norska skolledare har ofta för mycket att göra, och danska lärare är dubbelt så emotionellt belastade som arbetsmarknadens snitt (45 % vs 22 %). Lärarsmärtan Elevante avlastar finns i hela Norden — inte bara i Sverige.',
+        sv: '9 av 10 norska skolledare har ofta för mycket att göra, och danska lärare är dubbelt så emotionellt belastade som arbetsmarknadens snitt (45 % vs 22 %). Pressen på lärarna som Elevante avlastar finns i hela Norden — inte bara i Sverige.',
         en: '9 in 10 Norwegian school leaders often have too much to do, and Danish teachers are twice as emotionally strained as the labour-market average (45% vs 22%). The teacher strain Elevante relieves exists across the Nordics — not only in Sweden.',
       },
     },
@@ -841,10 +851,10 @@ export const COPY: {
     },
     source: {
       sv:
-        'Potentiell marknad = elevtal × 500 SEK/elev/år (vid full täckning). Elevtal: Skolverkets gymnasieregister 2024 (SE) + Eurostat 2023, ISCED 3 (Norden, EU27). ' +
+        'Potentiell marknad = elevtal × 500 SEK/elev/år (vid full täckning). Elevtal: Eurostat 2023, ISCED 3 (SE, Norden, EU27). ' +
         'Per-elev-finansiering: OECD, Education at a Glance 2024. Norden-jämförelse: Udir TALIS 2024 (Norge), DLF (Danmark). ARR-prognosen (≈ 14 % av Nordens marknad år 5) är Elevantes estimat.',
       en:
-        'Potential market = students × 500 SEK/student/year (at full coverage). Students: Skolverket upper-secondary register 2024 (SE) + Eurostat 2023, ISCED 3 (Nordics, EU27). ' +
+        'Potential market = students × 500 SEK/student/year (at full coverage). Students: Eurostat 2023, ISCED 3 (SE, Nordics, EU27). ' +
         'Per-student funding: OECD, Education at a Glance 2024. Nordic comparison: Udir TALIS 2024 (Norway), DLF (Denmark). The ARR forecast (≈ 14% of the Nordic market in year 5) is Elevante’s estimate.',
     },
   },
@@ -1097,8 +1107,8 @@ export const COPY: {
       {
         title: { sv: 'Stor marknad', en: 'Large market' },
         desc: {
-          sv: '316 554 gymnasieelever i Sverige; 18,3 milj. i EU27 — plus vuxen- och yrkesutbildning.',
-          en: '316,554 upper-secondary students in Sweden; 18.3M in EU27 — plus adult and vocational education.',
+          sv: '574 724 gymnasieelever i Sverige; 18,3 milj. i EU27 — plus vuxen- och yrkesutbildning.',
+          en: '574,724 upper-secondary students in Sweden; 18.3M in EU27 — plus adult and vocational education.',
         },
       },
       {
@@ -1307,7 +1317,7 @@ export const COPY: {
       },
       {
         claim: {
-          sv: 'Norden: samma lärarsmärta (Norge)',
+          sv: 'Norden: samma press på lärarna (Norge)',
           en: 'Nordics: same teacher strain (Norway)',
         },
         citation: 'Udir, TALIS 2024 (Norge) + NIFU',
@@ -1315,7 +1325,7 @@ export const COPY: {
       },
       {
         claim: {
-          sv: 'Norden: samma lärarsmärta (Danmark)',
+          sv: 'Norden: samma press på lärarna (Danmark)',
           en: 'Nordics: same teacher strain (Denmark)',
         },
         citation: 'DLF + Børne- og Undervisningsministeriet (Danmark)',

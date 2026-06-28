@@ -2,7 +2,7 @@ import Eyebrow from '@/components/showcase/Eyebrow';
 import Reveal from '@/components/showcase/Reveal';
 import ZoomableShot from '@/components/showcase/ZoomableShot';
 import { LoopStep, RecVisual, TranscribeVisual, AskVisual } from '@/components/showcase/LoopVisuals';
-import StackedCurve from '@/components/showcase/StackedCurve';
+import ArrCalculator from '@/components/showcase/ArrCalculator';
 import DeckStats from '@/components/showcase/DeckStats';
 import NetworkReveal from '@/components/showcase/NetworkReveal';
 import ConcentricMarket from '@/components/showcase/ConcentricMarket';
@@ -22,7 +22,6 @@ import {
   COPY,
   PROBLEM_STATS,
   PROBLEM_SOURCE,
-  ARR,
   MARKET_RINGS,
   EXPANSION,
   ASK,
@@ -479,7 +478,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               <Reveal key={i} delay={i * 120}>
                 <div
                   className="rounded-2xl bg-surface p-7 shadow-soft"
-                  style={{ marginLeft: `${i * 2}rem` }}
+                  style={{ width: `${74 + i * 13}%` }}
                 >
                   <span className="eyebrow text-coral">{t(lang, phase.tag)}</span>
                   <h3 className="mt-2 font-serif text-2xl">{t(lang, phase.region)}</h3>
@@ -563,13 +562,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             <p className="mt-8 text-sm text-ink-muted">{t(lang, COPY.numbers.source)}</p>
           </Reveal>
           <Reveal delay={120}>
-            <StackedCurve
-              categories={ARR.categories}
-              unit={ARR.unit}
-              series={[{ label: 'ARR', color: 'rgba(255,122,107,0.22)', values: ARR.values }]}
-              ariaLabel={t(lang, MEDIA.arrAriaLabel)}
-              categoryLabel={t(lang, MEDIA.curveCategory)}
-            />
+            <ArrCalculator lang={lang} />
           </Reveal>
           </div>
 
