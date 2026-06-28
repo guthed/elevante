@@ -26,6 +26,7 @@ import {
   MARKET_RINGS,
   EXPANSION,
   ASK,
+  GLANCE,
   FUNDS,
   RISK_LADDER,
   DERISK_PROOF,
@@ -68,6 +69,29 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             {t(lang, COPY.hero.traction)}
           </p>
           <p className="mt-12 text-sm text-ink-muted">{t(lang, MEDIA.heroScroll)}</p>
+        </div>
+      </section>
+
+      {/* ── §1b AFFÄREN I KORTHET (investment case at a glance) ──────── */}
+      <section className="border-y border-ink/10 bg-surface-soft px-6 py-12 sm:px-10 sm:py-14">
+        <div className="container-content">
+          <Reveal>
+            <Eyebrow>{t(lang, GLANCE.eyebrow)}</Eyebrow>
+            <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-3 lg:grid-cols-6">
+              {GLANCE.items.map((g) => (
+                <div key={g.value}>
+                  <dt className="font-serif text-2xl text-ink sm:text-3xl">{g.value}</dt>
+                  <dd className="mt-1.5 text-sm leading-snug text-ink-muted">{t(lang, g.label)}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+          <Reveal>
+            <p className="mt-9 max-w-3xl text-lg text-ink-secondary">
+              <span className="font-semibold text-ink">{t(lang, GLANCE.proof)}</span>
+            </p>
+            <p className="mt-3 text-sm text-ink-muted">{t(lang, GLANCE.source)}</p>
+          </Reveal>
         </div>
       </section>
 

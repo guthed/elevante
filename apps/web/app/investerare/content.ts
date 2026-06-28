@@ -61,6 +61,21 @@ export const ASK = {
   ],
 };
 
+// ── §1b Affären i korthet — komprimerat investment case direkt efter heron ──
+export const GLANCE = {
+  eyebrow: { sv: 'Affären i korthet', en: 'The deal at a glance' } as L,
+  items: [
+    { value: '14 MSEK', label: { sv: 'pre-seed — räcker till break-even', en: 'pre-seed — funds the path to break-even' } as L },
+    { value: 'Månad 22', label: { sv: 'operativ break-even', en: 'operating break-even' } as L },
+    { value: '125×', label: { sv: 'LTV/CAC · payback < 1 mån', en: 'LTV/CAC · payback < 1 mo' } as L },
+    { value: '~68 %', label: { sv: 'bruttomarginal, stärks vid skalning', en: 'gross margin, strengthens at scale' } as L },
+    { value: '100 MSEK', label: { sv: 'ARR-prognos år 5', en: 'ARR forecast, year 5' } as L },
+    { value: '500–800 MSEK', label: { sv: 'indikativ exit (5–8× ARR)', en: 'indicative exit (5–8× ARR)' } as L },
+  ],
+  proof: { sv: 'Körande produkt end-to-end · LOI tecknat · pilot hösten 2026.', en: 'Running end-to-end product · LOI signed · pilot autumn 2026.' } as L,
+  source: { sv: 'Prognoser och estimat — detaljer och källor längre ned.', en: 'Forecasts and estimates — details and sources further down.' } as L,
+};
+
 // ── §17b De-risking: AI Act-riskskala (MiniRiskScale) ─────────────
 // Ordning topp→botten: mest reglerad överst. Elevante vilar tryggt på
 // "Begränsad risk" — med synlig höjd ned till nästa nivå.
@@ -123,7 +138,10 @@ export const TRACTION: TractionItem[] = [
   {
     tag: { sv: 'LOI', en: 'LOI' },
     title: { sv: 'Undertecknad LOI', en: 'Signed LOI' },
-    desc: { sv: 'Amerikanska Gymnasiet — fem skolor, ~2 000 elever.', en: 'Amerikanska Gymnasiet — five schools, ~2,000 students.' },
+    desc: {
+      sv: 'Amerikanska Gymnasiet. Avsedd pilot hösten 2026: 2–3 klasser, ~60–90 elever, 3–5 lärare. Koncernen omfattar 5 skolor / ~2 000 elever — expansion efter validerad pilot.',
+      en: 'Amerikanska Gymnasiet. Intended pilot autumn 2026: 2–3 classes, ~60–90 students, 3–5 teachers. The group spans 5 schools / ~2,000 students — expansion after a validated pilot.',
+    },
   },
   {
     tag: { sv: 'PILOT', en: 'PILOT' },
@@ -673,8 +691,8 @@ export const COPY: {
       {
         title: { sv: 'EU-datasuveränitet', en: 'EU data sovereignty' },
         desc: {
-          sv: 'Elevdata lagras i EU. Svensk tal-till-text körs EU-suveränt via Berget AI; råljud raderas direkt.',
-          en: 'Student data is stored in the EU. Swedish speech-to-text runs EU-sovereign via Berget AI; raw audio is deleted immediately.',
+          sv: 'Elevdata lagras i EU. Svensk tal-till-text körs EU-suveränt via Berget AI; råljud raderas direkt. Ingen elevdata säljs eller används för att träna externa modeller.',
+          en: 'Student data is stored in the EU. Swedish speech-to-text runs EU-sovereign via Berget AI; raw audio is deleted immediately. No student data is sold or used to train external models.',
         },
       },
       {
@@ -687,15 +705,15 @@ export const COPY: {
       {
         title: { sv: 'Strikt RAG', en: 'Strict RAG' },
         desc: {
-          sv: 'Svar bara från lektionens innehåll. Ingen påhittad fakta, alltid källhänvisning.',
+          sv: 'Svar bara från lektionens innehåll. Hittar aldrig på fakta — alltid källhänvisning.',
           en: 'Answers only from the lesson’s content. No invented facts, always cited.',
         },
       },
       {
         title: { sv: 'Färdig compliance', en: 'Compliance ready' },
         desc: {
-          sv: 'PUB-avtal, DPIA och AI Act-dokumentation klart — kortar skolornas beslut från månader till veckor.',
-          en: 'DPA, DPIA and AI Act documentation in place — cuts schools’ decision from months to weeks.',
+          sv: 'Skolan är personuppgiftsansvarig, Elevante personuppgiftsbiträde. PUB-avtal, DPIA och AI Act-dokumentation på plats — kortar skolornas beslut från månader till veckor.',
+          en: 'The school is data controller, Elevante is processor. DPA, DPIA and AI Act documentation in place — cuts schools’ decision from months to weeks.',
         },
       },
     ],
@@ -766,7 +784,7 @@ export const COPY: {
     adjacentStrip: {
       label: { sv: 'Närliggande marknad: ', en: 'Adjacent market: ' },
       body: {
-        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning lär på samma sätt, med högre budget och betalningsvilja.',
+        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning undervisar på samma sätt, med högre budget och betalningsvilja.',
         en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with higher budgets and willingness to pay.',
       },
     },
@@ -792,7 +810,7 @@ export const COPY: {
         en: '500 SEK/student/year is a fraction of a percent of per-student funding',
       },
       part2: {
-        sv: ' i varje kartlagt land. Höga-fit-marknader utöver Norden: Polen och Italien.',
+        sv: ' i varje kartlagt land. Bäst matchande marknader utöver Norden: Polen och Italien.',
         en: ' in every country mapped. High-fit markets beyond the Nordics: Poland and Italy.',
       },
     },
@@ -893,8 +911,8 @@ export const COPY: {
       en: 'Product built. Pilot coming in.',
     },
     source: {
-      sv: 'Status per juni 2026 (Elevante). 18 månader i utveckling. LOI undertecknad med Amerikanska Gymnasiet (5 skolor, ~2 000 elever); Nacka gymnasium i dialog; Berget-villkor under förhandling.',
-      en: 'Status as of June 2026 (Elevante). 18 months in development. LOI signed with Amerikanska Gymnasiet (5 schools, ~2,000 students); Nacka Gymnasium in dialogue; Berget terms under negotiation.',
+      sv: 'Status per juni 2026 (Elevante). 18 månader i utveckling. LOI undertecknad med Amerikanska Gymnasiet — avsedd pilot hösten 2026: 2–3 klasser, ~60–90 elever, 3–5 lärare (koncernen 5 skolor / ~2 000 elever, expansion efter pilot); Nacka gymnasium i dialog; Berget-villkor under förhandling.',
+      en: 'Status as of June 2026 (Elevante). 18 months in development. LOI signed with Amerikanska Gymnasiet — intended pilot autumn 2026: 2–3 classes, ~60–90 students, 3–5 teachers (the group spans 5 schools / ~2,000 students, expansion after the pilot); Nacka Gymnasium in dialogue; Berget terms under negotiation.',
     },
   },
 
@@ -1000,7 +1018,7 @@ export const COPY: {
     },
     items: [
       {
-        title: { sv: 'Kapital-effektivt', en: 'Capital-efficient' },
+        title: { sv: 'Kapitaleffektivt', en: 'Capital-efficient' },
         desc: {
           sv: '14 MSEK till break-even månad 22. Kassan återställd till ~20 MSEK månad 36 — utan ny finansiering.',
           en: '14 MSEK to break-even in month 22. Cash restored to ~20 MSEK by month 36 — with no new financing.',
@@ -1028,7 +1046,7 @@ export const COPY: {
         },
       },
       {
-        title: { sv: 'Timing som stänger', en: 'Timing closing fast' },
+        title: { sv: 'Fönstret stängs', en: 'Timing closing fast' },
         desc: {
           sv: 'Eleverna har tagit AI; skolan inte. Varje månad cementerar konsument-AI som standard.',
           en: 'Students adopted AI; schools haven’t. Every month cements consumer AI as the default.',
@@ -1068,7 +1086,7 @@ export const COPY: {
         heading: { sv: 'Samma svenska AI-moln som Riksbanken', en: 'The same Swedish AI cloud as the Riksbank' },
         body: {
           sv:
-            'Elevante kör på Berget AI — svenskägd, suverän infrastruktur där all data och beräkning sker fysiskt i Sverige, immunt mot US Cloud Act. ' +
+            'Elevante kör på Berget AI — svenskägd, suverän infrastruktur där all data och beräkning sker fysiskt i Sverige, immun mot US Cloud Act. ' +
             'Riksbanken är flaggskeppskund och 300+ organisationer kör redan på plattformen. Och skulle något hända: transkriberingsmotorn KB-Whisper är öppen källkod och flyttbar till annan EU-infrastruktur.',
           en:
             'Elevante runs on Berget AI — Swedish-owned, sovereign infrastructure where all data and compute sit physically in Sweden, immune to the US Cloud Act. ' +
