@@ -52,13 +52,13 @@ export const CALC = {
 export const MARKET_RINGS = [
   // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
   // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
-  { radius: 27, color: 'var(--color-coral)', fillOpacity: 0.42, value: '574 724', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
-  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 2,6×', label: { sv: 'gymnasieelever i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 2,6× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 2.6× the home market. Natural expansion after Swedish validation.' } },
-  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 32×', label: { sv: 'elever i EU27', en: 'students in the EU27' }, sub: { sv: '≈ 32× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 32× the home market — the big opportunity. Same language model per market.' } },
+  { radius: 21, color: 'var(--color-coral)', fillOpacity: 0.42, value: '367 000', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
+  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 4×', label: { sv: 'elever på gymnasial nivå i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 4× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 4× the home market. Natural expansion after Swedish validation.' } },
+  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 50×', label: { sv: 'elever på gymnasial nivå i EU27', en: 'upper-secondary students in the EU27' }, sub: { sv: '≈ 50× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 50× the home market — the big opportunity. Same language model per market.' } },
 ];
 
 export const EXPANSION = [
-  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '574 724 elever', en: '574,724 students' }, tam: '≈ 287 MSEK' },
+  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '367 000 elever', en: '367,000 students' }, tam: '≈ 184 MSEK' },
   { tag: { sv: 'FAS 2 · FÖRSTAMARKNAD', en: 'PHASE 2 · FIRST MARKET' }, region: { sv: 'Norden', en: 'The Nordics' }, students: { sv: '1,48 milj. elever', en: '1.48M students' }, tam: '≈ 740 MSEK' },
   { tag: { sv: 'FAS 3 · EXPANSION', en: 'PHASE 3 · EXPANSION' }, region: { sv: 'Europa · EU27', en: 'Europe · EU27' }, students: { sv: '18,3 milj. elever', en: '18.3M students' }, tam: '≈ 9,1 mdSEK' },
 ];
@@ -813,8 +813,8 @@ export const COPY: {
       },
     },
     source: {
-      sv: 'Elevtal på samma bas: Eurostat 2023 (ISCED 3) — Sverige 574 724, Norden 1,48 milj., EU27 18,3 milj. Stockholmsregionen ur Skolverkets gymnasieregister 2024.',
-      en: 'Student counts on one basis: Eurostat 2023 (ISCED 3) — Sweden 574,724, Nordics 1.48M, EU27 18.3M. Stockholm region from Skolverket upper-secondary register 2024.',
+      sv: 'Sverige: Skolverket, gymnasieskolan läsåret 2023/24 (367 000 elever) — vår faktiska hemmamarknad. Norden 1,48 milj. och EU27 18,3 milj.: Eurostat 2023, gymnasial nivå (ISCED 3, något bredare). Stockholmsregionen ur Skolverkets gymnasieregister.',
+      en: 'Sweden: Skolverket, upper-secondary school 2023/24 (367,000 students) — our actual home market. Nordics 1.48M and EU27 18.3M: Eurostat 2023, upper-secondary level (ISCED 3, slightly broader). Stockholm region from Skolverket.',
     },
   },
 
@@ -851,10 +851,10 @@ export const COPY: {
     },
     source: {
       sv:
-        'Potentiell marknad = elevtal × 500 SEK/elev/år (vid full täckning). Elevtal: Eurostat 2023, ISCED 3 (SE, Norden, EU27). ' +
+        'Potentiell marknad = elevtal × 500 SEK/elev/år (vid full täckning). Elevtal: Skolverket, gymnasieskolan 2023/24 (Sverige) + Eurostat 2023, gymnasial nivå (Norden, EU27). ' +
         'Per-elev-finansiering: OECD, Education at a Glance 2024. Norden-jämförelse: Udir TALIS 2024 (Norge), DLF (Danmark). ARR-prognosen (≈ 14 % av Nordens marknad år 5) är Elevantes estimat.',
       en:
-        'Potential market = students × 500 SEK/student/year (at full coverage). Students: Eurostat 2023, ISCED 3 (SE, Nordics, EU27). ' +
+        'Potential market = students × 500 SEK/student/year (at full coverage). Students: Skolverket, upper-secondary school 2023/24 (Sweden) + Eurostat 2023, upper-secondary level (Nordics, EU27). ' +
         'Per-student funding: OECD, Education at a Glance 2024. Nordic comparison: Udir TALIS 2024 (Norway), DLF (Denmark). The ARR forecast (≈ 14% of the Nordic market in year 5) is Elevante’s estimate.',
     },
   },
@@ -1107,8 +1107,8 @@ export const COPY: {
       {
         title: { sv: 'Stor marknad', en: 'Large market' },
         desc: {
-          sv: '574 724 gymnasieelever i Sverige; 18,3 milj. i EU27 — plus vuxen- och yrkesutbildning.',
-          en: '574,724 upper-secondary students in Sweden; 18.3M in EU27 — plus adult and vocational education.',
+          sv: '367 000 gymnasieelever i Sverige; 18,3 milj. på gymnasial nivå i EU27 — plus vuxen- och yrkesutbildning.',
+          en: '367,000 upper-secondary students in Sweden; 18.3M at upper-secondary level in the EU27 — plus adult and vocational education.',
         },
       },
       {
@@ -1336,7 +1336,7 @@ export const COPY: {
           sv: 'Marknadssiffror (elevantal)',
           en: 'Market figures (student counts)',
         },
-        citation: 'Skolverkets gymnasieregister 2024 + Eurostat 2023 (ISCED 3)',
+        citation: 'Skolverket, gymnasieskolan 2023/24 (Sverige) + Eurostat 2023, gymnasial nivå (Norden, EU27)',
         url: 'https://ec.europa.eu/eurostat/databrowser/view/educ_uoe_enrs05/default/table',
       },
     ],
