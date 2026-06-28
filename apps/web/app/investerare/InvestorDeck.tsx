@@ -545,7 +545,8 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
 
       {/* ── §13 NUMBERS ──────────────────────────────────────────────── */}
       <section className="px-6 py-20 sm:px-10 sm:py-28">
-        <div className="container-content grid items-start gap-12 md:grid-cols-2">
+        <div className="container-content">
+          <div className="grid items-start gap-12 md:grid-cols-2">
           <Reveal>
             <Eyebrow>{t(lang, COPY.numbers.eyebrow)}</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
@@ -569,6 +570,27 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               ariaLabel={t(lang, MEDIA.arrAriaLabel)}
               categoryLabel={t(lang, MEDIA.curveCategory)}
             />
+          </Reveal>
+          </div>
+
+          {/* Stresstest av kapitalplanen (3 scenarier) */}
+          <Reveal>
+            <div className="mt-16 border-t border-ink/10 pt-12">
+              <Eyebrow>{t(lang, COPY.numbers.stress.eyebrow)}</Eyebrow>
+              <p className="mt-4 max-w-2xl text-lg text-ink-secondary">
+                {t(lang, COPY.numbers.stress.intro)}
+              </p>
+              <div className="mt-8 grid gap-5 sm:grid-cols-3">
+                {COPY.numbers.stress.scenarios.map((s, i) => (
+                  <div key={i} className="rounded-2xl bg-surface p-6 shadow-soft">
+                    <p className="eyebrow text-ink-muted">{t(lang, s.name)}</p>
+                    <p className="mt-2 font-serif text-3xl text-coral">{t(lang, s.cash)}</p>
+                    <p className="mt-2 text-sm text-ink-muted">{t(lang, s.note)}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-7 max-w-3xl text-sm text-ink-muted">{t(lang, COPY.numbers.stress.source)}</p>
+            </div>
           </Reveal>
         </div>
       </section>

@@ -67,7 +67,7 @@ export const GLANCE = {
   items: [
     { value: '14 MSEK', label: { sv: 'pre-seed — räcker till break-even', en: 'pre-seed — funds the path to break-even' } as L },
     { value: 'Månad 22', label: { sv: 'operativ break-even', en: 'operating break-even' } as L },
-    { value: '125×', label: { sv: 'LTV/CAC · payback < 1 mån', en: 'LTV/CAC · payback < 1 mo' } as L },
+    { value: '< 0,5 %', label: { sv: 'av skolpengen — ryms i budget', en: 'of the per-student grant — fits the budget' } as L },
     { value: '~68 %', label: { sv: 'bruttomarginal, stärks vid skalning', en: 'gross margin, strengthens at scale' } as L },
     { value: '100 MSEK', label: { sv: 'ARR-prognos år 5', en: 'ARR forecast, year 5' } as L },
     { value: '500–800 MSEK', label: { sv: 'indikativ exit (5–8× ARR)', en: 'indicative exit (5–8× ARR)' } as L },
@@ -276,6 +276,12 @@ export interface NumbersCopy {
   title: L;
   milestones: { label: string; desc: L }[];
   source: L;
+  stress: {
+    eyebrow: L;
+    intro: L;
+    scenarios: { name: L; cash: L; note: L }[];
+    source: L;
+  };
 }
 
 export interface TractionCopy {
@@ -856,7 +862,7 @@ export const COPY: {
       { value: '500 SEK', label: { sv: 'per elev och år, betald av skolan', en: 'per student per year, paid by the school' } },
       { value: '68 %', label: { sv: 'bruttomarginal i pilot, stärks vid skalning', en: 'gross margin in pilot, strengthens at scale' } },
       { value: '100 %', label: { sv: 'återkommande intäkt — abonnemang per läsår', en: 'recurring revenue — subscription per school year' } },
-      { value: '125×', label: { sv: 'LTV / CAC', en: 'LTV / CAC' } },
+      { value: '< 0,5 %', label: { sv: 'av skolpengen per elev', en: 'of the per-student grant' } },
     ],
     callout: {
       part1: { sv: '500 SEK är under 0,5 % av skolpengen', en: '500 SEK is under 0.5% of the per-student grant' },
@@ -868,10 +874,10 @@ export const COPY: {
     source: {
       sv:
         'Skolpeng/per-elev-finansiering: Skolverkets kostnadsstatistik 2024 (≈ 100 000–130 000 SEK/gymnasieelev). ' +
-        'Bruttomarginal och LTV/CAC är Elevantes egna estimat.',
+        'Bruttomarginal och enhetsekonomi är Elevantes egna estimat.',
       en:
         'Per-student grant/funding: Skolverket cost statistics 2024 (≈ 100,000–130,000 SEK/upper-secondary student). ' +
-        'Gross margin and LTV/CAC are Elevante’s own estimates.',
+        'Gross margin and unit economics are Elevante’s own estimates.',
     },
   },
 
@@ -911,6 +917,34 @@ export const COPY: {
     source: {
       sv: 'ARR-prognosen är Elevantes estimat — bygger på 500 SEK/elev/år och elevtal från Skolverket/Eurostat (ISCED 3); pilotår 1 kostnadsfritt.',
       en: 'The ARR forecast is Elevante’s estimate — based on 500 SEK/student/year and student counts from Skolverket/Eurostat (ISCED 3); pilot year 1 free of charge.',
+    },
+    stress: {
+      eyebrow: { sv: 'Stresstestat', en: 'Stress-tested' },
+      intro: {
+        sv: 'Kapitalplanen i tre scenarier. I alla tre nås break-even och kassan blir aldrig negativ — ingen ny finansiering behövs.',
+        en: 'The capital plan across three scenarios. All three reach break-even and cash never goes negative — no new financing needed.',
+      },
+      scenarios: [
+        {
+          name: { sv: 'Enligt plan', en: 'On plan' },
+          cash: { sv: '8,2 MSEK', en: '8.2 MSEK' },
+          note: { sv: 'lägsta kassa · break-even månad 21', en: 'lowest cash · break-even month 21' },
+        },
+        {
+          name: { sv: 'Halverad adoption', en: 'Halved adoption' },
+          cash: { sv: '4,5 MSEK', en: '4.5 MSEK' },
+          note: { sv: 'lägsta kassa · break-even ~6 mån senare, positiv hela vägen', en: 'lowest cash · break-even ~6 mo later, positive throughout' },
+        },
+        {
+          name: { sv: '+30 % kostnader', en: '+30% costs' },
+          cash: { sv: '4,1 MSEK', en: '4.1 MSEK' },
+          note: { sv: 'lägsta kassa · kräver budgetjustering', en: 'lowest cash · requires budget adjustment' },
+        },
+      ],
+      source: {
+        sv: 'Känslighetsanalys (Elevante), 24-månadersmodell. ”Lägsta kassa” = lägsta kassasaldo under perioden; den långsiktiga ARR-banan i kurvan ovan är det konservativa 5-årsbasfallet.',
+        en: 'Sensitivity analysis (Elevante), 24-month model. “Lowest cash” = lowest cash balance during the period; the long-term ARR trajectory in the curve above is the conservative 5-year base case.',
+      },
     },
   },
 
@@ -1039,10 +1073,10 @@ export const COPY: {
         },
       },
       {
-        title: { sv: 'Topp-enhetsekonomi', en: 'Top-tier unit economics' },
+        title: { sv: 'Inbyggd lönsamhet', en: 'Built-in profitability' },
         desc: {
-          sv: '125× LTV/CAC — långt över branschnormen. Återkommande intäkt: skolan abonnerar per läsår.',
-          en: '125× LTV/CAC — well above the industry norm. Recurring revenue: schools subscribe per school year.',
+          sv: 'Ett avtal når hela skolan (låg anskaffningskostnad), skolan abonnerar per läsår (återkommande intäkt) och den rörliga kostnaden är låg — marginalen ackumuleras kund för kund.',
+          en: 'One contract reaches the whole school (low acquisition cost), schools subscribe per school year (recurring revenue) and variable cost is low — margin compounds customer by customer.',
         },
       },
       {
@@ -1299,8 +1333,8 @@ export const COPY: {
       forecasts: {
         label: { sv: 'Prognoser ', en: 'Forecasts ' },
         body: {
-          sv: '(bruttomarginal, LTV/CAC, ARR) är Elevantes egna estimat med externa indata (elevtal, pris). Traction- och produktuppgifter per juni 2026. ',
-          en: '(gross margin, LTV/CAC, ARR) are Elevante’s own estimates with external inputs (student counts, price). Traction and product details as of June 2026. ',
+          sv: '(bruttomarginal, enhetsekonomi, ARR) är Elevantes egna estimat med externa indata (elevtal, pris). Traction- och produktuppgifter per juni 2026. ',
+          en: '(gross margin, unit economics, ARR) are Elevante’s own estimates with external inputs (student counts, price). Traction and product details as of June 2026. ',
         },
       },
       datasovereignty: {
