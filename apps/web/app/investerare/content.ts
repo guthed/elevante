@@ -52,7 +52,7 @@ export const CALC = {
 export const MARKET_RINGS = [
   // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
   // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
-  { radius: 21, color: 'var(--color-coral)', fillOpacity: 0.42, value: '367 000', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholmsregionen, 66 891 elever · 231 skolor.', en: 'Home market — start: Stockholm region, 66,891 students · 231 schools.' } },
+  { radius: 21, color: 'var(--color-coral)', fillOpacity: 0.42, value: '367 000', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholms län, ~88 000 gymnasieelever på knappt 200 skolor.', en: 'Home market — start: Stockholm county, ~88,000 upper-secondary students across nearly 200 schools.' } },
   { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 4×', label: { sv: 'elever på gymnasial nivå i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 4× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 4× the home market. Natural expansion after Swedish validation.' } },
   { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 50×', label: { sv: 'elever på gymnasial nivå i EU27', en: 'upper-secondary students in the EU27' }, sub: { sv: '≈ 50× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 50× the home market — the big opportunity. Same language model per market.' } },
 ];
