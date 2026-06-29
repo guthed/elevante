@@ -80,7 +80,6 @@ export const GLANCE = {
     { value: '< 0,5 %', label: { sv: 'av skolpengen — ryms i budget', en: 'of the per-student grant — fits the budget' } as L },
     { value: '~68 %', label: { sv: 'bruttomarginal, stärks vid skalning', en: 'gross margin, strengthens at scale' } as L },
     { value: '100 MSEK', label: { sv: 'ARR-prognos år 5', en: 'ARR forecast, year 5' } as L },
-    { value: '500–800 MSEK', label: { sv: 'indikativ exit (5–8× ARR)', en: 'indicative exit (5–8× ARR)' } as L },
   ],
   proof: { sv: 'Körande produkt end-to-end · LOI tecknat · pilot hösten 2026.', en: 'Running end-to-end product · LOI signed · pilot autumn 2026.' } as L,
   source: { sv: 'Prognoser och estimat — detaljer och källor längre ned.', en: 'Forecasts and estimates — details and sources further down.' } as L,
@@ -1118,17 +1117,10 @@ export const COPY: {
           en: 'Students have embraced AI; schools haven’t. Every month cements consumer AI as the default.',
         },
       },
-      {
-        title: { sv: 'Trovärdig exit', en: 'Credible exit' },
-        desc: {
-          sv: 'EdTech handlas på 5–8× ARR — ungefär 500–800 MSEK vid 100 MSEK ARR år 5.',
-          en: 'EdTech trades at 5–8× ARR — roughly 500–800 MSEK at 100 MSEK ARR in year 5.',
-        },
-      },
     ],
     source: {
-      sv: 'Marknadssiffror: Skolverket + Eurostat 2023. Break-even, EBITDA och enhetsekonomi är Elevantes egna estimat. Exit-multiplar (5–8× ARR) är observerade EdTech-transaktioner — inget utlovat utfall.',
-      en: 'Market figures: Skolverket + Eurostat 2023. Break-even, EBITDA and unit economics are Elevante’s own estimates. Exit multiples (5–8× ARR) are observed EdTech transactions — not a promised outcome.',
+      sv: 'Marknadssiffror: Skolverket (Sverige) + Eurostat 2023 (Norden, EU27). Break-even, EBITDA och enhetsekonomi är Elevantes egna estimat.',
+      en: 'Market figures: Skolverket (Sweden) + Eurostat 2023 (Nordics, EU27). Break-even, EBITDA and unit economics are Elevante’s own estimates.',
     },
   },
 
