@@ -429,3 +429,12 @@
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.13); }
 }
+
+/* Mörkare coral ENBART för text/ikon på ljus canvas.
+   --color-coral (#ff7a6b) ger bara 2,39:1 mot ivory → faller WCAG AA.
+   #c4452f ger 4,64:1 mot ivory / 4,95:1 mot vitt = AA. Bright coral behålls för dekor (linjer, prickar, grafik).
+   Explicit utility (inte @theme) så den alltid genereras oavsett Tailwinds klass-scanning. */
+@layer utilities {
+  .text-coral-deep { color: #c4452f; }
+  .bg-coral-deep { background-color: #c4452f; }
+}

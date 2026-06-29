@@ -28,7 +28,7 @@ export default function Timeline({ items }: { items: Milestone[] }) {
               transition: `opacity .3s ease, transform .5s cubic-bezier(0.22,1,0.36,1) ${300 + i * 220}ms`,
             }}
           />
-          <p className="text-sm font-semibold uppercase tracking-wider text-coral">{m.tag}</p>
+          <p className="text-sm font-semibold uppercase tracking-wider text-coral-deep">{m.tag}</p>
           <h3 className="mt-1 font-serif text-2xl">{m.title}</h3>
           <p className="mt-1 text-ink-muted">{m.desc}</p>
         </li>

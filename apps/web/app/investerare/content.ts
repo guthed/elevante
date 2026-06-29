@@ -427,8 +427,8 @@ export const COPY: {
       en: '18 months in development · LOI signed · Pilot starts autumn 2026',
     },
     preseedLine: {
-      sv: 'Pre-seed 2026 · 14 MSEK (€1,25M) · Presenterat för ',
-      en: 'Pre-seed 2026 · 14 MSEK (€1.25M) · Presented to ',
+      sv: 'Reser 14 MSEK i pre-seed.',
+      en: 'Raising 14 MSEK in pre-seed.',
     },
   },
 
@@ -807,8 +807,8 @@ export const COPY: {
     adjacentStrip: {
       label: { sv: 'Närliggande marknader: ', en: 'Adjacent markets: ' },
       body: {
-        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning undervisar på samma sätt, med högre budget och betalningsvilja. Men vi gör en sak i taget: först bevisar vi Elevante i skolan. När det sitter erbjuder vi samma motor till de närliggande marknaderna — inte tidigare.',
-        en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with higher budgets and willingness to pay. But we do one thing at a time: first we prove Elevante in schools. Once it’s working, we offer the same engine to the adjacent markets — not before.',
+        sv: 'samma motor funkar bortom gymnasiet — företagsakademier, yrkes- och vuxenutbildning undervisar likadant, med högre budget och betalningsvilja. Men en sak i taget: först bevisar vi Elevante i skolan, sedan erbjuder vi samma motor till de närliggande marknaderna — inte tidigare.',
+        en: 'the same engine works beyond upper secondary — corporate academies, vocational and adult education teach the same way, with bigger budgets and willingness to pay. But one thing at a time: first we prove Elevante in schools, then offer the same engine to the adjacent markets — not before.',
       },
     },
     source: {
@@ -1144,11 +1144,11 @@ export const COPY: {
         heading: { sv: 'Samma svenska AI-moln som Riksbanken', en: 'The same Swedish AI cloud as the Riksbank' },
         body: {
           sv:
-            'Elevante kör på Berget AI — svenskägd, suverän infrastruktur där all data och beräkning sker fysiskt i Sverige, immun mot US Cloud Act. ' +
-            'Riksbanken är flaggskeppskund och 300+ organisationer kör redan på plattformen. Och skulle något hända: transkriberingsmotorn KB-Whisper är öppen källkod och flyttbar till annan EU-infrastruktur.',
+            'Elevante kör på Berget AI — svenskägd, suverän infrastruktur där all data och beräkning sker i Sverige, immun mot US Cloud Act. ' +
+            'Riksbanken är flaggskeppskund; 300+ organisationer kör redan där. Skulle något hända är KB-Whisper öppen källkod och flyttbar till annan EU-infrastruktur.',
           en:
-            'Elevante runs on Berget AI — Swedish-owned, sovereign infrastructure where all data and compute sit physically in Sweden, immune to the US Cloud Act. ' +
-            'The Riksbank (Sweden’s central bank) is a flagship customer and 300+ organisations already run on the platform. And if anything happened: the KB-Whisper transcription engine is open source and portable to other EU infrastructure.',
+            'Elevante runs on Berget AI — Swedish-owned, sovereign infrastructure where all data and compute sit in Sweden, immune to the US Cloud Act. ' +
+            'The Riksbank is a flagship customer; 300+ organisations already run there. If anything happened, KB-Whisper is open source and portable to other EU infrastructure.',
         },
       },
       {
@@ -1156,11 +1156,11 @@ export const COPY: {
         heading: { sv: 'Byggd under högriskgränsen — med flit', en: 'Built below the high-risk line — on purpose' },
         body: {
           sv:
-            'Strikt RAG svarar på lektionens innehåll — betygsätter inte och styr inte lärande, och hamnar därmed i AI-aktens ”begränsad risk”, inte högrisk (Annex III). ' +
-            'Ingen känsloigenkänning (förbjudet i klassrum sedan 2025). Konkurrenter med adaptiva prov och progress-tracking bär compliance-bördan från aug 2026 — med böter upp till 35 M€ eller 7 % av omsättningen som insats. Den har vi designat bort. Skärps klassningen ändå finns conformity-budget i V2.',
+            'Strikt RAG svarar på lektionens innehåll — betygsätter inte, styr inte lärande. Det landar i AI-aktens ”begränsad risk”, inte högrisk (Annex III). ' +
+            'Ingen känsloigenkänning (förbjudet i klassrum sedan 2025). Konkurrenter med adaptiva prov och progress-tracking bär compliance-bördan från aug 2026 — böter upp till 35 M€ eller 7 % av omsättningen. Den bördan har vi designat bort; skärps klassningen finns conformity-budget i V2.',
           en:
-            'Strict RAG answers the lesson’s content — it doesn’t grade or steer learning, which places it in the AI Act’s “limited risk”, not high risk (Annex III). ' +
-            'No emotion recognition (banned in classrooms since 2025). Competitors with adaptive tests and progress tracking carry the compliance burden from Aug 2026 — with fines up to €35M or 7% of revenue at stake. We’ve designed it out. Should the classification still tighten, conformity budget sits in V2.',
+            'Strict RAG answers the lesson’s content — it doesn’t grade or steer learning. That places it in the AI Act’s “limited risk”, not high risk (Annex III). ' +
+            'No emotion recognition (banned in classrooms since 2025). Competitors with adaptive tests and progress tracking carry the compliance burden from Aug 2026 — fines up to €35M or 7% of revenue. We’ve designed that burden out; if the classification tightens, conformity budget sits in V2.',
         },
       },
       {
@@ -1168,10 +1168,10 @@ export const COPY: {
         heading: { sv: 'Vi lovar inte utfall vi inte mätt', en: 'We don’t promise outcomes we haven’t measured' },
         body: {
           sv:
-            'Forskningen på digitala verktyg i skolan är ärligt talat tunn — de flesta EdTech-pitcher blundar för det. Vi gör tvärtom: piloten är designad för att mäta effekt innan vi säljer på resultat. ' +
-            'Det är så man bygger något skolor litar på — och en egen evidensbas som ingen konkurrent har.',
+            'Forskningen på digitala skolverktyg är ärligt talat tunn — de flesta EdTech-pitcher blundar för det. Vi gör tvärtom: piloten mäter effekt innan vi säljer på resultat. ' +
+            'Så bygger man något skolor litar på — och en egen evidensbas ingen konkurrent har.',
           en:
-            'Research on digital tools in schools is, honestly, thin — most EdTech pitches look past it. We do the opposite: the pilot is built to measure effect before we sell on results. ' +
+            'Research on digital tools in schools is, honestly, thin — most EdTech pitches look past it. We do the opposite: the pilot measures effect before we sell on results. ' +
             'That’s how you build something schools trust — and an evidence base no competitor has.',
         },
       },

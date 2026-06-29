@@ -70,7 +70,7 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
         <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
         <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
         <span className="eyebrow ml-2">{t(lang, CHAT_UI.chrome)}</span>
-        <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral">
+        <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
           <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
           {t(lang, CHAT_UI.badge)}
         </span>
@@ -129,7 +129,7 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
           )}
 
           {error && (
-            <p className="text-sm text-coral">{t(lang, CHAT_UI.error)}</p>
+            <p className="text-sm text-coral-deep">{t(lang, CHAT_UI.error)}</p>
           )}
         </div>
 

@@ -76,7 +76,7 @@ export function EvidenceContrast({ bad, good }: { bad: string; good: string }) {
   return (
     <div className={`${DIVIDER} flex flex-col gap-2.5 text-sm`}>
       <p className="flex items-start gap-2.5 text-ink-muted">
-        <span className="mt-px flex-none font-serif text-base text-coral" aria-hidden>✕</span>
+        <span className="mt-px flex-none font-serif text-base text-coral-deep" aria-hidden>✕</span>
         {bad}
       </p>
       <p className="flex items-start gap-2.5 font-medium text-ink">

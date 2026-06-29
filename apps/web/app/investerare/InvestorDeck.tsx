@@ -13,6 +13,7 @@ import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
 import { DEMO_LESSON_INSIGHT, DEMO_AI_INSIGHT } from './demo-insight';
 import Timeline from '@/components/showcase/Timeline';
 import ScrollProgress from '@/components/showcase/ScrollProgress';
+import DeckNav from '@/components/showcase/DeckNav';
 import DeckTelemetry from '@/components/showcase/DeckTelemetry';
 import LangToggle from './LangToggle';
 import ContactBar from './ContactBar';
@@ -43,6 +44,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
   return (
     <main className="bg-canvas text-ink pb-24 sm:pb-16">
       <ScrollProgress />
+      <DeckNav />
       <DeckTelemetry />
       <LangToggle lang={lang} />
       <ContactBar lang={lang} />
@@ -61,10 +63,11 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <p className="mt-10 max-w-2xl border-t border-ink/10 pt-8 text-lg leading-relaxed text-ink-secondary">
             {t(lang, COPY.hero.lede)}
           </p>
-          <p className="mt-8 text-sm text-ink-muted">
+          <p className="mt-8 flex items-center gap-2.5 text-base font-medium text-ink">
+            <span className="h-1.5 w-1.5 flex-none rounded-full bg-coral" aria-hidden />
             {t(lang, COPY.hero.preseedLine)}
           </p>
-          <p className="mt-2 text-sm text-ink-muted">
+          <p className="mt-3 text-sm text-ink-muted">
             {t(lang, COPY.hero.traction)}
           </p>
           <p className="mt-12 text-sm text-ink-muted">{t(lang, MEDIA.heroScroll)}</p>
@@ -136,7 +139,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 <ul className="mt-4 flex flex-col gap-3">
                   {COPY.gap.studentsCard.stats.map((s) => (
                     <li key={s.big} className="flex items-baseline gap-3">
-                      <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral">{s.big}</span>
+                      <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral-deep">{s.big}</span>
                       <span className="text-ink-muted">{t(lang, s.label)}</span>
                     </li>
                   ))}
@@ -150,7 +153,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   {t(lang, COPY.gap.schoolCard.heading)}
                 </h3>
                 <div className="mt-4 flex items-baseline gap-3">
-                  <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral">
+                  <span className="flex-none whitespace-nowrap font-serif text-3xl text-coral-deep">
                     {COPY.gap.schoolCard.stat.big}
                   </span>
                   <span className="text-ink-muted">
@@ -169,7 +172,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <Reveal>
             <p className="mt-8 max-w-3xl font-serif text-2xl leading-snug">
               {t(lang, COPY.gap.callout.part1)}
-              <em className="text-coral not-italic">{t(lang, COPY.gap.callout.part2)}</em>
+              <em className="text-coral-deep not-italic">{t(lang, COPY.gap.callout.part2)}</em>
             </p>
           </Reveal>
           <Reveal>
@@ -304,7 +307,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
                 <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
                 <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
-                <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral">
+                <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
                   <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
                   {t(lang, MEDIA.kartaLiveBadge)}
                 </span>
@@ -331,7 +334,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             </h2>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-ink-secondary">
               {t(lang, COPY.datamoat.lede.part1)}
-              <em className="text-coral not-italic">{t(lang, COPY.datamoat.lede.emphasis)}</em>
+              <em className="text-coral-deep not-italic">{t(lang, COPY.datamoat.lede.emphasis)}</em>
               {t(lang, COPY.datamoat.lede.part2)}
             </p>
           </Reveal>
@@ -339,7 +342,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             {COPY.datamoat.stages.map((stage, i) => (
               <Reveal key={i} delay={i * 90}>
                 <div className="h-full rounded-2xl bg-surface p-6 shadow-soft">
-                  <span className="font-serif text-2xl text-coral">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-2xl text-coral-deep">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-3 font-serif text-xl">{t(lang, stage.title)}</h3>
                   <p className="mt-2 text-ink-muted">{t(lang, stage.desc)}</p>
                 </div>
@@ -384,7 +387,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             {COPY.diff.items.map((item, i) => (
               <Reveal key={i} delay={(i % 2) * 80}>
                 <div className="flex gap-5">
-                  <span className="font-serif text-2xl text-coral">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-2xl text-coral-deep">{String(i + 1).padStart(2, '0')}</span>
                   <div>
                     <h3 className="font-serif text-xl">{t(lang, item.title)}</h3>
                     <p className="mt-1.5 text-ink-muted">{t(lang, item.desc)}</p>
@@ -480,7 +483,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   className="rounded-2xl bg-surface p-7 shadow-soft"
                   style={{ width: `${74 + i * 13}%` }}
                 >
-                  <span className="eyebrow text-coral">{t(lang, phase.tag)}</span>
+                  <span className="eyebrow text-coral-deep">{t(lang, phase.tag)}</span>
                   <h3 className="mt-2 font-serif text-2xl">{t(lang, phase.region)}</h3>
                   <p className="mt-1 text-ink-muted">{t(lang, phase.students)}</p>
                   <p className="mt-3 font-serif text-xl text-ink">
@@ -496,7 +499,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <Reveal>
             <p className="mt-10 max-w-2xl text-lg text-ink-secondary">
               {t(lang, COPY.expansion.anchorStrip.part1)}
-              <span className="text-coral">{t(lang, COPY.expansion.anchorStrip.part2)}</span>
+              <span className="text-coral-deep">{t(lang, COPY.expansion.anchorStrip.part2)}</span>
             </p>
           </Reveal>
           <Reveal>
@@ -554,7 +557,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             <ol className="mt-8 flex flex-col gap-6">
               {COPY.numbers.milestones.map((m, i) => (
                 <li key={i} className="flex gap-5">
-                  <span className="font-serif text-2xl text-coral">{m.label}</span>
+                  <span className="font-serif text-2xl text-coral-deep">{m.label}</span>
                   <p className="text-ink-muted">{t(lang, m.desc)}</p>
                 </li>
               ))}
@@ -577,7 +580,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                 {COPY.numbers.stress.scenarios.map((s, i) => (
                   <div key={i} className="rounded-2xl bg-surface p-6 shadow-soft">
                     <p className="eyebrow text-ink-muted">{t(lang, s.name)}</p>
-                    <p className="mt-2 font-serif text-3xl text-coral">{t(lang, s.cash)}</p>
+                    <p className="mt-2 font-serif text-3xl text-coral-deep">{t(lang, s.cash)}</p>
                     <p className="mt-2 text-sm text-ink-muted">{t(lang, s.note)}</p>
                   </div>
                 ))}
@@ -729,7 +732,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             {COPY.derisk.cards.map((card, i) => (
               <Reveal key={i} delay={i * 90} className="h-full">
                 <div className="flex h-full flex-col rounded-2xl bg-surface p-7 shadow-soft">
-                  <span className="eyebrow text-coral">{t(lang, card.worry)}</span>
+                  <span className="eyebrow text-coral-deep">{t(lang, card.worry)}</span>
                   <h3 className="mt-3 font-serif text-xl">{t(lang, card.heading)}</h3>
                   <p className="mt-3 text-ink-muted">{t(lang, card.body)}</p>
                   <div className="mt-auto">

@@ -49,7 +49,7 @@ export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRi
               <span className="h-3 w-3 rounded-full" style={{ background: r.color }} aria-hidden />
               <span className="font-serif text-3xl text-ink">{r.value}</span>
               {r.multiple && (
-                <span className="font-serif text-xl text-coral">{r.multiple}</span>
+                <span className="font-serif text-xl text-coral-deep">{r.multiple}</span>
               )}
             </div>
             <p className="mt-1 font-medium text-ink">{r.label}</p>
