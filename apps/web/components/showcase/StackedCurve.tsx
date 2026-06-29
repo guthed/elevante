@@ -107,7 +107,10 @@ export default function StackedCurve({ series, categories, unit, ariaLabel, capt
         </ul>
       )}
       {caption && <p className="eyebrow mt-4 text-ink-muted">{caption}</p>}
-      <table className="sr-only">
+      {/* sr-only på <div> (inte <table>): en tabell auto-storlekar till innehållet
+          trots width:1px och spiller då ut horisontellt — div:en klipper bort det. */}
+      <div className="sr-only">
+      <table>
         <caption>{ariaLabel}</caption>
         <thead>
           <tr>
@@ -128,6 +131,7 @@ export default function StackedCurve({ series, categories, unit, ariaLabel, capt
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

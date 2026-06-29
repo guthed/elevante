@@ -830,7 +830,7 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
           <Reveal>
             <div className="mt-14 border-t border-canvas/20 pt-6 text-sm leading-relaxed text-canvas/70">
               {CONTACTS.map((c) => (
-                <p key={c.email} className="mt-1">
+                <p key={c.email} className="mt-1 text-canvas/70">
                   <span className="font-semibold text-canvas">{c.name}</span>
                   {' · '}
                   <a href={`mailto:${c.email}`} className="hover:text-canvas">{c.email}</a>

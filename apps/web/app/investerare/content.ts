@@ -65,7 +65,7 @@ export const EXPANSION = [
 
 export const ASK = {
   uses: [
-    { title: { sv: 'Konvertera piloten', en: 'Convert the pilot' }, desc: { sv: 'Pilot → betalande skolor i Stockholmsregionen.', en: 'Pilot → paying schools across the Stockholm region.' } },
+    { title: { sv: 'Konvertera piloten', en: 'Convert the pilot' }, desc: { sv: 'Pilot → betalande skolor i Stockholms län.', en: 'Pilot → paying schools across Stockholm county.' } },
     { title: { sv: 'Härda EU-pipelinen', en: 'Harden the EU pipeline' }, desc: { sv: 'Extern säkerhets- och GDPR-granskning.', en: 'External security and GDPR review.' } },
     { title: { sv: 'Skala go-to-market', en: 'Scale go-to-market' }, desc: { sv: 'I Sverige och in i Norden.', en: 'Across Sweden and into the Nordics.' } },
   ],
@@ -812,8 +812,8 @@ export const COPY: {
       },
     },
     source: {
-      sv: 'Sverige: Skolverket, gymnasieskolan läsåret 2023/24 (367 000 elever) — vår faktiska hemmamarknad. Norden 1,48 milj. och EU27 18,3 milj.: Eurostat 2023, gymnasial nivå (ISCED 3, något bredare). Stockholmsregionen ur Skolverkets gymnasieregister.',
-      en: 'Sweden: Skolverket, upper-secondary school 2023/24 (367,000 students) — our actual home market. Nordics 1.48M and EU27 18.3M: Eurostat 2023, upper-secondary level (ISCED 3, slightly broader). Stockholm region from Skolverket.',
+      sv: 'Sverige: Skolverket, gymnasieskolan läsåret 2023/24 (367 000 elever) — vår faktiska hemmamarknad. Norden 1,48 milj. och EU27 18,3 milj.: Eurostat 2023, gymnasial nivå (ISCED 3, något bredare). Stockholms län ur Skolverkets register.',
+      en: 'Sweden: Skolverket, upper-secondary school 2023/24 (367,000 students) — our actual home market. Nordics 1.48M and EU27 18.3M: Eurostat 2023, upper-secondary level (ISCED 3, slightly broader). Stockholm county from Skolverket.',
     },
   },
 

@@ -20,26 +20,32 @@ export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRi
   const ordered = [...rings].sort((a, b) => b.radius - a.radius);
   return (
     <div ref={ref} className="grid items-center gap-10 md:grid-cols-2">
-      <div role="img" aria-label={ariaLabel ?? 'Koncentriska ringar: marknaden växer från Sverige till Norden till EU.'}>
+      <div role="img" aria-label={ariaLabel ?? 'Marknaden växer från Sverige till Norden till EU — nästlade bubblor, ytan speglar elevantalet.'}>
         <svg viewBox="0 0 320 320" className="block h-auto w-full">
-          {ordered.map((r, i) => (
-            <circle
-              key={r.label}
-              cx={160}
-              cy={160}
-              r={r.radius}
-              fill={r.color}
-              fillOpacity={r.fillOpacity ?? 0.18}
-              stroke={r.color}
-              strokeWidth={2.5}
-              style={{
-                opacity: inView ? 1 : 0,
-                transform: inView ? 'scale(1)' : 'scale(0.2)',
-                transformOrigin: '160px 160px',
-                transition: `opacity .5s ease, transform .8s cubic-bezier(0.22,1,0.36,1) ${i * 220}ms`,
-              }}
-            />
-          ))}
+          {/* Botten-justerade (tangenta) bubblor: även den lilla hemmamarknaden
+              syns som en egen form, istället för att försvinna i mitten. */}
+          {ordered.map((r, i) => {
+            const baseline = 312;
+            const cy = baseline - r.radius;
+            return (
+              <circle
+                key={r.label}
+                cx={160}
+                cy={cy}
+                r={r.radius}
+                fill={r.color}
+                fillOpacity={r.fillOpacity ?? 0.18}
+                stroke={r.color}
+                strokeWidth={2.5}
+                style={{
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? 'scale(1)' : 'scale(0.2)',
+                  transformOrigin: `160px ${baseline}px`,
+                  transition: `opacity .5s ease, transform .8s cubic-bezier(0.22,1,0.36,1) ${i * 220}ms`,
+                }}
+              />
+            );
+          })}
         </svg>
       </div>
       <ul className="flex flex-col gap-5">
