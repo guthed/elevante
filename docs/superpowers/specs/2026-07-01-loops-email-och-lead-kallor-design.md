@@ -22,7 +22,11 @@ poster mot Skolverket-kodade rader.
 | 2 – Prisberäknar-lead | Lead-formuläret i samma widget (`submitCampaignLead`) | Personens mejl + meddelande | `price_lead` | Prisberäknare-lead |
 | 3 – Kontaktformulär | `/[locale]/kontakt` (`ContactForm` → `sendContact`), **endast** `topic` = `demo`/`pricing` | Fritext-skola, personens mejl, meddelande | `contact_form` | Kontaktformulär |
 
-Oförändrade källor: `admin_search` → Admin-sök, `batch` → Batch.
+Utgående/oförändrade källor: `admin_search` → **Prospektering** (vi letar
+själva upp skolor att kontakta — bytt från "Admin-sök"), `batch` → Batch.
+`created_via`-koden `admin_search` behålls för stabilitet; bara Notion-etiketten
+byter namn. Befintliga rader med "Admin-sök" i Notion lämnas orörda tills de
+re-synkas.
 
 Regel för källprioritet: en inkommen **lead** (`price_lead`, `contact_form`)
 väger tyngre än ett bart **uppslag** (`school_lookup`). Eftersom Typ 1 och Typ 2
@@ -121,7 +125,8 @@ mejlkroppen i stället.
 ## Notion-schemaändring
 
 `Datakälla` (select) utökas med `Skoluppslag`, `Prisberäknare-lead`,
-`Kontaktformulär`. `lib/notion.ts` `NotionProspect['dataSource']`-typ och
+`Kontaktformulär`, och `admin_search` byter etikett `Admin-sök` → `Prospektering`.
+`lib/notion.ts` `NotionProspect['dataSource']`-typ och
 `prospects.ts` `dataSourceLabel`-mappning uppdateras. `CreatedVia`-typen utökas
 till `'school_lookup' | 'price_lead' | 'contact_form' | 'admin_search' |
 'batch'`.
