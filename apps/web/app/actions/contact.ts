@@ -1,7 +1,10 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { Resend } from 'resend';
+import { after } from 'next/server';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import { syncProspect } from '@/lib/prospects';
+import { sendLoopsTransactional } from '@/lib/loops';
 
 export type ContactState =
   | { status: 'idle' }
@@ -32,11 +35,13 @@ function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function escape(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+// Kort deterministisk kod för kodlösa kontaktformulär-rader: samma person + skola
+// → samma rad (ingen dubblett). Inte kryptografisk, bara stabil.
+function contactCode(email: string, school: string): string {
+  const s = `${email.toLowerCase()}|${school.toLowerCase()}`;
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+  return `contact-${(h >>> 0).toString(36)}`;
 }
 
 export async function sendContact(
@@ -68,47 +73,40 @@ export async function sendContact(
     return { status: 'error', code: 'rate-limit' };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL ?? 'john@elevante.se';
 
-  // Om Resend inte är konfigurerat: logga till server-konsolen och
-  // behandla som success. Används under lokal utveckling innan
-  // RESEND_API_KEY är satt.
-  if (!apiKey) {
-    console.info('[contact] Resend not configured, logging only:', {
-      name,
-      email,
-      school,
-      topic,
-      message,
+  // Persistens först (bara sälj-relevanta ämnen), mejl sekundärt.
+  const isSalesLead = topic === 'demo' || topic === 'pricing';
+  if (isSalesLead) {
+    const code = contactCode(email, school);
+    const now = new Date().toISOString();
+    try {
+      const supabase = createSupabaseServiceRoleClient();
+      await supabase.from('school_prospects').upsert(
+        { school_unit_code: code, school_name: school,
+          latest_lead_email: email, latest_lead_message: message, latest_lead_at: now,
+          created_via: 'contact_form', enrichment_status: 'done', updated_at: now },
+        { onConflict: 'school_unit_code' },
+      );
+    } catch (err) {
+      console.error('[contact] kunde inte spara prospect:', err);
+    }
+    after(async () => {
+      try {
+        await syncProspect({
+          code, name: school, skolform: [], createdVia: 'contact_form',
+          students: null, bumpLookup: false,
+        });
+      } catch (err) {
+        console.error('[contact] syncProspect misslyckades:', err);
+      }
     });
-    return { status: 'success' };
   }
 
-  try {
-    const resend = new Resend(apiKey);
-    const subject = `Elevante-kontakt: ${topic} – ${name}`;
-    const html = `
-      <h2>Nytt meddelande från elevante.se</h2>
-      <p><strong>Namn:</strong> ${escape(name)}</p>
-      <p><strong>E-post:</strong> ${escape(email)}</p>
-      <p><strong>Skola/organisation:</strong> ${escape(school)}</p>
-      <p><strong>Ämne:</strong> ${escape(topic)}</p>
-      <p><strong>Meddelande:</strong></p>
-      <pre style="white-space:pre-wrap;font-family:inherit">${escape(message)}</pre>
-    `;
+  // Notis till John via Loops (alla ämnen).
+  await sendLoopsTransactional(process.env.LOOPS_KONTAKT_NOTIS_ID, to, {
+    name, email, school, topic, message, replyToAddress: email,
+  });
 
-    await resend.emails.send({
-      from: 'Elevante <hej@elevante.se>',
-      to,
-      replyTo: email,
-      subject,
-      html,
-    });
-
-    return { status: 'success' };
-  } catch (error) {
-    console.error('[contact] Resend error:', error);
-    return { status: 'error', code: 'generic' };
-  }
+  return { status: 'success' };
 }
