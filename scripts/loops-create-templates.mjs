@@ -70,6 +70,7 @@ const TEMPLATES = [
     previewText: 'Elever som ställer frågor om sina egna lektioner, i egen takt.',
     fromName: 'Elevante',
     fromEmail: 'hej',
+    replyToEmail: 'john@elevante.se', // fast adress — skolans svar landar hos John
     lmxFile: '1-skol-kontaktmejl.lmx',
   },
   {
@@ -79,6 +80,7 @@ const TEMPLATES = [
     previewText: 'En skola har lämnat en intresseanmälan via prisberäknaren.',
     fromName: 'Elevante',
     fromEmail: 'hej',
+    // Reply-to = {data.replyToAddress} sätts i Loops-editorn (API tar bara literal e-post).
     lmxFile: '2-lead-notis.lmx',
   },
   {
@@ -88,6 +90,7 @@ const TEMPLATES = [
     previewText: 'Ett nytt meddelande via kontaktformuläret på elevante.se.',
     fromName: 'Elevante',
     fromEmail: 'hej',
+    // Reply-to = {data.replyToAddress} sätts i Loops-editorn (API tar bara literal e-post).
     lmxFile: '3-kontakt-notis.lmx',
   },
   {
@@ -141,9 +144,10 @@ async function upsertTemplate(t, existing) {
     previewText: t.previewText,
     fromName: t.fromName,
     fromEmail: t.fromEmail,
+    ...(t.replyToEmail ? { replyToEmail: t.replyToEmail } : {}),
     lmx: lmx(t.lmxFile),
   });
-  console.log('  ✎ Innehåll satt');
+  console.log(`  ✎ Innehåll satt${t.replyToEmail ? ` (reply-to: ${t.replyToEmail})` : ''}`);
 
   await api('POST', `/v1/transactional-emails/${transactionalId}/publish`);
   console.log('  ✓ Publicerad');
