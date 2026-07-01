@@ -66,8 +66,8 @@ const TEMPLATES = [
   {
     envKey: 'LOOPS_SKOL_KONTAKT_ID',
     name: 'Elevante — skol-kontaktmejl',
-    subject: 'Låt eleverna på {data.schoolName} minnas varje lektion',
-    previewText: 'Elever som ställer frågor om sina egna lektioner, i egen takt.',
+    subject: 'Elever som minns varje lektion',
+    previewText: 'En svensk AI-lärare grundad i era egna lektioner.',
     fromName: 'Elevante',
     fromEmail: 'hej',
     replyToEmail: 'john@elevante.se', // fast adress — skolans svar landar hos John
@@ -76,7 +76,7 @@ const TEMPLATES = [
   {
     envKey: 'LOOPS_LEAD_NOTIS_ID',
     name: 'Elevante — lead-notis (prisberäknare)',
-    subject: 'Ny intresseanmälan: {data.schoolName} ({data.students} elever)',
+    subject: 'Ny intresseanmälan via prisberäknaren',
     previewText: 'En skola har lämnat en intresseanmälan via prisberäknaren.',
     fromName: 'Elevante',
     fromEmail: 'hej',
@@ -86,7 +86,7 @@ const TEMPLATES = [
   {
     envKey: 'LOOPS_KONTAKT_NOTIS_ID',
     name: 'Elevante — kontakt-notis',
-    subject: 'Nytt kontaktmeddelande: {data.topic} – {data.name}',
+    subject: 'Nytt meddelande via kontaktformuläret',
     previewText: 'Ett nytt meddelande via kontaktformuläret på elevante.se.',
     fromName: 'Elevante',
     fromEmail: 'hej',
@@ -96,7 +96,7 @@ const TEMPLATES = [
   {
     envKey: 'LOOPS_INVESTOR_NOTIS_ID',
     name: 'Elevante — investerar-notis',
-    subject: 'Investerardeck · {data.headline}',
+    subject: 'Aktivitet på investerardecket',
     previewText: 'Aktivitet på investerardecket.',
     fromName: 'Elevante',
     fromEmail: 'hej',
