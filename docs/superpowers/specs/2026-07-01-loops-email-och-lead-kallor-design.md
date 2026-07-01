@@ -118,9 +118,11 @@ I `sendContact` (`app/actions/contact.ts`), **innan** notismejlet:
 - `lib/investor-notify.ts`: `open`/`ask`-notiser via `sendLoopsTransactional`.
 - Ta bort `resend` ur `apps/web/package.json`.
 
-Känd försämring: Resend sätter `replyTo` till avsändaren; Loops transactional
-saknar per-utskick reply-to. Avsändarens mejladress läggs klickbart i
-mejlkroppen i stället.
+Reply-to bevaras: Loops transactional stödjer reply-to via en data-variabel.
+Lägg ett fält (t.ex. `replyToAddress`) i mallens "Reply to"-fält i Loops-editorn
+och skicka avsändarens/skolans adress via `dataVariables`. "Svara" i inkorgen går
+då direkt till dem, precis som Resends `replyTo` idag. `sendLoopsTransactional`
+tar därför emot `replyToAddress` som en av `dataVariables` för notismallarna.
 
 ## Notion-schemaändring
 
@@ -150,6 +152,8 @@ Nya i Vercel + `.env.local`:
 
 1. Verifiera elevante.se i Loops → DNS (SPF/DKIM) hos Loopia.
 2. Skapa transactional-mallar (skol-kontaktmejl + tre notismallar), kopiera IDs.
+   Lägg en `replyToAddress`-datavariabel i "Reply to"-fältet på de tre
+   notismallarna så svar går direkt till skolan/personen.
 3. Bygg loopen `event: intresseanmalan → bekräftelsemejl` i Loops UI.
 4. Sätt env-variablerna i Vercel + lokalt.
 5. Verifiera/pre-skapa de tre nya `Datakälla`-optionerna i Notion.
