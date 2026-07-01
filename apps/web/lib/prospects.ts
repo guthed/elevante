@@ -9,9 +9,11 @@ import {
   type NotionProspect,
 } from '@/lib/notion';
 
-type CreatedVia = 'inbound_lookup' | 'admin_search' | 'batch';
+type CreatedVia =
+  | 'school_lookup' | 'price_lead' | 'contact_form' | 'admin_search' | 'batch';
 const dataSourceLabel: Record<CreatedVia, NotionProspect['dataSource']> = {
-  inbound_lookup: 'Inbound-uppslag', admin_search: 'Admin-sök', batch: 'Batch',
+  school_lookup: 'Skoluppslag', price_lead: 'Prisberäknare-lead',
+  contact_form: 'Kontaktformulär', admin_search: 'Prospektering', batch: 'Batch',
 };
 
 type ProspectRow = {
@@ -34,7 +36,7 @@ function toNotion(p: ProspectRow): NotionProspect {
     aiBrief: p.ai_brief, contactEmail: p.contact_email_draft,
     lookupCount: p.lookup_count, leadEmail: p.latest_lead_email,
     skolform: p.skolform ?? [],
-    dataSource: dataSourceLabel[(p.created_via as CreatedVia)] ?? 'Inbound-uppslag',
+    dataSource: dataSourceLabel[(p.created_via as CreatedVia)] ?? 'Skoluppslag',
     firstSeen: p.first_seen_at, lastSeen: p.last_seen_at,
   };
 }
