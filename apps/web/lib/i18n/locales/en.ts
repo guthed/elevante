@@ -135,6 +135,7 @@ const en: Dictionary = {
         schedule: 'Schedule',
         stats: 'Statistics',
         prospects: 'Prospects',
+        crm: 'School CRM',
       },
     },
     mobileNav: {
@@ -160,6 +161,7 @@ const en: Dictionary = {
         schedule: 'Schedule',
         stats: 'Stats',
         prospects: 'Leads',
+        crm: 'CRM',
       },
     },
     navDescriptions: {
@@ -185,6 +187,7 @@ const en: Dictionary = {
         schedule: 'Upload the lesson schedule',
         stats: 'Usage and activity',
         prospects: 'Incoming interest requests',
+        crm: 'Search and sync school units',
       },
     },
     account: {
@@ -429,6 +432,24 @@ const en: Dictionary = {
           statusHeading: 'Transcript status',
           activityHeading: 'Active users',
           noData: 'No data yet. Statistics fill up over time.',
+        },
+        crm: {
+          title: 'School CRM',
+          subtitle: 'Search school units and sync them into the Notion pipeline.',
+          searchLabel: 'Search school',
+          searchPlaceholder: "Start typing the school's name…",
+          sync: 'Sync',
+          resync: 'Re-sync',
+          synced: 'Synced prospects',
+          empty: 'No synced prospects yet.',
+          openNotion: 'Open in Notion',
+          cols: {
+            name: 'School',
+            kommun: 'Municipality',
+            students: 'Students',
+            status: 'Sync status',
+            synced: 'Last synced',
+          },
         },
       },
     },
