@@ -34,37 +34,24 @@ export async function generateSchoolBrief(input: BriefInput): Promise<string | n
   return block && block.type === 'text' ? block.text.trim() : null;
 }
 
-export async function generateContactEmail(
-  input: BriefInput,
+// Fast mall (ingen AI). Mejlet är medvetet generiskt och rakt på sak — identiskt
+// för alla skolor, bara ägarnamnet varierar. Signeras med kortets Ägare. `_input`
+// behålls i signaturen för bakåtkompatibilitet med anroparen men används inte.
+export function generateContactEmail(
+  _input: BriefInput,
   ownerName: string | null,
-): Promise<string | null> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.warn('[brief] ANTHROPIC_API_KEY saknas — hoppar över kontaktmejl.');
-    return null;
-  }
-  const facts = [
-    `Skola: ${input.name}`,
-    input.municipality && `Kommun/område: ${input.municipality}`,
-    input.principalType && `Huvudmannatyp: ${input.principalType}`,
-    input.huvudman && `Huvudman: ${input.huvudman}`,
-    input.orientation && `Inriktning: ${input.orientation}`,
-    input.students != null && `Antal elever: ${input.students}`,
-  ].filter(Boolean).join('\n');
-  const signature = ownerName ?? '[Ditt namn]';
-
-  const anthropic = new Anthropic({ apiKey });
-  const msg = await anthropic.messages.create({
-    model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929',
-    max_tokens: 400,
-    system:
-      'Du skriver ett kort, varmt kontaktmejl på svenska från EdTech-bolaget Elevante till ' +
-      'en svensk skola. Du-tilltal, max ~120 ord. Inkludera en mening om varför Elevante ' +
-      'passar just den här skolan utifrån fakta. Mjuk avslutning med förslag på ett kort ' +
-      'samtal. Avsluta EXAKT med raderna:\nVänliga hälsningar,\n' + signature + '\n' +
-      'Använd bara givna fakta — hitta inte på något. Returnera enbart mejltexten.',
-    messages: [{ role: 'user', content: `Fakta om skolan:\n${facts}\n\nSkriv kontaktmejlet.` }],
-  });
-  const block = msg.content.find((b) => b.type === 'text');
-  return block && block.type === 'text' ? block.text.trim() : null;
+): string {
+  const namn = ownerName ?? '[Ditt namn]';
+  return [
+    'Hej!',
+    '',
+    `Jag heter ${namn} och driver Elevante AB. Elevante spelar in lektioner, ` +
+      'transkriberar dem och låter elever ställa frågor till dem i efterhand — i egen takt, ' +
+      'med svar grundade i den egna lektionen, inte ett generiskt svar från nätet.',
+    '',
+    'Vill du veta mer? Läs på elevante.se eller svara på det här mejlet, så berättar jag gärna.',
+    '',
+    'Vänliga hälsningar,',
+    namn,
+  ].join('\n');
 }
