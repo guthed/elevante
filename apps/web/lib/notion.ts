@@ -31,7 +31,7 @@ function notionHeaders(token: string) {
 const rich = (t: string | null) =>
   t ? { rich_text: [{ text: { content: t.slice(0, 1900) } }] } : { rich_text: [] };
 
-// Fält som synken ALLTID får skriva (maskinstyrda). Rör aldrig Pipeline/Owner/
+// Fält som synken ALLTID får skriva (maskinstyrda). Rör aldrig Status/Owner/
 // Anteckningar/Nästa steg/Senast kontaktad/Kontaktväg — de är manuella i Notion.
 function machineProperties(p: NotionProspect) {
   return {
@@ -50,16 +50,16 @@ function machineProperties(p: NotionProspect) {
     'Lead-status': { select: { name: p.leadEmail ? 'Kontaktuppgift lämnad' : 'Ny' } },
     Skolform: { multi_select: p.skolform.map((name) => ({ name })) },
     Datakälla: { select: { name: p.dataSource } },
-    Synkstatus: { status: { name: 'OK' } },
+    Synkstatus: { select: { name: 'OK' } },
     'Senast synkad': { date: { start: new Date().toISOString() } },
     'Först sedd': { date: { start: p.firstSeen } },
     'Senast sedd': { date: { start: p.lastSeen } },
   };
 }
 
-// Bara vid create: sätt initial Pipeline. Vid update rörs den aldrig.
+// Bara vid create: sätt initial Status. Vid update rörs det aldrig (manuellt CRM-fält).
 function createOnlyProperties() {
-  return { Pipeline: { status: { name: 'Ej kontaktad' } } };
+  return { Status: { select: { name: 'Ny' } } };
 }
 
 export async function upsertNotionProspect(p: NotionProspect): Promise<string | null> {
@@ -117,7 +117,7 @@ async function markNeedsCheck(code: string): Promise<void> {
   if (!id || !token) return;
   await fetch(`${NOTION}/pages/${id}`, {
     method: 'PATCH', headers: notionHeaders(token),
-    body: JSON.stringify({ properties: { Synkstatus: { status: { name: 'Behöver kollas' } } } }),
+    body: JSON.stringify({ properties: { Synkstatus: { select: { name: 'Behöver kollas' } } } }),
   }).catch(() => {});
 }
 
@@ -135,7 +135,7 @@ async function firstPageIdRaw(code: string): Promise<string | null> {
   return (await res.json()).results?.[0]?.id ?? null;
 }
 
-// För cron: alla sidor med Pipeline ≠ Nej. Returnerar {pageId, code}.
+// För cron: skolor i aktiv pipeline (Status ∉ {Ny, Tappad}). Returnerar {pageId, code}.
 export async function queryPrioritizedProspects(): Promise<
   { pageId: string; code: string }[]
 > {
@@ -148,7 +148,10 @@ export async function queryPrioritizedProspects(): Promise<
     const res = await fetch(`${NOTION}/databases/${databaseId}/query`, {
       method: 'POST', headers: notionHeaders(token),
       body: JSON.stringify({
-        filter: { property: 'Pipeline', status: { does_not_equal: 'Nej' } },
+        filter: { and: [
+          { property: 'Status', select: { does_not_equal: 'Ny' } },
+          { property: 'Status', select: { does_not_equal: 'Tappad' } },
+        ] },
         start_cursor: cursor, page_size: 100,
       }),
     });
