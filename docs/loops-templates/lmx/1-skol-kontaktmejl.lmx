@@ -1,7 +1,7 @@
-<Style backgroundColor="#faf7f2" bodyColor="#fffdf9" bodyFontFamily="Newsreader" bodyFontCategory="serif" textBaseColor="#3a3a4e" textBaseFontSize="17" textBaseLineHeight="175" heading1Color="#1a1a2e" heading1FontSize="34" heading1LineHeight="118" buttonBodyColor="#4f7fff" buttonTextColor="#ffffff" buttonBorderRadius="999" dividerColor="#eadfce" bodyXPadding="48" bodyYPadding="44" backgroundYPadding="40" />
-<Paragraph fontSize="21" color="#1a1a2e">Elevante</Paragraph>
+<Style backgroundColor="#faf7f2" bodyColor="#ffffff" bodyFontFamily="Newsreader" bodyFontCategory="serif" textBaseColor="#4a4a5e" textBaseFontSize="17" textBaseLineHeight="170" heading1Color="#1a1a2e" heading1FontSize="34" heading1LineHeight="118" buttonBodyColor="#1a1a2e" buttonTextColor="#faf7f2" buttonBorderRadius="12" dividerColor="#e8dcc4" bodyXPadding="48" bodyYPadding="44" backgroundYPadding="40" />
+<Paragraph fontSize="24" color="#1a1a2e">Elevante</Paragraph>
 <Divider />
-<Paragraph fontSize="13" color="#ff7a6b">TILL {data.schoolName}</Paragraph>
+<Paragraph fontSize="12" color="#4a4a5e">TILL {data.schoolName}</Paragraph>
 <H1>Elever som minns varje lektion</H1>
 <Paragraph>Hej!</Paragraph>
 <Paragraph>Vi driver Elevante — en svensk tjänst som spelar in lektioner, transkriberar dem och låter eleverna ställa frågor om innehållet i efterhand. I egen takt, med svar grundade i den egna lektionen, aldrig ett generiskt svar från nätet.</Paragraph>
@@ -11,4 +11,6 @@
 <Paragraph>Vänliga hälsningar,</Paragraph>
 <Paragraph>Teamet på Elevante</Paragraph>
 <Divider />
-<Paragraph fontSize="13" color="#8a8579">Elevante minns allt du lär dig i skolan · elevante.se</Paragraph>
+<Paragraph fontSize="14" color="#6b665f">Elevante minns allt du lär dig i skolan.</Paragraph>
+<Paragraph fontSize="13" color="#8a8579">Elevante AB · Stockholm, Sverige · <Link href="https://www.elevante.se" color="#4f7fff">elevante.se</Link></Paragraph>
+<Paragraph fontSize="12" color="#8a8579">GDPR-SÄKERT · DATA I STOCKHOLM</Paragraph>
