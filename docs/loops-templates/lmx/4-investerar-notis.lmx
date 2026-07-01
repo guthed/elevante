@@ -1,14 +1,14 @@
-<Style backgroundColor="#faf7f2" bodyColor="#ffffff" bodyFontFamily="Geist" bodyFontCategory="sans-serif" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" heading1LineHeight="120" buttonBodyColor="#1a1a2e" buttonTextColor="#faf7f2" buttonBorderRadius="12" dividerColor="#e8dcc4" bodyXPadding="40" bodyYPadding="36" backgroundYPadding="36" />
-<Paragraph fontSize="20" color="#1a1a2e">Elevante</Paragraph>
-<Divider />
-<Paragraph fontSize="12" color="#566b47">INVESTERARDECKET</Paragraph>
-<H1>{data.headline}</H1>
-<Paragraph fontSize="13" color="#8a8579">INVESTERARE</Paragraph>
-<Paragraph fontSize="16" color="#1a1a2e">{data.investor}</Paragraph>
-<Paragraph fontSize="13" color="#8a8579">SPRÅK</Paragraph>
-<Paragraph fontSize="16" color="#1a1a2e">{data.locale}</Paragraph>
-<Paragraph fontSize="13" color="#8a8579">SCROLL-DJUP</Paragraph>
-<Paragraph fontSize="16" color="#1a1a2e">{data.maxScroll}</Paragraph>
-<Button href="https://www.elevante.se/investerare" align="left">Öppna spårningen</Button>
-<Divider />
+<Style backgroundColor="#faf7f2" bodyColor="#ffffff" bodyFontFamily="Geist" bodyFontCategory="sans-serif" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" heading1LineHeight="124" buttonBodyColor="#1a1a2e" buttonTextColor="#faf7f2" buttonBorderRadius="12" dividerColor="#e8dcc4" bodyXPadding="44" bodyYPadding="40" backgroundYPadding="40" />
+<Paragraph fontSize="20" color="#1a1a2e" paddingBottom="14">Elevante</Paragraph>
+<Divider paddingBottom="26" />
+<Paragraph fontSize="12" color="#566b47" paddingBottom="6">INVESTERARDECKET</Paragraph>
+<H1 paddingBottom="22">{data.headline}</H1>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="2">INVESTERARE</Paragraph>
+<Paragraph fontSize="16" color="#1a1a2e" paddingBottom="14">{data.investor}</Paragraph>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="2">SPRÅK</Paragraph>
+<Paragraph fontSize="16" color="#1a1a2e" paddingBottom="14">{data.locale}</Paragraph>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="2">SCROLL-DJUP</Paragraph>
+<Paragraph fontSize="16" color="#1a1a2e" paddingBottom="26">{data.maxScroll}</Paragraph>
+<Button href="https://www.elevante.se/investerare" align="left" paddingBottom="30">Öppna spårningen</Button>
+<Divider paddingBottom="16" />
 <Paragraph fontSize="12" color="#8a8579">Automatisk notis från <Link href="https://www.elevante.se" color="#4f7fff">elevante.se</Link></Paragraph>

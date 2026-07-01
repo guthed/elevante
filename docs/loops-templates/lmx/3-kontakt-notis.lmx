@@ -1,16 +1,16 @@
-<Style backgroundColor="#faf7f2" bodyColor="#ffffff" bodyFontFamily="Geist" bodyFontCategory="sans-serif" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" heading1LineHeight="120" buttonBodyColor="#1a1a2e" buttonTextColor="#faf7f2" buttonBorderRadius="12" dividerColor="#e8dcc4" bodyXPadding="40" bodyYPadding="36" backgroundYPadding="36" />
-<Paragraph fontSize="20" color="#1a1a2e">Elevante</Paragraph>
-<Divider />
-<Paragraph fontSize="12" color="#ff7a6b">KONTAKTFORMULÄRET · {data.topic}</Paragraph>
-<H1>{data.name}</H1>
-<Paragraph fontSize="13" color="#8a8579">SKOLA / ORGANISATION</Paragraph>
-<Paragraph fontSize="16" color="#1a1a2e">{data.school}</Paragraph>
-<Paragraph fontSize="13" color="#8a8579">E-POST</Paragraph>
-<Paragraph fontSize="16"><Link href="mailto:{data.email}" color="#4f7fff">{data.email}</Link></Paragraph>
-<Paragraph fontSize="13" color="#8a8579">MEDDELANDE</Paragraph>
-<Section blockColor="#f7f3ee" blockBorderRadius="12" paddingTop="16" paddingRight="20" paddingBottom="16" paddingLeft="20">
+<Style backgroundColor="#faf7f2" bodyColor="#ffffff" bodyFontFamily="Geist" bodyFontCategory="sans-serif" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" heading1LineHeight="124" buttonBodyColor="#1a1a2e" buttonTextColor="#faf7f2" buttonBorderRadius="12" dividerColor="#e8dcc4" bodyXPadding="44" bodyYPadding="40" backgroundYPadding="40" />
+<Paragraph fontSize="20" color="#1a1a2e" paddingBottom="14">Elevante</Paragraph>
+<Divider paddingBottom="26" />
+<Paragraph fontSize="12" color="#ff7a6b" paddingBottom="6">KONTAKTFORMULÄRET · {data.topic}</Paragraph>
+<H1 paddingBottom="22">{data.name}</H1>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="2">SKOLA / ORGANISATION</Paragraph>
+<Paragraph fontSize="16" color="#1a1a2e" paddingBottom="14">{data.school}</Paragraph>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="2">E-POST</Paragraph>
+<Paragraph fontSize="16" paddingBottom="14"><Link href="mailto:{data.email}" color="#4f7fff">{data.email}</Link></Paragraph>
+<Paragraph fontSize="12" color="#8a8579" paddingBottom="6">MEDDELANDE</Paragraph>
+<Section blockColor="#f7f3ee" blockBorderRadius="12" paddingTop="18" paddingRight="22" paddingBottom="18" paddingLeft="22">
 <Paragraph fontSize="15" color="#4a4a5e">{data.message}</Paragraph>
 </Section>
-<Button href="mailto:{data.email}" align="left">Svara</Button>
-<Divider />
+<Button href="mailto:{data.email}" align="left" paddingTop="26" paddingBottom="30">Svara</Button>
+<Divider paddingBottom="16" />
 <Paragraph fontSize="12" color="#8a8579">Automatisk notis från <Link href="https://www.elevante.se" color="#4f7fff">elevante.se</Link></Paragraph>
