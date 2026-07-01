@@ -1,0 +1,12 @@
+<Style backgroundColor="#faf7f2" bodyColor="#fffdf9" textBaseColor="#4a4a5e" textBaseFontSize="16" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="28" buttonBodyColor="#4f7fff" buttonTextColor="#ffffff" buttonBorderRadius="999" dividerColor="#e8dcc4" bodyXPadding="40" bodyYPadding="40" backgroundYPadding="32" />
+<Paragraph fontSize="12" color="#8a8579">TILL {data.schoolName}</Paragraph>
+<H1>Elever som minns varje lektion</H1>
+<Paragraph>Hej!</Paragraph>
+<Paragraph>Vi driver Elevante — en svensk tjänst som spelar in lektioner, transkriberar dem och låter eleverna ställa frågor om innehållet i efterhand. I egen takt, med svar grundade i den egna lektionen, aldrig ett generiskt svar från nätet.</Paragraph>
+<Paragraph>Vi tror att det skulle passa era elever bra. Vill ni veta mer berättar vi gärna hur det fungerar i praktiken.</Paragraph>
+<Button href="https://www.elevante.se" align="left">Läs mer på elevante.se</Button>
+<Paragraph color="#6b665f">Eller svara bara på det här mejlet, så hörs vi.</Paragraph>
+<Paragraph>Vänliga hälsningar,</Paragraph>
+<Paragraph>Teamet på Elevante</Paragraph>
+<Divider />
+<Paragraph fontSize="12" color="#8a8579">Elevante minns allt du lär dig i skolan · elevante.se · {data.ort}</Paragraph>

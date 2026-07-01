@@ -1,0 +1,9 @@
+<Style backgroundColor="#faf7f2" bodyColor="#fffdf9" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" buttonBodyColor="#4f7fff" buttonTextColor="#ffffff" buttonBorderRadius="999" dividerColor="#e8dcc4" bodyXPadding="36" bodyYPadding="32" backgroundYPadding="32" />
+<Paragraph fontSize="12" color="#566b47">INVESTERARDECK</Paragraph>
+<H1>{data.headline}</H1>
+<Divider />
+<Paragraph color="#8a8579">Investerare: {data.investor}</Paragraph>
+<Paragraph color="#8a8579">Språk: {data.locale}</Paragraph>
+<Paragraph color="#8a8579">Scroll-djup: {data.maxScroll}</Paragraph>
+<Divider />
+<Button href="https://www.elevante.se/investerare" align="left">Öppna spårningen</Button>

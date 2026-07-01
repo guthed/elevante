@@ -1,0 +1,10 @@
+<Style backgroundColor="#faf7f2" bodyColor="#fffdf9" textBaseColor="#4a4a5e" textBaseFontSize="15" textBaseLineHeight="160" heading1Color="#1a1a2e" heading1FontSize="26" buttonBodyColor="#4f7fff" buttonTextColor="#ffffff" buttonBorderRadius="999" dividerColor="#e8dcc4" bodyXPadding="36" bodyYPadding="32" backgroundYPadding="32" />
+<Paragraph fontSize="12" color="#ff7a6b">NY INTRESSEANMÄLAN · PRISBERÄKNARE</Paragraph>
+<H1>{data.schoolName}</H1>
+<Divider />
+<Paragraph color="#8a8579">Antal elever: {data.students}</Paragraph>
+<Paragraph color="#8a8579">E-post: <Link href="mailto:{data.leadEmail}" color="#3d6be6">{data.leadEmail}</Link></Paragraph>
+<Paragraph color="#8a8579">Meddelande:</Paragraph>
+<Paragraph>{data.message}</Paragraph>
+<Divider />
+<Button href="mailto:{data.leadEmail}" align="left">Svara skolan</Button>
