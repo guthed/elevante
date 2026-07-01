@@ -4,6 +4,9 @@ import { after } from 'next/server';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { searchSchoolUnits, type SchoolUnit } from '@/lib/skolverket';
 import { syncProspect } from '@/lib/prospects';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import { sendLoopsTransactional } from '@/lib/loops';
+import { markProspectContacted } from '@/lib/notion';
 
 async function requireAdmin() {
   const profile = await getCurrentProfile();
@@ -46,6 +49,39 @@ export async function syncSchoolUnitAction(
     });
     return { status: 'ok' };
   } catch {
+    return { status: 'error' };
+  }
+}
+
+const contactSchema = z.object({ code: z.string().min(4).max(40) });
+
+export type SendContactResult = { status: 'ok' | 'no-recipient' | 'error' };
+
+export async function sendProspectContactEmail(
+  input: z.infer<typeof contactSchema>,
+): Promise<SendContactResult> {
+  await requireAdmin();
+  const { code } = contactSchema.parse(input);
+  const supabase = createSupabaseServiceRoleClient();
+  const { data: row } = await supabase
+    .from('school_prospects')
+    .select('school_name, municipality, contact_email, latest_lead_email, notion_page_id')
+    .eq('school_unit_code', code)
+    .single();
+  if (!row) return { status: 'error' };
+  const recipient = row.contact_email ?? row.latest_lead_email;
+  if (!recipient) return { status: 'no-recipient' };
+  try {
+    await sendLoopsTransactional(process.env.LOOPS_SKOL_KONTAKT_ID, recipient, {
+      schoolName: row.school_name, ort: row.municipality ?? '',
+    });
+    await supabase.from('school_prospects')
+      .update({ contacted_at: new Date().toISOString() })
+      .eq('school_unit_code', code);
+    if (row.notion_page_id) await markProspectContacted(row.notion_page_id);
+    return { status: 'ok' };
+  } catch (err) {
+    console.error('[crm] sendProspectContactEmail misslyckades:', err);
     return { status: 'error' };
   }
 }
