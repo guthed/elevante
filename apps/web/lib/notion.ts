@@ -10,6 +10,7 @@ export type NotionProspect = {
   email: string | null;
   address: string | null;
   aiBrief: string | null;
+  contactEmail: string | null;
   lookupCount: number;
   leadEmail: string | null;
   skolform: string[];
@@ -44,7 +45,6 @@ function machineProperties(p: NotionProspect) {
     Telefon: { phone_number: p.phone },
     'E-post': { email: p.email },
     Adress: rich(p.address),
-    'AI-brief': rich(p.aiBrief),
     'Antal uppslag': { number: p.lookupCount },
     'Lead-e-post': { email: p.leadEmail },
     'Lead-status': { select: { name: p.leadEmail ? 'Kontaktuppgift lämnad' : 'Ny' } },
@@ -57,12 +57,24 @@ function machineProperties(p: NotionProspect) {
   };
 }
 
+// Genererat innehåll (AI-brief + Kontaktmail). Skrivs BARA vid första berikningen,
+// så nattlig faktauppdatering aldrig skriver över användarens redigeringar.
+function generatedProperties(p: NotionProspect) {
+  return {
+    'AI-brief': rich(p.aiBrief),
+    Kontaktmail: rich(p.contactEmail),
+  };
+}
+
 // Bara vid create: sätt initial Status. Vid update rörs det aldrig (manuellt CRM-fält).
 function createOnlyProperties() {
   return { Status: { select: { name: 'Ny' } } };
 }
 
-export async function upsertNotionProspect(p: NotionProspect): Promise<string | null> {
+export async function upsertNotionProspect(
+  p: NotionProspect,
+  opts: { writeGenerated?: boolean } = {},
+): Promise<string | null> {
   const token = process.env.NOTION_TOKEN;
   const databaseId = process.env.NOTION_LEADS_DATABASE_ID;
   if (!token || !databaseId) {
@@ -70,16 +82,16 @@ export async function upsertNotionProspect(p: NotionProspect): Promise<string | 
     return null;
   }
   const headers = notionHeaders(token);
-  // Föredra känt sid-id; annars fallback-query på Skolenhetskod.
   const pageId = p.notionPageId ?? (await queryNotionProspectByCode(p.schoolUnitCode));
   if (pageId === 'DUPLICATE') {
     await markNeedsCheck(p.schoolUnitCode);
     return null;
   }
-  const url = pageId ? `${NOTION}/pages/${pageId}` : `${NOTION}/pages`;
-  const properties = pageId
+  const base = pageId
     ? machineProperties(p)
     : { ...machineProperties(p), ...createOnlyProperties() };
+  const properties = opts.writeGenerated ? { ...base, ...generatedProperties(p) } : base;
+  const url = pageId ? `${NOTION}/pages/${pageId}` : `${NOTION}/pages`;
   const body = pageId
     ? { properties }
     : { parent: { database_id: databaseId }, properties };
@@ -164,4 +176,48 @@ export async function queryPrioritizedProspects(): Promise<
     cursor = json.has_more ? json.next_cursor : undefined;
   } while (cursor);
   return out;
+}
+
+// Läser fälten endpointen behöver för att avgöra om/hur en rad ska berikas.
+export async function getPageForEnrichment(
+  pageId: string,
+): Promise<{ name: string; ownerUserId: string | null; alreadySynced: boolean } | null> {
+  const token = process.env.NOTION_TOKEN;
+  if (!token) return null;
+  const res = await fetch(`${NOTION}/pages/${pageId}`, { headers: notionHeaders(token) });
+  if (!res.ok) return null;
+  const props = (await res.json()).properties ?? {};
+  return {
+    name: props.Skola?.title?.[0]?.plain_text ?? '',
+    ownerUserId: props['Ägare']?.people?.[0]?.id ?? null,
+    alreadySynced: Boolean(props.Synkstatus?.select?.name),
+  };
+}
+
+export async function resolveNotionUserName(userId: string | null): Promise<string | null> {
+  const token = process.env.NOTION_TOKEN;
+  if (!token || !userId) return null;
+  const res = await fetch(`${NOTION}/users/${userId}`, { headers: notionHeaders(token) });
+  if (!res.ok) return null;
+  return (await res.json()).name ?? null;
+}
+
+// Sätter "Behöver kollas" + skriver kandidater i Anteckningar (bara i detta fall).
+export async function markNeedsCheckWithCandidates(
+  pageId: string,
+  candidates: { name: string; kommun: string | null }[],
+): Promise<void> {
+  const token = process.env.NOTION_TOKEN;
+  if (!token) return;
+  const note = candidates.length
+    ? 'Flera möjliga träffar i Skolverket — förtydliga namnet. Kandidater: ' +
+      candidates.map((c) => `${c.name} (${c.kommun ?? '?'})`).join('; ')
+    : 'Ingen träff i Skolverket på skolnamnet — kontrollera stavningen.';
+  await fetch(`${NOTION}/pages/${pageId}`, {
+    method: 'PATCH', headers: notionHeaders(token),
+    body: JSON.stringify({ properties: {
+      Synkstatus: { select: { name: 'Behöver kollas' } },
+      Anteckningar: { rich_text: [{ text: { content: note.slice(0, 1900) } }] },
+    } }),
+  }).catch(() => {});
 }
