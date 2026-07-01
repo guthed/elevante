@@ -1,11 +1,14 @@
 import type { ProspectListItem } from '@/lib/data/admin';
 import { ResyncButton } from './ResyncButton';
+import { SendContactEmailButton } from './SendContactEmailButton';
 
 type Dict = {
   synced: string;
   empty: string;
   openNotion: string;
   resync: string;
+  sendContact: string;
+  sentContact: string;
   cols: { name: string; kommun: string; students: string; status: string; synced: string };
 };
 
@@ -48,6 +51,12 @@ export function CrmProspectList({ items, dict }: { items: ProspectListItem[]; di
                   name={p.name}
                   skolform={p.skolform ?? []}
                   label={dict.resync}
+                />
+                <SendContactEmailButton
+                  code={p.code}
+                  disabled={!(p.contactEmail ?? p.latestLeadEmail) || Boolean(p.contactedAt)}
+                  label={dict.sendContact}
+                  sentLabel={dict.sentContact}
                 />
               </span>
             </td>

@@ -5,6 +5,10 @@ import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
 import { fetchGymnasiumPupilCount } from '@/lib/skolverket';
 import { estimateAnnualPrice } from '@/lib/pricing';
 import { syncProspect } from '@/lib/prospects';
+import { upsertLoopsContact, sendLoopsEvent, sendLoopsTransactional } from '@/lib/loops';
+
+// Interna notiser går till John. Överstyrbart via env.
+const notifyTo = () => process.env.CONTACT_TO_EMAIL ?? 'john@elevante.se';
 
 export type EstimateResult = { students: number | null };
 
@@ -24,7 +28,7 @@ export async function getSchoolEstimate(
   after(async () => {
     try {
       await syncProspect({
-        code, name, skolform: ['Gymnasieskolan'], createdVia: 'inbound_lookup',
+        code, name, skolform: ['Gymnasieskolan'], createdVia: 'school_lookup',
         students, bumpLookup: true,
       });
     } catch (err) {
@@ -69,7 +73,7 @@ export async function submitCampaignLead(
     await supabase.from('school_prospects').upsert(
       { school_unit_code: code, school_name: name, students: Math.round(students),
         latest_lead_email: email, latest_lead_message: message, latest_lead_at: now,
-        updated_at: now,
+        updated_at: now, created_via: 'price_lead',
         ...(isManual ? { enrichment_status: 'done' } : {}) },
       { onConflict: 'school_unit_code' },
     );
@@ -81,12 +85,21 @@ export async function submitCampaignLead(
   after(async () => {
     try {
       await syncProspect({
-        code, name, skolform: ['Gymnasieskolan'], createdVia: 'inbound_lookup',
+        code, name, skolform: ['Gymnasieskolan'], createdVia: 'price_lead',
         students: Math.round(students), bumpLookup: false,
       });
     } catch (err) {
       console.error('[campaign] syncProspect efter lead misslyckades:', err);
     }
+    await upsertLoopsContact(email, {
+      source: 'price_lead', schoolName: name,
+      students: Math.round(students), priceSek: estimateAnnualPrice(students), locale,
+    });
+    await sendLoopsEvent(email, 'intresseanmalan', { schoolName: name, locale });
+    await sendLoopsTransactional(process.env.LOOPS_LEAD_NOTIS_ID, notifyTo(), {
+      schoolName: name, students: String(Math.round(students)),
+      leadEmail: email, message: message ?? '', replyToAddress: email,
+    });
   });
   return { status: 'success' };
 }
