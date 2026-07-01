@@ -60,9 +60,10 @@ export async function submitCampaignLead(
       price_sek: estimateAnnualPrice(students), locale,
       lead_email: email, lead_message: message,
     });
-    // Upsert so the lead is never silently dropped even if enrichProspect hasn't run yet.
+    // Upsert so the lead is never silently dropped even if syncProspect hasn't run yet (it's
+    // scheduled below via after() and runs post-response).
     // On conflict only the supplied columns are updated; existing enrichment data is untouched.
-    // Manual entries (code starts with "manual-") are never passed through enrichProspect,
+    // Manual entries (code starts with "manual-") are never enriched via syncProspect,
     // so mark them done immediately to avoid a perpetual "pending" badge in the admin view.
     const isManual = code.startsWith('manual-');
     await supabase.from('school_prospects').upsert(
