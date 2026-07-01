@@ -1,9 +1,11 @@
 import type { ProspectListItem } from '@/lib/data/admin';
+import { ResyncButton } from './ResyncButton';
 
 type Dict = {
   synced: string;
   empty: string;
   openNotion: string;
+  resync: string;
   cols: { name: string; kommun: string; students: string; status: string; synced: string };
 };
 
@@ -30,16 +32,24 @@ export function CrmProspectList({ items, dict }: { items: ProspectListItem[]; di
             <td>{p.syncStatus ?? '—'}</td>
             <td>{p.lastSyncedAt ? new Date(p.lastSyncedAt).toLocaleDateString('sv-SE') : '—'}</td>
             <td>
-              {p.notionPageId && (
-                <a
-                  className="text-accent underline"
-                  href={`https://www.notion.so/${p.notionPageId.replace(/-/g, '')}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {dict.openNotion}
-                </a>
-              )}
+              <span className="flex items-center justify-end gap-3">
+                {p.notionPageId && (
+                  <a
+                    className="text-accent underline"
+                    href={`https://www.notion.so/${p.notionPageId.replace(/-/g, '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {dict.openNotion}
+                  </a>
+                )}
+                <ResyncButton
+                  code={p.code}
+                  name={p.name}
+                  skolform={p.skolform ?? []}
+                  label={dict.resync}
+                />
+              </span>
             </td>
           </tr>
         ))}

@@ -47,7 +47,7 @@ export function CrmSearch({ dict }: { dict: Dict }) {
             <span>
               <span className="font-medium">{u.name}</span>
               <span className="block text-sm text-ink/60">
-                {u.kommun} · {u.skolform.join(', ')}
+                {[u.kommun, u.skolform.join(', ')].filter(Boolean).join(' · ')}
               </span>
             </span>
             <button
