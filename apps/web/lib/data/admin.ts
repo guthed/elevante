@@ -151,6 +151,40 @@ export async function getCampaignProspects(): Promise<CampaignProspectsResult> {
   };
 }
 
+export type ProspectListItem = {
+  code: string;
+  name: string;
+  municipality: string | null;
+  students: number | null;
+  skolform: string[] | null;
+  syncStatus: string | null;
+  lastSyncedAt: string | null;
+  notionPageId: string | null;
+  createdVia: string;
+};
+
+export async function getProspects(): Promise<ProspectListItem[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('school_prospects')
+    .select(
+      'school_unit_code, school_name, municipality, students, skolform, sync_status, last_synced_at, notion_page_id, created_via',
+    )
+    .order('last_synced_at', { ascending: false, nullsFirst: false })
+    .limit(200);
+  return (data ?? []).map((r) => ({
+    code: r.school_unit_code,
+    name: r.school_name,
+    municipality: r.municipality,
+    students: r.students,
+    skolform: r.skolform,
+    syncStatus: r.sync_status,
+    lastSyncedAt: r.last_synced_at,
+    notionPageId: r.notion_page_id,
+    createdVia: r.created_via,
+  }));
+}
+
 export async function getAdminStats(): Promise<AdminStats> {
   const supabase = await createSupabaseServerClient();
   const oneWeekAgo = new Date();

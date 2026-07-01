@@ -16,6 +16,28 @@ Format per entry:
 
 ---
 
+## [Skol-CRM — Notion som CRM + Skolverket-sync] — 2026-07-01
+
+### Byggt
+- **Enat CRM**: det befintliga inbound-kampanjsystemet (skola slår upp sig själv → berikas → AI-brief → Notion) vidareutvecklat till att också stödja outbound — en admin söker fram valfri svensk skolenhet, synkar den till Notion och jobbar pipeline/owner/nästa steg där.
+- **Nytt server-only dataset**: `scripts/fetch-school-units.ts` hämtar alla skolformer (inte bara gymnasium) från Skolverkets planned-educations v3 → `lib/data/school-units.json` (6 652 enheter, `{code, name, kommun, skolform[]}`). Den publika `lib/data/schools.json` (gymnasium, används av priskalkylatorn) rörs inte — separat dataset så publik bundle/Core Web Vitals inte påverkas.
+- **`lib/skolverket.ts` utökad**: `searchSchoolUnits(query, filters)` filtrerar server-side över det cachade datasetet (ingen fritextsök-parameter i Skolverkets API); `fetchPupilCount(code, skolform)` generaliserar den tidigare gymnasium-hårdkodade elevantalshämtningen (best-effort per skolform); fetch-hjälparna fick timeout + en retry med backoff.
+- **Supabase**: migration `20260701120000_school_crm.sql` lägger `skolform`, `created_via` (`inbound_lookup`/`admin_search`/`batch`), `last_synced_at`, `sync_status`, `sync_error` på `school_prospects`, plus ny ops-logg `school_sync_log`. Applicerad mot prod (`msqfuywpbrteyrzjggsw`). Inga CRM-fält i Supabase — Pipeline/Owner/anteckningar bor bara i Notion.
+- **Icke-destruktiv Notion-sync** (`lib/notion.ts`): properties delade i maskin-props (skrivs alltid — Skola, Kommun, Elevantal, Skolform, Synkstatus, Senast synkad m.fl.) och CRM-props (Pipeline, Owner, Senast kontaktad, Kontaktväg, Anteckningar, Nästa steg — rörs **aldrig** av synken, oavsett om det är en create eller update). Ny `queryNotionProspectByCode` som fallback-koppling när `notion_page_id` saknas (t.ex. från cron); >1 träff → `Synkstatus=Behöver kollas` och ingen skrivning. `queryPrioritizedProspects` listar alla Notion-sidor med `Pipeline ≠ Nej` för cronen.
+- **Delad `lib/prospects.ts`**: `syncProspect(...)` bryter ut berikning + icke-destruktiv Notion-upsert + `school_sync_log`-loggning så exakt samma väg används av inbound (`app/actions/campaign.ts`), admin-outbound (`app/actions/crm.ts`) och cron.
+- **Admin CRM-vy**: `app/[locale]/app/[role]/crm/` (`/sv/app/admin/crm`, admin-role-guard som övriga admin-sidor) med `CrmSearch` (sökruta + Synka-knapp), `CrmProspectList` (tabell över synkade prospekt, Synkstatus, länk till Notion), `ResyncButton`. Nya Server Actions i `app/actions/crm.ts` — Zod-validerade, admin-gated.
+- **Nattlig cron**: `app/api/cron/sync-prospects/route.ts` (`0 3 * * *`, region arn1) synkar de `MAX_PER_RUN=20` äldst synkade prioriterade prospekten per körning, strypt mot Notion, `CRON_SECRET`-gated.
+
+### QA-fynd
+- End-to-end icke-destruktivitet verifierad manuellt: manuellt satt `Pipeline`, `Owner`, `Anteckningar` i Notion överlever en efterföljande re-synk — bara maskinfälten (inkl. `Senast synkad`) ändras.
+
+### Tekniska beslut
+- **Separat `school-units.json` istället för att regenerera `schools.json`**: medveten avvikelse från ursprunglig spec — håller den publika priskalkylatorns bundle opåverkad medan admin-sök ändå får söka över alla skolformer.
+- **Notion förblir SSoT för CRM-data** (pipeline/owner/anteckningar); Supabase är bara maskin-cache + ops-logg. Ingen `[SKV]`-prefixering av fältnamn — dokumenterat istället vilka fält som är maskinstyrda.
+- **Öppna aktiveringssteg**: de nya Notion-propertyna (Skolenhetskod, Skolform, Synkstatus, Pipeline m.fl.) måste finnas i leads-databasen innan koden kan skriva dem, och `CRON_SECRET` måste sättas i Vercel — båda ligger som separata uppgifter.
+
+---
+
 ## [Klassprov — lärar-författade prov] — 2026-06-24
 
 ### Byggt

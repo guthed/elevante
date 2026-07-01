@@ -391,6 +391,11 @@ export type SchoolProspect = {
   latest_lead_message: string | null;
   latest_lead_at: string | null;
   notion_page_id: string | null;
+  skolform: string[] | null;
+  created_via: string;
+  last_synced_at: string | null;
+  sync_status: string | null;
+  sync_error: string | null;
 };
 
 type SchoolProspectInsert = {
@@ -414,9 +419,33 @@ type SchoolProspectInsert = {
   latest_lead_message?: string | null;
   latest_lead_at?: string | null;
   notion_page_id?: string | null;
+  skolform?: string[] | null;
+  created_via?: string;
+  last_synced_at?: string | null;
+  sync_status?: string | null;
+  sync_error?: string | null;
   id?: string;
   created_at?: string;
   updated_at?: string;
+};
+
+// Skol-CRM: ops-logg för schemasynk mot Skolverkets API.
+export type SchoolSyncLog = {
+  id: string;
+  synced_at: string;
+  school_unit_code: string;
+  status: string;
+  duration_ms: number | null;
+  error: string | null;
+};
+
+type SchoolSyncLogInsert = {
+  school_unit_code: string;
+  status: string;
+  duration_ms?: number | null;
+  error?: string | null;
+  id?: string;
+  synced_at?: string;
 };
 
 type TableDef<R, I> = {
@@ -549,6 +578,7 @@ export type Database = {
       learner_profiles: TableDef<LearnerProfile, LearnerProfileInsert>;
       school_lookups: TableDef<SchoolLookup, SchoolLookupInsert>;
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
+      school_sync_log: TableDef<SchoolSyncLog, SchoolSyncLogInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat

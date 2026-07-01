@@ -15,7 +15,8 @@ export type NavId =
   | 'users'
   | 'schedule'
   | 'stats'
-  | 'prospects';
+  | 'prospects'
+  | 'crm';
 
 // `label` = full etikett (sidomeny på laptop).
 // `mobileLabel` = kort etikett (bottom-nav på mobil).
@@ -66,5 +67,6 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary): NavItem
     { id: 'schedule', href: `${base}/admin/schema`, label: a.schedule, mobileLabel: m.schedule, description: d.schedule },
     { id: 'stats', href: `${base}/admin/statistik`, label: a.stats, mobileLabel: m.stats, description: d.stats },
     { id: 'prospects', href: `${base}/admin/intresse`, label: a.prospects, mobileLabel: m.prospects, description: d.prospects },
+    { id: 'crm', href: `${base}/admin/crm`, label: a.crm, mobileLabel: m.crm, description: d.crm },
   ];
 }

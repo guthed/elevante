@@ -135,6 +135,7 @@ const sv: Dictionary = {
         schedule: 'Schema',
         stats: 'Statistik',
         prospects: 'Intresseanmälningar',
+        crm: 'Skol-CRM',
       },
     },
     mobileNav: {
@@ -160,6 +161,7 @@ const sv: Dictionary = {
         schedule: 'Schema',
         stats: 'Statistik',
         prospects: 'Intresse',
+        crm: 'CRM',
       },
     },
     navDescriptions: {
@@ -185,6 +187,7 @@ const sv: Dictionary = {
         schedule: 'Ladda upp lektionsschema',
         stats: 'Användning och aktivitet',
         prospects: 'Inkomna intresseanmälningar',
+        crm: 'Sök och synka skolenheter',
       },
     },
     account: {
@@ -429,6 +432,24 @@ const sv: Dictionary = {
           statusHeading: 'Transkriberings-status',
           activityHeading: 'Aktiva användare',
           noData: 'Inga data ännu. Statistik fylls på allteftersom.',
+        },
+        crm: {
+          title: 'Skol-CRM',
+          subtitle: 'Sök fram skolenheter och synka dem till Notion-pipelinen.',
+          searchLabel: 'Sök skola',
+          searchPlaceholder: 'Börja skriv skolans namn…',
+          sync: 'Synka',
+          resync: 'Synka om',
+          synced: 'Synkade prospekt',
+          empty: 'Inga synkade prospekt ännu.',
+          openNotion: 'Öppna i Notion',
+          cols: {
+            name: 'Skola',
+            kommun: 'Kommun',
+            students: 'Elever',
+            status: 'Synkstatus',
+            synced: 'Senast synkad',
+          },
         },
       },
     },
