@@ -75,11 +75,12 @@ admin-CRM:et.**
 - Skydd mot felsändning: knappen är inaktiverad om (a) varken `contact_email`
   eller `latest_lead_email` finns, eller (b) `Status` redan är `Kontaktad`.
 
-Konsekvens: eftersom sändningen nu är statisk, sluta generera det AI-skrivna
-kontaktmejl-utkastet (`generateContactEmail` i `lib/prospects.ts`, rad ~106).
-AI-briefen (`generateSchoolBrief`) behålls som beslutsstöd. `contact_email_draft`
-sätts inte längre av synken (kolumnen kan lämnas kvar, oanvänd, för att undvika
-migration).
+Not (korrigering efter kodläsning): `generateContactEmail` är **redan** en statisk
+mall (ingen AI — se kommentaren "Fast mall (ingen AI)" i `lib/campaign-brief.ts`).
+Den behålls oförändrad och fortsätter skriva Notion-utkastet `Kontaktmail` som
+referens åt dig. Typ 1-sändningen hämtar sitt innehåll från en mall byggd **i
+Loops** (variabler `schoolName`, `ort`), helt frikopplat från denna funktion. Inget
+tas alltså bort i berikningen.
 
 ## Flöde Typ 2 — prisberäknar-lead + Loops
 
@@ -181,8 +182,7 @@ personuppgiftsbiträde.
 - `apps/web/app/actions/campaign.ts` (Typ 1/2 källor + Loops)
 - `apps/web/app/actions/contact.ts` (Typ 3 persistens + Loops)
 - `apps/web/app/actions/crm.ts` (ny "skicka kontaktmejl"-action)
-- `apps/web/lib/prospects.ts` (`CreatedVia`, `dataSourceLabel`, sluta generera
-  utkast, källprioritet)
+- `apps/web/lib/prospects.ts` (`CreatedVia`, `dataSourceLabel`, källprioritet)
 - `apps/web/lib/notion.ts` (`dataSource`-typ + `markProspectContacted`)
 - `apps/web/lib/investor-notify.ts` (Loops)
 - `apps/web/components/app/admin/CrmProspectList.tsx` (knapp)
