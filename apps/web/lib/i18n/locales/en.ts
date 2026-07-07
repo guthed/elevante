@@ -12,6 +12,7 @@ const en: Dictionary = {
     forSchools: 'For schools',
     forTeachers: 'For teachers',
     forStudents: 'For students',
+    try: 'Try',
     pricing: 'Pricing',
     about: 'About',
     blog: 'Blog',

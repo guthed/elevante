@@ -22,6 +22,7 @@ export const PAGE_PATHS = [
   '/for-skolor',
   '/for-larare',
   '/for-elever',
+  '/try',
   '/priser',
   '/om-oss',
   '/kontakt',

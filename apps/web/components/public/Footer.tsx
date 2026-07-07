@@ -17,6 +17,7 @@ export function Footer({ locale, pathname, dict }: Props) {
     { href: `${base}/for-skolor`, label: dict.nav.forSchools },
     { href: `${base}/for-larare`, label: dict.nav.forTeachers },
     { href: `${base}/for-elever`, label: dict.nav.forStudents },
+    { href: `${base}/try`, label: dict.nav.try },
     { href: `${base}/priser`, label: dict.nav.pricing },
   ];
   const companyLinks = [

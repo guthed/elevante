@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n/config';
 import { locales } from '@/lib/i18n/config';
 
@@ -22,6 +25,12 @@ export function LanguageSwitcher({
   labels,
   ariaLabel,
 }: Props) {
+  // Den (statiska) layouten känner bara till locale, så den skickar bara "/sv"
+  // som pathname. usePathname() ger den faktiska sökvägen på klienten så
+  // språkbytet behåller sidan man står på (t.ex. /en/try → /sv/try) istället
+  // för att kasta tillbaka till startsidan. pathname-propen är SSR-fallback.
+  const activePath = usePathname() || pathname;
+
   return (
     <nav aria-label={ariaLabel} className="flex items-center gap-1 text-sm">
       {locales.map((locale, index) => {
@@ -34,7 +43,7 @@ export function LanguageSwitcher({
               </span>
             ) : null}
             <Link
-              href={withLocale(pathname, locale)}
+              href={withLocale(activePath, locale)}
               aria-current={isActive ? 'page' : undefined}
               className={
                 isActive

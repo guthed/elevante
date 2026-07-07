@@ -18,6 +18,13 @@ function getClient(): Anthropic | null {
   return cachedClient;
 }
 
+// Språkinstruktion till prov-/rättningsprompterna. Default svenska.
+function languageClause(locale?: 'sv' | 'en'): string {
+  return locale === 'en'
+    ? '\n\nWrite ALL questions, options and feedback in English.'
+    : '';
+}
+
 function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): string {
   const conceptsBlock =
     lessonConcepts.length > 0
@@ -271,6 +278,7 @@ Svara ENDAST med valid JSON, ingen annan text:
 export async function generatePracticeTest(
   lessons: PracticeLessonInput[],
   questionCount: number,
+  locale?: 'sv' | 'en',
 ): Promise<Omit<PracticeQuestion, 'id'>[] | null> {
   const client = getClient();
   if (!client || lessons.length === 0) return null;
@@ -289,7 +297,7 @@ export async function generatePracticeTest(
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: 4096,
-    system: TEST_GENERATION_SYSTEM_PROMPT,
+    system: TEST_GENERATION_SYSTEM_PROMPT + languageClause(locale),
     messages: [{ role: 'user', content: userPrompt }],
   });
 
@@ -581,6 +589,7 @@ Använd svenska. Svara ENDAST med valid JSON, ingen annan text:
 export async function gradePracticeTest(
   items: PracticeGradeInput[],
   personaSummary?: string,
+  locale?: 'sv' | 'en',
 ): Promise<PracticeGradeResult | null> {
   const client = getClient();
   if (!client || items.length === 0) return null;
@@ -592,9 +601,10 @@ export async function gradePracticeTest(
     )
     .join('\n\n---\n\n');
 
+  const base = TEST_GRADING_SYSTEM_PROMPT + languageClause(locale);
   const system = personaSummary
-    ? `${TEST_GRADING_SYSTEM_PROMPT}\n\nDu känner sedan tidigare den här elevens lärprofil: "${personaSummary}" — vinkla feedbacken så den hjälper eleven framåt utifrån just det, men var fortfarande rättvis med poängen.`
-    : TEST_GRADING_SYSTEM_PROMPT;
+    ? `${base}\n\nDu känner sedan tidigare den här elevens lärprofil: "${personaSummary}" — vinkla feedbacken så den hjälper eleven framåt utifrån just det, men var fortfarande rättvis med poängen.`
+    : base;
 
   // Skala token-budgeten efter antal frågor — varje fritextsvar behöver
   // utrymme för utförlig feedback. Ett för lågt tak kapar JSON-svaret mitt i,
