@@ -17,10 +17,16 @@ export function StepRail({ locale, current, maxReached, onGo }: Props) {
     { n: 3, label: tr(locale, TRY_COPY.step3) },
   ];
 
+  // Prov-steget (③) visas inte förrän det låsts upp — resan ser ut som
+  // "① Välj lektioner → ② Ställ frågor" till dess, så inget prov hägrar över
+  // förstagångsbesökaren. Steg ① och ② visas alltid (de berättar att man ska
+  // ställa frågor). När eleven chattat dyker ③ upp som en bonus.
+  const visibleSteps = steps.filter((s) => s.n <= Math.max(2, maxReached));
+
   return (
     <nav aria-label={locale === 'en' ? 'Progress' : 'Framsteg'} className="mb-10">
       <ol className="flex items-center gap-2 md:gap-4">
-        {steps.map((s, i) => {
+        {visibleSteps.map((s, i) => {
           const active = s.n === current;
           const reachable = s.n <= maxReached;
           return (
@@ -51,7 +57,7 @@ export function StepRail({ locale, current, maxReached, onGo }: Props) {
                 </span>
                 <span className="hidden sm:inline">{s.label}</span>
               </button>
-              {i < steps.length - 1 ? (
+              {i < visibleSteps.length - 1 ? (
                 <span className="h-px flex-1 bg-[var(--color-sand)]" aria-hidden />
               ) : null}
             </li>
