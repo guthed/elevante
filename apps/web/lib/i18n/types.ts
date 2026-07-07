@@ -34,6 +34,7 @@ export type Dictionary = {
     forSchools: string;
     forTeachers: string;
     forStudents: string;
+    try: string;
     pricing: string;
     about: string;
     blog: string;

@@ -12,6 +12,7 @@ const sv: Dictionary = {
     forSchools: 'För skolor',
     forTeachers: 'För lärare',
     forStudents: 'För elever',
+    try: 'Prova',
     pricing: 'Priser',
     about: 'Om oss',
     blog: 'Blogg',
