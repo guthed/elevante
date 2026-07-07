@@ -19,13 +19,24 @@ function tokens(s: string): string[] {
   return s.toLowerCase().match(/[a-zåäö]+/g)?.filter((w) => w.length > 2 && !STOP.has(w)) ?? [];
 }
 
-/** Väljer det segment vars ord överlappar mest med svar + fråga. */
+/**
+ * Väljer det segment vars ord överlappar mest med svar + fråga + koncept.
+ * `concepts` är lektionens svenska koncept-taggar som RAG-svaret rörde vid —
+ * de bildar en språkbrygga så att citat hittas även när svaret är på engelska
+ * (engelskt svar delar få ord med det svenska transkriptet, men koncepten är
+ * alltid svenska och matchar transkriptet).
+ */
 function pickCitation(
   segments: TrySegment[],
   answer: string,
   question: string,
+  concepts: string[] = [],
 ): { ts: string; quote: string } | null {
-  const want = new Set([...tokens(answer), ...tokens(question)]);
+  const want = new Set([
+    ...tokens(answer),
+    ...tokens(question),
+    ...concepts.flatMap((c) => tokens(c)),
+  ]);
   if (want.size === 0) return null;
   let best: { ts: string; quote: string } | null = null;
   let bestScore = 0;
@@ -81,6 +92,8 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     answer: result.content,
-    citation: isRefusal ? null : pickCitation(segments, result.content, question),
+    citation: isRefusal
+      ? null
+      : pickCitation(segments, result.content, question, result.concepts),
   });
 }
