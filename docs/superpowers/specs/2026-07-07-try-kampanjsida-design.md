@@ -23,8 +23,16 @@ Skild från befintliga `/demo` (säljarens skriptade klick-igenom, noindex) —
   internationellt och begrips på svenska.
 - **Indexerbar**: ingen `noindex`. Metadata, OG-bild och JSON-LD som övriga
   publika sidor. Läggs in i sitemap.
-- UI fullt tvåspråkigt (sv/en). Lektionsinnehållet är svenskt (äkta
-  klassrumsmaterial är poängen); en-versionen säger detta ärligt.
+- UI fullt tvåspråkigt (sv/en) — sidstruktur, steg, copy och förslags-chips
+  matchar 1:1 mellan locales.
+- **AI:n svarar på besökarens språk:** på `/en/try` svarar chatten på engelska
+  och provet genereras + rättas på engelska (en rad i prompten: svara på
+  `{locale}`). Lektionstitlar/sammanfattningar tvåspråkiga (mönstret från
+  `DEMO_LESSON_TITLE`).
+- **Källcitaten visas alltid på svenska** — de är äkta utdrag ur svenskt
+  klassrumsmaterial och översätts aldrig (det vore att förfalska källan).
+  En-versionen har en liten notis: "Lesson recordings are from a Swedish
+  classroom — answers reference the original Swedish transcript."
 
 ## Upplevelsen — guidad väg i tre steg
 
@@ -112,7 +120,8 @@ Rutnät av lektionskort (multi-select — "en eller flera"). Varje kort visar
 
 - Fler ämnen än Ekologi.
 - Sparade resultat, konton, delningslänkar.
-- Engelskt lektionsinnehåll.
+- Engelskt lektionsinnehåll (transkripten förblir svenska; AI-svaren följer
+  dock besökarens locale, se URL & routing).
 - Telemetri/spårning utöver enkel sidvisning (kan läggas till senare).
 
 ## Öppna punkter till planen
