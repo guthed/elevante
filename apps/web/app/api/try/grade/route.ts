@@ -75,32 +75,24 @@ export async function POST(req: Request) {
   let overallFeedback = '';
   if (freeText.length > 0) {
     const result = await gradePracticeTest(freeText, undefined, locale);
-    if (result) {
-      overallFeedback = result.overall_feedback;
-      const byId = new Map(result.grades.map((g) => [g.question_id, g]));
-      for (const ft of freeText) {
-        const g = byId.get(ft.question_id);
-        graded.push({
-          question_id: ft.question_id,
-          answer: ft.student_answer,
-          points: g ? Math.min(g.points, ft.max_points) : 0,
-          max_points: ft.max_points,
-          correct: null,
-          feedback: g?.feedback ?? '',
-        });
-      }
-    } else {
-      // Offline: ge fritextfrågor 0 poäng utan feedback hellre än att fela.
-      for (const ft of freeText) {
-        graded.push({
-          question_id: ft.question_id,
-          answer: ft.student_answer,
-          points: 0,
-          max_points: ft.max_points,
-          correct: null,
-          feedback: '',
-        });
-      }
+    if (!result) {
+      // AI-rättningen gick inte att genomföra (saknad nyckel ELLER parse-fel).
+      // Signalera det ärligt så klienten visar ett fel-läge — hellre det än en
+      // påhittad nolla utan feedback, som ser ut som ett riktigt (uselt) betyg.
+      return NextResponse.json({ offline: true });
+    }
+    overallFeedback = result.overall_feedback;
+    const byId = new Map(result.grades.map((g) => [g.question_id, g]));
+    for (const ft of freeText) {
+      const g = byId.get(ft.question_id);
+      graded.push({
+        question_id: ft.question_id,
+        answer: ft.student_answer,
+        points: g ? Math.min(g.points, ft.max_points) : 0,
+        max_points: ft.max_points,
+        correct: null,
+        feedback: g?.feedback ?? '',
+      });
     }
   }
 

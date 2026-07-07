@@ -124,44 +124,51 @@ export function TestStep({ locale, lessonIds }: Props) {
           {tr(locale, TRY_COPY.testTitle)}
         </h2>
         <ol className="mt-6 space-y-6">
-          {questions.map((q, idx) => (
-            <li
-              key={q.id}
-              className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5"
-            >
-              <p className="mb-3 text-[0.9375rem] font-medium text-[var(--color-ink)]">
-                {idx + 1}. {q.prompt}
-              </p>
-              {q.type === 'multiple_choice' && q.options ? (
-                <div className="space-y-2">
-                  {q.options.map((opt, oi) => (
-                    <label
-                      key={oi}
-                      className="flex cursor-pointer items-start gap-3 rounded-[10px] px-3 py-2 text-[0.9375rem] text-[var(--color-ink)] hover:bg-[var(--color-canvas)]"
-                    >
-                      <input
-                        type="radio"
-                        name={q.id}
-                        checked={answers[q.id] === String(oi)}
-                        onChange={() => setAnswers((a) => ({ ...a, [q.id]: String(oi) }))}
-                        className="mt-1"
-                      />
-                      <span>{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              ) : (
-                <textarea
-                  value={answers[q.id] ?? ''}
-                  onChange={(e) => setAnswers((a) => ({ ...a, [q.id]: e.target.value }))}
-                  maxLength={1000}
-                  rows={3}
-                  placeholder={tr(locale, TRY_COPY.answerPlaceholder)}
-                  className="w-full rounded-[10px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-3 py-2 text-[0.9375rem] text-[var(--color-ink)] outline-none focus:border-[var(--color-ink)]"
-                />
-              )}
-            </li>
-          ))}
+          {questions.map((q, idx) => {
+            const promptId = `try-q-${q.id}`;
+            return (
+              <li
+                key={q.id}
+                className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5"
+              >
+                <p
+                  id={promptId}
+                  className="mb-3 text-[0.9375rem] font-medium text-[var(--color-ink)]"
+                >
+                  {idx + 1}. {q.prompt}
+                </p>
+                {q.type === 'multiple_choice' && q.options ? (
+                  <div className="space-y-2" role="radiogroup" aria-labelledby={promptId}>
+                    {q.options.map((opt, oi) => (
+                      <label
+                        key={oi}
+                        className="flex cursor-pointer items-start gap-3 rounded-[10px] px-3 py-2 text-[0.9375rem] text-[var(--color-ink)] hover:bg-[var(--color-canvas)]"
+                      >
+                        <input
+                          type="radio"
+                          name={q.id}
+                          checked={answers[q.id] === String(oi)}
+                          onChange={() => setAnswers((a) => ({ ...a, [q.id]: String(oi) }))}
+                          className="mt-1"
+                        />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <textarea
+                    value={answers[q.id] ?? ''}
+                    onChange={(e) => setAnswers((a) => ({ ...a, [q.id]: e.target.value }))}
+                    maxLength={1000}
+                    rows={3}
+                    aria-labelledby={promptId}
+                    placeholder={tr(locale, TRY_COPY.answerPlaceholder)}
+                    className="w-full rounded-[10px] border border-[var(--color-sand)] bg-[var(--color-canvas)] px-3 py-2 text-[0.9375rem] text-[var(--color-ink)] outline-none focus:border-[var(--color-ink)]"
+                  />
+                )}
+              </li>
+            );
+          })}
         </ol>
         {error ? <p className="mt-4 text-[0.875rem] text-[var(--color-coral)]">{error}</p> : null}
         <button
