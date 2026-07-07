@@ -155,15 +155,22 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         </button>
       </form>
 
-      <div className="mt-8">
-        <button
-          type="button"
-          onClick={onToTest}
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--color-ink)] px-6 py-3 text-[0.9375rem] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-canvas)]"
-        >
-          {tr(locale, TRY_COPY.toTest)} →
-        </button>
-      </div>
+      {/* Prov-inbjudan visas först när eleven ställt en fråga och fått ett
+          svar — chatten ska leda, provet är ett frivilligt nästa steg. */}
+      {messages.some((m) => m.role === 'assistant') ? (
+        <div className="mt-8 border-t border-[var(--color-sand)] pt-6">
+          <p className="mb-3 text-[0.875rem] text-[var(--color-ink-secondary)]">
+            {tr(locale, TRY_COPY.toTestHint)}
+          </p>
+          <button
+            type="button"
+            onClick={onToTest}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-ink)] px-6 py-3 text-[0.9375rem] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-canvas)]"
+          >
+            {tr(locale, TRY_COPY.toTest)} →
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

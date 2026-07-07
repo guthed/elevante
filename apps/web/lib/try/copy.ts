@@ -10,12 +10,12 @@ export const TRY_COPY = {
   // Hero
   eyebrow: { sv: 'Prova Elevante', en: 'Try Elevante' },
   heroTitle: {
-    sv: 'Upplev det själv — ingen inloggning.',
-    en: 'Experience it yourself — no sign-in.',
+    sv: 'Upplev Elevante',
+    en: 'Experience Elevante',
   },
   heroLede: {
-    sv: 'Välj en eller flera lektioner, ställ dina egna frågor och låt Elevante skapa ett prov och rätta det åt dig. Riktiga svar, med källa ur lektionen.',
-    en: 'Pick one or more lessons, ask your own questions, and let Elevante build a test and grade it for you. Real answers, sourced from the lesson.',
+    sv: 'Välj en eller flera lektioner och ställ dina egna frågor — Elevante svarar med källa ur lektionen. När du vill kan du sen låta Elevante göra ett prov och rätta det åt dig.',
+    en: 'Pick one or more lessons and ask your own questions — Elevante answers with a source from the lesson. When you’re ready, you can let Elevante build a test and grade it for you.',
   },
 
   // Steg-etiketter
@@ -41,6 +41,10 @@ export const TRY_COPY = {
   suggestionsLabel: { sv: 'Prova en fråga:', en: 'Try a question:' },
   sourceLabel: { sv: 'Ur lektionen', en: 'From the lesson' },
   toTest: { sv: 'Testa dig själv', en: 'Test yourself' },
+  toTestHint: {
+    sv: 'Så funkar det. När du känner dig redo kan du testa dig själv på lektionerna.',
+    en: 'That’s how it works. When you feel ready, you can test yourself on the lessons.',
+  },
   chatError: {
     sv: 'Kunde inte hämta ett svar just nu. Försök igen om en stund.',
     en: 'Couldn’t fetch an answer right now. Please try again in a moment.',
