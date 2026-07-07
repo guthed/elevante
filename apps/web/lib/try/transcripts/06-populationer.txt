@@ -1,0 +1,37 @@
+God morgon. Det här är sista lektionen innan vi går in på de avslutande delarna av ekologin, och idag ska vi titta närmare på populationer. Hur de växer, vad som bromsar dem, och varför antal i naturen sällan ligger still.
+
+Först, vad är en population? En population är alla individer av samma art som lever i samma område vid samma tid. Alla rådjur i en viss skog. Alla abborrar i en sjö. Det är populationen vi studerar när vi vill förstå hur antal förändras.
+
+Vad får en population att växa eller krympa? Fyra saker. Den ökar genom födslar och genom inflyttning, immigration. Den minskar genom dödsfall och genom utflyttning, emigration. Är födslar plus inflyttning större än dödsfall plus utflyttning — då växer populationen. Enkel bokföring egentligen.
+
+Nu till hur tillväxten ser ut. Tänk er några bakterier i en perfekt miljö, hur mycket mat som helst, gott om plats. Två blir fyra, fyra blir åtta, åtta blir sexton. Det här kallas exponentiell tillväxt, och om man ritar det blir kurvan en J-form — den skjuter rakt i höjden, snabbare och snabbare.
+
+Theo?
+
+Men det kan ju inte fortsätta hur länge som helst?
+
+Nej, precis, och det är hela poängen. I verkligheten tar någonting alltid slut — maten, utrymmet, boplatserna. Och då kommer vi till dagens viktigaste begrepp: bärförmåga. Bärförmågan är det maximala antal individer som en viss miljö kan försörja långsiktigt. Skriv ner det.
+
+När populationen närmar sig bärförmågan bromsar tillväxten in. Kurvan planar ut och lägger sig ungefär vid bärförmågans nivå. Då har vi inte längre en J-kurva utan en S-kurva — snabb tillväxt först, sen inbromsning, sen en platå. Den S-formade kurvan är den realistiska, den vi ser i naturen.
+
+Maja?
+
+Vad är det som bromsar, rent konkret?
+
+Då tar vi det. Vi delar in bromsarna i två sorter. Den första sorten kallas täthetsberoende faktorer — de slår hårdare ju tätare populationen är. Tänk efter: ju fler individer, desto mindre mat per individ, desto hårdare konkurrens. Sjukdomar sprids också lättare i en tät population. Och rovdjuren hittar lättare byte när bytet är talrikt. Alla de här bromsar mer och mer ju närmare bärförmågan man kommer. De fungerar som en termostat som håller populationen kring bärförmågan.
+
+Den andra sorten kallas täthetsoberoende faktorer — de slår lika hårt oavsett hur tät populationen är. En sträng vinter dödar lika stor andel oavsett om det är många eller få individer. En skogsbrand, en torka, en översvämning. De bryr sig inte om hur trångt det är.
+
+Elin?
+
+Du sa förut att antalet sällan ligger still. Varför svänger det?
+
+Ja, det är en fin avslutning på området. I många ekosystem ser vi att populationer svänger upp och ner i cykler, särskilt mellan ett rovdjur och dess byte. Det klassiska exemplet är lodjur och snöskohare i Kanada, men vi har liknande hos oss med räv och sork. Tänk så här: gott om sork ett år — rävarna får mycket mat och föder många ungar. Många rävar äter upp nästan all sork. Sorken kraschar. Då svälter rävarna, många dör, rävstammen kraschar med en viss fördröjning. När det är ont om rävar kan sorken återhämta sig — och så börjar det om. Rovdjuret följer alltid bytet, men med en eftersläpning. Därav de eviga svängningarna.
+
+Theo?
+
+Vad händer med en art om den ändå hamnar långt under sin bärförmåga? Typ riktigt få individer kvar?
+
+Viktig fråga, och här knyter vi ihop med förra lektionens mångfald. En väldigt liten population är farligt utsatt. Dels av slumpen — en enda dålig vinter kan ta de sista individerna. Dels genetiskt — minns ni genetisk variation? En liten population blir inavlad, variationen sinar, och då tappar arten sin förmåga att stå emot sjukdom och att anpassa sig. Man pratar om en lägsta livskraftig populationsstorlek, ett slags golv. Hamnar arten under det golvet kan den vara dödsdömd även om det fortfarande finns några individer kvar. Det är därför naturvården jobbar så hårt för att hålla hotade arter över den gränsen.
+
+Sammanfattning, sen släpper jag er. En population är alla individer av en art i ett område. Den styrs av födslar, dödsfall, in- och utflyttning. Utan begränsning blir tillväxten exponentiell, en J-kurva — men i verkligheten finns en bärförmåga, så kurvan blir S-formad. Bromsarna är täthetsberoende faktorer som mat, konkurrens, sjukdom och rovdjur, samt täthetsoberoende faktorer som väder och bränder. Rovdjur och byte svänger i cykler med en eftersläpning. Och små populationer är sårbara både för slump och för inavel. Plugga gärna ihop det här med energi- och mångfaldslektionerna inför provet. Tack för idag, vi ses.
