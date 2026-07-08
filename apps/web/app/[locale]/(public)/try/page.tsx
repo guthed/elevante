@@ -43,21 +43,16 @@ export default async function TryPage({ params }: Props) {
 
   return (
     <>
-      <section className="pt-12 pb-8 md:pt-20 md:pb-10">
-        <Container width="wide">
-          <p className="eyebrow mb-6">{tr(locale, TRY_COPY.eyebrow)}</p>
-          <div className="grid items-end gap-6 md:grid-cols-12 md:gap-12">
-            <div className="md:col-span-7">
-              <h1 className="font-serif text-[clamp(2.5rem,4.5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-                {tr(locale, TRY_COPY.heroTitle)}
-              </h1>
-            </div>
-            <div className="md:col-span-5">
-              <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                {tr(locale, TRY_COPY.heroLede)}
-              </p>
-            </div>
-          </div>
+      {/* Kompakt hero — chatt-först, så textfältet kommer upp snabbt. */}
+      <section className="pt-10 pb-6 md:pt-14 md:pb-8">
+        <Container width="content">
+          <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
+          <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3.25rem)] leading-[1.08] tracking-[-0.01em] text-[var(--color-ink)]">
+            {tr(locale, TRY_COPY.heroTitle)}
+          </h1>
+          <p className="mt-4 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {tr(locale, TRY_COPY.heroLede)}
+          </p>
         </Container>
       </section>
 
