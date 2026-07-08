@@ -39,7 +39,7 @@ export const TRY_COPY = {
   chatPlaceholder: { sv: 'Ställ en fråga…', en: 'Ask a question…' },
   send: { sv: 'Fråga', en: 'Ask' },
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },
-  suggestionsLabel: { sv: 'Prova en fråga:', en: 'Try a question:' },
+  suggestionsLabel: { sv: 'Eller prova:', en: 'Or try:' },
   sourceLabel: { sv: 'Ur lektionen', en: 'From the lesson' },
   toTest: { sv: 'Testa dig själv', en: 'Test yourself' },
   toTestHint: {
