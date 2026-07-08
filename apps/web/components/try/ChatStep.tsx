@@ -138,25 +138,26 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         </div>
       ) : null}
 
-      {/* Inmatning */}
+      {/* Inmatning — tydligt upphöjt fält (vit yta + ram + skugga) så det poppar
+          mot ivory-canvasen; det är sidans viktigaste interaktion. */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           void ask(input);
         }}
-        className="mt-4 flex gap-2"
+        className="mt-5 flex gap-2"
       >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           maxLength={300}
           placeholder={tr(locale, TRY_COPY.chatPlaceholder)}
-          className="flex-1 rounded-full border border-[var(--color-sand)] bg-[var(--color-canvas)] px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] outline-none focus:border-[var(--color-ink)]"
+          className="flex-1 rounded-full border border-[var(--color-ink-muted)] bg-[var(--color-surface)] px-5 py-4 text-[1rem] text-[var(--color-ink)] shadow-[var(--shadow-soft)] outline-none transition placeholder:text-[var(--color-ink-muted)] focus:border-[var(--color-ink)] focus:shadow-[var(--shadow-lift)]"
         />
         <button
           type="submit"
           disabled={pending || input.trim().length < 2}
-          className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-[0.9375rem] text-[var(--color-canvas)] disabled:opacity-40"
+          className="shrink-0 rounded-full bg-[var(--color-ink)] px-6 py-4 text-[0.9375rem] font-medium text-[var(--color-canvas)] shadow-[var(--shadow-soft)] transition hover:opacity-90 disabled:opacity-40"
         >
           {tr(locale, TRY_COPY.send)}
         </button>
