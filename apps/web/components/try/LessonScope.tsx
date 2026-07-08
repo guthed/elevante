@@ -41,7 +41,7 @@ export function LessonScope({ locale, lessons, selected, onChange }: Props) {
 
   const chipClass = (active: boolean) =>
     [
-      'rounded-full border px-3 py-1.5 text-[0.8125rem] transition-colors',
+      'shrink-0 whitespace-nowrap rounded-full border px-3.5 py-2 text-[0.8125rem] transition-colors sm:py-1.5',
       active
         ? 'border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-canvas)]'
         : 'border-[var(--color-sand)] text-[var(--color-ink)] hover:border-[var(--color-ink-muted)]',
@@ -57,7 +57,9 @@ export function LessonScope({ locale, lessons, selected, onChange }: Props) {
           {tr(locale, TRY_COPY.scopeHint)}
         </span>
       </div>
-      <div className="flex flex-wrap gap-2">
+      {/* Mobil: en horisontellt scrollbar rad (kompakt, textfältet kommer upp
+          snabbare). Desktop: radbryter som vanligt. */}
+      <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={() => onChange(allIds)}

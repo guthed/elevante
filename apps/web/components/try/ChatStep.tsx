@@ -72,17 +72,17 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         {tr(locale, TRY_COPY.chatTitle)}
       </h2>
 
+      {/* Tom chatt tar ingen plats på mobilen — då kommer textfältet upp direkt.
+          aria-live-regionen finns kvar hela tiden så svar annonseras. */}
       <div
         ref={scrollRef}
-        className="mt-6 max-h-[420px] space-y-4 overflow-y-auto rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5"
         aria-live="polite"
+        className={
+          messages.length > 0 || pending || error
+            ? 'mt-6 max-h-[420px] space-y-4 overflow-y-auto rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5'
+            : ''
+        }
       >
-        {messages.length === 0 ? (
-          <p className="text-[0.9375rem] text-[var(--color-ink-muted)]">
-            {tr(locale, TRY_COPY.suggestionsLabel)}
-          </p>
-        ) : null}
-
         {messages.map((m, i) => (
           <div key={i} className={m.role === 'user' ? 'text-right' : ''}>
             <div
@@ -114,22 +114,29 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         {error ? <p className="text-[0.875rem] text-[var(--color-coral)]">{error}</p> : null}
       </div>
 
-      {/* Förslags-chips */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {suggestions.map((s, i) =>
-          used.has(i) ? null : (
-            <button
-              key={i}
-              type="button"
-              disabled={pending}
-              onClick={() => ask(tr(locale, s), i)}
-              className="rounded-full border border-[var(--color-sand)] px-3 py-1.5 text-[0.8125rem] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink-muted)] disabled:opacity-40"
-            >
-              {tr(locale, s)}
-            </button>
-          ),
-        )}
-      </div>
+      {/* Förslags-chips — mobil: horisontell scroll-rad, desktop: radbryter. */}
+      {suggestions.some((_, i) => !used.has(i)) ? (
+        <div className="mt-4">
+          <p className="mb-2 text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {tr(locale, TRY_COPY.suggestionsLabel)}
+          </p>
+          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
+            {suggestions.map((s, i) =>
+              used.has(i) ? null : (
+                <button
+                  key={i}
+                  type="button"
+                  disabled={pending}
+                  onClick={() => ask(tr(locale, s), i)}
+                  className="shrink-0 whitespace-nowrap rounded-full border border-[var(--color-sand)] px-3.5 py-2 text-[0.8125rem] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink-muted)] disabled:opacity-40 sm:py-1.5"
+                >
+                  {tr(locale, s)}
+                </button>
+              ),
+            )}
+          </div>
+        </div>
+      ) : null}
 
       {/* Inmatning */}
       <form
