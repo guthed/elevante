@@ -18,20 +18,21 @@ export const TRY_COPY = {
     en: 'Pick one or more lessons and ask your own questions — Elevante answers with a source from the lesson. When you’re ready, you can let Elevante build a test and grade it for you.',
   },
 
-  // Steg-etiketter
-  step1: { sv: 'Välj lektioner', en: 'Choose lessons' },
-  step2: { sv: 'Ställ frågor', en: 'Ask questions' },
-  step3: { sv: 'Testa dig själv', en: 'Test yourself' },
+  // Lektionsväljare (chatt-först)
+  scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
+  scopeAll: { sv: 'Alla', en: 'All' },
+  scopeHint: {
+    sv: 'Fråga mot alla lektioner, eller välj för att fokusera.',
+    en: 'Ask across all lessons, or pick some to focus.',
+  },
+  backToChat: { sv: '← Tillbaka till chatten', en: '← Back to the chat' },
 
-  // Steg 1 — LessonPicker
-  pickTitle: { sv: 'Vilka lektioner vill du utforska?', en: 'Which lessons do you want to explore?' },
-  pickHint: { sv: 'Välj en eller flera. Ämnet är Ekologi (Biologi 1).', en: 'Pick one or more. The subject is Ecology (Biology 1).' },
+  // Källspråks-notis (visas bara på EN — chatten svarar på engelska men
+  // lektionerna och citaten är svenska).
   swedishNote: {
     sv: '',
     en: 'Lesson recordings are from a Swedish classroom — answers reference the original Swedish transcript.',
   },
-  continue: { sv: 'Fortsätt', en: 'Continue' },
-  selectedCount: { sv: 'vald(a)', en: 'selected' },
 
   // Steg 2 — ChatStep
   chatTitle: { sv: 'Fråga vad du vill om lektionerna', en: 'Ask anything about the lessons' },
