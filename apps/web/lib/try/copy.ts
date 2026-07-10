@@ -9,13 +9,19 @@ export function tr(locale: Locale, l: L): string {
 export const TRY_COPY = {
   // Hero
   eyebrow: { sv: 'Prova Elevante', en: 'Try Elevante' },
+  // Rubriken delas så nyckelfrasen kan accentfärgas (sage-deep — grönt som
+  // håller kontrast på ivory; coral funkar bara som fyllning, inte som text).
   heroTitle: {
-    sv: 'Upplev Elevante',
-    en: 'Experience Elevante',
+    sv: 'Fråga vad du vill om en',
+    en: 'Ask anything about a',
+  },
+  heroTitleAccent: {
+    sv: 'riktig lektion',
+    en: 'real lesson',
   },
   heroLede: {
-    sv: 'Välj en eller flera lektioner och ställ dina egna frågor — Elevante svarar med källa ur lektionen. När du vill kan du sen låta Elevante göra ett prov och rätta det åt dig.',
-    en: 'Pick one or more lessons and ask your own questions — Elevante answers with a source from the lesson. When you’re ready, you can let Elevante build a test and grade it for you.',
+    sv: 'Sex inspelade lektioner ur en gymnasiekurs i Ekologi (Biologi 1). Ställ dina egna frågor — Elevante svarar med citat ur lektionen, och kan sen göra ett prov och rätta det åt dig.',
+    en: 'Six recorded lessons from an upper-secondary Ecology course (Biology 1). Ask your own questions — Elevante answers with quotes from the lesson, then can build a test and grade it for you.',
   },
 
   // Lektionsväljare (chatt-först)
@@ -23,8 +29,8 @@ export const TRY_COPY = {
   scopeAll: { sv: 'Alla lektioner', en: 'All lessons' },
   lessonWord: { sv: 'Lektion', en: 'Lesson' },
   scopeHint: {
-    sv: '6 lektioner ur en Ekologikurs (Biologi 1). Fråga mot alla, eller välj för att fokusera.',
-    en: '6 lessons from an Ecology course (Biology 1). Ask across all, or pick some to focus.',
+    sv: 'Fråga mot alla, eller välj en lektion att fokusera på.',
+    en: 'Ask across all, or pick a lesson to focus on.',
   },
   backToChat: { sv: '← Tillbaka till chatten', en: '← Back to the chat' },
 
@@ -36,11 +42,6 @@ export const TRY_COPY = {
   },
 
   // Steg 2 — ChatStep
-  chatTitle: { sv: 'Fråga vad du vill om lektionerna', en: 'Ask anything about the lessons' },
-  chatSubtitle: {
-    sv: 'Lektionerna är genomgångar från en riktig gymnasieklass. Elevante svarar bara utifrån vad läraren sa — med citat ur lektionen.',
-    en: 'The lessons are walkthroughs from a real upper-secondary class. Elevante answers only from what the teacher said — with quotes from the lesson.',
-  },
   chatPlaceholder: { sv: 'Ställ en fråga…', en: 'Ask a question…' },
   send: { sv: 'Fråga', en: 'Ask' },
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },
@@ -84,11 +85,14 @@ export const TRY_COPY = {
     en: 'Demo mode: the AI engine isn’t connected here, so this is a prepared example.',
   },
 
-  // Mjuk avslutning
-  outroTitle: { sv: 'Vill du ha det här på din skola?', en: 'Want this at your school?' },
+  // Säljande avslutning (efter att besökaren testat demon)
+  outroTitle: {
+    sv: 'Du testade precis. Ge era elever samma sak.',
+    en: 'You just tried it. Give your students the same.',
+  },
   outroLede: {
-    sv: 'Elevante minns varje lektion och hjälper varje elev — på riktigt, i ert sammanhang.',
-    en: 'Elevante remembers every lesson and helps every student — for real, in your context.',
+    sv: 'Samma upplevelse, fast på era riktiga lektioner — varje genomgång inspelad, sökbar och redo att plugga på. Vi visar hur på 30 minuter.',
+    en: 'The same experience, but on your own lessons — every class recorded, searchable, and ready to study. We’ll show you how in 30 minutes.',
   },
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
