@@ -68,7 +68,7 @@ export function LessonScope({ locale, lessons, selected, onChange }: Props) {
         >
           {tr(locale, TRY_COPY.scopeAll)}
         </button>
-        {lessons.map((l) => {
+        {lessons.map((l, i) => {
           const active = !allSelected && selected.includes(l.id);
           return (
             <button
@@ -78,6 +78,10 @@ export function LessonScope({ locale, lessons, selected, onChange }: Props) {
               aria-pressed={active}
               className={chipClass(active)}
             >
+              {/* Numrerad "Lektion N" så det är uppenbart att varje val är en
+                  lektion, inte bara ett ämne. */}
+              <span className="opacity-60">{tr(locale, TRY_COPY.lessonWord)} {i + 1}</span>
+              {' · '}
               {tr(locale, l.title)}
             </button>
           );
