@@ -110,7 +110,7 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
                 {m.content}
                 {m.citation ? (
                   <span className="mt-3 block rounded-[10px] border-l-2 border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-3 py-2 text-left text-[0.8125rem] text-[var(--color-ink-secondary)]">
-                    <span className="mb-1 block text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                    <span className="mb-1 block text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-sage-deep)]">
                       {tr(locale, TRY_COPY.sourceLabel)} · {m.citation.ts}
                     </span>
                     “{m.citation.quote}”
@@ -147,7 +147,7 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
           <button
             type="submit"
             disabled={pending || input.trim().length < 2}
-            className="shrink-0 rounded-full bg-[var(--color-ink)] px-6 py-4 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition hover:opacity-90 disabled:opacity-40"
+            className="shrink-0 rounded-full bg-[var(--color-coral)] px-6 py-4 text-[0.9375rem] font-semibold text-[var(--color-ink)] transition hover:brightness-95 disabled:opacity-60"
           >
             {tr(locale, TRY_COPY.send)}
           </button>

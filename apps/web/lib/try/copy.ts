@@ -9,9 +9,15 @@ export function tr(locale: Locale, l: L): string {
 export const TRY_COPY = {
   // Hero
   eyebrow: { sv: 'Prova Elevante', en: 'Try Elevante' },
+  // Rubriken delas så nyckelfrasen kan accentfärgas (sage-deep — grönt som
+  // håller kontrast på ivory; coral funkar bara som fyllning, inte som text).
   heroTitle: {
-    sv: 'Fråga vad du vill om en riktig lektion',
-    en: 'Ask anything about a real lesson',
+    sv: 'Fråga vad du vill om en',
+    en: 'Ask anything about a',
+  },
+  heroTitleAccent: {
+    sv: 'riktig lektion',
+    en: 'real lesson',
   },
   heroLede: {
     sv: 'Sex inspelade lektioner ur en gymnasiekurs i Ekologi (Biologi 1). Ställ dina egna frågor — Elevante svarar med citat ur lektionen, och kan sen göra ett prov och rätta det åt dig.',
