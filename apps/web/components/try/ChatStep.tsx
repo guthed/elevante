@@ -74,13 +74,17 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
           Frågefältet är stjärnan; förslagen är nedtonade till små länkar så de
           aldrig förväxlas med inmatningen. */}
       <div className="rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5 shadow-[0_24px_60px_-24px_rgba(26,26,46,0.16)] sm:p-7">
-        <h2 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
-          {tr(locale, TRY_COPY.chatTitle)}
-        </h2>
-        {/* Förklarar vilken sorts lektion det är, så besökaren förstår. */}
-        <p className="mt-2 max-w-prose text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
-          {tr(locale, TRY_COPY.chatSubtitle)}
-        </p>
+        {/* Liten identitetsrad — panelen känns som Elevantes chatt, utan att
+            konkurrera med hjälte-rubriken (som nu bär hela budskapet). */}
+        <div className="mb-4 flex items-center gap-2">
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-[var(--color-sage-deep)]"
+            aria-hidden
+          />
+          <span className="text-[0.6875rem] uppercase tracking-[0.14em] text-[var(--color-ink-muted)]">
+            Elevante
+          </span>
+        </div>
 
         {/* Konversationen — ovanför frågefältet (svaret dyker upp ovanför det
             man skriver i, som i en vanlig chatt). aria-live finns alltid. */}
@@ -89,7 +93,7 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
           aria-live="polite"
           className={
             hasConversation
-              ? 'mt-4 max-h-[380px] space-y-4 overflow-y-auto border-b border-[var(--color-sand)] pb-5'
+              ? 'mb-5 max-h-[380px] space-y-4 overflow-y-auto border-b border-[var(--color-sand)] pb-5'
               : ''
           }
         >
@@ -130,7 +134,7 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
             e.preventDefault();
             void ask(input);
           }}
-          className="mt-5 flex gap-2"
+          className="flex gap-2"
         >
           <input
             value={input}

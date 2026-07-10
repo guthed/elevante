@@ -43,27 +43,29 @@ export default async function TryPage({ params }: Props) {
 
   return (
     <>
-      {/* Kompakt hero — chatt-först, så textfältet kommer upp snabbt (extra
-          stramt på mobil, där de flesta möter sidan först). */}
-      <section className="pt-6 pb-5 md:pt-14 md:pb-8">
-        <Container width="content">
-          <p className="eyebrow mb-3">{tr(locale, TRY_COPY.eyebrow)}</p>
-          <h1 className="font-serif text-[clamp(1.875rem,3vw+1rem,3.25rem)] leading-[1.08] tracking-[-0.01em] text-[var(--color-ink)]">
-            {tr(locale, TRY_COPY.heroTitle)}
-          </h1>
-          <p className="mt-3 max-w-2xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.0625rem]">
-            {tr(locale, TRY_COPY.heroLede)}
-          </p>
-        </Container>
-      </section>
-
-      <section className="pb-20 md:pb-28">
-        <Container width="content">
-          <TryExperience
-            locale={locale}
-            lessons={lessons}
-            suggestionsByLesson={suggestionsByLesson}
-          />
+      {/* Tvåspalts-hjälte som startsidan: pitch vänster, den interaktiva panelen
+          höger. Fyller ytan och lägger interaktionen bredvid budskapet.
+          Staplar på mobil (pitch → panel). */}
+      <section className="pt-8 pb-16 md:pt-16 md:pb-24">
+        <Container width="wide">
+          <div className="grid gap-8 md:grid-cols-12 md:gap-x-12 md:gap-y-6 lg:gap-x-16">
+            <div className="min-w-0 md:col-span-5 md:self-center">
+              <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
+              <h1 className="font-serif text-[clamp(2rem,2.6vw+1rem,3.25rem)] leading-[1.06] tracking-[-0.01em] text-[var(--color-ink)]">
+                {tr(locale, TRY_COPY.heroTitle)}
+              </h1>
+              <p className="mt-5 max-w-md text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {tr(locale, TRY_COPY.heroLede)}
+              </p>
+            </div>
+            <div className="min-w-0 md:col-span-7">
+              <TryExperience
+                locale={locale}
+                lessons={lessons}
+                suggestionsByLesson={suggestionsByLesson}
+              />
+            </div>
+          </div>
         </Container>
       </section>
 
