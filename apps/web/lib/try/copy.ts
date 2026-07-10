@@ -20,10 +20,11 @@ export const TRY_COPY = {
 
   // Lektionsväljare (chatt-först)
   scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
-  scopeAll: { sv: 'Alla', en: 'All' },
+  scopeAll: { sv: 'Alla lektioner', en: 'All lessons' },
+  lessonWord: { sv: 'Lektion', en: 'Lesson' },
   scopeHint: {
-    sv: 'Ämne: Ekologi (Biologi 1). Fråga mot alla, eller välj för att fokusera.',
-    en: 'Subject: Ecology (Biology 1). Ask across all, or pick some to focus.',
+    sv: '6 lektioner ur en Ekologikurs (Biologi 1). Fråga mot alla, eller välj för att fokusera.',
+    en: '6 lessons from an Ecology course (Biology 1). Ask across all, or pick some to focus.',
   },
   backToChat: { sv: '← Tillbaka till chatten', en: '← Back to the chat' },
 
