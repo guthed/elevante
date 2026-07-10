@@ -77,6 +77,52 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         <h2 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
           {tr(locale, TRY_COPY.chatTitle)}
         </h2>
+        {/* Förklarar vilken sorts lektion det är, så besökaren förstår. */}
+        <p className="mt-2 max-w-prose text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          {tr(locale, TRY_COPY.chatSubtitle)}
+        </p>
+
+        {/* Konversationen — ovanför frågefältet (svaret dyker upp ovanför det
+            man skriver i, som i en vanlig chatt). aria-live finns alltid. */}
+        <div
+          ref={scrollRef}
+          aria-live="polite"
+          className={
+            hasConversation
+              ? 'mt-4 max-h-[380px] space-y-4 overflow-y-auto border-b border-[var(--color-sand)] pb-5'
+              : ''
+          }
+        >
+          {messages.map((m, i) => (
+            <div key={i} className={m.role === 'user' ? 'text-right' : ''}>
+              <div
+                className={[
+                  'inline-block max-w-[85%] rounded-[14px] px-4 py-3 text-[0.9375rem] leading-relaxed',
+                  m.role === 'user'
+                    ? 'bg-[var(--color-ink)] text-[var(--color-canvas)]'
+                    : 'bg-[var(--color-canvas)] text-[var(--color-ink)]',
+                ].join(' ')}
+              >
+                {m.content}
+                {m.citation ? (
+                  <span className="mt-3 block rounded-[10px] border-l-2 border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-3 py-2 text-left text-[0.8125rem] text-[var(--color-ink-secondary)]">
+                    <span className="mb-1 block text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                      {tr(locale, TRY_COPY.sourceLabel)} · {m.citation.ts}
+                    </span>
+                    “{m.citation.quote}”
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ))}
+
+          {pending ? (
+            <p className="text-[0.875rem] italic text-[var(--color-ink-muted)]">
+              {tr(locale, TRY_COPY.thinking)}
+            </p>
+          ) : null}
+          {error ? <p className="text-[0.875rem] text-[var(--color-coral)]">{error}</p> : null}
+        </div>
 
         {/* Frågefältet — sidans viktigaste interaktion, tydligt i centrum. */}
         <form
@@ -84,7 +130,7 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
             e.preventDefault();
             void ask(input);
           }}
-          className="mt-4 flex gap-2"
+          className="mt-5 flex gap-2"
         >
           <input
             value={input}
@@ -124,47 +170,6 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
             )}
           </div>
         ) : null}
-
-        {/* Konversationen växer fram under fältet. aria-live finns alltid. */}
-        <div
-          ref={scrollRef}
-          aria-live="polite"
-          className={
-            hasConversation
-              ? 'mt-5 max-h-[380px] space-y-4 overflow-y-auto border-t border-[var(--color-sand)] pt-5'
-              : ''
-          }
-        >
-          {messages.map((m, i) => (
-            <div key={i} className={m.role === 'user' ? 'text-right' : ''}>
-              <div
-                className={[
-                  'inline-block max-w-[85%] rounded-[14px] px-4 py-3 text-[0.9375rem] leading-relaxed',
-                  m.role === 'user'
-                    ? 'bg-[var(--color-ink)] text-[var(--color-canvas)]'
-                    : 'bg-[var(--color-canvas)] text-[var(--color-ink)]',
-                ].join(' ')}
-              >
-                {m.content}
-                {m.citation ? (
-                  <span className="mt-3 block rounded-[10px] border-l-2 border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-3 py-2 text-left text-[0.8125rem] text-[var(--color-ink-secondary)]">
-                    <span className="mb-1 block text-[0.6875rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
-                      {tr(locale, TRY_COPY.sourceLabel)} · {m.citation.ts}
-                    </span>
-                    “{m.citation.quote}”
-                  </span>
-                ) : null}
-              </div>
-            </div>
-          ))}
-
-          {pending ? (
-            <p className="text-[0.875rem] italic text-[var(--color-ink-muted)]">
-              {tr(locale, TRY_COPY.thinking)}
-            </p>
-          ) : null}
-          {error ? <p className="text-[0.875rem] text-[var(--color-coral)]">{error}</p> : null}
-        </div>
       </div>
 
       {/* Prov-inbjudan — under panelen, efter första svaret. */}
