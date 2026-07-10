@@ -85,11 +85,14 @@ export const TRY_COPY = {
     en: 'Demo mode: the AI engine isn’t connected here, so this is a prepared example.',
   },
 
-  // Mjuk avslutning
-  outroTitle: { sv: 'Vill du ha det här på din skola?', en: 'Want this at your school?' },
+  // Säljande avslutning (efter att besökaren testat demon)
+  outroTitle: {
+    sv: 'Du testade precis. Ge era elever samma sak.',
+    en: 'You just tried it. Give your students the same.',
+  },
   outroLede: {
-    sv: 'Elevante minns varje lektion och hjälper varje elev — på riktigt, i ert sammanhang.',
-    en: 'Elevante remembers every lesson and helps every student — for real, in your context.',
+    sv: 'Samma upplevelse, fast på era riktiga lektioner — varje genomgång inspelad, sökbar och redo att plugga på. Vi visar hur på 30 minuter.',
+    en: 'The same experience, but on your own lessons — every class recorded, searchable, and ready to study. We’ll show you how in 30 minutes.',
   },
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
