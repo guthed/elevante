@@ -22,8 +22,8 @@ export const TRY_COPY = {
   scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
   scopeAll: { sv: 'Alla', en: 'All' },
   scopeHint: {
-    sv: 'Fråga mot alla lektioner, eller välj för att fokusera.',
-    en: 'Ask across all lessons, or pick some to focus.',
+    sv: 'Ämne: Ekologi (Biologi 1). Fråga mot alla, eller välj för att fokusera.',
+    en: 'Subject: Ecology (Biology 1). Ask across all, or pick some to focus.',
   },
   backToChat: { sv: '← Tillbaka till chatten', en: '← Back to the chat' },
 
@@ -36,6 +36,10 @@ export const TRY_COPY = {
 
   // Steg 2 — ChatStep
   chatTitle: { sv: 'Fråga vad du vill om lektionerna', en: 'Ask anything about the lessons' },
+  chatSubtitle: {
+    sv: 'Lektionerna är genomgångar från en riktig gymnasieklass. Elevante svarar bara utifrån vad läraren sa — med citat ur lektionen.',
+    en: 'The lessons are walkthroughs from a real upper-secondary class. Elevante answers only from what the teacher said — with quotes from the lesson.',
+  },
   chatPlaceholder: { sv: 'Ställ en fråga…', en: 'Ask a question…' },
   send: { sv: 'Fråga', en: 'Ask' },
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },

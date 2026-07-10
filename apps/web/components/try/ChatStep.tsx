@@ -77,6 +77,10 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         <h2 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
           {tr(locale, TRY_COPY.chatTitle)}
         </h2>
+        {/* Förklarar vilken sorts lektion det är, så besökaren förstår. */}
+        <p className="mt-2 max-w-prose text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          {tr(locale, TRY_COPY.chatSubtitle)}
+        </p>
 
         {/* Frågefältet — sidans viktigaste interaktion, tydligt i centrum. */}
         <form
