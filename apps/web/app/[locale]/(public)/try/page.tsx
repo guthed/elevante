@@ -43,14 +43,15 @@ export default async function TryPage({ params }: Props) {
 
   return (
     <>
-      {/* Kompakt hero — chatt-först, så textfältet kommer upp snabbt. */}
-      <section className="pt-10 pb-6 md:pt-14 md:pb-8">
+      {/* Kompakt hero — chatt-först, så textfältet kommer upp snabbt (extra
+          stramt på mobil, där de flesta möter sidan först). */}
+      <section className="pt-6 pb-5 md:pt-14 md:pb-8">
         <Container width="content">
-          <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
-          <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3.25rem)] leading-[1.08] tracking-[-0.01em] text-[var(--color-ink)]">
+          <p className="eyebrow mb-3">{tr(locale, TRY_COPY.eyebrow)}</p>
+          <h1 className="font-serif text-[clamp(1.875rem,3vw+1rem,3.25rem)] leading-[1.08] tracking-[-0.01em] text-[var(--color-ink)]">
             {tr(locale, TRY_COPY.heroTitle)}
           </h1>
-          <p className="mt-4 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          <p className="mt-3 max-w-2xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.0625rem]">
             {tr(locale, TRY_COPY.heroLede)}
           </p>
         </Container>
