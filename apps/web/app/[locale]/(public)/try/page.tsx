@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor } from '@/lib/site';
@@ -53,7 +54,9 @@ export default async function TryPage({ params }: Props) {
               <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
               <h1 className="font-serif text-[clamp(2rem,2.6vw+1rem,3.25rem)] leading-[1.06] tracking-[-0.01em] text-[var(--color-ink)]">
                 {tr(locale, TRY_COPY.heroTitle)}{' '}
-                <span className="text-[var(--color-sage-deep)]">
+                {/* Coral, kursiv — samma accent-stil som startsidans rubrik
+                    (RotatingHeadline). Konsekvent orange-accent för poängen. */}
+                <span className="italic text-[var(--color-coral)]">
                   {tr(locale, TRY_COPY.heroTitleAccent)}
                 </span>
               </h1>
@@ -72,25 +75,38 @@ export default async function TryPage({ params }: Props) {
         </Container>
       </section>
 
-      <section className="border-t border-[var(--color-sand)] py-16 md:py-20">
-        <Container width="content">
-          <div className="mx-auto max-w-xl text-center">
-            <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
-              {tr(locale, TRY_COPY.outroTitle)}
-            </h2>
-            <p className="mt-4 text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
-              {tr(locale, TRY_COPY.outroLede)}
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                {tr(locale, TRY_COPY.bookDemo)}
-              </LinkButton>
-              <Link
-                href={`${base}/for-skolor`}
-                className="inline-flex items-center gap-2 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] underline-offset-4 hover:underline"
-              >
-                {tr(locale, TRY_COPY.forSchools)} →
-              </Link>
+      <section className="border-t border-[var(--color-sand)] py-16 md:py-24">
+        <Container width="wide">
+          <div className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
+            {/* Foto — eleverna man säljer in till, i konverterings-ögonblicket. */}
+            <div className="relative h-64 overflow-hidden rounded-[20px] sm:h-80 md:h-[420px]">
+              <Image
+                src="/images/javier-trueba-unsplash.jpg"
+                alt={locale === 'sv' ? 'Elever som pluggar tillsammans' : 'Students studying together'}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            {/* CTA */}
+            <div>
+              <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
+                {tr(locale, TRY_COPY.outroTitle)}
+              </h2>
+              <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
+                {tr(locale, TRY_COPY.outroLede)}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                  {tr(locale, TRY_COPY.bookDemo)}
+                </LinkButton>
+                <Link
+                  href={`${base}/for-skolor`}
+                  className="inline-flex items-center gap-2 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] underline-offset-4 hover:underline"
+                >
+                  {tr(locale, TRY_COPY.forSchools)} →
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
