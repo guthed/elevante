@@ -107,7 +107,13 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
                     : 'bg-[var(--color-canvas)] text-[var(--color-ink)]',
                 ].join(' ')}
               >
-                {m.content}
+                {/* Dela upp svaret i stycken (modellen separerar med blankrad)
+                    så det blir lättare att läsa än ett textblock. */}
+                {m.content.split(/\n{2,}/).map((para, pi) => (
+                  <p key={pi} className={pi > 0 ? 'mt-3' : ''}>
+                    {para}
+                  </p>
+                ))}
                 {m.citation ? (
                   <span className="mt-3 block rounded-[10px] border-l-2 border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-3 py-2 text-left text-[0.8125rem] text-[var(--color-ink-secondary)]">
                     <span className="mb-1 block text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-sage-deep)]">
