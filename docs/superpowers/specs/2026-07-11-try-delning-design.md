@@ -30,14 +30,21 @@ Affärsvärde: lärarledd viral spridning + varma leads i CRM:et.
   `app/actions/contact.ts` skickar redan via Resend (`RESEND_API_KEY`, graceful
   fallback). Delnings-mejlet återanvänder det mönstret. (Loops-migrationen lever
   på en separat, omergad branch — ingen påverkan här.)
-- **Notion-schemat kan inte inspekteras/ändras i denna session** (Notion-MCP
-  kräver auth som saknas). Appen skriver ändå till Notion i runtime via
-  `lib/notion.ts` (API-token i env). Om nya properties behövs i Intresseanmälningar
-  skapas de manuellt i Notion av teamet — planen listar exakt vilka.
+- **Notion-schemat är inspekterat** (via ansluten Notion-MCP `6116c3ad…`,
+  workspace AVAIL). Databasen "📋 Elevante – Intresseanmälningar":
+  `database_id 43c5a965-9bf5-44ae-ba07-b92f73debeb3`, data source
+  `collection://f831983c-4aa9-4c07-9874-2fe849b69b2a`. Relevanta properties finns
+  redan: **Skola** (title), **E-post** (email), **Status** (select: Ny→…), och
+  **Datakälla** (select). Vi lägger till en ny Datakälla-option **"Try-delning"**
+  (kan göras via MCP nu — inget teamet behöver göra manuellt).
 - **Intresseanmälningar är skol-centrerad** (`upsertNotionProspect` dedupar på
-  Skolverkets `school_unit_code`). En delad person-mejl har ingen skolkod → vi
-  behöver en **ny, e-postbaserad lead-väg** i `lib/notion.ts` (append/upsert på
-  e-post), inte den befintliga skol-dedupen.
+  Skolverkets `Skolenhetskod`, titeln = Skola). En delad person-mejl har ingen
+  skolkod → vi behöver en **ny, e-postbaserad lead-väg** i `lib/notion.ts`
+  (skapa rad med Skola=namn/mejl, E-post, Datakälla="Try-delning", Status="Ny"),
+  inte den befintliga skol-dedupen.
+- **Konsekvens att känna till:** person-tips hamnar som kort i **samma Kanban som
+  skolorna** (användaren ville logga samtliga där). De är käll-taggade
+  "Try-delning" så de kan filtreras i en egen vy.
 
 ## UI
 
@@ -69,11 +76,16 @@ Zod-validerad. Flöde:
 3. **Mejl via Resend** — ett brev per mottagare: ämne "{Namn} tror att Elevante
    kan vara något för dig", kropp med hälsning + länk till `/{locale}/try`,
    **reply-to = avsändaren**. Graceful fallback (loggar om `RESEND_API_KEY` saknas).
-4. **Notion best-effort** — logga i Intresseanmälningar via ny e-postbaserad väg:
-   - Mottagare: lead med `created_via: "try_share"`, Status "Ny", roll "mottagare".
-   - Avsändare: lead med `created_via: "try_share"`, Status "Ny", roll "avsändare"
-     (dedup på e-post så samma avsändare inte dubblas vid upprepade delningar).
+4. **Notion best-effort** — skapa rader i Intresseanmälningar via ny e-postbaserad
+   `lib/notion.ts`-funktion (Notion API, `NOTION_TOKEN` + `NOTION_LEADS_DATABASE_ID`):
+   - **Mottagare:** Skola=mottagarens mejl, E-post=mottagaren, Datakälla="Try-delning",
+     Status="Ny", Anteckningar="Fick tips av {avsändarens namn} via /try".
+   - **Avsändare:** Skola=avsändarens namn, E-post=avsändaren, Datakälla="Try-delning",
+     Status="Ny", Anteckningar="Delade /try". Dedup på e-post (query först) så
+     samma avsändare inte dubblas vid upprepade delningar.
    - Fel i Notion-steget fäller **inte** delningen (best-effort, loggas).
+   - **Engångs-setup (jag gör via MCP):** lägg till "Try-delning" som option i
+     Datakälla-selecten innan lansering.
 
 ## Datamodell
 
@@ -94,10 +106,11 @@ RLS: ingen publik läsning (server-only skrivning via service-role, som CRM:et).
 En separat `try_share_ratelimit`-mekanism eller återanvänd `try_shares` +
 tidsfönster-räkning per IP (avgörs i planen).
 
-**Notion (Intresseanmälningar)** — nya/återanvända properties (bekräftas i planen;
-teamet skapar ev. saknade):
-- E-post (lead-mejl), Namn, Status ("Ny"), `Källa/created_via` = "try_share",
-  Roll ("avsändare"/"mottagare"), ev. Anteckning (hälsningen).
+**Notion (Intresseanmälningar)** — inga nya properties behövs, allt finns redan:
+- **Skola** (title) = namn/mejl, **E-post** = lead-mejl, **Status** = "Ny",
+  **Datakälla** = "Try-delning" (ny select-option, jag lägger till via MCP),
+  **Anteckningar** = kontext (vem som delade / hälsning).
+- data source: `collection://f831983c-4aa9-4c07-9874-2fe849b69b2a`.
 
 ## i18n / copy
 
@@ -121,6 +134,8 @@ knapp, bekräftelse, felmeddelanden.
 ## Öppna punkter till planen
 
 - Exakt rate-limit-lagring (egen tabell vs. fönster-räkning på `try_shares`).
-- Exakta Notion-properties + den nya e-postbaserade `lib/notion.ts`-funktionen.
 - Var Supabase-migrationen läggs och hur den appliceras mot prod
   (`msqfuywpbrteyrzjggsw`).
+
+(Notion-schemat är löst: DB + properties + data source kända; enda setup-steget
+är att lägga till Datakälla-optionen "Try-delning", vilket jag gör via MCP.)
