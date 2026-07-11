@@ -22,8 +22,10 @@ Byt e-postmotor för all transaktionell mejl från **Resend** till **Loops**
 
 ## Beslut (låsta i brainstorm)
 
-- **Scope:** *all* transaktionell mejl migreras — både `/try`-delningen och
-  kontaktformuläret. **Resend rivs ut helt** (dep + kod + env). Ingen fallback.
+- **Scope:** *all* transaktionell mejl migreras — `/try`-delningen,
+  kontaktformuläret **och investerardeck-notiserna** (`lib/investor-notify.ts`,
+  som fortfarande använder Resend). **Resend rivs ut helt** (dep + kod + env).
+  Ingen fallback.
 - **Domän:** `elevante.se` är redan verifierad i Loops (SPF/DKIM klart).
 - **Mall-strategi:** copy bor **i mallen** (som Elevantes befintliga mallar),
   inte som variabler. Delnings-mejlet är tvåspråkigt → **två mallar (sv + en)**,
@@ -42,7 +44,7 @@ Byt e-postmotor för all transaktionell mejl från **Resend** till **Loops**
 | **Elevante — kontakt-notis** | `cmr2npu5t01i00j2t0g3p6zf5` | `topic, name, school, email, message` | **Klar att koppla.** Ingen `replyTo`-variabel — svara-knappen är `mailto:{{email}}`, så `email` = leadets adress. |
 | Elevante — skol-kontaktmejl | `cmr2npqod01gq0j2s1fg407k0` | `schoolName` | Tonreferens + skal att duplicera för delnings-mallarna. |
 | Elevante — lead-notis (prisberäknare) | `cmr2nps7i01jj0j0orc0wz9a9` | `schoolName, students, leadEmail, message` | Orörd. |
-| Elevante — investerar-notis | `cmr2npvso01k80j0tktnxoif3` | `headline, investor, locale, maxScroll` | Orörd. |
+| **Elevante — investerar-notis** | `cmr2npvso01k80j0tktnxoif3` | `headline, investor, locale, maxScroll` | **Klar att koppla.** `lib/investor-notify.ts` migreras till denna (använder idag Resend). |
 | (faktura, Draft) | `cmr2c7lvi04kh018pis2rm18y` | — | Orelaterad. |
 
 **Delnings-mallarna finns inte än** — de skapas som manuellt setup-steg (nedan).
@@ -180,14 +182,36 @@ HTML-byggandet. Variabelnamnen matchar den befintliga kontakt-notis-mallen exakt
 (`topic, name, school, email, message`); `email` = leadets adress (svara via
 mallens `mailto:{{email}}`-knapp).
 
+### `lib/investor-notify.ts` (investerar-notis — best-effort)
+
+Ersätt Resend-blocket. Behåll signaturen `notifyInvestorEvent(kind, label, meta)`
+och `headline`-logiken; byt sändningen mot den befintliga investerar-notis-mallen:
+```ts
+await sendLoopsTransactional(
+  process.env.LOOPS_INVESTOR_TRANSACTIONAL_ID,
+  process.env.INVESTOR_NOTIFY_EMAIL ?? 'john@elevante.se',
+  {
+    headline,
+    investor: label,
+    locale: meta.locale ?? '',
+    maxScroll: typeof meta.maxScroll === 'number' ? String(meta.maxScroll) : '',
+  },
+);
+```
+Returen **ignoreras** (best-effort — notiser, ingen användarvänd väg). Tar bort
+`import { Resend }` och `escapeHtml` (copy bor i Loops nu). Variabelnamnen matchar
+den befintliga mallen exakt (`headline, investor, locale, maxScroll`).
+
 ### `package.json` + env
 
 - Ta bort `resend` ur dependencies.
 - `.env.example`: ta bort `RESEND_API_KEY`; lägg till `LOOPS_API_KEY`,
+  `LOOPS_INVESTOR_TRANSACTIONAL_ID`,
   `LOOPS_CONTACT_TRANSACTIONAL_ID`, `LOOPS_SHARE_TRANSACTIONAL_ID_SV`,
   `LOOPS_SHARE_TRANSACTIONAL_ID_EN`.
-- **Vercel-env (prod):** säkerställ `LOOPS_API_KEY`; sätt de tre transactional-
-  id:na. `RESEND_API_KEY` kan tas bort. Saknas ett id loggar adaptern bara
+- **Vercel-env (prod):** säkerställ `LOOPS_API_KEY`; sätt de fyra transactional-
+  id:na (kontakt + delning sv/en + investerare). `RESEND_API_KEY` kan tas bort.
+  Saknas ett id loggar adaptern bara
   (icke-blockerande — mejl aktiveras när id:t sätts, samma mönster som Notion).
 
 ## Dataflöde
@@ -199,12 +223,16 @@ mallens `mailto:{{email}}`-knapp).
 **Kontakt:** formulär → `sendContact` → validering/rate-limit → **Loops kontakt-
 mall (leveranskritisk — fel ⇒ `generic`)** → success.
 
+**Investerar-notis:** deck-event (`open`/`ask`) → `notifyInvestorEvent` → Loops
+investerar-mall (best-effort) → returnerar `void`.
+
 ## Felhantering (sammanfattning)
 
 | Flöde | Persistens | Mejl-miss ⇒ |
 |-------|-----------|-------------|
 | Delning | Supabase `try_shares` (primärt) | loggas, delningen lyckas ändå |
 | Kontakt | ingen | `error: 'generic'` till användaren |
+| Investerar-notis | telemetri i egen väg | loggas, notisen uteblir tyst |
 
 Adaptern kastar aldrig; allt loggas till Vercel runtime-loggar (`[loops] …`).
 
@@ -225,8 +253,9 @@ Skarp prod-verifiering efter mallar + env + deploy:
 
 - Lifecycle-/marketing-mejl (`upsertLoopsContact`/`sendLoopsEvent` följer med i
   adaptern men kopplas inte här).
-- Migrera de andra befintliga notis-mallarna (skol-kontakt, prisberäknar-lead,
-  investerar-notis) — de lever redan i Loops och rörs inte.
+- Migrera de andra befintliga notis-mallarna (skol-kontakt, prisberäknar-lead)
+  — de lever redan i Loops och rörs inte. (Investerar-notisen migreras dock, se
+  ovan — dess kod använde fortfarande Resend.)
 - Loops-MCP för att sköta mallar programmatiskt (finns ej än; mallar författas i
   UI).
 
