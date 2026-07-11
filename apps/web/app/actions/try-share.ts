@@ -1,7 +1,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { Resend } from 'resend';
+import { sendLoopsTransactional } from '@/lib/loops';
 import {
   insertShare,
   shareCountLastHour,
@@ -16,9 +16,6 @@ export type ShareState =
 
 function isEmail(v: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-}
-function escape(v: string): string {
-  return v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 const MAX_PER_HOUR = 5;
@@ -73,35 +70,20 @@ export async function shareTry(
     return { status: 'error', code: 'generic' };
   }
 
-  // Mejl via Resend (graceful fallback om nyckel saknas)
-  const apiKey = process.env.RESEND_API_KEY;
+  // Mejl via Loops (best-effort — Supabase är loggen). Copy bor i Loops-mallen;
+  // koden skickar bara data. Reply-to = avsändaren (satt som {{senderEmail}} i mallen).
   const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://www.elevante.se';
-  const link = `${base}/${locale}/try`;
-  if (apiKey) {
-    try {
-      const resend = new Resend(apiKey);
-      const sv = locale === 'sv';
-      const subject = sv
-        ? `${senderName} tror att Elevante kan vara något för dig`
-        : `${senderName} thinks Elevante might be for you`;
-      const greeting = message ? `<p>${escape(message)}</p>` : '';
-      const html = sv
-        ? `<p>Hej!</p><p>${escape(senderName)} har testat Elevante och ville tipsa dig.</p>${greeting}<p><a href="${link}">Prova själv — ingen inloggning</a></p>`
-        : `<p>Hi!</p><p>${escape(senderName)} tried Elevante and wanted to share it with you.</p>${greeting}<p><a href="${link}">Try it yourself — no sign-in</a></p>`;
-      await resend.emails.send({
-        from: 'Elevante <hej@elevante.se>',
-        to: recipientEmail,
-        replyTo: senderEmail,
-        subject,
-        html,
-      });
-    } catch (err) {
-      console.error('[try-share] Resend error:', err);
-      // fäller inte — loggen är redan gjord
-    }
-  } else {
-    console.info('[try-share] Resend not configured, logging only:', record);
-  }
+  const url = `${base}/${locale}/try`;
+  const templateId =
+    locale === 'en'
+      ? process.env.LOOPS_SHARE_TRANSACTIONAL_ID_EN
+      : process.env.LOOPS_SHARE_TRANSACTIONAL_ID_SV;
+  await sendLoopsTransactional(templateId, recipientEmail, {
+    senderName,
+    message,
+    url,
+    senderEmail,
+  });
 
   // Notion best-effort
   try {
