@@ -108,9 +108,11 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
                 ].join(' ')}
               >
                 {/* Dela upp svaret i stycken (modellen separerar med blankrad)
-                    så det blir lättare att läsa än ett textblock. */}
+                    så det blir lättare att läsa än ett textblock. [color:inherit]
+                    krävs — globals har en bas-regel p{color:ink-secondary} som
+                    annars gör användarbubblans text mörk på mörk bakgrund. */}
                 {m.content.split(/\n{2,}/).map((para, pi) => (
-                  <p key={pi} className={pi > 0 ? 'mt-3' : ''}>
+                  <p key={pi} className={pi > 0 ? 'mt-3 [color:inherit]' : '[color:inherit]'}>
                     {para}
                   </p>
                 ))}
