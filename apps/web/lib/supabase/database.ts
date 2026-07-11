@@ -397,6 +397,7 @@ export type SchoolProspect = {
   sync_status: string | null;
   sync_error: string | null;
   contact_email_draft: string | null;
+  contacted_at: string | null;
 };
 
 type SchoolProspectInsert = {
@@ -426,6 +427,7 @@ type SchoolProspectInsert = {
   sync_status?: string | null;
   sync_error?: string | null;
   contact_email_draft?: string | null;
+  contacted_at?: string | null;
   id?: string;
   created_at?: string;
   updated_at?: string;

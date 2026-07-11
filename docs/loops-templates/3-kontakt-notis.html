@@ -1,0 +1,65 @@
+<!--
+  Loops transactional-mall: KONTAKT-NOTIS (intern, till dig)
+  env: LOOPS_KONTAKT_NOTIS_ID
+  Skickas vid varje inskickning av det allmänna kontaktformuläret (alla ämnen).
+  Datavariabler: name, email, school, topic, message, replyToAddress
+  Reply-To-fält i Loops: sätt till datavariabeln {{replyToAddress}} → "Svara" går rakt till avsändaren.
+  Förslag på ämnesrad: Nytt kontaktmeddelande: {{topic}} – {{name}}
+-->
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
+  </head>
+  <body style="margin:0; padding:0; background-color:#faf7f2;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#faf7f2;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
+            <tr>
+              <td style="padding:8px 8px 20px 8px;">
+                <span style="font-family:'Newsreader',Georgia,serif; font-size:20px; font-weight:500; color:#1a1a2e;">Elevante</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color:#fffdf9; border:1px solid #e8dcc4; border-radius:16px; padding:32px 36px;">
+                <p style="margin:0 0 6px 0; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#ff7a6b; font-weight:500;">Nytt kontaktmeddelande · {{topic}}</p>
+                <h1 style="margin:0 0 24px 0; font-family:'Newsreader',Georgia,serif; font-size:26px; line-height:1.25; font-weight:500; color:#1a1a2e;">{{name}}</h1>
+
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:13px; color:#8a8579; width:140px; vertical-align:top;">Skola / org.</td>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:15px; color:#1a1a2e;">{{school}}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:13px; color:#8a8579; vertical-align:top;">E-post</td>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:15px;"><a href="mailto:{{email}}" style="color:#3d6be6; text-decoration:none;">{{email}}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; border-bottom:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:13px; color:#8a8579; vertical-align:top;">Meddelande</td>
+                    <td style="padding:12px 0; border-top:1px solid #e8dcc4; border-bottom:1px solid #e8dcc4; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:15px; line-height:1.6; color:#4a4a5e; white-space:pre-wrap;">{{message}}</td>
+                  </tr>
+                </table>
+
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+                  <tr>
+                    <td style="border-radius:999px; background-color:#4f7fff;">
+                      <a href="mailto:{{email}}" style="display:inline-block; padding:12px 24px; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:14px; font-weight:500; color:#ffffff; text-decoration:none; border-radius:999px;">Svara</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 8px 8px 8px;">
+                <p style="margin:0; font-family:'Geist',-apple-system,'Segoe UI',Roboto,sans-serif; font-size:12px; color:#8a8579;">Automatisk notis från elevante.se · <a href="https://www.elevante.se" style="color:#566b47; text-decoration:none;">elevante.se</a></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

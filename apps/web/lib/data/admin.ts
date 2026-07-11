@@ -161,6 +161,9 @@ export type ProspectListItem = {
   lastSyncedAt: string | null;
   notionPageId: string | null;
   createdVia: string;
+  contactEmail: string | null;
+  latestLeadEmail: string | null;
+  contactedAt: string | null;
 };
 
 export async function getProspects(): Promise<ProspectListItem[]> {
@@ -168,7 +171,7 @@ export async function getProspects(): Promise<ProspectListItem[]> {
   const { data } = await supabase
     .from('school_prospects')
     .select(
-      'school_unit_code, school_name, municipality, students, skolform, sync_status, last_synced_at, notion_page_id, created_via',
+      'school_unit_code, school_name, municipality, students, skolform, sync_status, last_synced_at, notion_page_id, created_via, contact_email, latest_lead_email, contacted_at',
     )
     .order('last_synced_at', { ascending: false, nullsFirst: false })
     .limit(200);
@@ -182,6 +185,9 @@ export async function getProspects(): Promise<ProspectListItem[]> {
     lastSyncedAt: r.last_synced_at,
     notionPageId: r.notion_page_id,
     createdVia: r.created_via,
+    contactEmail: r.contact_email,
+    latestLeadEmail: r.latest_lead_email,
+    contactedAt: r.contacted_at,
   }));
 }
 

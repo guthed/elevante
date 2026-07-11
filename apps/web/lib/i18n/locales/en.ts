@@ -444,6 +444,8 @@ const en: Dictionary = {
           synced: 'Synced prospects',
           empty: 'No synced prospects yet.',
           openNotion: 'Open in Notion',
+          sendContact: 'Send intro email',
+          sentContact: 'Contacted',
           cols: {
             name: 'School',
             kommun: 'Municipality',

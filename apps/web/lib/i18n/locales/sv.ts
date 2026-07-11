@@ -444,6 +444,8 @@ const sv: Dictionary = {
           synced: 'Synkade prospekt',
           empty: 'Inga synkade prospekt ännu.',
           openNotion: 'Öppna i Notion',
+          sendContact: 'Skicka kontaktmejl',
+          sentContact: 'Kontaktad',
           cols: {
             name: 'Skola',
             kommun: 'Kommun',

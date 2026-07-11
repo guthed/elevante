@@ -14,7 +14,7 @@ export type NotionProspect = {
   lookupCount: number;
   leadEmail: string | null;
   skolform: string[];
-  dataSource: 'Inbound-uppslag' | 'Admin-sök' | 'Batch';
+  dataSource: 'Skoluppslag' | 'Prisberäknare-lead' | 'Kontaktformulär' | 'Prospektering' | 'Batch';
   firstSeen: string;
   lastSeen: string;
 };
@@ -220,4 +220,23 @@ export async function markNeedsCheckWithCandidates(
       Anteckningar: { rich_text: [{ text: { content: note.slice(0, 1900) } }] },
     } }),
   }).catch(() => {});
+}
+
+// Skriver ett äkta kontakt-event på kortet. Medvetet undantag från synk-regeln
+// "rör aldrig Status" — detta är en manuell kontakt, inte en maskin-synk.
+export async function markProspectContacted(pageId: string): Promise<void> {
+  const token = process.env.NOTION_TOKEN;
+  if (!token || !pageId) return;
+  const now = new Date().toISOString();
+  await fetch(`${NOTION}/pages/${pageId}`, {
+    method: 'PATCH',
+    headers: notionHeaders(token),
+    body: JSON.stringify({
+      properties: {
+        Status: { select: { name: 'Kontaktad' } },
+        'Senast kontaktad': { date: { start: now } },
+        Kontaktväg: { select: { name: 'E-post' } },
+      },
+    }),
+  }).catch((err) => console.error('[notion] markProspectContacted misslyckades:', err));
 }

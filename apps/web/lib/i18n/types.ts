@@ -451,6 +451,8 @@ export type Dictionary = {
           synced: string;
           empty: string;
           openNotion: string;
+          sendContact: string;
+          sentContact: string;
           cols: {
             name: string;
             kommun: string;
