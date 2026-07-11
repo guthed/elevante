@@ -96,4 +96,33 @@ export const TRY_COPY = {
   },
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
+
+  // Delning (tipsa en kollega)
+  shareTitle: { sv: 'Känner du någon som borde se det här?', en: 'Know someone who should see this?' },
+  shareHint: {
+    sv: 'Tipsa en kollega — vi skickar dem en länk att prova själva.',
+    en: 'Tip a colleague — we’ll send them a link to try it themselves.',
+  },
+  shareName: { sv: 'Ditt namn', en: 'Your name' },
+  shareYourEmail: { sv: 'Din mejl', en: 'Your email' },
+  shareColleagueEmail: { sv: 'Kollegans mejl', en: 'Colleague’s email' },
+  shareMessage: { sv: 'Hälsning (valfritt)', en: 'Message (optional)' },
+  shareSend: { sv: 'Skicka tipset', en: 'Send the tip' },
+  shareSending: { sv: 'Skickar…', en: 'Sending…' },
+  shareThanks: {
+    sv: 'Tack — vi har skickat tipset till {recipient}.',
+    en: 'Thanks — we’ve sent the tip to {recipient}.',
+  },
+  shareErrorMissing: {
+    sv: 'Fyll i ditt namn och två giltiga mejladresser.',
+    en: 'Enter your name and two valid email addresses.',
+  },
+  shareErrorRate: {
+    sv: 'Du har delat många gånger nyss — försök igen om en stund.',
+    en: 'You’ve shared a lot recently — try again in a bit.',
+  },
+  shareErrorGeneric: {
+    sv: 'Kunde inte skicka just nu. Försök igen om en stund.',
+    en: 'Couldn’t send right now. Please try again in a moment.',
+  },
 } satisfies Record<string, L>;
