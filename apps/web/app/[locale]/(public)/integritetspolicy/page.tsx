@@ -68,7 +68,7 @@ export default async function PrivacyPage({ params }: Props) {
         {
           h: 'Personuppgiftsbiträden',
           p: [
-            'Vi anlitar leverantörer som behandlar uppgifter för vår räkning, bland annat: Berget AI (transkribering och AI-infrastruktur, Sverige), Supabase (databas och lagring, EU), Anthropic (språkmodell, EU-endpoint), Vercel (drift) och Resend (utskick av e-post från kontaktformuläret). Webbplatsen använder även Google Analytics för anonymiserad statistik – se vår cookie-policy.',
+            'Vi anlitar leverantörer som behandlar uppgifter för vår räkning, bland annat: Berget AI (transkribering och AI-infrastruktur, Sverige), Supabase (databas och lagring, EU), Anthropic (språkmodell, EU-endpoint), Vercel (drift) och Loops (utskick av transaktionell e-post). Webbplatsen använder även Google Analytics för anonymiserad statistik – se vår cookie-policy.',
           ],
         },
         {
@@ -132,7 +132,7 @@ export default async function PrivacyPage({ params }: Props) {
         {
           h: 'Processors',
           p: [
-            'We use providers that process data on our behalf, including: Berget AI (transcription and AI infrastructure, Sweden), Supabase (database and storage, EU), Anthropic (language model, EU endpoint), Vercel (hosting) and Resend (sending email from the contact form). The website also uses Google Analytics for anonymised statistics – see our cookie policy.',
+            'We use providers that process data on our behalf, including: Berget AI (transcription and AI infrastructure, Sweden), Supabase (database and storage, EU), Anthropic (language model, EU endpoint), Vercel (hosting) and Loops (sending transactional email). The website also uses Google Analytics for anonymised statistics – see our cookie policy.',
           ],
         },
         {

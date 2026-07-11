@@ -11,7 +11,7 @@ export type ContactState =
 type IpRecord = { count: number; firstSeen: number };
 
 // In-memory rate limit. Fluid Compute återanvänder instanser så detta
-// räcker i Fas 0 (Resend + formulär är lågfrekvens). Byts mot Redis i Fas 2.
+// räcker i Fas 0 (mejl + formulär är lågfrekvens). Byts mot Redis i Fas 2.
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
 const ipLog = new Map<string, IpRecord>();
