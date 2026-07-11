@@ -54,7 +54,9 @@ export default async function TryPage({ params }: Props) {
               <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
               <h1 className="font-serif text-[clamp(2rem,2.6vw+1rem,3.25rem)] leading-[1.06] tracking-[-0.01em] text-[var(--color-ink)]">
                 {tr(locale, TRY_COPY.heroTitle)}{' '}
-                <span className="text-[var(--color-sage-deep)]">
+                {/* Coral, kursiv — samma accent-stil som startsidans rubrik
+                    (RotatingHeadline). Konsekvent orange-accent för poängen. */}
+                <span className="italic text-[var(--color-coral)]">
                   {tr(locale, TRY_COPY.heroTitleAccent)}
                 </span>
               </h1>
