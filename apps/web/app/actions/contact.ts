@@ -1,7 +1,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { Resend } from 'resend';
+import { sendLoopsTransactional } from '@/lib/loops';
 
 export type ContactState =
   | { status: 'idle' }
@@ -30,13 +30,6 @@ function isRateLimited(ip: string): boolean {
 
 function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function escape(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
 }
 
 export async function sendContact(
@@ -68,47 +61,17 @@ export async function sendContact(
     return { status: 'error', code: 'rate-limit' };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL ?? 'john@elevante.se';
 
-  // Om Resend inte är konfigurerat: logga till server-konsolen och
-  // behandla som success. Används under lokal utveckling innan
-  // RESEND_API_KEY är satt.
-  if (!apiKey) {
-    console.info('[contact] Resend not configured, logging only:', {
-      name,
-      email,
-      school,
-      topic,
-      message,
-    });
-    return { status: 'success' };
-  }
-
-  try {
-    const resend = new Resend(apiKey);
-    const subject = `Elevante-kontakt: ${topic} – ${name}`;
-    const html = `
-      <h2>Nytt meddelande från elevante.se</h2>
-      <p><strong>Namn:</strong> ${escape(name)}</p>
-      <p><strong>E-post:</strong> ${escape(email)}</p>
-      <p><strong>Skola/organisation:</strong> ${escape(school)}</p>
-      <p><strong>Ämne:</strong> ${escape(topic)}</p>
-      <p><strong>Meddelande:</strong></p>
-      <pre style="white-space:pre-wrap;font-family:inherit">${escape(message)}</pre>
-    `;
-
-    await resend.emails.send({
-      from: 'Elevante <hej@elevante.se>',
-      to,
-      replyTo: email,
-      subject,
-      html,
-    });
-
-    return { status: 'success' };
-  } catch (error) {
-    console.error('[contact] Resend error:', error);
-    return { status: 'error', code: 'generic' };
-  }
+  // Leveranskritiskt: kontaktformuläret har ingen DB-backup, så en miss måste
+  // synas för användaren. Variablerna matchar Loops-mallen "Elevante — kontakt-notis".
+  const ok = await sendLoopsTransactional(process.env.LOOPS_CONTACT_TRANSACTIONAL_ID, to, {
+    topic,
+    name,
+    school,
+    email,
+    message,
+  });
+  if (!ok) return { status: 'error', code: 'generic' };
+  return { status: 'success' };
 }
