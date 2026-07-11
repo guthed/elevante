@@ -9,6 +9,7 @@ import { LinkButton } from '@/components/public/Button';
 import { TRY_LESSONS } from '@/lib/try/lessons';
 import { TRY_COPY, tr } from '@/lib/try/copy';
 import { TryExperience } from '@/components/try/TryExperience';
+import { ShareTeaser } from '@/components/try/ShareTeaser';
 import type { L } from '@/lib/try/copy';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -107,6 +108,19 @@ export default async function TryPage({ params }: Props) {
                   {tr(locale, TRY_COPY.forSchools)} →
                 </Link>
               </div>
+            </div>
+          </div>
+
+          {/* Tipsa en kollega — alltid synligt, spänner full bredd under CTA-bandet. */}
+          <div className="mt-12 border-t border-[var(--color-sand)] pt-10">
+            <h3 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
+              {tr(locale, TRY_COPY.shareTitle)}
+            </h3>
+            <p className="mb-5 mt-2 max-w-md text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {tr(locale, TRY_COPY.shareHint)}
+            </p>
+            <div className="max-w-xl">
+              <ShareTeaser locale={locale} />
             </div>
           </div>
         </Container>
