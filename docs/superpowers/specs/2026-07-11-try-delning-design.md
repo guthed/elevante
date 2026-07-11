@@ -20,8 +20,9 @@ Affärsvärde: lärarledd viral spridning + varma leads i CRM:et.
 ## Beslut (låsta i brainstorm)
 
 - **Mekanik:** vi skickar mejlet (inte bara fångar adressen).
-- **Loggning:** samtliga inblandade (avsändare + varje mottagare) i den
-  **befintliga** Notion-DB:n Intresseanmälningar, käll-taggat.
+- **Loggning:** samtliga inblandade (avsändare + mottagare) i en **egen, dedikerad
+  Notion-DB "📤 Elevante – Delningar"** — inte i den skol-centrerade
+  Intresseanmälningar (person-tips ska inte blandas in i skol-pipelinen).
 - **Placering:** delnings-sektionen är **alltid synlig** i det säljande avslutet.
 
 ## Begränsningar (viktiga, styr implementationen)
@@ -30,21 +31,14 @@ Affärsvärde: lärarledd viral spridning + varma leads i CRM:et.
   `app/actions/contact.ts` skickar redan via Resend (`RESEND_API_KEY`, graceful
   fallback). Delnings-mejlet återanvänder det mönstret. (Loops-migrationen lever
   på en separat, omergad branch — ingen påverkan här.)
-- **Notion-schemat är inspekterat** (via ansluten Notion-MCP `6116c3ad…`,
-  workspace AVAIL). Databasen "📋 Elevante – Intresseanmälningar":
-  `database_id 43c5a965-9bf5-44ae-ba07-b92f73debeb3`, data source
-  `collection://f831983c-4aa9-4c07-9874-2fe849b69b2a`. Relevanta properties finns
-  redan: **Skola** (title), **E-post** (email), **Status** (select: Ny→…), och
-  **Datakälla** (select). Vi lägger till en ny Datakälla-option **"Try-delning"**
-  (kan göras via MCP nu — inget teamet behöver göra manuellt).
-- **Intresseanmälningar är skol-centrerad** (`upsertNotionProspect` dedupar på
-  Skolverkets `Skolenhetskod`, titeln = Skola). En delad person-mejl har ingen
-  skolkod → vi behöver en **ny, e-postbaserad lead-väg** i `lib/notion.ts`
-  (skapa rad med Skola=namn/mejl, E-post, Datakälla="Try-delning", Status="Ny"),
-  inte den befintliga skol-dedupen.
-- **Konsekvens att känna till:** person-tips hamnar som kort i **samma Kanban som
-  skolorna** (användaren ville logga samtliga där). De är käll-taggade
-  "Try-delning" så de kan filtreras i en egen vy.
+- **Notion-access bekräftad** (ansluten MCP `6116c3ad…`, workspace AVAIL) — jag
+  kan skapa databaser och skriva rader.
+- **Egen "Delningar"-DB:** i stället för att blanda in person-tips i den
+  skol-centrerade Intresseanmälningar skapar vi en dedikerad databas
+  **"📤 Elevante – Delningar"** (jag skapar den via MCP och får dess id). Renare —
+  inga person-kort i skol-pipelinen.
+- App:en skriver dit i runtime via `lib/notion.ts` (Notion API, `NOTION_TOKEN`)
+  med **nytt env `NOTION_SHARES_DATABASE_ID`** (sätts i Vercel).
 
 ## UI
 
@@ -76,16 +70,16 @@ Zod-validerad. Flöde:
 3. **Mejl via Resend** — ett brev per mottagare: ämne "{Namn} tror att Elevante
    kan vara något för dig", kropp med hälsning + länk till `/{locale}/try`,
    **reply-to = avsändaren**. Graceful fallback (loggar om `RESEND_API_KEY` saknas).
-4. **Notion best-effort** — skapa rader i Intresseanmälningar via ny e-postbaserad
-   `lib/notion.ts`-funktion (Notion API, `NOTION_TOKEN` + `NOTION_LEADS_DATABASE_ID`):
-   - **Mottagare:** Skola=mottagarens mejl, E-post=mottagaren, Datakälla="Try-delning",
-     Status="Ny", Anteckningar="Fick tips av {avsändarens namn} via /try".
-   - **Avsändare:** Skola=avsändarens namn, E-post=avsändaren, Datakälla="Try-delning",
-     Status="Ny", Anteckningar="Delade /try". Dedup på e-post (query först) så
-     samma avsändare inte dubblas vid upprepade delningar.
+4. **Notion best-effort** — skapa rader i den egna Delningar-DB:n via ny
+   `lib/notion.ts`-funktion (Notion API, `NOTION_TOKEN` + `NOTION_SHARES_DATABASE_ID`):
+   - **Mottagare-rad:** Namn=mottagarens mejl, E-post=mottagaren, Roll="Mottagare",
+     Delad av="{avsändarens namn} <{avsändarens mejl}>", Meddelande=hälsningen,
+     Status="Ny".
+   - **Avsändare-rad:** Namn=avsändarens namn, E-post=avsändaren, Roll="Avsändare",
+     Status="Ny".
    - Fel i Notion-steget fäller **inte** delningen (best-effort, loggas).
-   - **Engångs-setup (jag gör via MCP):** lägg till "Try-delning" som option i
-     Datakälla-selecten innan lansering.
+   - **Engångs-setup (jag gör via MCP innan lansering):** skapa databasen
+     "📤 Elevante – Delningar" (schema nedan) och notera id:t → `NOTION_SHARES_DATABASE_ID`.
 
 ## Datamodell
 
@@ -106,11 +100,12 @@ RLS: ingen publik läsning (server-only skrivning via service-role, som CRM:et).
 En separat `try_share_ratelimit`-mekanism eller återanvänd `try_shares` +
 tidsfönster-räkning per IP (avgörs i planen).
 
-**Notion (Intresseanmälningar)** — inga nya properties behövs, allt finns redan:
-- **Skola** (title) = namn/mejl, **E-post** = lead-mejl, **Status** = "Ny",
-  **Datakälla** = "Try-delning" (ny select-option, jag lägger till via MCP),
-  **Anteckningar** = kontext (vem som delade / hälsning).
-- data source: `collection://f831983c-4aa9-4c07-9874-2fe849b69b2a`.
+**Notion — ny DB "📤 Elevante – Delningar"** (jag skapar via MCP, under Elevante-sidan):
+- **Namn** (title), **E-post** (email), **Roll** (select: Avsändare, Mottagare),
+  **Delad av** (text), **Meddelande** (text), **Status** (select: Ny, Kontaktad,
+  Kvalificerad, Vunnen, Tappad), **Skapad** (created_time, auto).
+- id → `NOTION_SHARES_DATABASE_ID` (Vercel-env). En egen liten Kanban på Status
+  ger teamet en pipeline för person-tipsen, skild från skol-CRM:et.
 
 ## i18n / copy
 
@@ -137,5 +132,5 @@ knapp, bekräftelse, felmeddelanden.
 - Var Supabase-migrationen läggs och hur den appliceras mot prod
   (`msqfuywpbrteyrzjggsw`).
 
-(Notion-schemat är löst: DB + properties + data source kända; enda setup-steget
-är att lägga till Datakälla-optionen "Try-delning", vilket jag gör via MCP.)
+(Notion är löst: jag skapar "📤 Elevante – Delningar"-DB:n via MCP och lägger
+dess id i `NOTION_SHARES_DATABASE_ID`. Ingen manuell Notion-setup för teamet.)
