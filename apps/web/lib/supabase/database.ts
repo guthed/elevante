@@ -561,6 +561,28 @@ type ChatMessageInsert = {
   created_at?: string;
 };
 
+export type TryShare = {
+  id: string;
+  sender_name: string;
+  sender_email: string;
+  recipient_email: string;
+  message: string | null;
+  locale: string;
+  ip: string | null;
+  created_at: string;
+};
+
+type TryShareInsert = {
+  sender_name: string;
+  sender_email: string;
+  recipient_email: string;
+  message?: string | null;
+  locale?: string;
+  ip?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -581,6 +603,7 @@ export type Database = {
       school_lookups: TableDef<SchoolLookup, SchoolLookupInsert>;
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
       school_sync_log: TableDef<SchoolSyncLog, SchoolSyncLogInsert>;
+      try_shares: TableDef<TryShare, TryShareInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
