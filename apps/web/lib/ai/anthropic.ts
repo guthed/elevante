@@ -25,7 +25,11 @@ function languageClause(locale?: 'sv' | 'en'): string {
     : '';
 }
 
-function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): string {
+function buildSystemPrompt(
+  lessonConcepts: string[],
+  personaSummary?: string,
+  concise = false,
+): string {
   const conceptsBlock =
     lessonConcepts.length > 0
       ? `\n\nHär är listan över koncept som behandlas i lektionen:\n${lessonConcepts.map((c) => `- ${c}`).join('\n')}\n\nFörutom att svara på frågan, identifiera vilka 1-3 av dessa koncept som frågan tangerar mest. Om frågan inte passar något koncept, returnera en tom array.`
@@ -33,6 +37,11 @@ function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): s
 
   const personaBlock = personaSummary
     ? `\n\nDu känner den här elevens lärprofil: "${personaSummary}" — anpassa hur du förklarar därefter (t.ex. mer struktur om eleven brukar tappa fokus, konkreta exempel om eleven fastnar på abstrakt teori). Ändra aldrig fakta — bara hur du lägger fram dem.`
+    : '';
+
+  // /try vill ha korta, skimbara svar (kampanjsida) — inte fulla utläggningar.
+  const conciseBlock = concise
+    ? '\n\nHåll svaret KORT och skimbart: 2–4 meningar, kärnan först, undvik långa uppräkningar. Räcker det inte, avsluta med en kort inbjudan till en följdfråga (t.ex. "Vill du att jag går djupare på …?"). Fortfarande bara utifrån lektionen.'
     : '';
 
   return `Du är Elevante, en AI-assistent som hjälper gymnasieelever att förstå sina lektioner.
@@ -45,7 +54,7 @@ REGLER (måste följas exakt):
 5. Var rak och klar — undvik fyllmedel som "Bra fråga!" eller "Som sagt".
 6. När du citerar ett utdrag, hänvisa till det med lektionens titel.
 
-Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}${personaBlock}
+Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}${personaBlock}${conciseBlock}
 
 Svara ENDAST med valid JSON i detta format, ingen annan text:
 {"answer": "<ditt svar på elevens fråga>", "concepts": ["<koncept 1>", "<koncept 2>"]}`;
@@ -161,7 +170,7 @@ export async function* streamRagRaw(
   const stream = client.messages.stream({
     model: MODEL,
     max_tokens: 1024,
-    system: buildSystemPrompt(lessonConcepts),
+    system: buildSystemPrompt(lessonConcepts, undefined, true),
     messages: [{ role: 'user', content: userPrompt }],
   });
 
