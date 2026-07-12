@@ -96,8 +96,8 @@ export const TRY_COPY = {
 
   // Säljande avslutning (efter att besökaren testat demon)
   outroTitle: {
-    sv: 'Du testade precis. Ge era elever samma sak.',
-    en: 'You just tried it. Give your students the same.',
+    sv: 'Du testade precis framtidens klassrum. Varför inte ge någon annan chansen?',
+    en: 'You just tried the classroom of the future. Why not give someone else the chance?',
   },
   outroLede: {
     sv: 'Samma upplevelse, fast på era riktiga lektioner — varje genomgång inspelad, sökbar och redo att plugga på. Vi visar hur på 30 minuter.',
