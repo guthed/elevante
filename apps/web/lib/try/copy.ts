@@ -27,6 +27,7 @@ export const TRY_COPY = {
   // Lektionsväljare (chatt-först)
   scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
   scopeAll: { sv: 'Alla lektioner', en: 'All lessons' },
+  scopeSelected: { sv: '{n} lektioner valda', en: '{n} lessons selected' },
   lessonWord: { sv: 'Lektion', en: 'Lesson' },
   scopeHint: {
     sv: 'Fråga mot alla, eller välj en lektion att fokusera på.',
