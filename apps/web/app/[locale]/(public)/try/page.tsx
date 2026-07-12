@@ -111,8 +111,9 @@ export default async function TryPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Tipsa en kollega — alltid synligt, spänner full bredd under CTA-bandet. */}
-          <div className="mt-12 border-t border-[var(--color-sand)] pt-10">
+          {/* Tipsa en kollega — alltid synligt, spänner full bredd under CTA-bandet.
+              id="dela" är scroll-mål för peak-delight-CTA:n i provresultatet. */}
+          <div id="dela" className="mt-12 scroll-mt-24 border-t border-[var(--color-sand)] pt-10">
             <h3 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
               {tr(locale, TRY_COPY.shareTitle)}
             </h3>

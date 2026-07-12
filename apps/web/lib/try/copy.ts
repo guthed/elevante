@@ -97,6 +97,17 @@ export const TRY_COPY = {
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
 
+  // Peak-delight-CTA direkt efter provresultatet (starkaste wow-stunden)
+  resultCtaTitle: {
+    sv: 'Elevante gjorde och rättade provet åt dig.',
+    en: 'Elevante built and graded that test for you.',
+  },
+  resultCtaLede: {
+    sv: 'Tänk att era elever fick samma sak på varje genomgång — inspelat, sökbart, med prov och feedback på köpet.',
+    en: 'Now imagine your students getting this on every lesson — recorded, searchable, with tests and feedback built in.',
+  },
+  resultShareLink: { sv: 'Eller tipsa en kollega', en: 'Or tip a colleague' },
+
   // Delning (tipsa en kollega)
   shareTitle: { sv: 'Känner du någon som borde se det här?', en: 'Know someone who should see this?' },
   shareHint: {

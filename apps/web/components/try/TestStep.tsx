@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Locale } from '@/lib/i18n/config';
 import { TRY_COPY, tr } from '@/lib/try/copy';
+import { LinkButton } from '@/components/public/Button';
 
 type PublicQuestion = {
   id: string;
@@ -229,6 +230,29 @@ export function TestStep({ locale, lessonIds }: Props) {
           );
         })}
       </ol>
+
+      {/* Peak-delight-CTA — besökaren har just sett Elevante skapa OCH rätta
+          provet med personlig feedback. Fånga konverteringen här, inte först
+          långt ner på sidan. */}
+      <div className="rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-canvas)] p-6 text-center sm:p-8">
+        <h3 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
+          {tr(locale, TRY_COPY.resultCtaTitle)}
+        </h3>
+        <p className="mx-auto mt-3 max-w-md text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          {tr(locale, TRY_COPY.resultCtaLede)}
+        </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+          <LinkButton href={`/${locale}/kontakt?topic=demo`} size="lg">
+            {tr(locale, TRY_COPY.bookDemo)}
+          </LinkButton>
+          <a
+            href="#dela"
+            className="text-[0.9375rem] text-[var(--color-ink)] underline-offset-4 hover:underline"
+          >
+            {tr(locale, TRY_COPY.resultShareLink)} ↓
+          </a>
+        </div>
+      </div>
 
       <button
         type="button"
