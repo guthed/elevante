@@ -96,13 +96,14 @@ export const TRY_COPY = {
 
   // Säljande avslutning (efter att besökaren testat demon)
   outroTitle: {
-    sv: 'Du testade precis. Ge era elever samma sak.',
-    en: 'You just tried it. Give your students the same.',
+    sv: 'Du testade precis framtidens klassrum. Varför inte ge någon annan chansen?',
+    en: 'You just tried the classroom of the future. Why not give someone else the chance?',
   },
   outroLede: {
-    sv: 'Samma upplevelse, fast på era riktiga lektioner — varje genomgång inspelad, sökbar och redo att plugga på. Vi visar hur på 30 minuter.',
-    en: 'The same experience, but on your own lessons — every class recorded, searchable, and ready to study. We’ll show you how in 30 minutes.',
+    sv: 'Skicka en kollega en länk — de får uppleva precis det du nyss gjorde, utan konto. Och vill ni ha Elevante på era egna lektioner visar vi hur på en halvtimme.',
+    en: 'Send a colleague a link — they’ll get exactly what you just did, no account needed. And if you want Elevante on your own lessons, we’ll show you how in half an hour.',
   },
+  outroShareCta: { sv: 'Tipsa en kollega', en: 'Tip a colleague' },
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
 

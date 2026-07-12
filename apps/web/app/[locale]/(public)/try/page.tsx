@@ -109,15 +109,18 @@ export default async function TryPage({ params }: Props) {
               <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {tr(locale, TRY_COPY.outroLede)}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-                  {tr(locale, TRY_COPY.bookDemo)}
+              {/* Dela-vidare först (matchar avslutets nya rubrik) — scrollar till
+                  delnings-formuläret precis nedanför. Boka demo som andrahandsväg
+                  (demo har redan en primär-CTA i provresultatet). */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <LinkButton href="#dela" size="lg">
+                  {tr(locale, TRY_COPY.outroShareCta)} ↓
                 </LinkButton>
                 <Link
-                  href={`${base}/for-skolor`}
+                  href={`${base}/kontakt?topic=demo`}
                   className="inline-flex items-center gap-2 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)] underline-offset-4 hover:underline"
                 >
-                  {tr(locale, TRY_COPY.forSchools)} →
+                  {tr(locale, TRY_COPY.bookDemo)} →
                 </Link>
               </div>
             </div>
