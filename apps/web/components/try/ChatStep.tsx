@@ -47,16 +47,83 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: q, lessonIds }),
       });
-      const data = await res.json();
+
       if (res.status === 429) {
         setError(tr(locale, TRY_COPY.rateLimited));
-      } else if (!res.ok || data.offline || typeof data.answer !== 'string') {
+        return;
+      }
+      const reader = res.body?.getReader();
+      const isStream = (res.headers.get('content-type') ?? '').includes('text/event-stream');
+      if (!res.ok || !isStream || !reader) {
+        // Offline eller fel — icke-strömmande JSON.
         setError(tr(locale, TRY_COPY.chatError));
-      } else {
-        setMessages((m) => [
-          ...m,
-          { role: 'assistant', content: data.answer, citation: data.citation ?? null },
-        ]);
+        return;
+      }
+
+      // Strömma svaret token-för-token in i en assistent-bubbla; citatet kommer
+      // sist i ett `done`-event. "Tänker…" visas tills första token landar.
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let started = false;
+
+      const appendToAnswer = (text: string) =>
+        setMessages((m) => {
+          const copy = [...m];
+          const last = copy[copy.length - 1];
+          if (last?.role === 'assistant') {
+            copy[copy.length - 1] = { ...last, content: last.content + text };
+          }
+          return copy;
+        });
+
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split('\n\n');
+        buffer = parts.pop() ?? '';
+        for (const part of parts) {
+          const line = part.trim();
+          if (!line.startsWith('data:')) continue;
+          let evt: {
+            type: string;
+            text?: string;
+            citation?: Msg['citation'];
+            error?: boolean;
+          };
+          try {
+            evt = JSON.parse(line.slice(5).trim());
+          } catch {
+            continue;
+          }
+          if (evt.type === 'delta' && typeof evt.text === 'string') {
+            if (!started) {
+              started = true;
+              setPending(false);
+              setMessages((m) => [
+                ...m,
+                { role: 'assistant', content: evt.text ?? '', citation: null },
+              ]);
+            } else {
+              appendToAnswer(evt.text);
+            }
+            scrollDown();
+          } else if (evt.type === 'done') {
+            if (evt.error && !started) {
+              setError(tr(locale, TRY_COPY.chatError));
+            } else if (evt.citation) {
+              const citation = evt.citation;
+              setMessages((m) => {
+                const copy = [...m];
+                const last = copy[copy.length - 1];
+                if (last?.role === 'assistant') {
+                  copy[copy.length - 1] = { ...last, citation };
+                }
+                return copy;
+              });
+            }
+          }
+        }
       }
     } catch {
       setError(tr(locale, TRY_COPY.chatError));

@@ -133,6 +133,45 @@ export async function answerWithRag(
   };
 }
 
+/**
+ * Strömmande motsvarighet till answerWithRag: yield:ar RÅA text-deltas från
+ * modellen (dvs. den JSON-sträng modellen bygger upp, `{"answer": "...", ...}`).
+ * Anroparen (/api/try/chat) extraherar answer-strängen inkrementellt och skickar
+ * den till klienten, och parsar concepts ur den fullständiga JSON:en till slut.
+ * Systemprompten är IDENTISK med answerWithRag så svar/refusal/koncept är
+ * oförändrade — bara transporten skiljer. Anropa `anthropicIsConfigured()` först;
+ * generatorn ger inget om nyckel saknas.
+ */
+export async function* streamRagRaw(
+  question: string,
+  chunks: RagChunk[],
+  lessonConcepts: string[] = [],
+): AsyncGenerator<string> {
+  const client = getClient();
+  if (!client || chunks.length === 0) return;
+
+  const contextBlock = chunks
+    .map(
+      (chunk, idx) =>
+        `[Utdrag ${idx + 1} — ${chunk.lessonTitle ?? 'okänd lektion'}]\n${chunk.content}`,
+    )
+    .join('\n\n');
+  const userPrompt = `Lektionsutdrag:\n\n${contextBlock}\n\nFråga: ${question}`;
+
+  const stream = client.messages.stream({
+    model: MODEL,
+    max_tokens: 1024,
+    system: buildSystemPrompt(lessonConcepts),
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield event.delta.text;
+    }
+  }
+}
+
 type ClassEngagement = {
   concept: string;
   totalQuestions: number;
