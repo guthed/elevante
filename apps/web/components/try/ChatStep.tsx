@@ -184,11 +184,18 @@ export function ChatStep({ locale, lessonIds, suggestions, onToTest }: Props) {
                   </p>
                 ))}
                 {m.citation ? (
-                  <span className="mt-3 block rounded-[10px] border-l-2 border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-3 py-2 text-left text-[0.8125rem] text-[var(--color-ink-secondary)]">
-                    <span className="mb-1 block text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-sage-deep)]">
+                  <span className="mt-3 block rounded-[12px] border-l-[3px] border-[var(--color-sage-deep)] bg-[var(--color-surface)] px-4 py-3 text-left">
+                    <span className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-sage-deep)]">
                       {tr(locale, TRY_COPY.sourceLabel)} · {m.citation.ts}
                     </span>
-                    “{m.citation.quote}”
+                    {/* Pull-quote i serif kursiv — en riktig röst ur klassrummet,
+                        inte nedtonad UI-text. Detta är beviset mot "generisk AI". */}
+                    <span className="block font-serif text-[1rem] italic leading-relaxed text-[var(--color-ink)]">
+                      “{m.citation.quote}”
+                    </span>
+                    <span className="mt-2 block text-[0.75rem] text-[var(--color-ink-muted)]">
+                      {tr(locale, TRY_COPY.citationGrounding)}
+                    </span>
                   </span>
                 ) : null}
               </div>

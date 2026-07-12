@@ -47,6 +47,10 @@ export const TRY_COPY = {
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },
   suggestionsLabel: { sv: 'Eller prova:', en: 'Or try:' },
   sourceLabel: { sv: 'Ur lektionen', en: 'From the lesson' },
+  citationGrounding: {
+    sv: 'Svaret bygger på det här — ur lektionen, inte från nätet.',
+    en: 'The answer is grounded in this — from the lesson, not the web.',
+  },
   toTest: { sv: 'Testa dig själv', en: 'Test yourself' },
   toTestHint: {
     sv: 'Så funkar det. När du känner dig redo kan du testa dig själv på lektionerna.',
