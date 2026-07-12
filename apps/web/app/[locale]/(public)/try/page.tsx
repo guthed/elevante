@@ -64,6 +64,18 @@ export default async function TryPage({ params }: Props) {
               <p className="mt-5 max-w-md text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {tr(locale, TRY_COPY.heroLede)}
               </p>
+              {/* Mjuk trust-strip — trygghet utan att ljuga om kundreferenser. */}
+              <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.75rem] text-[var(--color-ink-muted)]">
+                {[TRY_COPY.trust1, TRY_COPY.trust2, TRY_COPY.trust3].map((t, i) => (
+                  <li key={i} className="flex items-center gap-1.5">
+                    <span
+                      className="h-1 w-1 rounded-full bg-[var(--color-sage-deep)]"
+                      aria-hidden
+                    />
+                    {tr(locale, t)}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="min-w-0 md:col-span-7">
               <TryExperience
@@ -111,8 +123,9 @@ export default async function TryPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Tipsa en kollega — alltid synligt, spänner full bredd under CTA-bandet. */}
-          <div className="mt-12 border-t border-[var(--color-sand)] pt-10">
+          {/* Tipsa en kollega — alltid synligt, spänner full bredd under CTA-bandet.
+              id="dela" är scroll-mål för peak-delight-CTA:n i provresultatet. */}
+          <div id="dela" className="mt-12 scroll-mt-24 border-t border-[var(--color-sand)] pt-10">
             <h3 className="font-serif text-[clamp(1.375rem,1.5vw+1rem,1.75rem)] leading-tight text-[var(--color-ink)]">
               {tr(locale, TRY_COPY.shareTitle)}
             </h3>

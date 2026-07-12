@@ -23,10 +23,15 @@ export const TRY_COPY = {
     sv: 'Sex inspelade lektioner ur en gymnasiekurs i Ekologi (Biologi 1). Ställ dina egna frågor — Elevante svarar med citat ur lektionen, och kan sen göra ett prov och rätta det åt dig.',
     en: 'Six recorded lessons from an upper-secondary Ecology course (Biology 1). Ask your own questions — Elevante answers with quotes from the lesson, then can build a test and grade it for you.',
   },
+  // Mjuk trust-strip under hjälte-ingressen (sanna, lugnande signaler).
+  trust1: { sv: 'GDPR-säkert', en: 'GDPR-secure' },
+  trust2: { sv: 'All data i Sverige', en: 'All data in Sweden' },
+  trust3: { sv: 'Svar bara ur lektionen', en: 'Answers only from the lesson' },
 
   // Lektionsväljare (chatt-först)
   scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
   scopeAll: { sv: 'Alla lektioner', en: 'All lessons' },
+  scopeSelected: { sv: '{n} lektioner valda', en: '{n} lessons selected' },
   lessonWord: { sv: 'Lektion', en: 'Lesson' },
   scopeHint: {
     sv: 'Fråga mot alla, eller välj en lektion att fokusera på.',
@@ -47,6 +52,10 @@ export const TRY_COPY = {
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },
   suggestionsLabel: { sv: 'Eller prova:', en: 'Or try:' },
   sourceLabel: { sv: 'Ur lektionen', en: 'From the lesson' },
+  citationGrounding: {
+    sv: 'Svaret bygger på det här — ur lektionen, inte från nätet.',
+    en: 'The answer is grounded in this — from the lesson, not the web.',
+  },
   toTest: { sv: 'Testa dig själv', en: 'Test yourself' },
   toTestHint: {
     sv: 'Så funkar det. När du känner dig redo kan du testa dig själv på lektionerna.',
@@ -96,6 +105,17 @@ export const TRY_COPY = {
   },
   bookDemo: { sv: 'Boka demo', en: 'Book a demo' },
   forSchools: { sv: 'Läs mer för skolor', en: 'Learn more for schools' },
+
+  // Peak-delight-CTA direkt efter provresultatet (starkaste wow-stunden)
+  resultCtaTitle: {
+    sv: 'Elevante gjorde och rättade provet åt dig.',
+    en: 'Elevante built and graded that test for you.',
+  },
+  resultCtaLede: {
+    sv: 'Tänk att era elever fick samma sak på varje genomgång — inspelat, sökbart, med prov och feedback på köpet.',
+    en: 'Now imagine your students getting this on every lesson — recorded, searchable, with tests and feedback built in.',
+  },
+  resultShareLink: { sv: 'Eller tipsa en kollega', en: 'Or tip a colleague' },
 
   // Delning (tipsa en kollega)
   shareTitle: { sv: 'Känner du någon som borde se det här?', en: 'Know someone who should see this?' },

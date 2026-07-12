@@ -25,7 +25,11 @@ function languageClause(locale?: 'sv' | 'en'): string {
     : '';
 }
 
-function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): string {
+function buildSystemPrompt(
+  lessonConcepts: string[],
+  personaSummary?: string,
+  concise = false,
+): string {
   const conceptsBlock =
     lessonConcepts.length > 0
       ? `\n\nHär är listan över koncept som behandlas i lektionen:\n${lessonConcepts.map((c) => `- ${c}`).join('\n')}\n\nFörutom att svara på frågan, identifiera vilka 1-3 av dessa koncept som frågan tangerar mest. Om frågan inte passar något koncept, returnera en tom array.`
@@ -33,6 +37,11 @@ function buildSystemPrompt(lessonConcepts: string[], personaSummary?: string): s
 
   const personaBlock = personaSummary
     ? `\n\nDu känner den här elevens lärprofil: "${personaSummary}" — anpassa hur du förklarar därefter (t.ex. mer struktur om eleven brukar tappa fokus, konkreta exempel om eleven fastnar på abstrakt teori). Ändra aldrig fakta — bara hur du lägger fram dem.`
+    : '';
+
+  // /try vill ha korta, skimbara svar (kampanjsida) — inte fulla utläggningar.
+  const conciseBlock = concise
+    ? '\n\nHåll svaret KORT och skimbart: 2–4 meningar, kärnan först, undvik långa uppräkningar. Räcker det inte, avsluta med en kort inbjudan till en följdfråga (t.ex. "Vill du att jag går djupare på …?"). Fortfarande bara utifrån lektionen.'
     : '';
 
   return `Du är Elevante, en AI-assistent som hjälper gymnasieelever att förstå sina lektioner.
@@ -45,7 +54,7 @@ REGLER (måste följas exakt):
 5. Var rak och klar — undvik fyllmedel som "Bra fråga!" eller "Som sagt".
 6. När du citerar ett utdrag, hänvisa till det med lektionens titel.
 
-Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}${personaBlock}
+Du är ingen privat lärare i största allmänhet — du är specifikt en kompis till lektionen.${conceptsBlock}${personaBlock}${conciseBlock}
 
 Svara ENDAST med valid JSON i detta format, ingen annan text:
 {"answer": "<ditt svar på elevens fråga>", "concepts": ["<koncept 1>", "<koncept 2>"]}`;
@@ -131,6 +140,45 @@ export async function answerWithRag(
     })),
     concepts,
   };
+}
+
+/**
+ * Strömmande motsvarighet till answerWithRag: yield:ar RÅA text-deltas från
+ * modellen (dvs. den JSON-sträng modellen bygger upp, `{"answer": "...", ...}`).
+ * Anroparen (/api/try/chat) extraherar answer-strängen inkrementellt och skickar
+ * den till klienten, och parsar concepts ur den fullständiga JSON:en till slut.
+ * Systemprompten är IDENTISK med answerWithRag så svar/refusal/koncept är
+ * oförändrade — bara transporten skiljer. Anropa `anthropicIsConfigured()` först;
+ * generatorn ger inget om nyckel saknas.
+ */
+export async function* streamRagRaw(
+  question: string,
+  chunks: RagChunk[],
+  lessonConcepts: string[] = [],
+): AsyncGenerator<string> {
+  const client = getClient();
+  if (!client || chunks.length === 0) return;
+
+  const contextBlock = chunks
+    .map(
+      (chunk, idx) =>
+        `[Utdrag ${idx + 1} — ${chunk.lessonTitle ?? 'okänd lektion'}]\n${chunk.content}`,
+    )
+    .join('\n\n');
+  const userPrompt = `Lektionsutdrag:\n\n${contextBlock}\n\nFråga: ${question}`;
+
+  const stream = client.messages.stream({
+    model: MODEL,
+    max_tokens: 1024,
+    system: buildSystemPrompt(lessonConcepts, undefined, true),
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield event.delta.text;
+    }
+  }
 }
 
 type ClassEngagement = {
