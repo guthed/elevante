@@ -23,6 +23,10 @@ export const TRY_COPY = {
     sv: 'Sex inspelade lektioner ur en gymnasiekurs i Ekologi (Biologi 1). Ställ dina egna frågor — Elevante svarar med citat ur lektionen, och kan sen göra ett prov och rätta det åt dig.',
     en: 'Six recorded lessons from an upper-secondary Ecology course (Biology 1). Ask your own questions — Elevante answers with quotes from the lesson, then can build a test and grade it for you.',
   },
+  // Mjuk trust-strip under hjälte-ingressen (sanna, lugnande signaler).
+  trust1: { sv: 'GDPR-säkert', en: 'GDPR-secure' },
+  trust2: { sv: 'All data i Sverige', en: 'All data in Sweden' },
+  trust3: { sv: 'Svar bara ur lektionen', en: 'Answers only from the lesson' },
 
   // Lektionsväljare (chatt-först)
   scopeLabel: { sv: 'Lektioner', en: 'Lessons' },
