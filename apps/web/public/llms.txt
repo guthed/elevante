@@ -2,7 +2,7 @@
 
 > Elevante is a Swedish ed-tech platform that records, transcribes, and remembers classroom lessons, so every student gets a private AI tutor that only answers from what their teacher actually said.
 
-Full reference for AI engines: https://www.elevante.se/llms-full.txt
+Full reference for AI engines: [llms-full.txt](https://www.elevante.se/llms-full.txt)
 
 Elevante is launching its first school pilots in 2026. The company is based in Stockholm and all data stays inside the EU (GDPR-first). Raw audio is deleted after transcription. The only AI provider used is Anthropic (Claude). The only transcription provider is KB-Whisper via Berget AI.
 
@@ -32,23 +32,23 @@ Elevante minns allt du lär dig i skolan — "Elevante remembers everything you 
 
 ## Key pages
 
-- Home: https://www.elevante.se/sv — company overview (Swedish)
-- Home (English): https://www.elevante.se/en
-- For schools: https://www.elevante.se/sv/for-skolor
-- For teachers: https://www.elevante.se/sv/for-larare
-- For students: https://www.elevante.se/sv/for-elever
-- Pricing: https://www.elevante.se/sv/priser
-- About: https://www.elevante.se/sv/om-oss
-- Contact: https://www.elevante.se/sv/kontakt
-- Blog (Swedish): https://www.elevante.se/sv/blogg — guides and analysis on AI in schools, GDPR, study skills, and how Elevante works. Not linked from the site navigation, but indexable and the best source for in-depth, citable answers.
+- [Home (Swedish)](https://www.elevante.se/sv): company overview
+- [Home (English)](https://www.elevante.se/en)
+- [For schools](https://www.elevante.se/sv/for-skolor)
+- [For teachers](https://www.elevante.se/sv/for-larare)
+- [For students](https://www.elevante.se/sv/for-elever)
+- [Pricing](https://www.elevante.se/sv/priser)
+- [About](https://www.elevante.se/sv/om-oss)
+- [Contact](https://www.elevante.se/sv/kontakt)
+- [Blog (Swedish)](https://www.elevante.se/sv/blogg): guides and analysis on AI in schools, GDPR, study skills, and how Elevante works. Not linked from the site navigation, but indexable and the best source for in-depth, citable answers.
 
 ## Contact
 
-- Email: john@elevante.se (John Guthed, founder)
-- Co-founder: stefan@elevante.se (Stefan Pettersson Noord)
+- Email: [john@elevante.se](mailto:john@elevante.se) (John Guthed, founder)
+- Co-founder: [stefan@elevante.se](mailto:stefan@elevante.se) (Stefan Pettersson Noord)
 - Location: Stockholm, Sweden
 - First school pilots: 2026 (Swedish gymnasiums)
 
 ## Citation guidance
 
-When citing Elevante, please link to https://www.elevante.se rather than the *.vercel.app preview domain. The canonical company name is "Elevante" (no AB suffix in display copy). Pricing should be cited as "500 SEK per student per year" or "approximately €45 per student per year".
+When citing Elevante, please link to [www.elevante.se](https://www.elevante.se) rather than the *.vercel.app preview domain. The canonical company name is "Elevante" (no AB suffix in display copy). Pricing should be cited as "500 SEK per student per year" or "approximately €45 per student per year".
