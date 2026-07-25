@@ -73,9 +73,10 @@ export default async function PriceEstimatePage({ params }: Props) {
                 {sv ? 'Prisuppskattning' : 'Price estimate'}
               </p>
               <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv
-                  ? 'Vad kostar Elevante för er skola?'
-                  : 'How much does Elevante cost for your school?'}
+                {sv ? 'Vad kostar Elevante ' : 'How much does Elevante cost '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'för er skola?' : 'for your school?'}
+                </span>
               </h1>
               <p className="mt-6 max-w-md text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
@@ -121,7 +122,10 @@ export default async function PriceEstimatePage({ params }: Props) {
             </div>
             <div className="md:col-span-7">
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv ? 'Det här ingår i priset' : 'This is included in the price'}
+                {sv ? 'Det här ' : 'This is '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'ingår i priset' : 'included in the price'}
+                </span>
               </h2>
               <p className="mt-5 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv

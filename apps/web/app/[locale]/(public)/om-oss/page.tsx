@@ -129,9 +129,10 @@ export default async function AboutPage({ params }: Props) {
         <Container width="wide">
           <p className="eyebrow mb-8">{sv ? 'Om oss' : 'About'}</p>
           <h1 className="font-serif text-[clamp(2.75rem,6vw+1rem,6rem)] leading-[0.98] tracking-[-0.015em] text-[var(--color-ink)]">
-            {sv
-              ? 'Läraren ska få vara lärare.'
-              : 'Teachers deserve to be teachers.'}
+            {sv ? 'Läraren ska få ' : 'Teachers deserve to '}
+            <span className="italic text-[var(--color-coral)]">
+              {sv ? 'vara lärare.' : 'be teachers.'}
+            </span>
           </h1>
           <p className="mt-10 max-w-2xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv
@@ -149,9 +150,10 @@ export default async function AboutPage({ params }: Props) {
           <div className="grid gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-5">
               <h2 className="font-serif text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-                {sv
-                  ? 'Det började med en sak vi hörde om och om igen.'
-                  : 'It started with one thing we heard over and over.'}
+                {sv ? 'Det började med en sak vi hörde ' : 'It started with one thing we heard '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'om och om igen.' : 'over and over.'}
+                </span>
               </h2>
               <div className="relative mt-8 h-56 overflow-hidden rounded-[16px]">
                 <Image
@@ -242,7 +244,8 @@ export default async function AboutPage({ params }: Props) {
               {sv ? 'Stockholm · Sverige' : 'Stockholm · Sweden'}
             </p>
             <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-              {sv ? 'Allt vi gör görs här.' : 'Everything we do is done here.'}
+              {sv ? 'Allt vi gör ' : 'Everything we do '}
+              <span className="italic text-[var(--color-coral)]">{sv ? 'görs här.' : 'is done here.'}</span>
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv

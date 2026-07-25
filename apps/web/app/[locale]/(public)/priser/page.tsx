@@ -170,7 +170,10 @@ export default async function PricingPage({ params }: Props) {
           <div className="text-center">
             <p className="eyebrow mb-6">{sv ? 'Priser' : 'Pricing'}</p>
             <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Ett pris. Allt ingår.' : 'One price. Everything included.'}
+              {sv ? 'Ett pris. ' : 'One price. '}
+              <span className="italic text-[var(--color-coral)]">
+                {sv ? 'Allt ingår.' : 'Everything included.'}
+              </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -257,7 +260,8 @@ export default async function PricingPage({ params }: Props) {
       <section className="bg-[var(--color-surface-soft)] py-20 md:py-28">
         <Container width="content">
           <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] italic leading-tight text-[var(--color-ink)]">
-            {sv ? 'Vad det kostar att INTE göra något' : 'What it costs to do nothing'}
+            {sv ? 'Vad det kostar ' : 'What it costs '}
+            <span className="text-[var(--color-coral)]">{sv ? 'att INTE göra något' : 'to do nothing'}</span>
           </h2>
           <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv

@@ -285,9 +285,10 @@ export default async function ForTeachersPage({ params }: Props) {
             <div className="md:col-span-5">
               <p className="eyebrow mb-6">{sv ? 'Tryggt för dig' : 'Safe for you'}</p>
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv
-                  ? 'Det här är inte ett övervakningsverktyg.'
-                  : 'This is not a surveillance tool.'}
+                {sv ? 'Det här är ' : 'This is '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'inte ett övervakningsverktyg.' : 'not a surveillance tool.'}
+                </span>
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv

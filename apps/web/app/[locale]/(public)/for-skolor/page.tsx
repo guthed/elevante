@@ -182,7 +182,10 @@ export default async function ForSchoolsPage({ params }: Props) {
                 {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
               </p>
               <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-                {sv ? 'Elevante är för hela skolan, inte enskilda elever.' : 'Elevante is for the whole school, not individual students.'}
+                {sv ? 'Elevante är för hela skolan, ' : 'Elevante is for the whole school, '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'inte enskilda elever.' : 'not individual students.'}
+                </span>
               </h1>
               <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
@@ -219,9 +222,10 @@ export default async function ForSchoolsPage({ params }: Props) {
             <div className="md:col-span-5">
               <p className="eyebrow mb-6">{sv ? 'Tryggt att införa' : 'Safe to roll out'}</p>
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv
-                  ? 'Det här används faktiskt.'
-                  : 'This one actually gets used.'}
+                {sv ? 'Det här används ' : 'This one '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'faktiskt.' : 'actually gets used.'}
+                </span>
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
@@ -390,7 +394,10 @@ export default async function ForSchoolsPage({ params }: Props) {
           <div className="grid gap-12 md:grid-cols-12 md:gap-16">
             <div className="md:col-span-5">
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv ? 'Byggt i Sverige. Lagras i Berget.' : 'Built in Sweden. Hosted inside a mountain (really).'}
+                {sv ? 'Byggt i Sverige. ' : 'Built in Sweden. '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'Lagras i Berget.' : 'Hosted inside a mountain (really).'}
+                </span>
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv

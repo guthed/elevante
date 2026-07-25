@@ -137,7 +137,8 @@ export default async function HomePage({ params }: Props) {
         <Container width="wide">
           <div className="max-w-2xl">
             <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,3rem)] leading-[1.1] tracking-[-0.01em] text-[var(--color-ink)]">
-              {sv ? 'Spela in. Spara. Fråga.' : 'Record. Save. Ask.'}
+              {sv ? 'Spela in. Spara. ' : 'Record. Save. '}
+              <span className="italic text-[var(--color-coral)]">{sv ? 'Fråga.' : 'Ask.'}</span>
             </h2>
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
@@ -254,7 +255,10 @@ export default async function HomePage({ params }: Props) {
             <div className="md:col-span-5">
               <p className="eyebrow mb-6">{sv ? 'Tryggt' : 'Safe'}</p>
               <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-[1.1] text-[var(--color-ink)]">
-                {sv ? 'Byggt i Sverige. Lagras i Berget.' : 'Built in Sweden. Hosted inside a mountain (really).'}
+                {sv ? 'Byggt i Sverige. ' : 'Built in Sweden. '}
+                <span className="italic text-[var(--color-coral)]">
+                  {sv ? 'Lagras i Berget.' : 'Hosted inside a mountain (really).'}
+                </span>
               </h2>
               <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv

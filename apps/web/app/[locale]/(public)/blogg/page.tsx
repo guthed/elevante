@@ -70,7 +70,8 @@ export default async function BlogIndexPage({ params }: Props) {
         <Container width="content">
           <p className="eyebrow mb-5">Blogg</p>
           <h1 className="max-w-3xl font-serif text-[clamp(2.5rem,4vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-            Skola, AI och allt däremellan.
+            Skola, AI och{' '}
+            <span className="italic text-[var(--color-coral)]">allt däremellan.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
             Guider och analyser för lärare, rektorer och elever — om AI i

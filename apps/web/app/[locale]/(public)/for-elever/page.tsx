@@ -193,7 +193,8 @@ export default async function ForStudentsPage({ params }: Props) {
       <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="content">
           <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
-            {sv ? 'Vad Elevante INTE gör' : 'What Elevante does NOT do'}
+            {sv ? 'Vad Elevante ' : 'What Elevante '}
+            <span className="italic text-[var(--color-coral)]">{sv ? 'INTE gör' : 'does NOT do'}</span>
           </h2>
           <ul className="mt-12 space-y-6">
             <NoBullet
