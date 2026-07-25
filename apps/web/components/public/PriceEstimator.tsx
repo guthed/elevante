@@ -2,7 +2,14 @@
 
 import { useActionState, useId, useRef, useState, useEffect } from 'react';
 import { getSchoolEstimate, submitCampaignLead, type LeadState } from '@/app/actions/campaign';
-import { estimateAnnualPrice, formatSEK, PRICE_PER_STUDENT_MONTH_SEK } from '@/lib/pricing';
+import {
+  estimateAnnualPrice,
+  formatSEK,
+  vatBreakdown,
+  PRICE_PER_STUDENT_MONTH_SEK,
+  VAT_BREAKDOWN_ENABLED,
+  type HuvudmanType,
+} from '@/lib/pricing';
 import schoolsRaw from '@/lib/data/schools.json';
 
 type School = { code: string; name: string };
@@ -31,6 +38,8 @@ export function PriceEstimator({ locale }: { locale: string }) {
   const [manualSchoolName, setManualSchoolName] = useState('');
   const [students, setStudents] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  // Momsvyn är avstängd tills satserna är verifierade (se lib/pricing.ts).
+  const [huvudman, setHuvudman] = useState<HuvudmanType>('kommunal');
 
   // Lead form
   const [leadState, leadAction, isPending] = useActionState(submitCampaignLead, INITIAL_LEAD);
@@ -48,6 +57,10 @@ export function PriceEstimator({ locale }: { locale: string }) {
   const validStudents = studentCount !== null && Number.isFinite(studentCount) && studentCount > 0;
   const estimatedPrice = validStudents ? estimateAnnualPrice(studentCount!) : null;
   const bigSchool = validStudents && studentCount! >= 5000;
+  const vat =
+    VAT_BREAKDOWN_ENABLED && estimatedPrice !== null
+      ? vatBreakdown(estimatedPrice, huvudman)
+      : null;
 
   const schoolName = manualMode ? manualSchoolName : (selectedSchool?.name ?? '');
   const schoolCode = manualMode ? manualCode : (selectedSchool?.code ?? '');
@@ -328,6 +341,81 @@ export function PriceEstimator({ locale }: { locale: string }) {
                     </p>
                   </div>
                 </div>
+                {vat !== null && (
+                  <div className="mt-6 border-t border-[var(--color-sand)] pt-6">
+                    <fieldset>
+                      <legend className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
+                        {sv ? 'Huvudman' : 'Operator type'}
+                      </legend>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {(
+                          [
+                            ['kommunal', sv ? 'Kommunal' : 'Municipal'],
+                            ['fristaende', sv ? 'Fristående' : 'Independent'],
+                          ] as [HuvudmanType, string][]
+                        ).map(([value, label]) => (
+                          <label
+                            key={value}
+                            className={`cursor-pointer rounded-[10px] border px-4 py-2 text-[0.9375rem] transition-colors duration-[160ms] ${
+                              huvudman === value
+                                ? 'border-[var(--color-coral)] bg-[var(--color-coral)]/10 text-[var(--color-ink)]'
+                                : 'border-[var(--color-sand)] text-[var(--color-ink-secondary)] hover:border-[var(--color-ink)]/30'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="huvudman"
+                              value={value}
+                              checked={huvudman === value}
+                              onChange={() => setHuvudman(value)}
+                              className="sr-only"
+                            />
+                            {label}
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+
+                    <dl className="mt-5 space-y-2 text-[0.9375rem]">
+                      <div className="flex justify-between gap-4">
+                        <dt className="text-[var(--color-ink-secondary)]">
+                          {sv ? 'Pris exkl. moms' : 'Price excl. VAT'}
+                        </dt>
+                        <dd className="text-[var(--color-ink)]">{formatSEK(vat.net, locale)}</dd>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <dt className="text-[var(--color-ink-secondary)]">
+                          {sv ? 'Moms 25 %' : 'VAT 25%'}
+                        </dt>
+                        <dd className="text-[var(--color-ink)]">{formatSEK(vat.vat, locale)}</dd>
+                      </div>
+                      <div className="flex justify-between gap-4 border-t border-[var(--color-sand)] pt-2">
+                        <dt className="font-medium text-[var(--color-ink)]">
+                          {vat.compensation === 'kommunkonto'
+                            ? sv
+                              ? 'Er faktiska kostnad'
+                              : 'Your actual cost'
+                            : sv
+                              ? 'Att betala'
+                              : 'Payable'}
+                        </dt>
+                        <dd className="font-medium text-[var(--color-ink)]">
+                          {formatSEK(vat.effectiveCost, locale)}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <p className="mt-4 text-[0.8125rem] leading-relaxed text-[var(--color-ink-muted)]">
+                      {vat.compensation === 'kommunkonto'
+                        ? sv
+                          ? 'Som kommunal huvudman får ni tillbaka den ingående momsen via kommunkontosystemet — momsen blir kostnadsneutral.'
+                          : 'As a municipal operator you recover the input VAT through the municipal VAT compensation system, so VAT is cost-neutral.'
+                        : sv
+                          ? 'Som fristående huvudman finns ingen avdragsrätt. Momskompensationen ges i stället som en schablon på hela bidragsbeloppet (6 %) — den dras inte av per faktura, så den täcker inte nödvändigtvis hela momsen på just det här köpet.'
+                          : 'As an independent operator there is no right to deduct VAT. Compensation is instead a flat 6% of your total grant — it is not deducted per invoice, so it does not necessarily cover all the VAT on this particular purchase.'}
+                    </p>
+                  </div>
+                )}
                 {bigSchool && (
                   <div className="mt-4 rounded-[10px] border border-[var(--color-coral)]/30 bg-[var(--color-coral)]/8 px-4 py-3 text-[0.9375rem] text-[var(--color-ink)]">
                     {sv
