@@ -1,4 +1,6 @@
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { alternatesFor, breadcrumbLd } from '@/lib/site';
@@ -19,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: alternatesFor(locale, '/priser'),
     title: sv ? 'Priser — Elevante' : 'Pricing — Elevante',
     description: sv
-      ? 'En tydlig kostnad. Allt ingår. 500 kr per elev per år.'
-      : 'A clear price. Everything included. SEK 500 per student per year.',
+      ? 'Ett tydligt pris för hela skolan — 500 kr per elev och år. Allt ingår, och det är inget läromedel ni köper per ämne.'
+      : 'A clear price for the whole school — SEK 500 per student per year. Everything included, and it is not a textbook you buy per subject.',
   };
 }
 
-// Editorial Calm — Stitch screen 06-priser.png
+// Editorial Calm — priset som ett kort, läromedel-argumentet som bärande sektion.
 
 export default async function PricingPage({ params }: Props) {
   const { locale } = await params;
@@ -39,7 +41,7 @@ export default async function PricingPage({ params }: Props) {
         'Skoladmin-dashboard',
         'GDPR-DPA och datalagring i Stockholm',
         'Onboarding och support',
-        'Roll-baserade behörigheter',
+        'Rollbaserade behörigheter',
       ]
     : [
         'Recording and transcription of all lessons',
@@ -50,11 +52,46 @@ export default async function PricingPage({ params }: Props) {
         'Role-based permissions',
       ];
 
+  // Läromedel → Elevante. Vänster dämpad, höger aktiv (coral).
+  const notTextbookRows: [string, string][] = sv
+    ? [
+        [
+          'Köps in per ämne, årskurs och upplaga',
+          'Ett pris för hela skolan — alla ämnen, år efter år',
+        ],
+        [
+          'Eget innehåll som måste kvalitetsgranskas',
+          'Inget eget innehåll — strikt RAG på lärarens egen lektion',
+        ],
+        [
+          'Ännu ett material eleverna ska ta till sig',
+          'Bevarar undervisningen som redan hålls',
+        ],
+      ]
+    : [
+        [
+          'Bought per subject, year group and edition',
+          'One price for the whole school — every subject, year after year',
+        ],
+        [
+          'Its own content that has to be vetted for quality',
+          'No content of its own — strict RAG on the teacher’s own lesson',
+        ],
+        [
+          'One more resource for students to take in',
+          'Preserves the teaching that already happens',
+        ],
+      ];
+
   const faqs: FaqItem[] = sv
     ? [
         {
           q: 'Vad ingår i priset?',
           a: 'Allt ingår i priset på 500 kr per elev och år. Det betyder inspelning och transkribering av alla lektioner, AI-chat för alla elever och lärare, skoladmin-dashboarden, GDPR-DPA, datalagring i Stockholm samt onboarding och support. Det finns inga moduler att köpa till.',
+        },
+        {
+          q: 'Är Elevante ett läromedel?',
+          a: 'Nej. Ett läromedel är innehåll som köps in per ämne och upplaga och som ska kvalitetsgranskas. Elevante har inget eget innehåll — AI:n svarar strikt utifrån lärarens egen inspelade lektion. Därför köps det inte per ämne, ligger inte i läromedelsbudgeten och kräver ingen innehållsgranskning. Priset på 500 kr per elev och år gäller hela skolan, alla ämnen.',
         },
         {
           q: 'Hur fungerar faktureringen?',
@@ -109,6 +146,10 @@ export default async function PricingPage({ params }: Props) {
         {
           q: 'What is included in the price?',
           a: 'Everything is included in the price of SEK 500 per student per year. That means recording and transcription of all lessons, AI chat for all students and teachers, the school admin dashboard, the GDPR-DPA, data storage in Stockholm, and onboarding and support. There are no modules to buy on top.',
+        },
+        {
+          q: 'Is Elevante a textbook?',
+          a: 'No. A textbook is content bought per subject and edition that has to be vetted for quality. Elevante has no content of its own — the AI answers strictly from the teacher’s own recorded lesson. So it is not bought per subject, does not sit in the teaching-materials budget, and needs no content review. The price of SEK 500 per student per year covers the whole school, every subject.',
         },
         {
           q: 'How does billing work?',
@@ -184,76 +225,126 @@ export default async function PricingPage({ params }: Props) {
         </Container>
       </section>
 
+      {/* PRISKORT — sidans tyngdpunkt */}
       <section className="pb-20 md:pb-28">
         <Container width="content">
-          <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.5rem)] leading-tight text-[var(--color-ink)]">
-            {sv ? 'Skola' : 'School'}
-          </h2>
-          <p className="mt-6 font-serif text-[clamp(2.5rem,4.5vw+1rem,4rem)] leading-[0.95] tracking-[-0.02em] text-[var(--color-ink)]">
-            {sv ? '500 kr per elev per år' : 'SEK 500 per student per year'}
-          </p>
-          <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
-            {sv
-              ? 'För en hel skola. Alla lärare och alla elever ingår. Allt vi bygger ingår.'
-              : 'For a whole school. All teachers and all students included. Everything we build is included.'}
-          </p>
+          <div className="mx-auto max-w-2xl rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 shadow-[0_18px_44px_-26px_rgba(60,45,30,0.4)] md:p-10">
+            <p className="eyebrow">{sv ? 'Skola' : 'School'}</p>
+            <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-serif text-[clamp(3rem,6vw+1rem,4.5rem)] leading-[0.9] tracking-[-0.02em] text-[var(--color-ink)]">
+                {sv ? '500 kr' : 'SEK 500'}
+              </span>
+              <span className="text-[1.0625rem] text-[var(--color-ink-secondary)]">
+                {sv ? '/ elev / år' : '/ student / year'}
+              </span>
+            </div>
+            <p className="mt-2 text-[0.9375rem] text-[var(--color-ink-muted)]">
+              {sv
+                ? 'Drygt en krona per elev och dag.'
+                : 'Just over one krona per student a day.'}
+            </p>
+            <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink)]">
+              {sv
+                ? 'För en hel skola. Alla lärare, alla elever, alla ämnen.'
+                : 'For a whole school. All teachers, all students, all subjects.'}
+            </p>
 
-          <ul className="mt-10 space-y-3">
-            {inclusions.map((item, i) => (
-              <li
-                key={i}
-                className="border-l-2 border-[var(--color-sand)] pl-5 text-[1rem] leading-relaxed text-[var(--color-ink)]"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+            <ul className="mt-8 grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
+              {inclusions.map((item, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-[0.9375rem] leading-snug text-[var(--color-ink)]"
+                >
+                  <Check />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
 
-          <div className="mt-10 flex flex-wrap items-center gap-5">
-            <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
-              {sv ? 'Boka demo' : 'Book demo'}
-            </LinkButton>
-            <LinkButton href={`${base}/vad-kostar-elevante`} variant="text" size="lg">
-              {sv ? 'Räkna ut vad det kostar för just er skola →' : 'Work out the cost for your school →'}
-            </LinkButton>
+            <div className="mt-9 flex flex-wrap items-center gap-5">
+              <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
+                {sv ? 'Boka demo' : 'Book demo'}
+              </LinkButton>
+              <LinkButton href={`${base}/vad-kostar-elevante`} variant="text" size="lg">
+                {sv ? 'Räkna ut ert pris →' : 'Work out your price →'}
+              </LinkButton>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-[var(--color-sand)] pt-6 text-[0.875rem] text-[var(--color-ink-secondary)]">
+              <span className="uppercase tracking-[0.1em] text-[0.75rem] font-medium text-[var(--color-ink-muted)]">
+                {sv ? 'Volymrabatt' : 'Volume discount'}
+              </span>
+              <span>
+                <span className="font-medium text-[var(--color-ink)]">
+                  {sv ? '1 000 elever' : '1,000 students'}
+                </span>{' '}
+                −8&nbsp;%
+              </span>
+              <span>
+                <span className="font-medium text-[var(--color-ink)]">
+                  {sv ? '5 000 elever' : '5,000 students'}
+                </span>{' '}
+                −15&nbsp;%
+              </span>
+            </div>
           </div>
+
+          <p className="mx-auto mt-6 max-w-2xl text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv ? 'Huvudman med flera skolor? ' : 'Operator with several schools? '}
+            <Link
+              href={`${base}/kontakt?topic=pricing`}
+              className="text-[var(--color-ink)] underline decoration-[var(--color-coral)] underline-offset-4"
+            >
+              {sv ? 'Vi tar fram en anpassad offert.' : 'We’ll put together a custom quote.'}
+            </Link>
+          </p>
         </Container>
       </section>
 
-      <section className="border-y border-[var(--color-sand)] py-12 md:py-16">
-        <Container width="wide">
-          <div className="grid gap-8 md:grid-cols-2">
-            <Compare
-              name={sv ? 'Skola' : 'School'}
-              desc={sv ? 'Hela skolan, alla lärare och elever.' : 'Whole school, all teachers and students.'}
-              price={sv ? '500 kr / elev / år' : 'SEK 500 / student / year'}
-              active
-            />
-            <Compare
-              name={sv ? 'Huvudman' : 'Operator'}
-              desc={sv ? 'Flera skolor under ett avtal.' : 'Multiple schools under one contract.'}
-              price={sv ? 'Anpassad offert' : 'Custom quote'}
-            />
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-20 md:py-28">
+      {/* DETTA ÄR INTE ETT LÄROMEDEL — bärande argument */}
+      <section className="border-t border-[var(--color-sand)] py-20 md:py-28">
         <Container width="content">
-          <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] leading-tight text-[var(--color-ink)]">
-            {sv ? 'Vad det INTE kostar' : 'What it does NOT cost'}
+          <p className="eyebrow mb-4">{sv ? 'Vad ni betalar för' : 'What you’re paying for'}</p>
+          <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
+            {sv ? 'Detta är ' : 'This is '}
+            <span className="italic text-[var(--color-coral)]">
+              {sv ? 'inte ett läromedel.' : 'not a textbook.'}
+            </span>
           </h2>
-          <ul className="mt-8 space-y-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
-            <li className="border-l-2 border-[var(--color-sage)] pl-5">
-              {sv ? 'Setup. Vi gör onboarding utan extra avgift.' : 'Setup. We onboard at no extra cost.'}
-            </li>
-            <li className="border-l-2 border-[var(--color-sage)] pl-5">
-              {sv ? 'Lektionstimmar. Spelar in så mycket ni vill.' : 'Lesson hours. Record as much as you want.'}
-            </li>
-            <li className="border-l-2 border-[var(--color-sage)] pl-5">
-              {sv ? 'Lagring. Allt ingår.' : 'Storage. Everything included.'}
-            </li>
-          </ul>
+          <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {sv
+              ? 'Ett läromedel är innehåll ni köper, granskar och byter ut. Elevante är inget av det — det är era egna lektioner, bevarade. Inget nytt stoff, inget att kvalitetsgranska, inget att köpa per ämne.'
+              : 'A textbook is content you buy, vet and replace. Elevante is none of that — it is your own lessons, preserved. No new material, nothing to quality-check, nothing to buy per subject.'}
+          </p>
+
+          <div className="mt-12 grid grid-cols-2 overflow-hidden rounded-[16px] border border-[var(--color-sand)]">
+            <div className="bg-[var(--color-surface-soft)] px-5 py-4 md:px-7">
+              <span className="text-[0.75rem] font-medium uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
+                {sv ? 'Ett läromedel' : 'A textbook'}
+              </span>
+            </div>
+            <div className="border-l-[3px] border-l-[var(--color-coral)] bg-[var(--color-surface)] px-5 py-4 md:px-7">
+              <span className="text-[0.75rem] font-medium uppercase tracking-[0.12em] text-[var(--color-coral)]">
+                Elevante
+              </span>
+            </div>
+            {notTextbookRows.map(([oldItem, neo], i) => (
+              <Fragment key={i}>
+                <div className="border-t border-t-[var(--color-sand)] bg-[var(--color-surface-soft)] px-5 py-5 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)] md:px-7">
+                  {oldItem}
+                </div>
+                <div className="border-t border-l-[3px] border-t-[var(--color-sand)] border-l-[var(--color-coral)] bg-[var(--color-surface)] px-5 py-5 text-[0.9375rem] leading-relaxed text-[var(--color-ink)] md:px-7">
+                  {neo}
+                </div>
+              </Fragment>
+            ))}
+          </div>
+
+          <p className="mt-10 max-w-2xl font-serif text-[clamp(1.25rem,1.5vw+1rem,1.625rem)] italic leading-snug text-[var(--color-ink)]">
+            {sv
+              ? 'Därför är priset ett — inte ett per titel. Och därför ligger det inte i läromedelsbudgeten.'
+              : 'That is why the price is one — not one per title. And why it does not sit in the teaching-materials budget.'}
+          </p>
         </Container>
       </section>
 
@@ -290,22 +381,19 @@ export default async function PricingPage({ params }: Props) {
   );
 }
 
-function Compare({
-  name,
-  desc,
-  price,
-  active = false,
-}: {
-  name: string;
-  desc: string;
-  price: string;
-  active?: boolean;
-}) {
+function Check() {
   return (
-    <div className={`${active ? 'border-t-2 border-[var(--color-coral)]' : 'border-t-2 border-transparent'} pt-6`}>
-      <p className="font-serif text-[1.125rem] text-[var(--color-ink)]">{name}</p>
-      <p className="mt-2 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">{desc}</p>
-      <p className="mt-3 text-[0.875rem] font-medium text-[var(--color-ink)]">{price}</p>
-    </div>
+    <svg
+      aria-hidden
+      viewBox="0 0 20 20"
+      className="mt-[0.15rem] h-[1.05rem] w-[1.05rem] shrink-0 text-[var(--color-sage-deep)]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 10.5 8 14.5 16 5.5" />
+    </svg>
   );
 }
