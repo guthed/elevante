@@ -91,11 +91,15 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'Är Elevante ett läromedel?',
-          a: 'Nej. Ett läromedel är innehåll som köps in per ämne och upplaga och som ska kvalitetsgranskas. Elevante har inget eget innehåll — AI:n svarar strikt utifrån lärarens egen inspelade lektion. Därför köps det inte per ämne, ligger inte i läromedelsbudgeten och kräver ingen innehållsgranskning. Priset på 500 kr per elev och år gäller hela skolan, alla ämnen.',
+          a: 'Nej. Ett läromedel är innehåll som köps in per ämne och upplaga och som ska kvalitetsgranskas. Elevante har inget eget innehåll — AI:n svarar strikt utifrån lärarens egen inspelade lektion. Därför köps det inte per ämne, ligger inte i läromedelsbudgeten och kräver ingen innehållsgranskning. Priset på 500 kr per elev och år gäller hela skolan, alla ämnen — och ska jämföras med lärartid och särskilt stöd, inte med läromedelsbudgeten.',
         },
         {
           q: 'Hur fungerar faktureringen?',
           a: 'Faktureringen sker årsvis till skolan eller huvudmannen. Antalet elever beräknas på antalet aktiva användare vid kvartalsstart, så ni betalar för den faktiska användningen. Ni får en samlad faktura — inga licenser att administrera per användare.',
+        },
+        {
+          q: 'Är priset inkl. moms?',
+          a: 'Priset anges exkl. moms — 500 kr per elev och år. Hur momsen faller ut i praktiken beror på om ni är kommunal eller fristående huvudman, och det reder vi ut i offerten.',
         },
         {
           q: 'Hur räknas antalet elever?',
@@ -131,7 +135,7 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'Vad händer med vår data om vi avslutar?',
-          a: 'Om ni avslutar avtalet exporterar vi all er data till er och raderar våra kopior inom 30 dagar. Det finns ingen inlåsning — datan tillhör skolan. Ni får alltså med er allt om ni byter lösning.',
+          a: 'Om ni avslutar avtalet exporterar vi all er data till er och raderar alla personuppgifter — transkript, elevkonton och allt som kan kopplas till en enskild person — inom 30 dagar. Datan tillhör skolan och det finns ingen inlåsning. För att förbättra tjänsten kan vi behålla helt avidentifierad, aggregerad statistik som inte kan kopplas till någon elev. Ingen AI tränas någonsin på elevers personuppgifter.',
         },
         {
           q: 'Hur skiljer sig priset från en lärplattform?',
@@ -139,7 +143,7 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'Vad kostar det att inte göra något?',
-          a: 'En lärare svarar i snitt på samma fråga 30 gånger per termin, och elever som halkar efter kostar mer per timme i läxhjälp än Elevante kostar per år. Till det kommer den kostnad ingen vill prata om: en elev som tappar modet. Att inte göra något är sällan gratis.',
+          a: 'Att inte göra något har också ett pris. Sveriges Lärares undersökning (2024) visar att 9 av 10 lärare ägnar tid åt annat än undervisning, och Skolverket (Attityder till skolan 2024) att 6 av 10 lärare ser elever med rätt till särskilt stöd sällan eller bara ibland få det. Elevante köper tillbaka lärartid och ger varje elev stöd på lektionens innehåll. Mätt mot lärartid och särskilt stöd är 500 kr per elev och år en liten kostnad.',
         },
       ]
     : [
@@ -149,11 +153,15 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'Is Elevante a textbook?',
-          a: 'No. A textbook is content bought per subject and edition that has to be vetted for quality. Elevante has no content of its own — the AI answers strictly from the teacher’s own recorded lesson. So it is not bought per subject, does not sit in the teaching-materials budget, and needs no content review. The price of SEK 500 per student per year covers the whole school, every subject.',
+          a: 'No. A textbook is content bought per subject and edition that has to be vetted for quality. Elevante has no content of its own — the AI answers strictly from the teacher’s own recorded lesson. So it is not bought per subject, does not sit in the teaching-materials budget, and needs no content review. The price of SEK 500 per student per year covers the whole school, every subject — and should be compared to teacher time and support, not to the teaching-materials budget.',
         },
         {
           q: 'How does billing work?',
           a: 'Billing is annual, to the school or operator. The student count is based on active users at the start of each quarter, so you pay for actual usage. You get one consolidated invoice — no per-user licences to administer.',
+        },
+        {
+          q: 'Does the price include VAT?',
+          a: 'Prices are shown excluding VAT — SEK 500 per student per year. How VAT works out in practice depends on whether you are a municipal or independent operator, and we sort that out in the quote.',
         },
         {
           q: 'How is the student count calculated?',
@@ -189,7 +197,7 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'What happens to our data if we leave?',
-          a: 'If you end the agreement, we export all your data to you and delete our copies within 30 days. There is no lock-in — the data belongs to the school. So you take everything with you if you switch solutions.',
+          a: 'If you end the agreement, we export all your data to you and delete all personal data — transcripts, student accounts and anything that can be linked to an individual — within 30 days. The data belongs to the school and there is no lock-in. To improve the service we may keep fully anonymised, aggregated statistics that cannot be linked to any student. No AI is ever trained on students’ personal data.',
         },
         {
           q: 'How does the price compare to a learning platform?',
@@ -197,7 +205,7 @@ export default async function PricingPage({ params }: Props) {
         },
         {
           q: 'What does it cost to do nothing?',
-          a: 'A teacher answers the same question 30 times a term on average, and students who fall behind cost more per hour in tutoring than Elevante costs per year. On top of that comes the cost nobody wants to talk about: a student who loses heart. Doing nothing is rarely free.',
+          a: 'Doing nothing has a price too. A teachers’ union survey (Sveriges Lärare, 2024) found that 9 in 10 teachers spend time on things other than teaching, and the Swedish National Agency for Education (Attitudes to school 2024) that 6 in 10 teachers see students entitled to extra support rarely or only sometimes get it. Elevante buys back teacher time and gives every student support on the lesson content. Measured against teacher time and support, SEK 500 per student per year is a small cost.',
         },
       ];
 
@@ -240,8 +248,8 @@ export default async function PricingPage({ params }: Props) {
             </div>
             <p className="mt-2 text-[0.9375rem] text-[var(--color-ink-muted)]">
               {sv
-                ? 'Drygt en krona per elev och dag.'
-                : 'Just over one krona per student a day.'}
+                ? 'Drygt en krona per elev och dag. Alla priser exkl. moms.'
+                : 'Just over one krona per student a day. All prices exclude VAT.'}
             </p>
             <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink)]">
               {sv
@@ -348,16 +356,54 @@ export default async function PricingPage({ params }: Props) {
         </Container>
       </section>
 
+      {/* JÄMFÖR MED RÄTT SAK — omramning med källbelagda siffror */}
       <section className="bg-[var(--color-surface-soft)] py-20 md:py-28">
         <Container width="content">
-          <h2 className="font-serif text-[clamp(1.75rem,2vw+1rem,2.25rem)] italic leading-tight text-[var(--color-ink)]">
-            {sv ? 'Vad det kostar ' : 'What it costs '}
-            <span className="text-[var(--color-coral)]">{sv ? 'att INTE göra något' : 'to do nothing'}</span>
+          <h2 className="font-serif text-[clamp(2rem,2.5vw+1rem,2.75rem)] leading-tight text-[var(--color-ink)]">
+            {sv ? 'Jämför med ' : 'Compare it to '}
+            <span className="italic text-[var(--color-coral)]">{sv ? 'rätt sak.' : 'the right thing.'}</span>
           </h2>
           <p className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv
-              ? 'En lärare svarar i snitt på samma fråga 30 gånger per termin. Elever som halkar efter kostar mer per timme i läxhjälp än Elevante kostar per år. Och en elev som tappar mod är en kostnad ingen vill prata om.'
-              : 'A teacher answers the same question 30 times a term on average. Students who fall behind cost more per hour in tutoring than Elevante costs per year. And a discouraged student is a cost nobody wants to talk about.'}
+              ? 'Läromedelsbudgeten är liten — i snitt 1 165 kr per elev och år, och sedan 1 juli 2024 lagligt öronmärkt för läroböcker. Elevante kan inte betalas ur den. Mätt mot vad en gymnasieplats faktiskt kostar — 141 500 kr per elev och år — är 500 kr 0,35 %. Den verkliga kostnaden ligger i lärartid och stöd:'
+              : 'The teaching-materials budget is small — on average SEK 1,165 per student a year, and since 1 July 2024 legally earmarked for textbooks. Elevante cannot be paid from it. Against what an upper-secondary place actually costs — SEK 141,500 per student a year — SEK 500 is 0.35%. The real cost sits in teacher time and support:'}
+          </p>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            <StatCard
+              figure={sv ? '9 av 10' : '9 in 10'}
+              claim={
+                sv
+                  ? 'lärare ägnar tid åt annat än undervisning.'
+                  : 'teachers spend time on things other than teaching.'
+              }
+              source={sv ? 'Sveriges Lärare, 2024' : 'Sveriges Lärare (teachers’ union), 2024'}
+            />
+            <StatCard
+              figure={sv ? '6 av 10' : '6 in 10'}
+              claim={
+                sv
+                  ? 'lärare ser elever med rätt till särskilt stöd sällan eller bara ibland få det.'
+                  : 'teachers see students entitled to extra support rarely or only sometimes get it.'
+              }
+              source={
+                sv
+                  ? 'Skolverket, Attityder till skolan 2024'
+                  : 'Swedish National Agency for Education, 2024'
+              }
+            />
+          </div>
+
+          <p className="mt-10 max-w-2xl font-serif text-[clamp(1.25rem,1.5vw+1rem,1.625rem)] italic leading-snug text-[var(--color-ink)]">
+            {sv
+              ? 'Det är där Elevante gör skillnad — och där priset ska mätas. Inte mot en bok.'
+              : 'That is where Elevante makes a difference — and where the price should be measured. Not against a book.'}
+          </p>
+
+          <p className="mt-8 max-w-2xl text-[0.8125rem] leading-relaxed text-[var(--color-ink-soft)]">
+            {sv
+              ? 'Källor: Läromedelsbarometern 2023 (läromedel per elev); skollagen (kostnadsfria läroböcker sedan 1 juli 2024); SCB (kostnad per gymnasieelev 2023); Sveriges Lärare, Med orimliga förutsättningar (2024); Skolverket, Attityder till skolan 2024, delrapport 3.'
+              : 'Sources: Läromedelsbarometern 2023 (materials spend per student); the Swedish Education Act (free textbooks since 1 July 2024); Statistics Sweden (cost per upper-secondary student, 2023); Sveriges Lärare, Med orimliga förutsättningar (2024); Swedish National Agency for Education, Attitudes to school 2024, sub-report 3.'}
           </p>
         </Container>
       </section>
@@ -378,6 +424,28 @@ export default async function PricingPage({ params }: Props) {
         </Container>
       </section>
     </>
+  );
+}
+
+function StatCard({
+  figure,
+  claim,
+  source,
+}: {
+  figure: string;
+  claim: string;
+  source: string;
+}) {
+  return (
+    <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-7">
+      <p className="font-serif text-[clamp(2.5rem,4vw+1rem,3.25rem)] leading-none tracking-[-0.02em] text-[var(--color-coral)]">
+        {figure}
+      </p>
+      <p className="mt-4 text-[1rem] leading-snug text-[var(--color-ink)]">{claim}</p>
+      <p className="mt-5 text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-soft)]">
+        {source}
+      </p>
+    </div>
   );
 }
 
