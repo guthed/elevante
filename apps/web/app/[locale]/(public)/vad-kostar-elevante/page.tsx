@@ -166,8 +166,13 @@ export default async function PriceEstimatePage({ params }: Props) {
           </p>
           <p className="mt-8 max-w-2xl text-[1.0625rem] leading-relaxed text-[var(--color-canvas)]/75">
             {sv
-              ? 'Elever som halkar efter kostar mer per timme i läxhjälp än Elevante kostar per år. Och en elev som tappar modet är en kostnad ingen vill prata om. Att inte göra något är sällan gratis.'
-              : 'Students who fall behind cost more per hour in tutoring than Elevante costs per year. And a student who loses heart is a cost no one wants to talk about. Doing nothing is rarely free.'}
+              ? 'Läraren är inte ensam. 9 av 10 lärare ägnar tid åt annat än undervisning, och 6 av 10 ser elever med rätt till särskilt stöd sällan eller bara ibland få det. Att inte göra något är sällan gratis.'
+              : 'That teacher is not alone. 9 in 10 teachers spend time on things other than teaching, and 6 in 10 see students entitled to extra support rarely or only sometimes get it. Doing nothing is rarely free.'}
+          </p>
+          <p className="mt-6 max-w-2xl text-[0.8125rem] leading-relaxed text-[var(--color-canvas)]/45">
+            {sv
+              ? 'Källor: Sveriges Lärare, Med orimliga förutsättningar (2024); Skolverket, Attityder till skolan 2024, delrapport 3.'
+              : 'Sources: Sveriges Lärare (teachers’ union), Med orimliga förutsättningar (2024); Swedish National Agency for Education, Attitudes to school 2024, sub-report 3.'}
           </p>
         </Container>
       </section>
