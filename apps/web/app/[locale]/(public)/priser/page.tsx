@@ -218,7 +218,7 @@ export default async function PricingPage({ params }: Props) {
         <Container width="content">
           <div className="text-center">
             <p className="eyebrow mb-6">{sv ? 'Priser' : 'Pricing'}</p>
-            <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+            <h1 className="hero-title text-[var(--color-ink)]">
               {sv ? 'Ett pris. ' : 'One price. '}
               <span className="italic text-[var(--color-coral)]">
                 {sv ? 'Allt ingår.' : 'Everything included.'}
@@ -233,43 +233,51 @@ export default async function PricingPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* PRISKORT — sidans tyngdpunkt */}
+      {/* PRIS — editorial, ingen box. Ett pris finns att förstå, inte att
+          välja mellan, så kortet fyllde ingen funktion: det klämde bara ihop
+          innehållet till halva radbredden och tvingade fram radbrytningar. */}
       <section className="pb-20 md:pb-28">
         <Container width="content">
-          <div className="mx-auto max-w-2xl rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 shadow-[0_18px_44px_-26px_rgba(60,45,30,0.4)] md:p-10">
-            <p className="eyebrow">{sv ? 'Skola' : 'School'}</p>
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-serif text-[clamp(3rem,6vw+1rem,4.5rem)] leading-[0.9] tracking-[-0.02em] text-[var(--color-ink)]">
-                {sv ? '500 kr' : 'SEK 500'}
-              </span>
-              <span className="text-[1.0625rem] text-[var(--color-ink-secondary)]">
-                {sv ? '/ elev / år' : '/ student / year'}
-              </span>
+          <div className="border-t border-[var(--color-sand)]">
+            <div className="grid gap-10 py-10 md:grid-cols-12 md:gap-16 md:py-12">
+              {/* Prisrälen */}
+              <div className="md:col-span-4">
+                <p className="eyebrow">{sv ? 'Pris per skola' : 'Price per school'}</p>
+                <p className="mt-3 font-serif text-[clamp(3rem,6vw+1rem,4.5rem)] leading-[0.92] tracking-[-0.02em] text-[var(--color-ink)]">
+                  {sv ? '500 kr' : 'SEK 500'}
+                </p>
+                <p className="mt-1.5 text-[1.0625rem] text-[var(--color-ink)]">
+                  {sv ? 'per elev och år' : 'per student and year'}
+                </p>
+                <p className="mt-4 text-[0.9375rem] leading-relaxed text-[var(--color-ink-muted)]">
+                  {sv
+                    ? 'Drygt en krona per elev och dag.'
+                    : 'Just over one krona per student a day.'}
+                </p>
+              </div>
+
+              {/* Vad som ingår — en kolumn, full bredd ⇒ varje punkt på en rad */}
+              <div className="md:col-span-8">
+                <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink)]">
+                  {sv
+                    ? 'För en hel skola — alla lärare, alla elever, alla ämnen.'
+                    : 'For a whole school — all teachers, all students, all subjects.'}
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {inclusions.map((item, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3 text-[0.9375rem] leading-snug text-[var(--color-ink)]"
+                    >
+                      <Check />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <p className="mt-2 text-[0.9375rem] text-[var(--color-ink-muted)]">
-              {sv
-                ? 'Drygt en krona per elev och dag. Alla priser exkl. moms.'
-                : 'Just over one krona per student a day. All prices exclude VAT.'}
-            </p>
-            <p className="mt-6 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink)]">
-              {sv
-                ? 'För en hel skola. Alla lärare, alla elever, alla ämnen.'
-                : 'For a whole school. All teachers, all students, all subjects.'}
-            </p>
 
-            <ul className="mt-8 grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
-              {inclusions.map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-3 text-[0.9375rem] leading-snug text-[var(--color-ink)]"
-                >
-                  <Check />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-9 flex flex-wrap items-center gap-5">
+            <div className="flex flex-wrap items-center gap-5 border-t border-[var(--color-sand)] py-8">
               <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
                 {sv ? 'Boka demo' : 'Book demo'}
               </LinkButton>
@@ -278,26 +286,23 @@ export default async function PricingPage({ params }: Props) {
               </LinkButton>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-[var(--color-sand)] pt-6 text-[0.875rem] text-[var(--color-ink-secondary)]">
-              <span className="uppercase tracking-[0.1em] text-[0.75rem] font-medium text-[var(--color-ink-muted)]">
-                {sv ? 'Volymrabatt' : 'Volume discount'}
+            <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 border-t border-[var(--color-sand)] pt-6 text-[0.875rem] text-[var(--color-ink-secondary)]">
+              <span className="eyebrow">{sv ? 'Volymrabatt' : 'Volume discount'}</span>
+              <span>
+                {sv ? 'Från 1 000 elever' : 'From 1,000 students'}{' '}
+                <span className="font-medium text-[var(--color-coral)]">−8&nbsp;%</span>
               </span>
               <span>
-                <span className="font-medium text-[var(--color-ink)]">
-                  {sv ? '1 000 elever' : '1,000 students'}
-                </span>{' '}
-                −8&nbsp;%
+                {sv ? 'Från 5 000 elever' : 'From 5,000 students'}{' '}
+                <span className="font-medium text-[var(--color-coral)]">−15&nbsp;%</span>
               </span>
-              <span>
-                <span className="font-medium text-[var(--color-ink)]">
-                  {sv ? '5 000 elever' : '5,000 students'}
-                </span>{' '}
-                −15&nbsp;%
+              <span className="text-[0.8125rem] text-[var(--color-ink-soft)]">
+                {sv ? 'Alla priser exkl. moms.' : 'All prices exclude VAT.'}
               </span>
             </div>
           </div>
 
-          <p className="mx-auto mt-6 max-w-2xl text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
+          <p className="mt-6 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
             {sv ? 'Huvudman med flera skolor? ' : 'Operator with several schools? '}
             <Link
               href={`${base}/kontakt?topic=pricing`}

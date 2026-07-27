@@ -147,6 +147,24 @@
 }
 
 @layer components {
+  /* Hjälterubriker — två nivåer istället för en handtunad clamp per sida.
+     Nivån följer layouten, inte sidan: `.hero-title` när rubriken äger hela
+     raden, `.hero-title-split` när den delar rad med bild eller panel.
+     Lägg inte till en tredje nivå utan att en ny layout kräver det. */
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.75rem, 5.5vw + 1rem, 5.5rem);
+    line-height: 0.99;
+    letter-spacing: -0.015em;
+  }
+
+  .hero-title-split {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+    line-height: 1.03;
+    letter-spacing: -0.012em;
+  }
+
   /* Editorial eyebrow */
   .eyebrow {
     font-family: var(--font-sans);
