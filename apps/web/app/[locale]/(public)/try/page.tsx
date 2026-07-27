@@ -53,7 +53,7 @@ export default async function TryPage({ params }: Props) {
           <div className="grid gap-8 md:grid-cols-12 md:gap-x-12 md:gap-y-6 lg:gap-x-16">
             <div className="min-w-0 md:col-span-5 md:self-center">
               <p className="eyebrow mb-4">{tr(locale, TRY_COPY.eyebrow)}</p>
-              <h1 className="font-serif text-[clamp(2rem,2.6vw+1rem,3.25rem)] leading-[1.06] tracking-[-0.01em] text-[var(--color-ink)]">
+              <h1 className="hero-title-split text-[var(--color-ink)]">
                 {tr(locale, TRY_COPY.heroTitle)}{' '}
                 {/* Coral, kursiv — samma accent-stil som startsidans rubrik
                     (RotatingHeadline). Konsekvent orange-accent för poängen. */}

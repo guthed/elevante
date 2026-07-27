@@ -128,8 +128,8 @@ export default async function AboutPage({ params }: Props) {
       <section className="pt-20 pb-16 md:pt-28 md:pb-20">
         <Container width="wide">
           <p className="eyebrow mb-8">{sv ? 'Om oss' : 'About'}</p>
-          <h1 className="font-serif text-[clamp(2.75rem,6vw+1rem,6rem)] leading-[0.98] tracking-[-0.015em] text-[var(--color-ink)]">
-            {sv ? 'Läraren ska få ' : 'Teachers deserve to '}
+          <h1 className="hero-title text-[var(--color-ink)]">
+            {sv ? 'Lärare skall ' : 'Teachers deserve to '}
             <span className="italic text-[var(--color-coral)]">
               {sv ? 'vara lärare.' : 'be teachers.'}
             </span>

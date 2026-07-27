@@ -72,7 +72,7 @@ export default async function PriceEstimatePage({ params }: Props) {
               <p className="eyebrow mb-6">
                 {sv ? 'Prisuppskattning' : 'Price estimate'}
               </p>
-              <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+              <h1 className="hero-title-split text-[var(--color-ink)]">
                 {sv ? 'Vad kostar Elevante ' : 'How much does Elevante cost '}
                 <span className="italic text-[var(--color-coral)]">
                   {sv ? 'för er skola?' : 'for your school?'}

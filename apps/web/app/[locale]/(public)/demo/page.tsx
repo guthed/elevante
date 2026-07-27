@@ -41,7 +41,7 @@ export default async function DemoPage({ params }: Props) {
           </p>
           <div className="grid items-end gap-6 md:grid-cols-12 md:gap-12">
             <div className="md:col-span-7">
-              <h1 className="font-serif text-[clamp(2.5rem,4.5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+              <h1 className="hero-title-split text-[var(--color-ink)]">
                 {sv ? 'Två tryck. Sen minns Elevante.' : 'Two taps. Then Elevante remembers.'}
               </h1>
             </div>

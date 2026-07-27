@@ -181,7 +181,7 @@ export default async function ForSchoolsPage({ params }: Props) {
               <p className="eyebrow mb-6">
                 {sv ? 'För skolledning och huvudmän' : 'For school leaders and operators'}
               </p>
-              <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+              <h1 className="hero-title-split text-[var(--color-ink)]">
                 {sv ? 'Elevante är för hela skolan, ' : 'Elevante is for the whole school, '}
                 <span className="italic text-[var(--color-coral)]">
                   {sv ? 'inte enskilda elever.' : 'not individual students.'}

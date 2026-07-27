@@ -234,7 +234,7 @@ export default async function ForTeachersPage({ params }: Props) {
           <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
             <div>
               <p className="eyebrow mb-6">{sv ? 'För läraren' : 'For the teacher'}</p>
-              <h1 className="font-serif text-[clamp(2.75rem,5.5vw+1rem,5.5rem)] leading-[0.98] tracking-[-0.015em] text-[var(--color-ink)]">
+              <h1 className="hero-title-split text-[var(--color-ink)]">
                 {sv ? (
                   <>
                     Du lär ut.{' '}

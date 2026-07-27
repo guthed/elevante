@@ -45,7 +45,7 @@ export default async function ContactPage({ params, searchParams }: Props) {
       <section className="pt-16 pb-12 md:pt-24 md:pb-16">
         <Container width="content">
           <p className="eyebrow mb-6">{page.hero.eyebrow}</p>
-          <h1 className="font-serif text-[clamp(2.5rem,4.5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+          <h1 className="hero-title text-[var(--color-ink)]">
             {page.hero.title}
           </h1>
           <p className="mt-8 max-w-xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">

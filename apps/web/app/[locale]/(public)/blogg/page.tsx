@@ -69,7 +69,7 @@ export default async function BlogIndexPage({ params }: Props) {
       <section className="pt-16 pb-12 md:pt-24 md:pb-16">
         <Container width="content">
           <p className="eyebrow mb-5">Blogg</p>
-          <h1 className="max-w-3xl font-serif text-[clamp(2.5rem,4vw+1rem,4rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
+          <h1 className="hero-title max-w-3xl text-[var(--color-ink)]">
             Skola, AI och{' '}
             <span className="italic text-[var(--color-coral)]">allt däremellan.</span>
           </h1>

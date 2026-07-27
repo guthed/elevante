@@ -24,7 +24,7 @@ export function RotatingPhrase({ locale }: { locale: string }) {
   const sv = locale === 'sv';
 
   return (
-    <h1 className="font-serif text-[clamp(2.25rem,4.5vw+1rem,4.5rem)] leading-[1.05] tracking-[-0.015em] text-[var(--color-ink)]">
+    <h1 className="hero-title-split text-[var(--color-ink)]">
       {sv ? 'Ställ alla frågor du inte' : 'Ask all the questions you'}{' '}
       <span className="relative inline-flex overflow-hidden align-baseline leading-[1.15]">
         <span key={index} className="animate-sweep-down italic text-[var(--color-coral)]">

@@ -38,7 +38,7 @@ export function RotatingHeadline({ locale }: { locale: string }) {
   const { lead, tail } = list[index];
 
   return (
-    <h1 className="font-serif text-[clamp(2.5rem,5vw+1rem,5rem)] leading-[1.02] tracking-[-0.01em] text-[var(--color-ink)]">
+    <h1 className="hero-title-split text-[var(--color-ink)]">
       <span key={index} className="block animate-page-in">
         {lead}{' '}
         <span className="italic text-[var(--color-coral)]">{tail}</span>
