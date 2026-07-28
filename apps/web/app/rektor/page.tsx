@@ -4,6 +4,7 @@ import Reveal from '@/components/showcase/Reveal';
 import ChatDemo from '@/components/showcase/ChatDemo';
 import ZoomableShot from '@/components/showcase/ZoomableShot';
 import { LoopStep, RecVisual, TranscribeVisual, AskVisual } from '@/components/showcase/LoopVisuals';
+import { CampaignTracking } from '@/components/public/CampaignTracking';
 
 import shotChat from '../../public/rektor/chat-kallor.png';
 import shotRag from '../../public/rektor/chat-rag-arlighet.png';
@@ -29,6 +30,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default function RektorPage() {
   return (
     <main className="bg-canvas text-ink">
+      <CampaignTracking page="rektor" />
       {/* 01 — HERO */}
       <section className="flex min-h-[88vh] items-center px-6 py-24 sm:px-10">
         <div className="container-content w-full">

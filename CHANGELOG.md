@@ -16,6 +16,25 @@ Format per entry:
 
 ---
 
+## [Besöksspårning på säljsidorna — Albacross-fix + personliga länkar] — 2026-07-28
+
+### Byggt
+- **Albacross-fixen**: CSP:n tillät aldrig `serve.albacross.com`, så `track.js` var blockerat av webbläsaren sedan koden lades in — noll events har nått Albacross. `https://*.albacross.com` tillagt i `script-src` och `connect-src`. Dessutom låg `window._nQc` bara klient-renderad bakom cookie-samtycket och syntes därför inte i sidans HTML, vilket är vad Albacross installationskontroll läser. Integrationen delad i `AlbacrossSiteId` (bara ID-deklarationen, server-renderad, ingen cookie → inget samtycke) och `Albacross` (`track.js`, kvar bakom samtycke).
+- **Albacross på säljsidorna**: `/rektor` och `/larare` låg utanför `[locale]` och saknade all analys-wiring. Ny `components/public/CampaignTracking.tsx` samlar Albacross + cookie-banner + besöksspårning. Medvetet INTE på `/rektor/deck` — presentationsläget är Johns egna besök och hör inte hemma i statistiken.
+- **Personliga länkar (`?k=<kod>`)**: skolversionen av investerardeckets läs-spårning, kopplad till den befintliga CRM-raden i stället för en egen invite-tabell. Migration `20260728120000_school_visits.sql`: `visit_code` på `school_prospects` (unikt, partiellt index) + `school_page_views` + fem security-definer-RPC:er. Ingen lösenordsvägg — koden identifierar bara vilken rad besöket hör till.
+- **Notis + rollup**: Loops-mejl vid öppning (`notifySchoolVisit`, best-effort), och `pushVisitRollup` skriver senast inne, max scroll, antal besök, minuter och besökta sidor till prospect-raden i Notion.
+- **Admin**: `ensureVisitLinkAction` myntar koden vid första klicket och returnerar båda länkarna; `VisitLinkButtons` i CRM-listan kopierar dem.
+
+### Tekniska beslut
+- **Signerad token i stället för cookie**: säljsidorna renderas statiskt och kan därför inte sätta cookies under render. `/api/skolbesok/oppna` delar ut en HMAC-signerad sessionstoken som klienten skickar tillbaka med telemetrin — utan giltig signatur skrivs ingenting, så främmande sessioner kan inte fejkas.
+- **Delad signering**: HMAC-koden lyft ur `lib/investor-access.ts` till `lib/signed-token.ts` och delas nu av investerardecket och skolbesöken. Investerardeckets publika API är oförändrat.
+- **Delad mätning**: scroll-/tidslogiken lyft ur `DeckTelemetry` till hooken `useEngagement` (bara refs, ingen setState) och delas av båda spårarna.
+- **Status rörs aldrig**: till skillnad från investerardecket, där Status *är* läsläget, är Status i skol-CRM:et säljpipelinen och ägs av människan. `pushVisitRollup` skriver bara maskinfält.
+- **Aldrig störa sidan**: både route handlers degraderar till 204 vid okänd kod, saknad konfiguration eller Supabase-fel. Öppningsendpointen är IP-rate-limitad (20/min) så koder inte kan brute-forcas till skräpdata och mejlspam.
+- **Mejl-dedup**: `record_school_visit_open` returnerar `is_new_visit = false` om samma prospect haft en session de senaste 30 minuterna — en omladdning mitt i läsningen ska inte ge ett nytt mejl.
+
+---
+
 ## [Skol-CRM — Notion som CRM + Skolverket-sync] — 2026-07-01
 
 ### Byggt

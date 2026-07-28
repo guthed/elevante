@@ -451,12 +451,19 @@ export type Dictionary = {
           synced: string;
           empty: string;
           openNotion: string;
+          visitLink: {
+            rektor: string;
+            larare: string;
+            copied: string;
+            failed: string;
+          };
           cols: {
             name: string;
             kommun: string;
             students: string;
             status: string;
             synced: string;
+            link: string;
           };
         };
       };

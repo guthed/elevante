@@ -59,7 +59,14 @@ export default async function AdminCrmPage({ params }: Props) {
         <div className="mt-6">
           <CrmProspectList
             items={prospects}
-            dict={{ synced: t.synced, empty: t.empty, openNotion: t.openNotion, resync: t.resync, cols: t.cols }}
+            dict={{
+              synced: t.synced,
+              empty: t.empty,
+              openNotion: t.openNotion,
+              resync: t.resync,
+              visitLink: t.visitLink,
+              cols: t.cols,
+            }}
           />
         </div>
       </section>

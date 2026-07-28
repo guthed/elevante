@@ -4,6 +4,9 @@ import { after } from 'next/server';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { searchSchoolUnits, type SchoolUnit } from '@/lib/skolverket';
 import { syncProspect } from '@/lib/prospects';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import { generateVisitCode } from '@/lib/school-visit';
+import { SITE_URL } from '@/lib/site';
 
 async function requireAdmin() {
   const profile = await getCurrentProfile();
@@ -48,4 +51,45 @@ export async function syncSchoolUnitAction(
   } catch {
     return { status: 'error' };
   }
+}
+
+const visitLinkSchema = z.object({ code: z.string().min(4).max(20) });
+
+export type VisitLinks = { rektor: string; larare: string } | null;
+
+/**
+ * Hämtar prospectets personliga besökslänkar och myntar koden första gången.
+ * Koden är stabil — en länk du redan mejlat ut slutar aldrig fungera.
+ */
+export async function ensureVisitLinkAction(
+  input: z.infer<typeof visitLinkSchema>,
+): Promise<VisitLinks> {
+  await requireAdmin();
+  const { code } = visitLinkSchema.parse(input);
+
+  const supabase = createSupabaseServiceRoleClient();
+  const { data: row } = await supabase
+    .from('school_prospects')
+    .select('id, visit_code')
+    .eq('school_unit_code', code)
+    .single();
+  if (!row) return null;
+
+  let visitCode = row.visit_code as string | null;
+  if (!visitCode) {
+    visitCode = generateVisitCode();
+    const { error } = await supabase
+      .from('school_prospects')
+      .update({ visit_code: visitCode })
+      .eq('id', row.id);
+    if (error) {
+      console.error('[crm] kunde inte spara visit_code:', error);
+      return null;
+    }
+  }
+
+  return {
+    rektor: `${SITE_URL}/rektor?k=${visitCode}`,
+    larare: `${SITE_URL}/larare?k=${visitCode}`,
+  };
 }
