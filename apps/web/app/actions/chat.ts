@@ -3,9 +3,15 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
-import type { ChatScope, ChatSource } from '@/lib/supabase/database';
-import { anthropicIsConfigured, answerWithRag, type RagChunk } from '@/lib/ai/anthropic';
-import { bergetIsConfigured, embedTexts } from '@/lib/ai/berget';
+import type { ChatScope } from '@/lib/supabase/database';
+import { answerWithRag } from '@/lib/ai/anthropic';
+import {
+  getPersonaSummary,
+  mockedAnswer,
+  refusalFor,
+  retrieveContext,
+  type ScopeContext,
+} from '@/lib/rag/retrieve';
 
 export type SendMessageState =
   | { status: 'idle' }
@@ -13,210 +19,32 @@ export type SendMessageState =
   | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
 
 /**
- * Riktig RAG via Berget AI (embeddings) + Anthropic (svar).
- * Returnerar null om någon del saknas så anroparen faller tillbaka
- * till mockedAnswer.
+ * Icke-strömmande svar. Används numera bara som fallback när klienten inte kan
+ * strömma (JavaScript av) — den vanliga vägen går via /api/chat/stream, som
+ * visar första ordet efter ~1–2s i stället för att blockera i ~16s.
+ * Hämtningsdelen delas med rutten via lib/rag/retrieve så svaren blir identiska.
  */
-type ScopeContext = {
-  scope: ChatScope;
-  lessonId: string | null;
-  courseId: string | null;
-  lessonIds: string[] | null;
-};
-
 async function ragAnswer(
   question: string,
   scopeContext: ScopeContext,
   personaSummary?: string,
-): Promise<{ content: string; sources: ChatSource[]; concepts: string[] } | null> {
-  if (!bergetIsConfigured() || !anthropicIsConfigured()) return null;
+): Promise<{ content: string; sources: ChatSourceLike[]; concepts: string[] } | null> {
+  const retrieved = await retrieveContext(question, scopeContext);
+  if (retrieved === null) return null;
 
-  const supabase = await createSupabaseServerClient();
-
-  // Hämta lektionens koncept för taggning (bara för lesson-scope)
-  let lessonConcepts: string[] = [];
-  if (scopeContext.scope === 'lesson' && scopeContext.lessonId) {
-    const { data: lessonRow } = await supabase
-      .from('lessons')
-      .select('concepts')
-      .eq('id', scopeContext.lessonId)
-      .maybeSingle();
-    lessonConcepts = Array.isArray(lessonRow?.concepts)
-      ? (lessonRow.concepts as string[])
-      : [];
+  if (retrieved.chunks.length === 0) {
+    return { content: refusalFor(scopeContext.scope), sources: [], concepts: [] };
   }
 
-  // Steg 1: embedda användarens fråga
-  const embeddings = await embedTexts([question]);
-  if (!embeddings || embeddings.length === 0) return null;
-  const queryEmbedding = embeddings[0]!;
-
-  // Steg 2: vector-search via en av match_*_chunks RPC:erna
-  type MatchRow = {
-    id: string;
-    lesson_id?: string;
-    content: string;
-    similarity: number;
-  };
-  // Cast supabase till any för RPC-anropen — match_*_chunks finns i schemat
-  // men deklareras inte i Database-typen (se kommentar i database.ts).
-   
-  const rpcClient = supabase as unknown as { rpc: (name: string, args: Record<string, unknown>) => Promise<{ data: MatchRow[] | null }> };
-  let matches: MatchRow[] = [];
-  if (scopeContext.scope === 'lesson' && scopeContext.lessonId) {
-    const { data } = await rpcClient.rpc('match_lesson_chunks', {
-      query_embedding: queryEmbedding,
-      lesson_id_filter: scopeContext.lessonId,
-      top_k: 5,
-    });
-    matches = (data ?? []).map((m) => ({
-      ...m,
-      lesson_id: scopeContext.lessonId ?? undefined,
-    }));
-  } else if (scopeContext.scope === 'course' && scopeContext.courseId) {
-    const { data } = await rpcClient.rpc('match_course_chunks', {
-      query_embedding: queryEmbedding,
-      course_id_filter: scopeContext.courseId,
-      top_k: 8,
-    });
-    matches = data ?? [];
-  } else if (
-    scopeContext.scope === 'selection' &&
-    scopeContext.courseId &&
-    scopeContext.lessonIds &&
-    scopeContext.lessonIds.length > 0
-  ) {
-    const { data } = await rpcClient.rpc('match_course_chunks', {
-      query_embedding: queryEmbedding,
-      course_id_filter: scopeContext.courseId,
-      top_k: 8,
-      lesson_ids_filter: scopeContext.lessonIds,
-    });
-    matches = data ?? [];
-  }
-
-  if (matches.length === 0) {
-    return {
-      content:
-        scopeContext.scope === 'lesson'
-          ? 'Det togs inte upp på den här lektionen.'
-          : 'Det togs inte upp i lektionerna du valt.',
-      sources: [],
-      concepts: [],
-    };
-  }
-
-  // Steg 3: hämta lessons-titlar för citaten
-  const lessonIds = Array.from(
-    new Set(matches.map((m) => m.lesson_id).filter((id): id is string => !!id)),
+  return answerWithRag(
+    question,
+    retrieved.chunks,
+    retrieved.lessonConcepts,
+    personaSummary,
   );
-  const { data: lessonRows } = await supabase
-    .from('lessons')
-    .select('id, title')
-    .in('id', lessonIds);
-  const titleById = new Map(
-    ((lessonRows ?? []) as { id: string; title: string | null }[]).map((l) => [
-      l.id,
-      l.title,
-    ]),
-  );
-
-  const chunks: RagChunk[] = matches.map((m) => ({
-    lessonId: m.lesson_id ?? scopeContext.lessonId ?? '',
-    lessonTitle: m.lesson_id ? (titleById.get(m.lesson_id) ?? null) : null,
-    content: m.content,
-  }));
-
-  // Steg 4: Claude-svar med strikt RAG-prompt + koncept-taggning + lärprofil
-  const answer = await answerWithRag(question, chunks, lessonConcepts, personaSummary);
-  return answer;
 }
 
-/** Hämtar elevens lärprofil-sammanfattning för personanpassade svar. */
-async function getPersonaSummary(userId: string): Promise<string | undefined> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('learner_profiles')
-    .select('summary')
-    .eq('profile_id', userId)
-    .maybeSingle();
-  const summary = (data as { summary: string } | null)?.summary;
-  return summary && summary.trim().length > 0 ? summary : undefined;
-}
-
-/**
- * Mockat fallback-svar när Berget AI eller Anthropic inte är konfigurerade.
- * Behålls i kodbasen så lokal utveckling fungerar utan keys.
- */
-async function mockedAnswer(
-  question: string,
-  scopeContext: ScopeContext,
-): Promise<{ content: string; sources: ChatSource[]; concepts: string[] }> {
-  const supabase = await createSupabaseServerClient();
-
-  // Försök hitta en lektion att referera till — den aktuella (lesson-scope),
-  // en av de valda (selection-scope) eller en lektion i kursen (course-scope).
-  let lessonId: string | null = scopeContext.lessonId;
-  let lessonTitle: string | null = null;
-
-  if (!lessonId && scopeContext.scope === 'selection' && scopeContext.lessonIds?.length) {
-    const { data } = await supabase
-      .from('lessons')
-      .select('id, title')
-      .in('id', scopeContext.lessonIds)
-      .order('recorded_at', { ascending: false, nullsFirst: false })
-      .limit(1)
-      .maybeSingle();
-    if (data) {
-      lessonId = data.id;
-      lessonTitle = data.title;
-    }
-  } else if (!lessonId && scopeContext.courseId) {
-    const { data } = await supabase
-      .from('lessons')
-      .select('id, title')
-      .eq('course_id', scopeContext.courseId)
-      .order('recorded_at', { ascending: false, nullsFirst: false })
-      .limit(1)
-      .maybeSingle();
-    if (data) {
-      lessonId = data.id;
-      lessonTitle = data.title;
-    }
-  } else if (lessonId) {
-    const { data } = await supabase
-      .from('lessons')
-      .select('title')
-      .eq('id', lessonId)
-      .maybeSingle();
-    lessonTitle = data?.title ?? null;
-  }
-
-  const sources: ChatSource[] = lessonId
-    ? [
-        {
-          lesson_id: lessonId,
-          lesson_title: lessonTitle,
-          excerpt:
-            '[Mockad utdrag] Detta avsnitt täcker frågan men ersätts av riktiga transkript-segment i Fas 6.',
-        },
-      ]
-    : [];
-
-  const lead = lessonTitle ? `Enligt lektionen "${lessonTitle}"` : 'Enligt din lektion';
-
-  return {
-    content:
-      `${lead} kan jag inte ge ett riktigt svar ännu — det här är en mockad svar tills KB-Whisper-pipelinen är på plats i Fas 6.\n\n` +
-      `Din fråga: "${question}"\n\n` +
-      'När den riktiga RAG-funktionen är aktiverad kommer Elevante att:\n' +
-      '• söka i transkriberingen av lektionen\n' +
-      '• returnera ett svar som bara bygger på det läraren sa\n' +
-      '• visa exakta källcitat under svaret',
-    sources,
-    concepts: [] as string[],
-  };
-}
+type ChatSourceLike = { lesson_id: string; lesson_title: string | null; excerpt: string };
 
 type StartChatInput = {
   scope: ChatScope;
@@ -226,7 +54,12 @@ type StartChatInput = {
   question: string;
 };
 
-/** Skapar en ny chat och första frågan + svaret. Redirectar till chat-tråden. */
+/**
+ * Skapar en ny chat och lägger in elevens fråga — men genererar INTE svaret.
+ * Anroparen redirectar direkt till tråden, där ChatThread strömmar in svaret.
+ * (Tidigare väntade den här funktionen ut hela Claude-anropet före redirect,
+ * vilket gav ~16s vit skärm innan chatten ens visades.)
+ */
 export async function startChat(input: StartChatInput) {
   const profile = await getCurrentProfile();
   if (!profile || !profile.school_id) {
@@ -255,44 +88,24 @@ export async function startChat(input: StartChatInput) {
     return { ok: false as const, code: 'generic', detail: error?.message };
   }
 
-  await supabase.from('chat_messages').insert({
+  const { error: messageError } = await supabase.from('chat_messages').insert({
     chat_id: chat.id,
     role: 'user',
     content: input.question,
   });
 
-  const scopeContext: ScopeContext = {
-    scope: input.scope,
-    lessonId: input.lessonId ?? null,
-    courseId: input.courseId ?? null,
-    lessonIds: input.lessonIds ?? null,
-  };
-  const personaSummary = await getPersonaSummary(profile.id);
-  const answer =
-    (await ragAnswer(input.question, scopeContext, personaSummary)) ??
-    (await mockedAnswer(input.question, scopeContext));
-
-  await supabase.from('chat_messages').insert({
-    chat_id: chat.id,
-    role: 'assistant',
-    content: answer.content,
-    sources: answer.sources,
-    concepts: answer.concepts,
-  });
-
-  // Tagga också user-meddelandet med samma koncept (frågan tangerar dem)
-  if (answer.concepts.length > 0) {
-    await supabase
-      .from('chat_messages')
-      .update({ concepts: answer.concepts })
-      .eq('chat_id', chat.id)
-      .eq('role', 'user');
+  if (messageError) {
+    return { ok: false as const, code: 'generic', detail: messageError.message };
   }
 
   return { ok: true as const, chatId: chat.id };
 }
 
-/** Skicka ny fråga till en befintlig chat (används i chat-vyn). */
+/**
+ * Skicka ny fråga till en befintlig chat utan streaming.
+ * Fallback för klienter utan JavaScript — ChatThread använder annars
+ * /api/chat/stream. Behåll de två i synk: samma hämtning, samma persistering.
+ */
 export async function sendMessage(
   _prev: SendMessageState,
   formData: FormData,

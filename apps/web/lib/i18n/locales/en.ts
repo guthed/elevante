@@ -271,6 +271,7 @@ const en: Dictionary = {
           send: 'Send',
           sending: 'Sending…',
           assistantTyping: 'Elevante is typing…',
+          streamError: "Couldn't load the answer. Check your connection and try again.",
           guardrailNotice: "That wasn't covered in this lesson.",
           sourcesHeading: 'Sources',
           sourceFromLesson: 'From the lesson',

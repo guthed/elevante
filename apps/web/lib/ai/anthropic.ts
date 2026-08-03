@@ -145,16 +145,22 @@ export async function answerWithRag(
 /**
  * Strömmande motsvarighet till answerWithRag: yield:ar RÅA text-deltas från
  * modellen (dvs. den JSON-sträng modellen bygger upp, `{"answer": "...", ...}`).
- * Anroparen (/api/try/chat) extraherar answer-strängen inkrementellt och skickar
- * den till klienten, och parsar concepts ur den fullständiga JSON:en till slut.
+ * Anroparen extraherar answer-strängen inkrementellt och skickar den till
+ * klienten, och parsar concepts ur den fullständiga JSON:en till slut.
  * Systemprompten är IDENTISK med answerWithRag så svar/refusal/koncept är
  * oförändrade — bara transporten skiljer. Anropa `anthropicIsConfigured()` först;
  * generatorn ger inget om nyckel saknas.
+ *
+ * `concise` är opt-in och används av /try (kampanjsidan vill ha skimbara svar).
+ * App-chatten låter bli den och får fulla svar, precis som answerWithRag ger.
+ * `personaSummary` måste skickas med av app-chatten — annars tappas lärprofilen
+ * i strömmande läge och svaren slutar vara personanpassade.
  */
 export async function* streamRagRaw(
   question: string,
   chunks: RagChunk[],
   lessonConcepts: string[] = [],
+  options: { personaSummary?: string; concise?: boolean } = {},
 ): AsyncGenerator<string> {
   const client = getClient();
   if (!client || chunks.length === 0) return;
@@ -170,7 +176,11 @@ export async function* streamRagRaw(
   const stream = client.messages.stream({
     model: MODEL,
     max_tokens: 1024,
-    system: buildSystemPrompt(lessonConcepts, undefined, true),
+    system: buildSystemPrompt(
+      lessonConcepts,
+      options.personaSummary,
+      options.concise ?? false,
+    ),
     messages: [{ role: 'user', content: userPrompt }],
   });
 
