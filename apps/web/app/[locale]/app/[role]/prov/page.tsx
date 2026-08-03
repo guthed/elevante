@@ -5,6 +5,7 @@ import { isLocale, type Locale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getSharedPracticeTests } from '@/lib/data/teacher';
+import { Avatar } from '@/components/ui/Avatar';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -62,6 +63,10 @@ export default async function SharedTestsPage({ params }: Props) {
                       href={`${base}/prov/${t.id}`}
                       className="flex items-center gap-4 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface)] px-5 py-4 transition-colors hover:bg-[var(--color-surface-soft)]"
                     >
+                      <Avatar
+                        name={t.studentName ?? (sv ? 'Okänd elev' : 'Unknown student')}
+                        size="md"
+                      />
                       <div className="min-w-0 flex-1">
                         <p className="font-serif text-[1rem] text-[var(--color-ink)]">
                           {t.studentName ?? (sv ? 'Okänd elev' : 'Unknown student')}

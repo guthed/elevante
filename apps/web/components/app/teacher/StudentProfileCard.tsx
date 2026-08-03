@@ -1,4 +1,6 @@
 import type { LessonInsightStudent } from '@/lib/data/teacher';
+import { Avatar } from '@/components/ui';
+import { avatarFor } from '@/lib/avatars';
 
 type Props = {
   student: LessonInsightStudent;
@@ -37,8 +39,9 @@ export function StudentProfileCard({ student, concepts, aiInsight, onClose }: Pr
   return (
     <div>
       <div className="flex items-center justify-between border-b border-[var(--color-sand)] bg-[var(--color-surface)] px-6 py-4">
-        <div>
-          <h2 className="font-serif text-[1.25rem] text-[var(--color-ink)]">
+        <div className="flex min-w-0 items-center gap-3">
+          {avatarFor(student.fullName) && <Avatar name={student.fullName} size="lg" />}
+          <h2 className="truncate font-serif text-[1.25rem] text-[var(--color-ink)]">
             {student.fullName}
           </h2>
         </div>
