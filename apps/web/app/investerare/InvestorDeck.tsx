@@ -678,6 +678,16 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                     </div>
                   </div>
                   <p className="mt-5 text-ink-muted">{t(lang, person.bio)}</p>
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {person.highlights.map((h) => (
+                      <li
+                        key={t(lang, h)}
+                        className="rounded-full bg-sand/40 px-3 py-1 text-xs text-ink-secondary"
+                      >
+                        {t(lang, h)}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </Reveal>
             ))}

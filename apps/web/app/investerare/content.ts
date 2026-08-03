@@ -310,7 +310,7 @@ export interface PositioningCopy {
 export interface TeamCopy {
   eyebrow: L;
   title: L;
-  people: { name: string; initials: string; role: L; bio: L }[];
+  people: { name: string; initials: string; role: L; bio: L; highlights: L[] }[];
   backedBy: { label: L; body: L };
 }
 
@@ -1048,18 +1048,28 @@ export const COPY: {
         initials: 'JG',
         role: { sv: 'Grundare · Produkt & teknik', en: 'Founder · Product & tech' },
         bio: {
-          sv: '20+ år inom digital och mobil produktutveckling. Byggde hela Elevante-plattformen själv med AI-assisterad utveckling. VD för Availsthlm.',
-          en: '20+ years in digital and mobile product development. Built the entire Elevante platform himself with AI-assisted development. CEO of Availsthlm.',
+          sv: 'Grundade Elevante och byggde hela produkten själv — inspelning, transkribering, frontend och infrastruktur — via Claude Code, utan att skriva en rad kod. 20+ år i digital och mobil produktutveckling: från tidiga mobilsatsningar för bolag som Telia till Creative Director på Activeark JWT och Mirum. Samma lean, AI-assisterade metod har redan levererat Ordo, Bokmässans programverktyg och Kompis — grundidén bakom Elevante.',
+          en: 'Founded Elevante and built the entire product himself — recording, transcription, frontend and infrastructure — via Claude Code, without writing a line of code. 20+ years in digital and mobile product development: from early mobile work for companies like Telia to Creative Director at Activeark JWT and Mirum. The same lean, AI-assisted method has already shipped Ordo, the Gothenburg Book Fair’s planning tool, and Kompis — the seed idea behind Elevante.',
         },
+        highlights: [
+          { sv: 'VD, Availsthlm', en: 'CEO, Availsthlm' },
+          { sv: 'Creative Director — Activeark JWT & Mirum', en: 'Creative Director — Activeark JWT & Mirum' },
+          { sv: '20+ år mobil & digital produkt', en: '20+ yrs mobile & digital product' },
+        ],
       },
       {
         name: 'Stefan Pettersson Noord',
         initials: 'SP',
         role: { sv: 'Medgrundare · Affär & go-to-market', en: 'Co-founder · Business & go-to-market' },
         bio: {
-          sv: 'Tre decennier inom digital affär och varumärke. Ex-VD Ogilvy Interactive Sweden, delägare i Amanda AI. Äger skol- och myndighetsrelationerna.',
-          en: 'Three decades in digital business and brand. Ex-CEO Ogilvy Interactive Sweden, co-owner of Amanda AI. Owns the school and authority relationships.',
+          sv: 'Närmare tre decennier i digital affärsutveckling och varumärke på högsta nivå. VD för Ogilvy Interactive Sweden och grundare av Otto Stockholm Proximity i BBDO-nätverket — sedermera Klirr Stockholm, där han var partner och Digital Director. Driver The Innovation Chapel sedan 2012 och är delägare i Amanda AI. I Elevante äger han kommersiell strategi, partnerskap och relationerna till skolor, skolkoncerner och utbildningsmyndigheter.',
+          en: 'Nearly three decades in digital business development and brand at the highest level. CEO of Ogilvy Interactive Sweden and founder of Otto Stockholm Proximity within the BBDO network — later Klirr Stockholm, where he was partner and Digital Director. Runs The Innovation Chapel since 2012 and co-owns Amanda AI. At Elevante he owns commercial strategy, partnerships and the relationships with schools, school groups and education authorities.',
         },
+        highlights: [
+          { sv: 'VD — Ogilvy Interactive Sweden', en: 'CEO — Ogilvy Interactive Sweden' },
+          { sv: 'Partner — Klirr Stockholm (BBDO)', en: 'Partner — Klirr Stockholm (BBDO)' },
+          { sv: 'Delägare — Amanda AI', en: 'Co-owner — Amanda AI' },
+        ],
       },
     ],
     backedBy: {
