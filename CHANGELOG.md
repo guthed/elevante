@@ -16,6 +16,122 @@ Format per entry:
 
 ---
 
+## [Avatarer — porträtt på demo-elever] — 2026-08-04
+
+### Byggt
+- **Syntetiska porträtt på demo-personerna** (AI-genererade ansikten, inga riktiga personer). Elevlistorna visade bara initialer, vilket gör en klass svår att scanna — läraren ska känna igen sina elever. Appens demo-klass (8 elever), demo-läraren Anna Andersson och investerardeckets demo-klass (6 elever) har nu ansikten. Varje bild matchad mot namnets kön och en rimlig ålder för rollen.
+- **Nytt register `lib/avatars.ts`**: fullständigt namn (gemener) → `/avatars/<slug>.jpg`. 15 personer.
+- **`Avatar` utökad**: valfri `src`, annars uppslag på namnet; ny `xs`-storlek (24 px); `next/image` med `loading="eager"`. Faller tillbaka på initialer när porträtt saknas — riktiga skolor ser exakt som förut.
+- **Porträtt inkopplade** där läraren scannar elevlistor: förståelse-kartan (`InsightHeatmap`), elevpanelen (`StudentProfileCard`), konceptfrågelistan, klassprovsinlämningar (`/teacher/klassprov/[id]`) och delade övningsprov (`/teacher/prov`). Klasslistan, adminvyn och sidomenyn fick porträtt automatiskt via `Avatar`.
+- **Reservpool**: 12 oanvända ansikten i `assets/avatar-pool/` med README — utanför `public/`, publiceras alltså inte (verifierat: 404 i produktion).
+
+### QA-fynd
+- Två källbilder förväxlades i första matchningen (Lukas fick ett kvinnligt ansikte, Anna ett manligt). Fångades i webbläsarverifiering och rättades. Lärdom: identifiera bilder en och en, inte i batch — attributionen glider när flera bilder returneras i samma svar.
+- Next dev cachar optimerade bilder i minnet **och** i `.next/cache/images`; efter ett filbyte på samma sökväg serverades den gamla varianten trots omstart. Verifiering av bildinnehåll gjordes därför mot råfilen och `_next/image`-svaret, inte mot sidrenderingen.
+
+### Tekniska beslut
+- **Namnuppslag i komponenten** i stället för en `avatar_url`-kolumn — demo-porträtt är inte användardata, och en DB-kolumn hade krävt migration + seed utan att ge något förrän riktiga uppladdningar finns.
+- **Avatar renderas bara när porträtt finns** i `InsightHeatmap`/`StudentProfileCard`/`ConceptQuestionList`, och namnkolumnen breddas 120→152 px bara då. Gjorde det möjligt att lägga in porträtt utan att ändra investerardeckets utseende innan dess demo-elever hade bilder.
+- **Könsmässigt tvetydiga ansikten används inte** — hellre initialer än ett porträtt som läser fel mot namnet.
+
+---
+
+## [Strömmande chatt + investerardeckets grundarbios] — 2026-08-03
+
+### Byggt
+- **Strömmande svar i app-chatten**: ~16 s blank väntan → ~2 s till första ordet. Ny SSE-rutt `/api/chat/stream` (autentiserad, Zod-validerad). `startChat` genererar inte längre svaret utan redirectar direkt; `ChatThread` upptäcker det obesvarade meddelandet och strömmar in svaret.
+- **Hämtningen bruten ut till `lib/rag/retrieve.ts`** så Server Action och SSE-rutt ger identisk kontext; `decodeAnswerSoFar` delad via `lib/ai/stream-json.ts`.
+- **`streamRagRaw` tar `personaSummary`** (lärprofilen tappades annars i strömmande läge), och `concise` är opt-in i stället för hårdkodad — flaggan var `/try`-specifik och hade gett app-chatten korta kampanjsvar.
+- **Investerardecket**: grundarbios för John Guthed och Stefan Pettersson Noord utökade från en mening till full bakgrund + nytt highlights-fält (tre meritpunkter per person).
+- **`DeckNav` refaktorerad** från `useEffect` + `setState` till `useSyncExternalStore` med referensstabil cache — löser `react-hooks/set-state-in-effect`.
+- **Städ**: `scripts/seed-anna-schedule.sql` (låg ospårad), `.claude/launch.json`, samt `.gitignore` för `apps/mobile/.expo/`, `supabase/.temp/`, `.DS_Store` och `/elevante-deck/` (124 MB pptx/pdf hör inte hemma i repot).
+
+### QA-fynd
+- Cookie-beroende Supabase-åtkomst måste ske **före** strömmen returneras, annars hamnar `cookies()` utanför request-scopet.
+- Resume-läget läser frågan ur databasen i stället för att lita på klienten, och vägrar om den redan är besvarad.
+
+### Tekniska beslut
+- **`sendMessage` behålls som formulärets action** — utan JavaScript fungerar chatten som förut (progressive enhancement).
+- **Känd begränsning**: sidofältets historik uppdateras först vid navigering, eftersom strömningsvägen inte kan `revalidatePath`.
+
+---
+
+## [Publik copy — priser, hjälterubriker, källbelagda påståenden] — 2026-07-24 … 2026-07-27
+
+### Byggt
+- **`llms.txt`**: bara-URL:er → Markdown-länkar enligt llmstxt.org-specen (SiteSpeed flaggade "inga länkar"). Ingen textändring.
+- **Enhetligt coral-accentmönster** i alla publika rubriker: lead i ink + poäng-"tail" i italic coral, som startsidan. H1 på for-skolor, priser, om-oss, vad-kostar-elevante, blogg; utvalda nyckel-H2:er på sju sidor. Tvåspråkigt.
+- **Prissidan byggd om två gånger**: först ett priskort + sektionen "Detta är inte ett läromedel", sedan — efter att kortet visat sig låna jämför-och-välj-konventionen från ett problem sidan inte har — ett editorial prisblock med hårfina linjer och luft i stället för box (prisräl 4 kol / vad som ingår 8 kol).
+- **Källbelagd argumentation** ersätter tidigare oförankrade påståenden: läromedel 1 165 kr/elev (Läromedelsbarometern 2023, lagligt öronmärkt), 500 kr = 0,35 % av 141 500 kr/gymnasieelev (SCB), 9 av 10 lärare ägnar tid åt annat än undervisning (Sveriges Lärare 2024), 6 av 10 ser elever med rätt till särskilt stöd sällan/bara ibland få det (Skolverket 2024). Explicit källrad. Samma städning gjord på `/vad-kostar-elevante`, där ett osourcat läxhjälps-påstående togs bort.
+- **Momsvy förberedd bakom avstängd flagga**: `vatBreakdown(belopp, typ)` i `lib/pricing.ts` (kommunal = momsneutral via kommunkontosystemet, lag 2005:807; fristående = ingen avdragsrätt). Gated på `VAT_BREAKDOWN_ENABLED = false` tills satserna verifierats av revisor/Skatteverket.
+- **Hjälterubriker enhetliga via tokens**: `.hero-title` (86 px @1280) när rubriken äger raden, `.hero-title-split` (80 px) när den delar rad med bild/panel. Ersätter sju handtunade `clamp()` på elva sidor.
+
+### QA-fynd
+- Momslogiken verifierad med 10/10 logiktester mot riktiga modulen (800 elever → 400 000 exkl., 100 000 moms; noll- och negativfall clampas). **Renderingen av momsvyn är inte ögongranskad** — måste kontrolleras när flaggan slås på.
+- Prisblocket verifierat sv + en i 1280 px och 375 px: sex punkter en rad var på desktop, ingen horisontell overflow.
+
+### Tekniska beslut
+- **6 %-schablonen subtraheras medvetet inte** i momsberäkningen — den räknas på hela bidragsbeloppet, inte per faktura, så ett avdrag hade varit falsk precision. Nämns i copyn i stället; motiveringen ligger som kommentar i koden.
+- **"Från 1 000 elever"** i stället för "1 000 elever −8 %" — den gamla formuleringen sa inte om tröskeln gällde vid eller från. Korrekthetsfix, inte kosmetik.
+- **Öppna granskningskrav**: GDPR-formuleringen i data-FAQ:n bör juristgranskas och momsmekaniken verifieras med revisor/Skatteverket innan de används i säljmaterial.
+
+---
+
+## [E-postmotor → Loops (all transaktionell mejl)] — 2026-07-12
+
+### Byggt
+- **Resend ersatt av Loops** för all transaktionell mejl. Server-only adapter `lib/loops.ts` (raw `fetch`, timeout + retry). `sendLoopsTransactional` returnerar `boolean` och kastar aldrig; `upsertLoopsContact`/`sendLoopsEvent` följer med okopplade för framtida lifecycle-mejl.
+- **Tre migrerade vägar**: `contact.ts` (leveranskritisk — Loops-miss ⇒ `error: 'generic'`), `try-share.ts` (best-effort — Supabase är loggen), `lib/investor-notify.ts` (best-effort).
+- **Copy bor i Loops-mallarna**, koden skickar bara data. Fyra mallar: kontakt, investerar-notis, delning sv, delning en.
+- **Resend borttaget helt** — dependency, kod och env. Integritetspolicyns biträdesredovisning uppdaterad (Resend → Loops).
+
+### QA-fynd
+- **Rotorsaken till att `/try`-delningens mejl aldrig gick fram**: koden inspekterade aldrig `error`-returen från Resend (SDK:t kastar inte vid API-fel), och Resend-domänen var sannolikt aldrig verifierad. Loops-domänen `elevante.se` är verifierad.
+
+### Tekniska beslut
+- **Adaptern kastar aldrig** — anroparen bestämmer om ett misslyckat mejl ska fälla operationen. Kontaktformuläret fäller, delning och investerarnotis gör det inte.
+- **GDPR-notering**: Loops (loops.so) är US-baserat — samma cross-border-läge som Resend hade, men värt att stämma mot arkitekturprincipen "inget persondata utanför EU".
+
+---
+
+## [/try-delning — tipsa en kollega] — 2026-07-11
+
+### Byggt
+- **Delningsformulär i `/try`:s säljande avslut** (alltid synligt, tvåspråkigt) — `ShareTeaser` med `useActionState`.
+- **Server Action `shareTry`**: honeypot-fält (`website`) → tyst success, kräver namn + två giltiga *olika* mejladresser, IP-rate-limit 5/tim.
+- **Supabase `try_shares`** som primär logg (migration `20260711120000_try_shares.sql`, RLS, service-role-skrivning som CRM:et). Insert fäller delningen vid fel — handskriven typ i `database.ts`.
+- **Notion best-effort**: `lib/try/share-log.ts` skriver mottagar- + avsändarrad i egen DB "📤 Elevante – Delningar". En 404 eller ett fel fäller aldrig delningen.
+
+### QA-fynd
+- Supabase-inserten verifierad skarpt mot produktion.
+
+### Tekniska beslut
+- **Supabase är sanningen, Notion är bekvämlighet** — därför fäller Supabase-fel delningen medan Notion-fel bara loggas.
+- **Öppna prod-setupsteg** (blockerar inte delningen): `NOTION_SHARES_DATABASE_ID` i Vercel, och Delningar-DB:n måste kopplas till app-integrationen "Claude sync" manuellt i Notion — appen skriver via en annan integration än den MCP:n skapade DB:n med, och access kan inte ges via API.
+
+---
+
+## [Publik kampanjsida /try — upplev utan konto] — 2026-07-07 … 2026-07-12
+
+### Byggt
+- **Publik, indexerbar, inloggningsfri sida** (`app/[locale]/(public)/try/`, sv + en) där vem som helst upplever kärnloopen. Skild från `/demo` (noindex, skriptad).
+- **Server-only lektionsbibliotek** `lib/try/lessons.ts` — 6 syntetiska Ekologi-transkript i `lib/try/transcripts/`, styckesegmenterade med pseudo-tidsstämplar för citat. Tvåspråkig copy i `lib/try/copy.ts`.
+- **Guidad trestegsväg**: `LessonPicker` → `ChatStep` → `TestStep`, orkestrerad av `TryExperience` + `StepRail`. **Chatten leder** — prov-inbjudan och steg ③ i progress-raden döljs tills besökaren fått ett svar.
+- **Tre stateless-rutter** `/api/try/{chat,test,grade}` (Zod) återanvänder `answerWithRag` / `generatePracticeTest` / `gradePracticeTest`. Valfri `locale`-param tillagd i `lib/ai/anthropic.ts` (default sv).
+- **Iterationer 07-08 … 07-12**: chatt-först med inline lektionsväljare, mobilanpassning (textfältet ovanför vikningen), lektionskontext + svar ovanför frågefältet, tvåspalts-hjälte, styckesdelade chattsvar, elevfoto i avslutet, streaming av chattsvaret token-för-token (SSE), peak-delight-CTA.
+- **SEO**: `/try` i `PAGE_PATHS` (sitemap + hreflang) + nav-länk (Prova/Try).
+
+### QA-fynd
+- **Facit läckte**: provfrågorna låg först i en base64+HMAC-token — kodning är inte kryptering. Bytt till **AES-256-GCM** (`lib/try/token.ts`), återanvänder `INVESTOR_DECK_SECRET` (`TRY_TEST_SECRET` som valfri override).
+- **Frågebubblans text blev oläslig** (mörk på mörk) — fixad.
+- **Språkväxlaren kastade tillbaka till startsidan** på *alla* publika sidor: den statiska layouten matade bara `/{locale}`. `LanguageSwitcher` använder nu `usePathname()`. Bugfix på köpet.
+
+### Tekniska beslut
+- **AI svarar på besökarens locale, men källcitaten förblir svenska** — de är äkta klassrumsmaterial. Citat hittas även på engelska via svenska koncept-taggar som språkbrygga.
+- **Best-effort rate-limit i minnet** (`lib/try/ratelimit.ts`) + inputtak + graceful offline-fallback. Räcker för en kampanjsida; en delad store krävs först vid riktig trafik.
+
+---
+
 ## [Skol-CRM — Notion som CRM + Skolverket-sync] — 2026-07-01
 
 ### Byggt
@@ -38,6 +154,50 @@ Format per entry:
 
 ---
 
+## [Investerardeck som webbsida] — 2026-06-26 … 2026-06-29
+
+### Byggt
+- **`/investerare`** — lösenordsskyddad, tvåspråkig (sv/en) scroll-version av investerardecket, utanför `[locale]`, noindex. Egen animationsuppsättning: staplad bandkurva som signaturviz (`StackedCurve`), nätverksgraf (`NetworkReveal`), koncentriska marknadsringar (`ConcentricMarket`), tidslinje, uppräknande siffror (`CountUp`), scroll-progress, `Eyebrow`.
+- **Animationsprimitiver**: `useInView` + `useCountUp` hooks, allt `prefers-reduced-motion`-säkert.
+- **Bilingual innehållsmodul** — deck-copy och data separerade från komponenterna.
+- **Lösenordsgate**: en kod per investerare. HMAC-signerad sessions-cookie (`lib/investor-access.ts`, `{label,sid,pid}`), upplåsningssida `/investerare/las-upp` (sv + en), grind i `proxy.ts`.
+- **Läs-spårning**: Supabase-tabeller `investor_invites` + `investor_deck_views` (RLS-låsta, **inga policys** — all åtkomst via security-definer-RPC:er: `verify_investor_code`, `record_investor_open`, `record_investor_engagement`, `get_investor_rollup`, `mark_investor_notified`, `upsert_investor_invite`, `get_cached_invite_by_code`). `DeckTelemetry` → `/api/investerare/telemetry` mäter scroll-djup, aktiv tid och om besökaren nådde the ask.
+- **Notion som master för investerarlistan** (`lib/notion-investor.ts`): John äger Investerare/Kod/Aktiv; servern skriver Status, Senast inne, Max scroll %, Nådde the ask, Antal sessioner, total aktiv tid. Upplåsning resolvar mot Notion (auktoritativt — `Aktiv=false` stänger av direkt) med Supabase-cache som fallback när Notion är nere.
+- **Notiser** till john@elevante.se vid öppning och vid the ask (`lib/investor-notify.ts`).
+- **Innehållsutbyggnad 06-28 … 06-29**: de-risking-avsnitt, live förståelsekarta (riktiga `InsightHeatmap` mot syntetisk demodata), live elev-chatt, use-of-funds, datamoat-fält som växer live, investment case-rad, LOI-precision, GDPR-skärpning, kapital-stresstest, interaktiv ARR-kalkylator, sektions-nav, AA-kontrast.
+
+### QA-fynd
+- **Osourcebara siffror rensade**: exit-multipel (5–8× ARR) borttagen; Sverige-siffran lagd på Skolverkets gymnasietal (367 000) i stället för ISCED 3; Stockholm-siffran korrigerad mot Skolverkets API.
+- `react-hooks/set-state-in-effect` slog till i `useInView`/`useCountUp` — löst med rAF-deferrad setState.
+- Access-cookien behövde `path: '/'` för att telemetri-endpointen under `/api` skulle få den, och `Secure` bara i produktion för att fungera över `http://localhost`.
+- Telemetrins `seconds` klampas — annars gav bakgrundsflikar orimliga värden.
+
+### Tekniska beslut
+- **Notion är master, Supabase är cache** — John ska kunna lägga till och stänga av investerare utan deploy.
+- **Inga RLS-policys på investerartabellerna** — RPC-only ger en enda kontrollerad väg in, och koden kan aldrig läsas via PostgREST.
+- **Saknas `INVESTOR_DECK_SECRET` är gaten öppen** (dev-läge). Måste vara satt i produktion.
+
+---
+
+## [Rektor- & lärarsidor (interaktiv webb)] — 2026-06-25
+
+### Byggt
+- **Delat showcase-bibliotek** i `components/showcase/`: `Reveal`, `ZoomableShot`, `ChatDemo` flyttade från `app/skolan/`; `LoopVisuals` (REC/ljudvåg/chatt-visualerna) extraherade ur startsidan och återanvänds på startsidan, `/rektor` och `/larare`.
+- **`/rektor` ombyggd** från bildspel till scroll-sida i Editorial Calm med godkänd skollingo-copy (kompensatoriskt uppdrag, tillgänglig lärmiljö). Bildspelet bevarat på `/rektor/deck` ("Presentationsläge →").
+- **Ny `/larare`** på lärarens planhalva: tolkningsföreträde, "du bestämmer när", studiero, extra anpassningar.
+- **Aktuella, ramfria appskärmdumpar** i `public/rektor/`, beskurna via `scripts/crop-app-shots.py` (auto-detektion av ivory canvas).
+- **`/skolan` redirectar till `/rektor`** (307); `skolor.`-subdomänen pekas om i `proxy.ts`.
+- **Robust AI-rättning** (samma dag): skala tokens efter provets storlek, rädda trunkerad JSON, blockera falska resultat.
+
+### QA-fynd
+- `--color-sage-deep` (#566b47) var aldrig definierad i `globals.css` — sage-accenter föll tyst tillbaka till ink. Nu definierad.
+
+### Tekniska beslut
+- **Roller i scope är bara elev och lärare** — ingen rektors-/skoladminvy byggs. Förståelse-kartan är en *lärarvy*; rektorssidan säljer "det du kan erbjuda dina lärare" (§09 "Dina lärare ser…"), aldrig en granskningspanel över lärarna.
+- Båda sidorna `noindex`, svenska only, utanför `[locale]` — de är säljmaterial, inte en del av den publika sajtens informationsarkitektur.
+
+---
+
 ## [Klassprov — lärar-författade prov] — 2026-06-24
 
 ### Byggt
@@ -57,6 +217,25 @@ Format per entry:
 - **Facit-strippning i RPC, inte i klientkod** — facit når aldrig klienten ens om eleven debuggar nätverkstrafiken.
 - **Release-gate i RPC** — submission-raden (med AI-feedback) är synlig i databasen men returneras inte förrän `released_at IS NOT NULL`. Eleven kan inte läsa resultatet via direktanrop till PostgREST.
 - **Zod på Server Actions** — val framåt: alla nya Actions valideras med Zod. Retroaktiv migrering av äldre actions läggs som separat uppgift.
+
+---
+
+## [Appen på mobil — Fas A–D] — 2026-06-23 … 2026-06-24
+
+### Byggt
+- **Fas A, mobilt skal**: delad nav-config (`lib/app/nav.ts`) för sidomeny + mobilnav; `MobileNav` bottom-nav per roll (`md:hidden`, safe-area); topbar städad (varumärke syns på mobil, dold på laptop, döda ikoner bort); bottom-padding i `AppShell`; korta nav-etiketter i18n (sv + en); delad kontosida `/app/[role]/konto` för alla roller.
+- **Fas B, dashboards omdesignade**: lärarens dashboard leder med hjälte-insikt, elevens med en fråge-ruta. Skol-identitet i app-skalet (skolnamn + logga + roll/klass). "Veckans insikt"-kortet stackar på mobil.
+- **Fas C, innersidor**: chatt-fokus på mobil; lärarens lektionslista som radkort på mobil och tabell på laptop; **sticky elevnamn-kolumn** i insikts-heatmapen vid horisontell scroll; kort förklaring under varje rubrik i sidomenyn.
+- **Fas D, finputs**: kopiera transkript, bottom-sheet, m.m.
+
+### QA-fynd
+- **Chattnamnet klobbrades till ett UUID** vid följdfråga, och elevens fortsätt-kort visade UUID i stället för frågan. Båda fixade.
+- Sidledes scroll på dashboards — orsakad av grid-barn utan `min-w-0`. Samma fix behövdes på lektionsdetaljernas grid.
+- Stale "mockat svar"-notis låg kvar i UI:t efter att RAG-pipelinen blivit skarp. Borttagen.
+
+### Tekniska beslut
+- **En nav-config, två renderingar** — sidomeny och bottom-nav får aldrig glida isär.
+- **Radkort på mobil, tabell på laptop** i stället för en horisontellt scrollande tabell överallt; heatmapen är undantaget och löses med sticky namnkolumn, eftersom matrisen inte går att bryta upp.
 
 ---
 
@@ -90,6 +269,23 @@ Format per entry:
 - **Hela det korta transkriptet visas och båda källraderna tänds samtidigt**, i stället för att scrolla fram en rad: i den smala 5/12-hjälte-kolumnen radbryts raderna, vilket gjorde scroll-greppet opålitligt (nedre källraden klipptes). Tydligare att visa allt.
 - **Mobil-omordning utan duplicerad markup**: tre grid-syskon (text, demo, CTA) i DOM-ordning text→demo→CTA; desktop placeras explicit med `md:row-start`/`col-start` så knapparna hamnar under texten igen.
 - **`prefers-reduced-motion`** respekteras — visar färdigt tillstånd (fråga, tända rader, svar, piller) utan animering.
+
+---
+
+## [Radera lektion — mjuk arkivering med ångra] — 2026-06-18
+
+### Byggt
+- **`lessons.archived_at`** (migration `20260617120000`): `null` = aktiv, sätts vid arkivering och nollställs vid återställning. Ingen hård radering.
+- **`match_lesson_chunks` / `match_course_chunks` exkluderar arkiverade lektioner** (migration `20260617120100`) — en arkiverad lektion kan alltså aldrig dyka upp som RAG-källa.
+- **`archiveLesson` / `restoreLesson`** Server Actions; arkiverade lektioner dolda i lärar- och elevdatalagret, exkluderade ur admin-statistiken och ur insikt-/status-queries.
+- **Ångra-flöde**: `Toast` fick en valfri action-knapp, `ToastProvider` monterad i app-layouten, och "Radera lektion" visar en ångra-toast i stället för en bekräftelsedialog.
+
+### QA-fynd
+- Filtreringen missades först i insikt- och status-queries — arkiverade lektioner räknades fortfarande i heatmap-underlaget. Fixat i separat commit.
+
+### Tekniska beslut
+- **Mjuk radering, inte hård** — en lärare som råkar radera fel lektion ska kunna få tillbaka den, och transkript/embeddings är dyra att återskapa.
+- **Ångra-toast i stället för bekräftelsedialog** — färre klick i det vanliga fallet, och ångerfönstret täcker misstaget.
 
 ---
 
