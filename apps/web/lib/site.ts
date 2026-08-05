@@ -24,6 +24,7 @@ export const PAGE_PATHS = [
   '/for-elever',
   '/try',
   '/priser',
+  '/vad-kostar-elevante',
   '/om-oss',
   '/kontakt',
 ] as const;
