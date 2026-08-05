@@ -1,12 +1,21 @@
 import type { ProspectListItem } from '@/lib/data/admin';
 import { ResyncButton } from './ResyncButton';
+import { VisitLinkButtons } from './VisitLinkButtons';
 
 type Dict = {
   synced: string;
   empty: string;
   openNotion: string;
   resync: string;
-  cols: { name: string; kommun: string; students: string; status: string; synced: string };
+  visitLink: { rektor: string; larare: string; copied: string; failed: string };
+  cols: {
+    name: string;
+    kommun: string;
+    students: string;
+    status: string;
+    synced: string;
+    link: string;
+  };
 };
 
 export function CrmProspectList({ items, dict }: { items: ProspectListItem[]; dict: Dict }) {
@@ -20,6 +29,7 @@ export function CrmProspectList({ items, dict }: { items: ProspectListItem[]; di
           <th>{dict.cols.students}</th>
           <th>{dict.cols.status}</th>
           <th>{dict.cols.synced}</th>
+          <th>{dict.cols.link}</th>
           <th />
         </tr>
       </thead>
@@ -31,6 +41,9 @@ export function CrmProspectList({ items, dict }: { items: ProspectListItem[]; di
             <td>{p.students ?? '—'}</td>
             <td>{p.syncStatus ?? '—'}</td>
             <td>{p.lastSyncedAt ? new Date(p.lastSyncedAt).toLocaleDateString('sv-SE') : '—'}</td>
+            <td>
+              <VisitLinkButtons code={p.code} dict={dict.visitLink} />
+            </td>
             <td>
               <span className="flex items-center justify-end gap-3">
                 {p.notionPageId && (

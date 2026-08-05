@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Reveal from '@/components/showcase/Reveal';
 import ZoomableShot from '@/components/showcase/ZoomableShot';
 import { LoopStep, RecVisual, TranscribeVisual, AskVisual } from '@/components/showcase/LoopVisuals';
+import { CampaignTracking } from '@/components/public/CampaignTracking';
 
 import shotOversikt from '../../public/rektor/larare-oversikt.png';
 import shotTranskript from '../../public/rektor/transkribering.png';
@@ -29,6 +30,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default function LararePage() {
   return (
     <main className="bg-canvas text-ink">
+      <CampaignTracking page="larare" />
       {/* 01 — HERO */}
       <section className="flex min-h-[88vh] items-center px-6 py-24 sm:px-10">
         <div className="container-content w-full">

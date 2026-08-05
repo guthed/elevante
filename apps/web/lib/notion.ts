@@ -221,3 +221,40 @@ export async function markNeedsCheckWithCandidates(
     } }),
   }).catch(() => {});
 }
+
+export type VisitRollup = {
+  lastSeen: string | null;
+  maxScroll: number;
+  sessions: number;
+  totalMinutes: number;
+  pages: string | null;
+};
+
+/**
+ * Skriver läs-statistik från säljsidorna till prospect-raden. Rör bara
+ * maskinfält — Status är säljpipelinen och ägs av människan, till skillnad från
+ * investerardecket där Status är just läsläget.
+ *
+ * Best-effort: Supabase är källan, ett Notion-fel får aldrig fälla besöket.
+ */
+export async function pushVisitRollup(pageId: string, rollup: VisitRollup): Promise<void> {
+  const token = process.env.NOTION_TOKEN;
+  if (!token) return;
+  try {
+    const res = await fetch(`${NOTION}/pages/${pageId}`, {
+      method: 'PATCH', headers: notionHeaders(token),
+      body: JSON.stringify({ properties: {
+        'Senast på sidan': rollup.lastSeen ? { date: { start: rollup.lastSeen } } : { date: null },
+        'Max scroll %': { number: rollup.maxScroll },
+        Sidbesök: { number: rollup.sessions },
+        'Tid på sidan (min)': { number: rollup.totalMinutes },
+        'Besökta sidor': rich(rollup.pages),
+      } }),
+    });
+    if (!res.ok) {
+      console.error('[notion] pushVisitRollup misslyckades:', res.status, await res.text());
+    }
+  } catch (error) {
+    console.error('[notion] pushVisitRollup error:', error);
+  }
+}
