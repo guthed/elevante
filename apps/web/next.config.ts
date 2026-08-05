@@ -11,15 +11,20 @@ const securityHeaders = [
   // andra subdomäner under albacross.com — därför wildcard i både script-src och
   // connect-src. Utan detta blockerar webbläsaren scriptet helt, vilket är
   // exakt varför Albacross rapporterade "hittar ingen kod" på elevante.se.
+  //
+  // Snitcher: samma upplägg — radar.min.js hämtas från cdn.snitcher.com och
+  // rapporterar in till radar.snitcher.com. Wildcard av samma skäl. Lägg ALLTID
+  // till nya spårningsdomäner här samtidigt som scriptet, annars ser
+  // leverantören en tyst blockerad integration.
   {
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.albacross.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.albacross.com https://*.snitcher.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://*.albacross.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com",
+      "connect-src 'self' https://www.google-analytics.com https://*.albacross.com https://*.snitcher.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

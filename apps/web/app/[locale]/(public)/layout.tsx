@@ -7,7 +7,7 @@ import { Header } from '@/components/public/Header';
 import { Footer } from '@/components/public/Footer';
 import { JsonLd } from '@/components/public/JsonLd';
 import { CookieConsent } from '@/components/public/CookieConsent';
-import { Albacross, AlbacrossSiteId } from '@/components/public/Analytics';
+import { Albacross, AlbacrossSiteId, Snitcher } from '@/components/public/Analytics';
 
 type Props = {
   children: ReactNode;
@@ -93,6 +93,7 @@ export default async function PublicLayout({ children, params }: Props) {
     <>
       <AlbacrossSiteId />
       <Albacross />
+      <Snitcher />
       <CookieConsent locale={locale} />
       <JsonLd data={[orgSchema, websiteSchema, softwareSchema]} />
       <a
