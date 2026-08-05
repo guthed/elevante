@@ -22,8 +22,10 @@ export function AlbacrossSiteId() {
 }
 
 // Själva spårningen: track.js sätter cookie (nQ_cookieId) och rapporterar
-// besöket. Laddas ENBART efter samtycke, av samma skäl som GA, och aldrig på
-// /app/*-rutter.
+// besöket. Laddas för ALLA besökare på den publika sajten — inte bakom
+// cookie-samtycket, till skillnad från GA. Affärsbeslut: B2B-besöks-
+// identifiering på företagsnivå, med berättigat intresse som grund. Redovisat i
+// cookie-policyn. Laddas fortfarande aldrig på /app/*-rutter med elevdata.
 export function Albacross() {
   return (
     <Script
