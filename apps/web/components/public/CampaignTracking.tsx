@@ -1,4 +1,4 @@
-import { Albacross, AlbacrossSiteId } from './Analytics';
+import { Albacross, AlbacrossSiteId, Snitcher } from './Analytics';
 import { CookieConsent } from './CookieConsent';
 import VisitTracker from '@/components/showcase/VisitTracker';
 
@@ -8,8 +8,9 @@ import VisitTracker from '@/components/showcase/VisitTracker';
  * motsvarigheten, i ett stycke.
  *
  * Två lager som svarar på olika frågor:
- *  - Albacross (alla besökare): vilka organisationer tittar? Fångar trafik vi
- *    inte själva initierat — vidarebefordrade länkar, sökträffar, kollegor.
+ *  - Albacross + Snitcher (alla besökare): vilka organisationer tittar? Fångar
+ *    trafik vi inte själva initierat — vidarebefordrade länkar, sökträffar,
+ *    kollegor.
  *  - VisitTracker (?k=): öppnade den vi skickade länken till, och läste de
  *    klart? Skriver mot prospect-raden i CRM:et.
  *
@@ -21,6 +22,7 @@ export function CampaignTracking({ page }: { page: 'rektor' | 'larare' }) {
     <>
       <AlbacrossSiteId />
       <Albacross />
+      <Snitcher />
       <CookieConsent locale="sv" />
       <VisitTracker page={page} />
     </>

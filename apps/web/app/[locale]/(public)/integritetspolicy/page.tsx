@@ -62,13 +62,13 @@ export default async function PrivacyPage({ params }: Props) {
         {
           h: 'Var data lagras – ingen överföring utanför EU',
           p: [
-            'All behandling av person- och lektionsdata sker inom EU. Transkribering körs på svensk infrastruktur via Berget AI. Databas och lagring ligger hos Supabase inom EU, och applikationen driftas på Vercel (Stockholm). Anrop till språkmodell (Anthropic Claude) sker mot en EU-baserad endpoint. Inga elev- eller lärardata förs till tredjeland.',
+            'All behandling av person- och lektionsdata sker inom EU. Transkribering körs på svensk infrastruktur. Databas och lagring ligger inom EU, och applikationen driftas i Stockholm. Anrop till språkmodell sker mot en EU-baserad endpoint. Inga elev- eller lärardata förs till tredjeland.',
           ],
         },
         {
           h: 'Personuppgiftsbiträden',
           p: [
-            'Vi anlitar leverantörer som behandlar uppgifter för vår räkning, bland annat: Berget AI (transkribering och AI-infrastruktur, Sverige), Supabase (databas och lagring, EU), Anthropic (språkmodell, EU-endpoint), Vercel (drift) och Loops (utskick av transaktionell e-post). På den publika webbplatsen används dessutom Albacross (Sverige) för att identifiera vilka organisationer som besöker oss, med stöd av berättigat intresse, samt Google Analytics för anonymiserad statistik efter samtycke – se vår cookie-policy.',
+            'Vi anlitar leverantörer som behandlar uppgifter för vår räkning, bland annat för transkribering och AI-infrastruktur, databas och lagring, drift av webbplatsen samt utskick av e-post. På den publika webbplatsen används dessutom tjänster som utifrån IP-adress visar vilka organisationer som besöker oss, med stöd av berättigat intresse, samt ett analysverktyg för anonymiserad statistik efter samtycke – se vår cookie-policy. Vill du veta vilka leverantörer vi anlitar för en viss behandling, mejla john@elevante.se så berättar vi.',
           ],
         },
         {
@@ -126,13 +126,13 @@ export default async function PrivacyPage({ params }: Props) {
         {
           h: 'Where data is stored – no transfer outside the EU',
           p: [
-            'All processing of personal and lesson data takes place inside the EU. Transcription runs on Swedish infrastructure via Berget AI. The database and storage are hosted by Supabase inside the EU, and the application runs on Vercel (Stockholm). Calls to the language model (Anthropic Claude) go to an EU-based endpoint. No student or teacher data is transferred to a third country.',
+            'All processing of personal and lesson data takes place inside the EU. Transcription runs on Swedish infrastructure. The database and storage are located inside the EU, and the application runs in Stockholm. Calls to the language model go to an EU-based endpoint. No student or teacher data is transferred to a third country.',
           ],
         },
         {
           h: 'Processors',
           p: [
-            'We use providers that process data on our behalf, including: Berget AI (transcription and AI infrastructure, Sweden), Supabase (database and storage, EU), Anthropic (language model, EU endpoint), Vercel (hosting) and Loops (sending transactional email). The public website additionally uses Albacross (Sweden) to identify which organisations visit us, on the basis of legitimate interest, and Google Analytics for anonymised statistics after consent – see our cookie policy.',
+            'We use providers that process data on our behalf, including for transcription and AI infrastructure, database and storage, website hosting and sending email. The public website additionally uses services that show, based on IP address, which organisations visit us, on the basis of legitimate interest, and an analytics tool for anonymised statistics after consent – see our cookie policy.  If you want to know which providers we use for a particular processing activity, email john@elevante.se and we will tell you.',
           ],
         },
         {
