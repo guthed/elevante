@@ -98,8 +98,10 @@ mötet i konstgjorda "lektioner":
   Ingen enskild lärare kan pekas ut för något de sade om känsliga
   klassrumsdiskussioner.
 - **Transkriptet committas aldrig till git.** Filerna bor lokalt, datan bor i
-  Supabase. Amerikanska gymnasiet har ännu inte skrivit på något.
-- Samtycke är givet muntligt i mötet (citatet ovan).
+  Supabase.
+- Samtycke till inspelningen är givet muntligt i mötet (citatet ovan). LOI är
+  påskrivet med Amerikanska Gymnasiet, men ett LOI är ingen personuppgifts-
+  rättslig grund — biträdesavtal och samtyckesfrågan för piloten kvarstår.
 
 ## Genomförande
 

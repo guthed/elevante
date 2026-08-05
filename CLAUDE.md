@@ -11,7 +11,7 @@
 
 Tagline: *"Elevante minns allt du lär dig i skolan"*
 
-Pilot: Nacka Gymnasium, 2 000 elever.
+Pilot: **Amerikanska Gymnasiet** — LOI påskrivet. Koncernen omfattar 5 skolor / ~2 000 elever; piloten startar hösten 2026 med 2–3 klasser och expanderar efter validering. Nacka Gymnasium är ett parallellt spår — dialog med rektor pågår.
 
 ---
 
@@ -191,5 +191,6 @@ Syntetiska (AI-genererade) porträtt på appens 8 demo-elever, demo-läraren Ann
 ## Ekonomi
 
 - 500 SEK/elev/år | ~141 SEK driftskostnad | ~71,7% marginal
-- Pilot: 2 000 elever → 1 MSEK intäkt / 283 KSEK kostnad
+- Full koncern (Amerikanska, 5 skolor): 2 000 elever → 1 MSEK intäkt / 283 KSEK kostnad
+- Pilotens första fas är mindre: 2–3 klasser, ~60–90 elever — expansion efter validering
 - Skala till 440 000 nordiska elever
