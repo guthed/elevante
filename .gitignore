@@ -46,3 +46,11 @@ coverage
 /screenshots-raw/
 /screenshots-cropped/
 .env*
+
+# expo/supabase-cache och macOS-skräp (låg ospårat och skräpade i git status)
+apps/mobile/.expo/
+supabase/.temp/
+.DS_Store
+
+# investerardeck: 124 MB pptx/pdf — hålls utanför repot
+/elevante-deck/

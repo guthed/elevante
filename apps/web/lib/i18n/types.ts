@@ -284,6 +284,7 @@ export type Dictionary = {
           send: string;
           sending: string;
           assistantTyping: string;
+          streamError: string;
           guardrailNotice: string;
           sourcesHeading: string;
           sourceFromLesson: string;

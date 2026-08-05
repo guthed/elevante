@@ -1,45 +1,72 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 
 type NavItem = { id: string; label: string; el: HTMLElement };
+
+const EMPTY: NavItem[] = [];
+
+// Sektionerna är statiska efter mount, så det räcker att prenumerera en gång.
+const subscribe = () => () => {};
 
 /**
  * Diskret sektions-nav för det långa decket (~19 sektioner).
  * Auto-upptäcker `main > section`, läser etiketten ur sektionens `.eyebrow`,
  * markerar aktiv sektion via IntersectionObserver och låter en investerare
  * hoppa direkt. Dold under lg (på små skärmar räcker scroll + topp-progress).
+ *
+ * Listan är extern (DOM-)state som läses efter mount — därför `useSyncExternalStore`
+ * i stället för setState-i-effekt (react-hooks/set-state-in-effect).
  */
 export default function DeckNav() {
-  const [items, setItems] = useState<NavItem[]>([]);
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
+  // Cacha per sektionsantal så getSnapshot ger en stabil referens mellan renders.
+  const cache = useRef<{ count: number; items: NavItem[] }>({
+    count: -1,
+    items: EMPTY,
+  });
+
+  const getSnapshot = useCallback(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('main > section'),
     );
-    const list: NavItem[] = sections.map((el, i) => {
+    if (sections.length === cache.current.count) return cache.current.items;
+    const items: NavItem[] = sections.map((el, i) => {
       const eb = el.querySelector('.eyebrow');
       const label = (eb?.textContent ?? '').trim() || `Sektion ${i + 1}`;
       if (!el.id) el.id = `deck-sec-${i}`;
       return { id: el.id, label, el };
     });
-    setItems(list);
+    cache.current = { count: sections.length, items };
+    return items;
+  }, []);
+
+  const items = useSyncExternalStore(subscribe, getSnapshot, () => EMPTY);
+
+  useEffect(() => {
+    if (items.length === 0) return;
 
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            const idx = list.findIndex((it) => it.el === e.target);
+            const idx = items.findIndex((it) => it.el === e.target);
             if (idx >= 0) setActive(idx);
           }
         }
       },
       { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
     );
-    list.forEach((it) => io.observe(it.el));
+    items.forEach((it) => io.observe(it.el));
     return () => io.disconnect();
-  }, []);
+  }, [items]);
 
   const go = useCallback((el: HTMLElement) => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

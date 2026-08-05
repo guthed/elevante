@@ -1,6 +1,13 @@
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { sendMessage, type SendMessageState } from '@/app/actions/chat';
@@ -34,9 +41,26 @@ type Props = {
 
 const initialState: SendMessageState = { status: 'idle' };
 
+/**
+ * Chatten strömmar svaret via /api/chat/stream — Claude-anropet tar ~16s och
+ * utan streaming stod det bara "Skickar…" hela tiden. Nu syns första ordet
+ * efter ~1–2s.
+ *
+ * Server Action `sendMessage` finns kvar som `action` på formuläret: utan
+ * JavaScript submittar formuläret som vanligt och får ett (långsamt) svar.
+ * Med JavaScript tar onSubmit över och preventDefault stoppar action:en.
+ */
 export function ChatThread({ chatId, initialMessages, labels }: Props) {
   const [state, formAction, pending] = useActionState(sendMessage, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Meddelanden som tillkommit i den här sessionen (initialMessages kommer från servern).
+  const [extra, setExtra] = useState<Message[]>([]);
+  const [streamText, setStreamText] = useState<string | null>(null);
+  const [streamFailed, setStreamFailed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const resumedRef = useRef(false);
+  const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (state.status === 'success') {
@@ -44,31 +68,169 @@ export function ChatThread({ chatId, initialMessages, labels }: Props) {
     }
   }, [state]);
 
+  const run = useCallback(
+    async (question: string, resume: boolean) => {
+      setBusy(true);
+      setStreamFailed(false);
+      setStreamText('');
+      let accumulated = '';
+      let sources: Source[] = [];
+      let failed = false;
+
+      try {
+        const res = await fetch('/api/chat/stream', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chatId, question, resume }),
+        });
+        if (!res.ok || !res.body) throw new Error('stream unavailable');
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          // SSE-ramar separeras av blankrad; sista biten kan vara ofullständig.
+          const frames = buffer.split('\n\n');
+          buffer = frames.pop() ?? '';
+          for (const frame of frames) {
+            const line = frame.trim();
+            if (!line.startsWith('data:')) continue;
+            let event: { type?: string; text?: string; sources?: Source[]; error?: boolean };
+            try {
+              event = JSON.parse(line.slice(5).trim());
+            } catch {
+              continue;
+            }
+            if (event.type === 'delta' && typeof event.text === 'string') {
+              accumulated += event.text;
+              setStreamText(accumulated);
+            } else if (event.type === 'done') {
+              if (event.error) failed = true;
+              sources = event.sources ?? [];
+            }
+          }
+        }
+      } catch {
+        failed = true;
+      }
+
+      if (failed || accumulated.length === 0) {
+        setStreamFailed(true);
+      } else {
+        setExtra((prev) => [
+          ...prev,
+          {
+            id: `streamed-${Date.now()}`,
+            role: 'assistant',
+            content: accumulated,
+            sources,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+      }
+      setStreamText(null);
+      setBusy(false);
+    },
+    [chatId],
+  );
+
+  // Första frågan skapas av startChat, som redirectar hit direkt utan att vänta
+  // på svaret. Ligger sista meddelandet obesvarat — strömma in svaret nu.
+  useEffect(() => {
+    if (resumedRef.current) return;
+    const last = initialMessages[initialMessages.length - 1];
+    if (last && last.role === 'user') {
+      resumedRef.current = true;
+      void run(last.content, true);
+    }
+  }, [initialMessages, run]);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [streamText, extra.length]);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const question = (data.get('question') ?? '').toString().trim();
+    if (!question || busy) {
+      event.preventDefault();
+      return;
+    }
+    // JavaScript finns — ta över och strömma i stället för att köra Server Action.
+    event.preventDefault();
+    form.reset();
+    setExtra((prev) => [
+      ...prev,
+      {
+        id: `local-${Date.now()}`,
+        role: 'user',
+        content: question,
+        sources: [],
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    void run(question, false);
+  }
+
+  const messages = [...initialMessages, ...extra];
+  const showTyping = busy && (streamText === null || streamText.length === 0);
+
   return (
     <div className="flex min-h-[calc(100vh-8rem)] flex-col">
       <div className="flex-1 space-y-10 pb-32">
-        {initialMessages.length === 0 ? (
+        {messages.length === 0 ? (
           <p className="text-center text-[0.9375rem] text-[var(--color-ink-muted)]">
             {labels.empty}
           </p>
         ) : (
-          initialMessages.map((message) => (
+          messages.map((message) => (
             <Message key={message.id} message={message} labels={labels} />
           ))
         )}
-        {pending ? (
-          <div className="flex items-center gap-2 text-[0.875rem] text-[var(--color-ink-muted)]">
+
+        {streamText !== null && streamText.length > 0 ? (
+          <Message
+            message={{
+              id: 'streaming',
+              role: 'assistant',
+              content: streamText,
+              sources: [],
+              created_at: '',
+            }}
+            labels={labels}
+          />
+        ) : null}
+
+        {showTyping || pending ? (
+          <div
+            className="flex items-center gap-2 text-[0.875rem] text-[var(--color-ink-muted)]"
+            aria-live="polite"
+          >
             <span className="typing-dot" />
             <span className="typing-dot" />
             <span className="typing-dot" />
             <span className="ml-2">{labels.assistantTyping}</span>
           </div>
         ) : null}
+
+        {streamFailed ? (
+          <p role="alert" className="text-[0.875rem] text-[var(--color-error)]">
+            {labels.streamError}
+          </p>
+        ) : null}
+
+        <div ref={endRef} />
       </div>
 
       <form
         ref={formRef}
         action={formAction}
+        onSubmit={handleSubmit}
         className="sticky bottom-0 -mx-4 border-t border-[var(--color-sand)] bg-[var(--color-canvas)]/95 px-4 pb-6 pt-4 backdrop-blur md:-mx-0"
       >
         <input type="hidden" name="chat_id" value={chatId} />
@@ -84,10 +246,10 @@ export function ChatThread({ chatId, initialMessages, labels }: Props) {
           <div className="mt-2 flex justify-end">
             <button
               type="submit"
-              disabled={pending}
+              disabled={busy || pending}
               className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-4 py-2 text-[0.875rem] text-[var(--color-canvas)] transition-opacity disabled:opacity-50"
             >
-              {labels.send}
+              {busy || pending ? labels.sending : labels.send}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"

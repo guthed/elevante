@@ -42,7 +42,7 @@ export default function LararePage() {
             Elevante minns allt du lär dig i skolan.
           </p>
           <p className="mt-10 max-w-2xl border-t border-ink/10 pt-8 text-lg leading-relaxed text-ink-secondary">
-            Du håller en genomtänkt lektion — och i samma stund det ringer ut börjar den blekna.
+            Du håller en genomtänkt lektion — och i samma stund som det ringer ut börjar den blekna.
             Eleven som var sjuk, den som inte hann anteckna, den som behöver höra det en gång till:
             alla kommer tillbaka till dig med samma frågor. Elevante minns lektionen åt dem, så att
             din tid räcker till det som faktiskt kräver en lärare.
@@ -83,7 +83,7 @@ export default function LararePage() {
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
             {[
               { tag: 'Var sjuk', who: 'Eleven som missade veckan', desc: 'Kommer tillbaka och vill att du går igenom alltihop igen.' },
-              { tag: 'Hann inte med', who: 'Eleven mitt i ledet', desc: 'Skulle behövt höra begreppet en gång till — men du var redan vidare.' },
+              { tag: 'Hann inte med', who: 'Eleven som tappar tempot', desc: 'Skulle behövt höra begreppet en gång till — men du var redan vidare.' },
               { tag: 'Vågar inte fråga', who: 'Eleven längst bak', desc: 'Sitter tyst med en lucka som växer.' },
             ].map((p, i) => (
               <Reveal key={p.tag} delay={i * 90}>
@@ -97,7 +97,7 @@ export default function LararePage() {
           </div>
           <Reveal>
             <p className="mt-12 max-w-2xl font-serif text-3xl leading-snug">
-              Du kan inte vara tillgänglig för var och en, hela tiden. Och repetitionen hamnar oftast
+              Ingen lärare kan vara tillgänglig för var och en, hela tiden. Och repetitionen hamnar oftast
               hemma — <em className="text-coral not-italic">där alla elever inte har samma stöd</em>.
             </p>
           </Reveal>
@@ -163,7 +163,7 @@ export default function LararePage() {
               {[
                 { h: 'Du bestämmer när', p: 'Inspelningen sker bara när du trycker igång. Ingen lektion spelas in i smyg.' },
                 { h: 'Ditt material, ditt tolkningsföreträde', p: 'Svaren bygger på din genomgång. Eleven möter din undervisning — inte en generisk källa. Du har sista ordet om vad som gäller.' },
-                { h: 'Aldrig ett övervakningsverktyg', p: 'Elevante är ett pedagogiskt stöd för repetition. Ingen lektion blir underlag för att granska dig — det är garanterat.' },
+                { h: 'Aldrig ett övervakningsverktyg', p: 'Elevante är ett pedagogiskt stöd för repetition. Det finns ingen rektorsvy — förståelsekartan är din, och den visar elevernas frågor, inte ditt arbete.' },
               ].map((c, i) => (
                 <Reveal key={c.h} delay={i * 80}>
                   <div className="flex gap-5">
@@ -200,9 +200,29 @@ export default function LararePage() {
               Mer tid till det som <em className="text-coral">faktiskt kräver en lärare.</em>
             </p>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-secondary">
-              De återkommande frågorna efter lektionen tar Elevante. Eleven får en tålmodig första
-              instans, dygnet runt och i egen takt — och du får tillbaka tid och studiero till det som
-              faktiskt behöver dig.
+              De återkommande frågorna efter lektionen tar Elevante. Eleven får ett tålmodigt första
+              ställe att fråga, dygnet runt och i egen takt — och du får tillbaka tid och arbetsro
+              till det som bara du kan göra.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 05a — KLASSPROV */}
+      <section className="bg-surface-soft px-6 py-20 sm:px-10 sm:py-28">
+        <div className="container-content">
+          <Reveal>
+            <Eyebrow>Klassprov</Eyebrow>
+            <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">Prov ur dina egna lektioner</h2>
+            <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
+              Välj vilka lektioner provet ska bygga på, hur många frågor det ska ha och hur de ska
+              fördelas mellan flervalsfrågor, öppna och resonerande. Elevante skriver provet ur dina
+              genomgångar — du läser igenom och publicerar när du är nöjd.
+            </p>
+            <p className="mt-5 max-w-2xl text-lg text-ink-secondary">
+              När eleverna gjort provet får du ett rättningsförslag att gå igenom fråga för fråga.
+              Du ändrar det du vill ändra och släpper resultatet till varje elev först när du säger
+              till. <em className="not-italic text-coral">Bedömningen är din, alltid.</em>
             </p>
           </Reveal>
         </div>
@@ -237,7 +257,7 @@ export default function LararePage() {
             <Eyebrow>Extra anpassningar</Eyebrow>
             <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">Stöd som gör skillnad</h2>
             <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
-              För elever i behov av extra anpassningar gör det stor skillnad. Att läsa i lugn takt,
+              För elever i behov av extra anpassningar kan Elevante göra stor skillnad. Att läsa i lugn takt,
               lyssna om, repetera utan press — särskilt vid NPF eller dyslexi, och för nyanlända och
               elever i SVA, där tröskeln in i ämnet sänks när orden finns kvar.
             </p>
@@ -252,9 +272,9 @@ export default function LararePage() {
             <Eyebrow>Din insikt</Eyebrow>
             <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">Se vad klassen fastnar på</h2>
             <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
-              Efter en lektion ser du vilka begrepp eleverna återkommer till och kämpar med — klass
-              för klass. Inte för att rätta dig, utan för att du ska veta var du kan lägga krutet nästa
-              gång.
+              Efter en lektion ser du vilka begrepp eleverna återkommer till och kämpar med — både
+              för klassen som helhet och för den enskilda eleven, så att du ser vem som behöver dig.
+              Det är där du kan lägga krutet nästa gång.
             </p>
           </Reveal>
         </div>
@@ -275,7 +295,7 @@ export default function LararePage() {
                 className="h-auto w-full shadow-[0_30px_80px_-32px_rgba(60,44,24,0.35)] ring-1 ring-ink/[0.08] sm:rounded-2xl"
               />
               <figcaption className="eyebrow mt-6 px-4 text-center text-ink-muted">
-                Din förståelsekarta · per klass och begrepp
+                Din förståelsekarta · begrepp per elev
               </figcaption>
             </figure>
           </Reveal>
@@ -287,14 +307,14 @@ export default function LararePage() {
         <div className="container-content">
           <Reveal>
             <Eyebrow>Tryggt med personuppgifter</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Tryggt för dig och dina elever</h2>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Byggt för svensk skola</h2>
           </Reveal>
           <div className="mt-12 grid gap-x-14 gap-y-9 sm:grid-cols-2">
             {[
               { n: '01', h: 'All data inom EU', p: 'All databehandling sker inom EU — inget skickas utanför.' },
               { n: '02', h: 'Svensk transkribering', p: 'KB-Whisper via Berget AI — byggt för svenska, kört i Sverige.' },
               { n: '03', h: 'Råljudet raderas', p: 'Ljudet tas bort så snart transkriberingen är klar. Bara texten finns kvar.' },
-              { n: '04', h: 'PUB-avtal — skolan äger datan', p: 'Personuppgiftsbiträdesavtal på plats, med huvudmannen som personuppgiftsansvarig.' },
+              { n: '04', h: 'PUB-avtal med huvudmannen', p: 'Personuppgiftsbiträdesavtal på plats, med huvudmannen som personuppgiftsansvarig.' },
             ].map((t, i) => (
               <Reveal key={t.n} delay={(i % 2) * 80}>
                 <div className="flex gap-5">
@@ -322,8 +342,8 @@ export default function LararePage() {
               Börja i det lilla<span className="text-coral">.</span>
             </h2>
             <p className="mt-6 max-w-md text-lg text-canvas/70">
-              Starta en kostnadsfri pilot med en klass, en kurs, en månad — och känn själv om det ger
-              dig tid och studiero tillbaka.
+              Vill du testa? Hör av dig så tar vi det med din rektor — sen känner du själv om det ger
+              dig tid och arbetsro tillbaka.
             </p>
             <p className="mt-8 text-canvas/70">
               <span className="font-semibold text-canvas">Gratis pilot</span> · en klass · en kurs ·
@@ -332,7 +352,7 @@ export default function LararePage() {
           </Reveal>
           <Reveal delay={120}>
             <div className="flex flex-col items-start gap-10">
-              <a href="mailto:john@elevante.se" className="inline-flex min-h-[56px] items-center gap-4 rounded-full bg-canvas px-10 py-4 font-medium text-ink transition-transform hover:scale-[1.02]">
+              <a href="mailto:john@elevante.se?subject=Demo%20av%20Elevante" className="inline-flex min-h-[56px] items-center gap-4 rounded-full bg-canvas px-10 py-4 font-medium text-ink transition-transform hover:scale-[1.02]">
                 Boka en demo <span className="text-coral">→</span>
               </a>
               <div className="leading-relaxed text-canvas/60">

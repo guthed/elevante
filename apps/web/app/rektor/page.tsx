@@ -44,7 +44,7 @@ export default function RektorPage() {
           <p className="mt-10 max-w-2xl border-t border-ink/10 pt-8 text-lg leading-relaxed text-ink-secondary">
             Varje dag hålls genomtänkta lektioner — som försvinner i samma stund som det ringer ut.
             En elev är borta, en annan hänger inte med, en tredje vågar inte fråga. Och det finns
-            ingen backup som faktiskt var med i klassrummet. Vi byggde Elevante för att varje elev
+            ingen som minns genomgången åt dem. Vi byggde Elevante för att varje elev
             ska kunna gå tillbaka till lektionen som hölls — inte till ett generellt svar från nätet.
           </p>
           <p className="mt-12 text-sm text-ink-muted">Scrolla ↓</p>
@@ -75,8 +75,8 @@ export default function RektorPage() {
           </div>
           <Reveal>
             <p className="mt-12 max-w-2xl font-serif text-3xl leading-snug">
-              Idag googlar de — eller frågar ChatGPT — och får ett svar som inte har{' '}
-              <em className="text-coral not-italic">något</em> med lektionen att göra. Den som har
+              Idag googlar de — eller frågar ChatGPT — och får ett svar som{' '}
+              <em className="text-coral not-italic">ingen lärare</em> har stått bakom. Den som har
               stöd hemma klarar sig ändå. Den som inte har det halkar efter — och det är just den
               ojämlikheten som skolans kompensatoriska uppdrag ska jämna ut.
             </p>
@@ -160,9 +160,9 @@ export default function RektorPage() {
             </Reveal>
             <div className="mt-12 flex flex-col gap-7">
               {[
-                { h: 'Kan inte hitta på', p: (<>Strikt RAG<sup className="text-coral">*</sup> — modellen svarar bara utifrån det som faktiskt sades på lektionen.</>) },
+                { h: 'Håller sig till lektionen', p: (<>Strikt RAG<sup className="text-coral">*</sup> — modellen hämtar svaret ur er egen genomgång. Finns det inte där, säger den det istället för att gissa.</>) },
                 { h: 'Visar alltid källan', p: 'Varje svar pekar tillbaka till stället i genomgången där det sas.' },
-                { h: 'Förstärker läraren — ersätter den inte', p: 'Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa. Lärarens tolkningsföreträde är kvar.' },
+                { h: 'Förstärker läraren — tar aldrig över', p: 'Svaren bygger på lärarens egen genomgång. Eleven möter er undervisning, inte en generisk källa. Lärarens tolkningsföreträde är kvar.' },
               ].map((c, i) => (
                 <Reveal key={c.h} delay={i * 80}>
                   <div className="flex gap-5">
@@ -179,8 +179,8 @@ export default function RektorPage() {
               <p className="mt-12 max-w-xl border-t border-ink/10 pt-6 text-sm leading-relaxed text-ink-muted">
                 <span className="font-semibold text-coral">*</span> RAG (Retrieval-Augmented
                 Generation) innebär att modellen först hämtar relevanta avsnitt ur er egen lektion och
-                sedan formulerar svaret utifrån dem. Den kan därför inte hitta på fritt — svaret är
-                alltid bundet till källan.
+                sedan formulerar svaret utifrån dem. Den kan därför inte svara på något som inte
+                finns i källan.
               </p>
             </Reveal>
           </div>
@@ -207,9 +207,9 @@ export default function RektorPage() {
               Läraren äger lektionen. <em className="text-coral">Elevante minns den.</em>
             </p>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-secondary">
-              Inget för- eller efterarbete — du trycker igång inspelningen, sen sköter sig resten.
-              Max två tryck. Elevante förstärker undervisningen — det ersätter aldrig läraren. Byggt
-              med läraren, inte runt.
+              Inget för- eller efterarbete — läraren trycker igång inspelningen, sedan sköter sig
+              resten. Max två tryck. Elevante förstärker undervisningen — det ersätter aldrig
+              läraren. Byggt med lärare, inte förbi dem.
             </p>
           </Reveal>
         </div>
@@ -222,8 +222,8 @@ export default function RektorPage() {
             <Eyebrow>För eleven</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Samma lektion, fler chanser</h2>
             <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
-              Det ger en tillgänglig lärmiljö — där repetition och extra anpassningar inte avgörs
-              av tur eller av resurserna hemma.
+              Elevante ger en tillgänglig lärmiljö — där repetitionen inte avgörs av vem som har
+              hjälp hemma.
             </p>
           </Reveal>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
@@ -276,9 +276,9 @@ export default function RektorPage() {
             <h2 className="mt-4 max-w-2xl font-serif text-4xl sm:text-5xl">En levande förståelsekarta</h2>
             <p className="mt-6 max-w-2xl text-lg text-ink-secondary">
               Dina lärare ser vilka begrepp klassen fastnar på — klass för klass, medan terminen
-              pågår. Det blir underlag för det systematiska kvalitetsarbetet och för likvärdig
-              måluppfyllelse. Du inför verktyget; läraren får syn på lärandet — du behöver inte
-              granska någon. Kartan visar elevernas lärande, inte den enskilda lärarens arbete.
+              pågår. Det ger dem något konkret att ta med in i det systematiska kvalitetsarbetet och
+              arbetet för likvärdig måluppfyllelse, i stället för magkänsla i efterhand. Kartan visar
+              elevernas lärande, inte den enskilda lärarens arbete.
             </p>
           </Reveal>
         </div>
@@ -320,9 +320,8 @@ export default function RektorPage() {
               <div className="border-t-2 border-sage pt-7">
                 <h3 className="font-serif text-2xl">En gemensam grund</h3>
                 <p className="mt-4 max-w-md text-ink-secondary">
-                  När varje genomgång finns kvar bygger ni en gemensam kunskapsbank som håller —
-                  oavsett frånvaro, vikarier och tempo. En kvalitetssäkrad grund som hela skolan kan
-                  vila på.
+                  När varje genomgång finns kvar bygger ni en kunskapsbank som håller — oavsett
+                  frånvaro, vikarier och tempo. En grund som hela skolan kan vila på.
                 </p>
               </div>
             </Reveal>
@@ -330,8 +329,9 @@ export default function RektorPage() {
               <div className="border-t-2 border-coral pt-7">
                 <h3 className="font-serif text-2xl">Lärartid som räcker till fler</h3>
                 <p className="mt-4 max-w-md text-ink-secondary">
-                  Vissa frågor återkommer om och om igen. Elevante ger varje elev en tålmodig första
-                  instans — så att lärarens tid räcker till det som verkligen kräver en lärare.
+                  Vissa frågor återkommer om och om igen. Elevante ger varje elev ett tålmodigt
+                  första ställe att fråga — så att lärarens tid räcker till det som verkligen kräver
+                  en lärare.
                 </p>
               </div>
             </Reveal>
@@ -351,7 +351,7 @@ export default function RektorPage() {
               { n: '01', h: 'All data inom EU', p: 'All databehandling sker inom EU — inget skickas utanför.' },
               { n: '02', h: 'Svensk transkribering', p: 'KB-Whisper via Berget AI — byggt för svenska, kört i Sverige.' },
               { n: '03', h: 'Råljudet raderas', p: 'Ljudet tas bort så snart transkriberingen är klar. Bara texten finns kvar.' },
-              { n: '04', h: 'PUB-avtal — ni äger datan', p: 'Personuppgiftsbiträdesavtal på plats, med huvudmannen som personuppgiftsansvarig. Skolan äger sin data.' },
+              { n: '04', h: 'PUB-avtal — ni bestämmer', p: 'Personuppgiftsbiträdesavtal på plats, med huvudmannen som personuppgiftsansvarig. Ni bestämmer över uppgifterna.' },
             ].map((t, i) => (
               <Reveal key={t.n} delay={(i % 2) * 80}>
                 <div className="flex gap-5">
@@ -417,7 +417,7 @@ export default function RektorPage() {
           </Reveal>
           <Reveal delay={120}>
             <div className="flex flex-col items-start gap-10">
-              <a href="mailto:john@elevante.se" className="inline-flex min-h-[56px] items-center gap-4 rounded-full bg-canvas px-10 py-4 font-medium text-ink transition-transform hover:scale-[1.02]">
+              <a href="mailto:john@elevante.se?subject=Demo%20av%20Elevante" className="inline-flex min-h-[56px] items-center gap-4 rounded-full bg-canvas px-10 py-4 font-medium text-ink transition-transform hover:scale-[1.02]">
                 Boka en demo <span className="text-coral">→</span>
               </a>
               <div className="leading-relaxed text-canvas/60">
@@ -427,9 +427,14 @@ export default function RektorPage() {
                 <br />
                 elevante.se
               </div>
-              <Link href="/rektor/deck" className="text-sm text-canvas/50 underline-offset-4 hover:underline">
-                Presentationsläge →
-              </Link>
+              <div className="flex flex-col gap-3">
+                <Link href="/larare" className="text-sm text-canvas/70 underline-offset-4 hover:underline">
+                  Sidan för dina lärare →
+                </Link>
+                <Link href="/rektor/deck" className="text-sm text-canvas/50 underline-offset-4 hover:underline">
+                  Presentationsläge →
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>

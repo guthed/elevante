@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { anthropicIsConfigured, streamRagRaw } from '@/lib/ai/anthropic';
+import { decodeAnswerSoFar } from '@/lib/ai/stream-json';
 import { selectedLessons, toSegments, type TrySegment } from '@/lib/try/lessons';
 import { allow, clientKey } from '@/lib/try/ratelimit';
 
@@ -50,47 +51,6 @@ function pickCitation(
 
 const REFUSAL = /togs inte upp|inte upp på den här|wasn.?t covered|not covered in (this|the) lesson/i;
 
-/**
- * Extraherar det avkodade värdet av "answer"-fältet ur en (möjligen ofullständig)
- * JSON-sträng som strömmas in. Hanterar JSON-escapes; en escape som kapats mitt i
- * (t.ex. halv `\u`) läks av nästa chunk eftersom hela råtexten avkodas om varje gång.
- */
-function decodeAnswerSoFar(raw: string): string {
-  const key = raw.indexOf('"answer"');
-  if (key === -1) return '';
-  let i = key + '"answer"'.length;
-  while (i < raw.length && raw[i] !== ':') i++;
-  i++; // förbi kolon
-  while (i < raw.length && raw[i] !== '"') i++;
-  if (i >= raw.length) return '';
-  i++; // förbi inledande citattecken
-  let out = '';
-  while (i < raw.length) {
-    const ch = raw[i];
-    if (ch === '\\') {
-      const next = raw[i + 1];
-      if (next === undefined) break; // ofullständig escape i slutet — vänta på mer
-      if (next === 'u') {
-        const hex = raw.slice(i + 2, i + 6);
-        if (hex.length < 4) break; // ofullständig \u — vänta på mer
-        out += String.fromCharCode(parseInt(hex, 16));
-        i += 6;
-        continue;
-      }
-      const map: Record<string, string> = {
-        n: '\n', t: '\t', r: '\r', b: '\b', f: '\f', '"': '"', '\\': '\\', '/': '/',
-      };
-      out += map[next] ?? next;
-      i += 2;
-      continue;
-    }
-    if (ch === '"') break; // avslutande citattecken — answer klar
-    out += ch;
-    i++;
-  }
-  return out;
-}
-
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -135,7 +95,11 @@ export async function POST(req: Request) {
       let raw = '';
       let sent = '';
       try {
-        for await (const delta of streamRagRaw(question, chunks, lessonConcepts)) {
+        // concise: kampanjsidan vill ha korta, skimbara svar — till skillnad
+        // från app-chatten, som får fulla utläggningar.
+        for await (const delta of streamRagRaw(question, chunks, lessonConcepts, {
+          concise: true,
+        })) {
           raw += delta;
           const soFar = decodeAnswerSoFar(raw);
           if (soFar.length > sent.length) {

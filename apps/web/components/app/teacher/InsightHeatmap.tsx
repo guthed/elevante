@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import type { LessonInsight, LessonInsightStudent } from '@/lib/data/teacher';
+import { Avatar } from '@/components/ui';
+import { avatarFor } from '@/lib/avatars';
 import { InsightDrawer } from './InsightDrawer';
 import { StudentProfileCard } from './StudentProfileCard';
 import { ConceptQuestionList } from './ConceptQuestionList';
@@ -44,6 +46,9 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
     );
   }
 
+  // Namnkolumnen får plats för porträtt bara när klassen faktiskt har några.
+  const hasPortraits = insight.students.some((s) => avatarFor(s.fullName));
+
   // Beräkna totals
   const conceptTotals: Record<string, number> = {};
   let totalQuestionsClass = 0;
@@ -71,7 +76,7 @@ export function InsightHeatmap({ insight, aiInsight }: Props) {
         <div
           className="grid gap-1 text-[0.75rem]"
           style={{
-            gridTemplateColumns: `120px repeat(${insight.concepts.length}, minmax(72px, 1fr)) 56px`,
+            gridTemplateColumns: `${hasPortraits ? 152 : 120}px repeat(${insight.concepts.length}, minmax(72px, 1fr)) 56px`,
           }}
         >
           {/* Header-rad: tom hörna + koncept-rubriker + "Σ" totals-kolumn */}
@@ -193,9 +198,12 @@ function Row({
       <button
         type="button"
         onClick={onClick}
-        className="sticky left-0 z-10 flex items-center bg-[var(--color-surface)] pr-2 text-left text-[0.8125rem] text-[var(--color-ink)] underline-offset-2 hover:underline"
+        className="group sticky left-0 z-10 flex items-center gap-2 bg-[var(--color-surface)] pr-2 text-left text-[0.8125rem] text-[var(--color-ink)]"
       >
-        <span className="truncate">{student.fullName}</span>
+        {avatarFor(student.fullName) && <Avatar name={student.fullName} size="xs" />}
+        <span className="truncate underline-offset-2 group-hover:underline">
+          {student.fullName}
+        </span>
       </button>
       {concepts.map((c) => {
         const count = student.conceptQuestionCounts[c] ?? 0;

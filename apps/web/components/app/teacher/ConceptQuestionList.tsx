@@ -1,4 +1,6 @@
 import type { LessonInsightStudent } from '@/lib/data/teacher';
+import { Avatar } from '@/components/ui';
+import { avatarFor } from '@/lib/avatars';
 
 type Props = {
   concept: string;
@@ -49,7 +51,8 @@ export function ConceptQuestionList({ concept, students, onClose }: Props) {
               <p className="text-[0.875rem] italic leading-relaxed text-[var(--color-ink)]">
                 &ldquo;{row.content}&rdquo;
               </p>
-              <p className="mt-1 text-[0.75rem] text-[var(--color-ink-muted)]">
+              <p className="mt-1 flex items-center gap-1.5 text-[0.75rem] text-[var(--color-ink-muted)]">
+                {avatarFor(row.studentName) && <Avatar name={row.studentName} size="xs" />}
                 {row.studentName} ·{' '}
                 {new Date(row.createdAt).toLocaleDateString('sv-SE', {
                   day: 'numeric',

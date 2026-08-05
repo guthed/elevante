@@ -65,7 +65,7 @@ export default function ChatDemo() {
         Ställ en fråga till Elevante
       </h3>
       <p className="mt-2 text-sm text-canvas/60">
-        Tappa en fråga — så svarar Elevante med källa ur lektionen.
+        Välj en fråga — så svarar Elevante med källa ur lektionen.
       </p>
 
       {/* Konversation */}
@@ -144,7 +144,7 @@ export default function ChatDemo() {
       </div>
 
       <p className="mt-4 text-xs text-canvas/35">
-        Exempelsvar för demo. I appen hämtas svaret ur din egen inspelade lektion.
+        Exempelsvar för demo. I appen hämtas svaret ur skolans egna inspelade lektioner.
       </p>
     </div>
   );

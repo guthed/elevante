@@ -271,6 +271,7 @@ const sv: Dictionary = {
           send: 'Skicka',
           sending: 'Skickar…',
           assistantTyping: 'Elevante skriver…',
+          streamError: 'Svaret kunde inte hämtas. Kontrollera uppkopplingen och försök igen.',
           guardrailNotice: 'Det togs inte upp på den här lektionen.',
           sourcesHeading: 'Källor',
           sourceFromLesson: 'Från lektionen',

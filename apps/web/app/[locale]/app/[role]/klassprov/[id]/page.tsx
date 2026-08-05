@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
+import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { getCurrentProfile } from '@/lib/supabase/server';
@@ -314,6 +315,10 @@ export default async function ClassTestDetailPage({ params }: Props) {
                     href={`${base}/klassprov/${test.id}/${row.id}`}
                     className="flex items-center gap-4 rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface)] px-5 py-4 transition-colors hover:bg-[var(--color-surface-soft)]"
                   >
+                    <Avatar
+                      name={row.studentName ?? (sv ? 'Okänd elev' : 'Unknown student')}
+                      size="md"
+                    />
                     <div className="min-w-0 flex-1">
                       <p className="font-serif text-[1.0625rem] text-[var(--color-ink)]">
                         {row.studentName ?? (sv ? 'Okänd elev' : 'Unknown student')}
