@@ -299,7 +299,9 @@ async function processLesson(
           day: 'numeric',
           month: 'long',
         }).format(new Date(dateBasis));
-        contentTitle = `${dateLabel} — ${content.topic}`;
+        // Titeln ska följa lektionens (kursens) namn så läraren lätt hittar
+        // den — inte AI:ns innehållsämne. Ämnet sparas i ai_generated_topic.
+        contentTitle = courseName ? `${dateLabel} — ${courseName}` : dateLabel;
       }
     } catch (err) {
       console.error('Lesson content generation failed:', err);
