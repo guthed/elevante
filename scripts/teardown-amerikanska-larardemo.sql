@@ -1,8 +1,9 @@
 -- Rivning av lärardemon för Amerikanska gymnasiet (seedad 2026-08-04).
 --
 -- Demon är TILLFÄLLIG — ett onboarding-verktyg för att bekanta fyra lärare
--- med Elevante ur elevperspektiv inför piloten. Kör det här när piloten
--- startar på riktigt, eller när lärarna ska flyttas till riktiga konton.
+-- och tre från skolledningen med Elevante ur elevperspektiv inför piloten.
+-- Kör det här när piloten startar på riktigt, eller när de ska flyttas till
+-- riktiga konton.
 --
 -- Spec: docs/superpowers/specs/2026-08-04-amerikanska-larardemo-design.md
 --
@@ -24,10 +25,16 @@
 -- ---------------------------------------------------------------------------
 delete from auth.users
 where email in (
+  -- Lärare (seedade 2026-08-04)
   'ellen.lang@amerikanskagymnasiet.se',
   'alfred.plars@amerikanskagymnasiet.se',
   'james.pratt@amerikanskagymnasiet.se',
   'emma.good@amerikanskagymnasiet.se',
+  -- Skolledning (tillagda 2026-08-04, samma åtkomst som lärarna)
+  'peter.heddelin@amerikanskagymnasiet.se',
+  'erica.nordmark@amerikanskagymnasiet.se',
+  'joel.filipp@amerikanskagymnasiet.se',
+  -- Lärarkonto för insiktsvyn
   'john@elevante.se'
 );
 
