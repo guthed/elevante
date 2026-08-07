@@ -3,8 +3,19 @@ import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:
 
 // Egen hemlighet — till skillnad från lib/try/token.ts (som skyddar ett demo-facit)
 // grinder den här tokenen riktig kontoskapande via claimInvite. Ingen fallback-kedja
-// till en annan features hemlighet är rimlig här; bara en dev-only default-sträng.
-const SECRET = process.env.INVITE_TOKEN_SECRET ?? 'invite-dev-secret';
+// till en annan features hemlighet är rimlig här; bara en dev-only default-sträng —
+// och i produktion krascha hellre högljutt vid start än att tyst signera med en
+// hemlighet som ligger i det publika repot.
+function resolveSecret(): string {
+  const fromEnv = process.env.INVITE_TOKEN_SECRET;
+  if (fromEnv) return fromEnv;
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('INVITE_TOKEN_SECRET saknas i produktion — kontoskapande-tokens får aldrig signeras med dev-defaulten.');
+  }
+  return 'invite-dev-secret';
+}
+
+const SECRET = resolveSecret();
 
 // 32-byte nyckel härledd ur hemligheten (AES-256).
 const KEY = createHash('sha256').update(SECRET).digest();

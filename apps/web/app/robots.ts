@@ -20,7 +20,15 @@ const AI_BOTS = [
 ] as const;
 
 // Privata och tekniska rutter som inte ska indexeras av någon.
-const DISALLOW = ['/sv/app/', '/en/app/', '/sv/login', '/en/login', '/api/'];
+const DISALLOW = [
+  '/sv/app/',
+  '/en/app/',
+  '/sv/login',
+  '/en/login',
+  '/sv/valkommen',
+  '/en/valkommen',
+  '/api/',
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {

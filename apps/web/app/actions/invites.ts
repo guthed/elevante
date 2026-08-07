@@ -66,7 +66,6 @@ export async function claimInvite(
     email: invite.email,
     password,
     email_confirm: true,
-    user_metadata: { full_name: name },
   });
 
   if (createError || !created.user) {
@@ -80,28 +79,56 @@ export async function claimInvite(
 
   // handle_new_auth_user()-triggern satte redan en 'pending'-profil på insert
   // — skriv över den direkt med invitens role/school_id och status 'active'.
-  const { error: profileError } = await serviceRole
-    .from('profiles')
-    .update({
-      role: invite.role,
-      school_id: invite.school_id,
-      full_name: name,
-      status: 'active',
-    })
-    .eq('id', newUserId);
-
+  // Kontot är skapat vid det här laget, så ett engångs-retry på de två sista
+  // (icke-atomiska) uppdateringarna minskar risken för att lämna ett
+  // aktivt-men-role-lös konto eller en permanent olöst invite-rad kvar efter
+  // ett rent transient fel, utan att bygga en full transaktion för detta.
+  let profileError = (
+    await serviceRole
+      .from('profiles')
+      .update({
+        role: invite.role,
+        school_id: invite.school_id,
+        full_name: name,
+        status: 'active',
+      })
+      .eq('id', newUserId)
+  ).error;
+  if (profileError) {
+    profileError = (
+      await serviceRole
+        .from('profiles')
+        .update({
+          role: invite.role,
+          school_id: invite.school_id,
+          full_name: name,
+          status: 'active',
+        })
+        .eq('id', newUserId)
+    ).error;
+  }
   if (profileError) {
     console.error('[claimInvite] profil-uppdatering misslyckades:', profileError);
     return { status: 'error', code: 'generic' };
   }
 
-  const { error: claimError } = await serviceRole
-    .from('user_invites')
-    .update({ claimed_at: new Date().toISOString() })
-    .eq('id', invite.id);
+  let claimError = (
+    await serviceRole
+      .from('user_invites')
+      .update({ claimed_at: new Date().toISOString() })
+      .eq('id', invite.id)
+  ).error;
+  if (claimError) {
+    claimError = (
+      await serviceRole
+        .from('user_invites')
+        .update({ claimed_at: new Date().toISOString() })
+        .eq('id', invite.id)
+    ).error;
+  }
   if (claimError) {
     // Inte kritiskt för användarens flöde — kontot är redan skapat och aktivt.
-    console.error('[claimInvite] kunde inte markera invite som claimad:', claimError);
+    console.error('[claimInvite] kunde inte markera invite som claimad efter retry:', claimError);
   }
 
   // Signera in användaren på riktigt så webbläsaren får en sessionscookie.
