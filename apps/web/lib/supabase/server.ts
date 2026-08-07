@@ -53,7 +53,7 @@ export const getCurrentUser = cache(async () => {
   }
 });
 
-/** Hämta aktuell profil (role, school_id, full_name). */
+/** Hämta aktuell profil (role, school_id, status, full_name). */
 export const getCurrentProfile = cache(async () => {
   const user = await getCurrentUser();
   if (!user) return null;
@@ -61,7 +61,7 @@ export const getCurrentProfile = cache(async () => {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, role, school_id, full_name, email')
+      .select('id, role, school_id, status, full_name, email')
       .eq('id', user.id)
       .maybeSingle();
     if (error) return null;

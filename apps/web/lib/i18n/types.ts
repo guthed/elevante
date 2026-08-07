@@ -88,27 +88,39 @@ export type Dictionary = {
       passwordLabel: string;
       submit: string;
       submitting: string;
-      noAccount: string;
-      signupLink: string;
       errorInvalid: string;
       errorGeneric: string;
-    };
-    signup: {
-      title: string;
-      subtitle: string;
-      nameLabel: string;
-      emailLabel: string;
-      passwordLabel: string;
-      submit: string;
-      submitting: string;
-      hasAccount: string;
-      loginLink: string;
-      confirmSent: string;
-      errorGeneric: string;
-      errorWeakPassword: string;
-      errorEmailTaken: string;
+      // OAuth (SSO) — knappar och `?error=`-banner i /login.
+      ssoGoogle: string;
+      ssoMicrosoft: string;
+      ssoDivider: string;
+      errorUnauthorizedDomain: string;
+      errorPending: string;
     };
     signOut: string;
+    // /app/vantar-godkannande — standalone-sida (inget AppShell) för konton
+    // som väntar på skoladmin-godkännande (status !== 'active').
+    pendingApproval: {
+      title: string;
+      body: string;
+    };
+    // /valkommen — mejl-länk-claim-sidan (roster-only-flödet, skolor utan SSO).
+    claim: {
+      title: string;
+      subtitle: string;
+      emailLabel: string;
+      nameLabel: string;
+      passwordLabel: string;
+      passwordHint: string;
+      submit: string;
+      submitting: string;
+      errorInvalid: string;
+      errorGeneric: string;
+      // Ogiltig/manipulerad token, eller en invite som redan claimats/gått ut.
+      errorInviteInvalid: string;
+      invalidTitle: string;
+      backToLogin: string;
+    };
   };
   app: {
     landing: {
@@ -419,6 +431,39 @@ export type Dictionary = {
           updating: string;
           updateSuccess: string;
           updateError: string;
+          pending: {
+            heading: string;
+            hint: string;
+            empty: string;
+            approve: string;
+            approving: string;
+            approveError: string;
+            approveErrorStale: string;
+          };
+          invite: {
+            heading: string;
+            subtitle: string;
+            nameLabel: string;
+            emailLabel: string;
+            roleLabel: string;
+            submit: string;
+            submitting: string;
+            success: string;
+            errorDuplicate: string;
+            errorInvalid: string;
+            errorGeneric: string;
+          };
+          bulkInvite: {
+            heading: string;
+            hint: string;
+            uploadLabel: string;
+            submit: string;
+            submitting: string;
+            resultSummary: string;
+            resultFailed: string;
+            errorInvalid: string;
+            errorGeneric: string;
+          };
         };
         schools: {
           title: string;
@@ -428,6 +473,9 @@ export type Dictionary = {
           nameLabel: string;
           slugLabel: string;
           countryLabel: string;
+          identityDomainLabel: string;
+          identityDomainHint: string;
+          identityDomainBadge: string;
           createSubmit: string;
           creating: string;
           createSuccess: string;

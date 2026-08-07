@@ -25,6 +25,16 @@ export default async function RoleLayout({ children, params }: Props) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
 
+  // Samma "pending/disabled"-koll som /app/page.tsx, men här — inte bara i
+  // roten — eftersom man kan navigera hit direkt (bokmärke, inskriven URL)
+  // utan att passera /app/page.tsx:s redirect. Hårdkodad säkerhet utöver RLS,
+  // som annars bara skyddar mot dataläckage så länge en icke-aktiv profil
+  // saknar school_id/medlemskap — inte en generell egenskap (t.ex. en framtida
+  // 'disabled' på ett tidigare aktivt konto har fortfarande riktig school_id).
+  if (profile.status !== 'active') {
+    redirect(`/${locale}/app/vantar-godkannande`);
+  }
+
   // Om man navigerar till "fel" role-segment (t.ex. admin trycker
   // /app/student manuellt) så skickar vi tillbaka dem till sin
   // riktiga roll. Hårdkodad säkerhet utöver RLS.
