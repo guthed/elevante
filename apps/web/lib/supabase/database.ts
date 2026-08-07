@@ -12,6 +12,8 @@ export type Json =
 
 export type UserRole = 'student' | 'teacher' | 'admin';
 
+export type ProfileStatus = 'pending' | 'active' | 'disabled';
+
 export type DayOfWeek =
   | 'monday'
   | 'tuesday'
@@ -28,6 +30,7 @@ export type School = {
   name: string;
   slug: string;
   country: string;
+  identity_domain: string | null;
   created_at: string;
 };
 
@@ -35,10 +38,38 @@ export type Profile = {
   id: string;
   school_id: string | null;
   role: UserRole;
+  status: ProfileStatus;
   full_name: string | null;
   email: string | null;
   created_at: string;
   updated_at: string;
+};
+
+// Provisionerad inloggning: sanningskällan för vilka e-postadresser som är
+// godkända för en skola, oavsett om de löses in via Google/Microsoft-OAuth
+// (domän/e-post-matchning i callbacken) eller mejl-länk (claim-token).
+export type UserInvite = {
+  id: string;
+  school_id: string;
+  email: string;
+  full_name: string | null;
+  role: UserRole;
+  invited_by: string | null;
+  created_at: string;
+  expires_at: string;
+  claimed_at: string | null;
+};
+
+type UserInviteInsert = {
+  school_id: string;
+  email: string;
+  full_name?: string | null;
+  role: UserRole;
+  invited_by?: string | null;
+  id?: string;
+  created_at?: string;
+  expires_at?: string;
+  claimed_at?: string | null;
 };
 
 export type Course = {
@@ -463,6 +494,7 @@ type SchoolInsert = {
   name: string;
   slug: string;
   country?: string;
+  identity_domain?: string | null;
   id?: string;
   created_at?: string;
 };
@@ -471,6 +503,7 @@ type ProfileInsert = {
   id: string;
   school_id?: string | null;
   role?: UserRole;
+  status?: ProfileStatus;
   full_name?: string | null;
   email?: string | null;
 };
@@ -606,6 +639,7 @@ export type Database = {
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
       school_sync_log: TableDef<SchoolSyncLog, SchoolSyncLogInsert>;
       try_shares: TableDef<TryShare, TryShareInsert>;
+      user_invites: TableDef<UserInvite, UserInviteInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
@@ -615,6 +649,7 @@ export type Database = {
     Functions: Record<string, never>;
     Enums: {
       user_role: UserRole;
+      profile_status: ProfileStatus;
       day_of_week: DayOfWeek;
       chat_role: ChatRole;
       chat_scope: ChatScope;
