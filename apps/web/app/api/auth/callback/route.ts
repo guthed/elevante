@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.redirect(`${origin}/${locale}/login?error=callback`);
 }
 
-// `next` är alltid `/${locale}/app`-format (satt av SsoButtons/signUp).
+// `next` är alltid `/${locale}/app`-format (satt av SsoButtons).
 // Default `sv` om något oväntat skulle sakna prefixet.
 function localeFromNext(next: string): 'sv' | 'en' {
   const segment = next.split('/').filter(Boolean)[0];

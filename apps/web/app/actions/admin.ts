@@ -31,6 +31,14 @@ export async function updateUserRole(
     return { status: 'error', code: 'invalid' };
   }
 
+  if (userId === profile.id) {
+    // profiles_protect_privileged_columns-triggern nollar tyst egen
+    // role/school_id/status-ändring (skydd mot själveskalering) — ett
+    // admin-försök att ändra SIN EGEN roll här skulle annars se ut att
+    // lyckas (ingen DB-felkod) trots att inget faktiskt ändrades.
+    return { status: 'error', code: 'invalid', detail: 'Kan inte ändra din egen roll här' };
+  }
+
   const supabase = await createSupabaseServerClient();
 
   // RLS säkerställer att vi bara kan uppdatera profiles i samma skola
