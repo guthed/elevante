@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 import { Button } from '@/components/ui/Button';
+import { SITE_URL } from '@/lib/site';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
 
@@ -24,12 +25,11 @@ export function SsoButtons({ locale, labels }: Props) {
     setHasError(false);
     setPendingProvider(provider);
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${siteUrl}/api/auth/callback?next=/${locale}/app`,
+        redirectTo: `${SITE_URL}/api/auth/callback?next=/${locale}/app`,
       },
     });
 

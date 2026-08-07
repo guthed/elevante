@@ -108,78 +108,88 @@ async function handleOAuthGating({
   response,
   supabase,
 }: GatingArgs): Promise<NextResponse> {
-  // Service-role rakt igenom: en färsk `pending`-profil har ingen RLS-åtkomst
-  // till user_invites/schools alls (admin-scopad policy, och school_id är
-  // null tills den här gatingen sätter den) — så hela blocket, inklusive den
-  // inledande status-läsningen på den egna profilen, körs med service-role
-  // för enkelhetens skull och konsekvens.
-  const serviceRole = createSupabaseServiceRoleClient();
+  try {
+    // Service-role rakt igenom: en färsk `pending`-profil har ingen RLS-åtkomst
+    // till user_invites/schools alls (admin-scopad policy, och school_id är
+    // null tills den här gatingen sätter den) — så hela blocket, inklusive den
+    // inledande status-läsningen på den egna profilen, körs med service-role
+    // för enkelhetens skull och konsekvens.
+    const serviceRole = createSupabaseServiceRoleClient();
 
-  const { data: profile } = await serviceRole
-    .from('profiles')
-    .select('status')
-    .eq('id', userId)
-    .maybeSingle();
-
-  if (!profile || profile.status !== 'pending') {
-    // Återkommande inloggning på ett redan aktiverat (eller inaktiverat)
-    // konto — oförändrat rakt igenom.
-    return response;
-  }
-
-  const normalizedEmail = email?.trim().toLowerCase();
-  if (!normalizedEmail) {
-    // Google/Microsoft ger alltid e-post med `email`-scopet, men krascha
-    // aldrig om den ändå saknas — behandla som "ingen träff".
-    return rejectUnauthorizedUser({ serviceRole, userId, supabase, response, origin, locale });
-  }
-
-  // Tier 1: obruten invite på e-posten. `.ilike()` + escape ger samma
-  // case-insensitive-men-exakta matchning som mot `lower(email)` — den
-  // faktiska `email`-kolumnen kan vara sparad i vilken casing en admin (eller
-  // ett CSV-import-flöde) råkade skriva in.
-  const { data: invite } = await serviceRole
-    .from('user_invites')
-    .select('id, school_id, role')
-    .ilike('email', escapeForIlike(normalizedEmail))
-    .is('claimed_at', null)
-    .gt('expires_at', new Date().toISOString())
-    .maybeSingle();
-
-  if (invite) {
-    await serviceRole
+    const { data: profile } = await serviceRole
       .from('profiles')
-      .update({ role: invite.role, school_id: invite.school_id, status: 'active' })
-      .eq('id', userId);
-    await serviceRole
-      .from('user_invites')
-      .update({ claimed_at: new Date().toISOString() })
-      .eq('id', invite.id);
-
-    // `response` redirectar redan till `${origin}${next}` — inget att ändra.
-    return response;
-  }
-
-  // Tier 2: ingen invite, men e-postens domän matchar en skolas
-  // identity_domain (Google Workspace eller Microsoft 365 — samma kolumn).
-  const domain = normalizedEmail.split('@')[1];
-  if (domain) {
-    const { data: school } = await serviceRole
-      .from('schools')
-      .select('id')
-      .ilike('identity_domain', escapeForIlike(domain))
+      .select('status')
+      .eq('id', userId)
       .maybeSingle();
 
-    if (school) {
-      // Lämna profilen pending (school_id förblir null) — vantar-godkannande
-      // gör det tydligt att en admin behöver godkänna manuellt.
-      response.headers.set('Location', `${origin}/${locale}/app/vantar-godkannande`);
+    if (!profile || profile.status !== 'pending') {
+      // Återkommande inloggning på ett redan aktiverat (eller inaktiverat)
+      // konto — oförändrat rakt igenom.
       return response;
     }
-  }
 
-  // Tier 3: ingen träff alls.
-  return rejectUnauthorizedUser({ serviceRole, userId, supabase, response, origin, locale });
+    const normalizedEmail = email?.trim().toLowerCase();
+    if (!normalizedEmail) {
+      // Google/Microsoft ger alltid e-post med `email`-scopet, men krascha
+      // aldrig om den ändå saknas — behandla som "ingen träff".
+      return await rejectUnauthorizedUser({ serviceRole, userId, supabase, response, origin, locale });
+    }
+
+    // Tier 1: obruten invite på e-posten. `.ilike()` + escape ger samma
+    // case-insensitive-men-exakta matchning som mot `lower(email)` — den
+    // faktiska `email`-kolumnen kan vara sparad i vilken casing en admin (eller
+    // ett CSV-import-flöde) råkade skriva in.
+    const { data: invite } = await serviceRole
+      .from('user_invites')
+      .select('id, school_id, role')
+      .ilike('email', escapeForIlike(normalizedEmail))
+      .is('claimed_at', null)
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle();
+
+    if (invite) {
+      await serviceRole
+        .from('profiles')
+        .update({ role: invite.role, school_id: invite.school_id, status: 'active' })
+        .eq('id', userId);
+      await serviceRole
+        .from('user_invites')
+        .update({ claimed_at: new Date().toISOString() })
+        .eq('id', invite.id);
+
+      // `response` redirectar redan till `${origin}${next}` — inget att ändra.
+      return response;
+    }
+
+    // Tier 2: ingen invite, men e-postens domän matchar en skolas
+    // identity_domain (Google Workspace eller Microsoft 365 — samma kolumn).
+    const domain = normalizedEmail.split('@')[1];
+    if (domain) {
+      const { data: school } = await serviceRole
+        .from('schools')
+        .select('id')
+        .ilike('identity_domain', escapeForIlike(domain))
+        .maybeSingle();
+
+      if (school) {
+        // Lämna profilen pending (school_id förblir null) — vantar-godkannande
+        // gör det tydligt att en admin behöver godkänna manuellt.
+        response.headers.set('Location', `${origin}/${locale}/app/vantar-godkannande`);
+        return response;
+      }
+    }
+
+    // Tier 3: ingen träff alls.
+    return await rejectUnauthorizedUser({ serviceRole, userId, supabase, response, origin, locale });
+  } catch {
+    // Feltrappat konto (saknad SUPABASE_SERVICE_ROLE_KEY i en preview-miljö,
+    // eller ett transient Supabase-fel mot profiles/user_invites/schools/
+    // admin.deleteUser) ska aldrig krascha routen med ett rått 500 — samma
+    // `response`-objekt återanvänds så att ev. redan satta Set-Cookie-headers
+    // (från exchangeCodeForSession) följer med, precis som i alla andra grenar.
+    response.headers.set('Location', `${origin}/${locale}/login?error=config`);
+    return response;
+  }
 }
 
 async function rejectUnauthorizedUser({
