@@ -5,8 +5,11 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getAdminUsers, type AdminUserRow } from '@/lib/data/admin';
+import { getAdminUsers, getPendingApprovals, type AdminUserRow } from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
+import { PendingApprovalsList } from './PendingApprovalsList';
+import { InviteUserForm } from './InviteUserForm';
+import { BulkInviteForm } from './BulkInviteForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -40,6 +43,9 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
   const { filter, q } = await searchParams;
 
   const all = await getAdminUsers();
+  // profile.school_id är i praktiken alltid satt för en admin, men undviker
+  // en icke-null-assertion om det ändå saknas.
+  const pending = profile.school_id ? await getPendingApprovals(profile.school_id) : [];
 
   const counts = {
     all: all.length,
@@ -214,6 +220,42 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
             </ul>
           </div>
         )}
+      </section>
+
+      {/* Väntar godkännande — pending-profiler vars e-post matchar skolans identity_domain */}
+      <section className="mt-14">
+        <h2 className="font-serif text-[1.375rem] text-[var(--color-ink)]">
+          {labels.pending.heading}
+        </h2>
+        <p className="mt-1 text-[0.8125rem] text-[var(--color-ink-muted)]">
+          {labels.pending.hint}
+        </p>
+        <div className="mt-4">
+          <PendingApprovalsList rows={pending} labels={labels} />
+        </div>
+      </section>
+
+      {/* Bjud in användare — enda e-post + CSV-bulkimport */}
+      <section className="mt-14 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+          <h2 className="font-serif text-[1.375rem] text-[var(--color-ink)]">
+            {labels.invite.heading}
+          </h2>
+          <p className="mt-1 text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {labels.invite.subtitle}
+          </p>
+          <div className="mt-5">
+            <InviteUserForm labels={labels.invite} />
+          </div>
+        </div>
+        <div className="rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+          <h2 className="font-serif text-[1.375rem] text-[var(--color-ink)]">
+            {labels.bulkInvite.heading}
+          </h2>
+          <div className="mt-5">
+            <BulkInviteForm labels={labels.bulkInvite} />
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import { escapeForIlike } from '@/lib/sql';
 
 // Supabase mail-bekräftelselänkar OCH Google/Microsoft-OAuth landar här.
 // Vi byter code → session och redirectar till `next`-URL:en.
@@ -80,15 +81,6 @@ export async function GET(request: NextRequest) {
 function localeFromNext(next: string): 'sv' | 'en' {
   const segment = next.split('/').filter(Boolean)[0];
   return segment === 'en' ? 'en' : 'sv';
-}
-
-// `identity_domain` kan ha sparats med vilken casing en admin råkade skriva
-// in — jämförelsen måste vara case-insensitive. `.eq()` är det inte, så vi
-// använder `.ilike()` (case-insensitive) och escapar bort ILIKE:s egna
-// wildcard-tecken (`%`, `_`, `\`) så matchningen förblir exakt, inte ett
-// mönster — domännamn kan i teorin innehålla understreck.
-function escapeForIlike(value: string): string {
-  return value.replace(/[\\%_]/g, (char) => `\\${char}`);
 }
 
 type GatingArgs = {

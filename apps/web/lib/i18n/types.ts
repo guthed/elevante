@@ -431,6 +431,39 @@ export type Dictionary = {
           updating: string;
           updateSuccess: string;
           updateError: string;
+          pending: {
+            heading: string;
+            hint: string;
+            empty: string;
+            approve: string;
+            approving: string;
+            approveError: string;
+            approveErrorStale: string;
+          };
+          invite: {
+            heading: string;
+            subtitle: string;
+            nameLabel: string;
+            emailLabel: string;
+            roleLabel: string;
+            submit: string;
+            submitting: string;
+            success: string;
+            errorDuplicate: string;
+            errorInvalid: string;
+            errorGeneric: string;
+          };
+          bulkInvite: {
+            heading: string;
+            hint: string;
+            uploadLabel: string;
+            submit: string;
+            submitting: string;
+            resultSummary: string;
+            resultFailed: string;
+            errorInvalid: string;
+            errorGeneric: string;
+          };
         };
         schools: {
           title: string;
@@ -440,6 +473,9 @@ export type Dictionary = {
           nameLabel: string;
           slugLabel: string;
           countryLabel: string;
+          identityDomainLabel: string;
+          identityDomainHint: string;
+          identityDomainBadge: string;
           createSubmit: string;
           creating: string;
           createSuccess: string;

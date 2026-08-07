@@ -39,6 +39,18 @@ export function CreateSchoolForm({ labels }: Props) {
           defaultValue="SE"
         />
       </Field>
+      <Field
+        id="school-identity-domain"
+        label={labels.identityDomainLabel}
+        hint={labels.identityDomainHint}
+      >
+        <Input
+          id="school-identity-domain"
+          name="identity_domain"
+          type="text"
+          placeholder="amerikanskagymnasiet.se"
+        />
+      </Field>
 
       {state.status === 'success' ? (
         <p role="status" className="text-sm text-[var(--color-success)]">
