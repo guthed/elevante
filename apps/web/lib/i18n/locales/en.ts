@@ -86,6 +86,22 @@ const en: Dictionary = {
       title: 'Almost there',
       body: 'Your account has been created, but it’s waiting for your school admin to approve it. Reach out to your school if it’s taking a while — feel free to sign out in the meantime.',
     },
+    claim: {
+      title: 'Set your password',
+      subtitle: 'Your school has invited you to Elevante. Choose a password to get started.',
+      emailLabel: 'Email',
+      nameLabel: 'Name',
+      passwordLabel: 'Password',
+      passwordHint: 'At least 8 characters.',
+      submit: 'Get started',
+      submitting: 'Creating account…',
+      errorInvalid: 'Enter your name and a password with at least 8 characters.',
+      errorGeneric: 'Something went wrong. Please try again, or contact your school.',
+      errorInviteInvalid:
+        'This link is invalid, already used, or has expired. Ask your school for a new invite.',
+      invalidTitle: 'This link doesn’t work',
+      backToLogin: 'Go to sign in',
+    },
   },
   app: {
     landing: {

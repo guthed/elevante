@@ -86,6 +86,22 @@ const sv: Dictionary = {
       title: 'Nästan där',
       body: 'Ditt konto är skapat, men väntar på godkännande från din skoladministratör. Hör av dig till din skola om det dröjer — du kan logga ut under tiden.',
     },
+    claim: {
+      title: 'Skapa ditt lösenord',
+      subtitle: 'Din skola har bjudit in dig till Elevante. Välj ett lösenord för att komma igång.',
+      emailLabel: 'E-post',
+      nameLabel: 'Namn',
+      passwordLabel: 'Lösenord',
+      passwordHint: 'Minst 8 tecken.',
+      submit: 'Kom igång',
+      submitting: 'Skapar konto…',
+      errorInvalid: 'Fyll i ditt namn och ett lösenord med minst 8 tecken.',
+      errorGeneric: 'Något gick fel. Försök igen, eller kontakta din skola.',
+      errorInviteInvalid:
+        'Länken är ogiltig, redan använd eller har gått ut. Be din skola om en ny inbjudan.',
+      invalidTitle: 'Länken fungerar inte',
+      backToLogin: 'Till inloggningen',
+    },
   },
   app: {
     landing: {

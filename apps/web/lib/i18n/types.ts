@@ -104,6 +104,23 @@ export type Dictionary = {
       title: string;
       body: string;
     };
+    // /valkommen — mejl-länk-claim-sidan (roster-only-flödet, skolor utan SSO).
+    claim: {
+      title: string;
+      subtitle: string;
+      emailLabel: string;
+      nameLabel: string;
+      passwordLabel: string;
+      passwordHint: string;
+      submit: string;
+      submitting: string;
+      errorInvalid: string;
+      errorGeneric: string;
+      // Ogiltig/manipulerad token, eller en invite som redan claimats/gått ut.
+      errorInviteInvalid: string;
+      invalidTitle: string;
+      backToLogin: string;
+    };
   };
   app: {
     landing: {
