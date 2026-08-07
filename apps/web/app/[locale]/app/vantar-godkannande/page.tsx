@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
   return {
-    title: `${dict.auth.pendingApproval.title} — ${dict.meta.siteName}`,
+    title: dict.auth.pendingApproval.title,
     robots: { index: false, follow: false },
   };
 }

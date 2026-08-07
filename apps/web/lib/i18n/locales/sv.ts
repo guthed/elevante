@@ -84,7 +84,7 @@ const sv: Dictionary = {
     signOut: 'Logga ut',
     pendingApproval: {
       title: 'Nästan där',
-      body: 'Ditt konto är skapat, men väntar på godkännande från din skoladministratör. Vi mejlar dig så fort det är klart — du kan logga ut under tiden.',
+      body: 'Ditt konto är skapat, men väntar på godkännande från din skoladministratör. Hör av dig till din skola om det dröjer — du kan logga ut under tiden.',
     },
   },
   app: {
