@@ -272,7 +272,12 @@ export type BulkInviteState =
 const bulkInviteRowSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
   name: z.string().trim().min(1),
-  role: z.enum(['student', 'teacher', 'admin']),
+  // Case-insensitiv som email — en hopklistrad/Excel-exporterad CSV med
+  // "Student"/"TEACHER" ska inte fälla hela uppladdningen.
+  role: z.preprocess(
+    (v) => (typeof v === 'string' ? v.trim().toLowerCase() : v),
+    z.enum(['student', 'teacher', 'admin']),
+  ),
 });
 
 /**
@@ -306,10 +311,20 @@ export async function bulkInviteUsers(
     return { status: 'error', code: 'invalid', detail: 'Kunde inte läsa filen' };
   }
 
-  const rows = parseCsv(text);
-  if (rows.length === 0) {
+  const rawRows = parseCsv(text);
+  if (rawRows.length === 0) {
     return { status: 'error', code: 'invalid', detail: 'Filen är tom' };
   }
+
+  // Case-insensitiva rubriker — en Excel-export med "Email"/"Namn" ska inte
+  // fälla på "Rubriker saknas" trots att datan är fin.
+  const rows = rawRows.map((row) => {
+    const lower: Record<string, string> = {};
+    for (const [key, value] of Object.entries(row)) {
+      lower[key.trim().toLowerCase()] = value;
+    }
+    return lower;
+  });
 
   const required = ['email', 'name', 'role'];
   const first = rows[0]!;
@@ -352,9 +367,13 @@ export async function bulkInviteUsers(
     .single();
   const schoolName = school?.name ?? '';
 
-  let invited = 0;
   let alreadyInvited = 0;
   let failed = 0;
+  // Insert-fasen hålls ren från nätverksanrop till Loops — vid pilotens
+  // skala (60–90 rader) skulle sekventiella insert+mejl-par per rad riskera
+  // Vercel-funktionens tidsgräns. Mejlen skickas parallellt efter att alla
+  // inserts är klara istället (sendInviteEmail kastar aldrig, se lib/loops.ts).
+  const insertedForEmail: { inviteId: string; email: string; name: string }[] = [];
 
   for (const row of parsedRows) {
     const { data: newInvite, error } = await supabase
@@ -379,17 +398,19 @@ export async function bulkInviteUsers(
       continue;
     }
 
-    invited += 1;
-    // Best-effort per rad — sendInviteEmail kastar aldrig, se lib/loops.ts.
-    await sendInviteEmail({
-      inviteId: newInvite.id,
-      email: row.email,
-      name: row.name,
-      schoolName,
-    });
+    insertedForEmail.push({ inviteId: newInvite.id, email: row.email, name: row.name });
   }
+
+  await Promise.allSettled(
+    insertedForEmail.map((row) => sendInviteEmail({ ...row, schoolName })),
+  );
 
   revalidatePath('/sv/app/admin/anvandare');
   revalidatePath('/en/app/admin/anvandare');
-  return { status: 'success', invited, alreadyInvited, failed };
+  return {
+    status: 'success',
+    invited: insertedForEmail.length,
+    alreadyInvited,
+    failed,
+  };
 }
