@@ -73,6 +73,13 @@ const sv: Dictionary = {
       submitting: 'Loggar in…',
       errorInvalid: 'Fel e-post eller lösenord.',
       errorGeneric: 'Något gick fel. Försök igen.',
+      ssoGoogle: 'Logga in med Google',
+      ssoMicrosoft: 'Logga in med Microsoft',
+      ssoDivider: 'eller',
+      errorUnauthorizedDomain:
+        'Din e-postdomän är inte kopplad till någon skola i Elevante. Kontakta din skola eller administratör.',
+      errorPending:
+        'Ditt konto väntar på godkännande från din skola. Du får ett mejl när det är klart.',
     },
     signOut: 'Logga ut',
   },

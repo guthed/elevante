@@ -73,6 +73,13 @@ const en: Dictionary = {
       submitting: 'Signing in…',
       errorInvalid: 'Invalid email or password.',
       errorGeneric: 'Something went wrong. Please try again.',
+      ssoGoogle: 'Sign in with Google',
+      ssoMicrosoft: 'Sign in with Microsoft',
+      ssoDivider: 'or',
+      errorUnauthorizedDomain:
+        'Your email domain isn’t linked to a school in Elevante. Contact your school or administrator.',
+      errorPending:
+        'Your account is waiting for approval from your school. We’ll email you when it’s ready.',
     },
     signOut: 'Sign out',
   },

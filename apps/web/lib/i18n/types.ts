@@ -90,6 +90,12 @@ export type Dictionary = {
       submitting: string;
       errorInvalid: string;
       errorGeneric: string;
+      // OAuth (SSO) — knappar och `?error=`-banner i /login.
+      ssoGoogle: string;
+      ssoMicrosoft: string;
+      ssoDivider: string;
+      errorUnauthorizedDomain: string;
+      errorPending: string;
     };
     signOut: string;
   };
