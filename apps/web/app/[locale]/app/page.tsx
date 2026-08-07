@@ -18,5 +18,11 @@ export default async function AppEntryPage({
   // Proxy skyddar redan denna rutt, men vi dubbelkollar.
   if (!profile) redirect(`/${locale}/login`);
 
+  // Konton som väntar på skoladmin-godkännande (t.ex. OAuth-inloggning via
+  // domänmatchning utan specifik invite ännu) saknar meningsfull data —
+  // RLS blockerar redan läckage (school_id null), men vi skickar dem till
+  // en tydlig väntesida hellre än en tom/trasig rollvy.
+  if (profile.status !== 'active') redirect(`/${locale}/app/vantar-godkannande`);
+
   redirect(`/${locale}/app/${profile.role}`);
 }

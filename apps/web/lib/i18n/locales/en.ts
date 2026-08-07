@@ -82,6 +82,10 @@ const en: Dictionary = {
         'Your account is waiting for approval from your school. We’ll email you when it’s ready.',
     },
     signOut: 'Sign out',
+    pendingApproval: {
+      title: 'Almost there',
+      body: 'Your account has been created, but it’s waiting for your school admin to approve it. We’ll email you as soon as it’s ready — feel free to sign out in the meantime.',
+    },
   },
   app: {
     landing: {

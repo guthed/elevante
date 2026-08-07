@@ -98,6 +98,12 @@ export type Dictionary = {
       errorPending: string;
     };
     signOut: string;
+    // /app/vantar-godkannande — standalone-sida (inget AppShell) för konton
+    // som väntar på skoladmin-godkännande (status !== 'active').
+    pendingApproval: {
+      title: string;
+      body: string;
+    };
   };
   app: {
     landing: {
