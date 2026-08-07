@@ -52,17 +52,6 @@ export default async function LoginPage({ params, searchParams }: Props) {
         <div className="mt-10">
           <LoginForm locale={locale} next={next} labels={labels} />
         </div>
-
-        <p className="mt-8 text-[0.875rem] text-[var(--color-ink-muted)]">
-          {labels.noAccount}{' '}
-          <Link
-            href={`/${locale}/signup`}
-            className="font-medium text-[var(--color-ink)] underline-offset-4 hover:underline"
-          >
-            {labels.signupLink}
-          </Link>
-        </p>
-
       </div>
     </div>
   );

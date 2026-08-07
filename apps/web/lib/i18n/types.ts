@@ -88,25 +88,8 @@ export type Dictionary = {
       passwordLabel: string;
       submit: string;
       submitting: string;
-      noAccount: string;
-      signupLink: string;
       errorInvalid: string;
       errorGeneric: string;
-    };
-    signup: {
-      title: string;
-      subtitle: string;
-      nameLabel: string;
-      emailLabel: string;
-      passwordLabel: string;
-      submit: string;
-      submitting: string;
-      hasAccount: string;
-      loginLink: string;
-      confirmSent: string;
-      errorGeneric: string;
-      errorWeakPassword: string;
-      errorEmailTaken: string;
     };
     signOut: string;
   };
