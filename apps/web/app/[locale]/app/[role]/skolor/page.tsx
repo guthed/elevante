@@ -61,6 +61,11 @@ export default async function AdminSchoolsPage({ params }: Props) {
                           locale === 'sv' ? 'sv-SE' : 'en-GB',
                         )}
                       </div>
+                      {school.identity_domain ? (
+                        <div className="mt-1 text-xs text-[var(--color-ink-subtle)]">
+                          {labels.identityDomainBadge}: {school.identity_domain}
+                        </div>
+                      ) : null}
                     </div>
                     <Badge tone="neutral">{school.country}</Badge>
                   </div>

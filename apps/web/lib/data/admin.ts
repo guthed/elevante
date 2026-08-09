@@ -1,4 +1,6 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import { escapeForIlike } from '@/lib/sql';
 import type { SchoolProspect, TranscriptStatus, UserRole } from '@/lib/supabase/database';
 
 export type AdminOverview = {
@@ -98,6 +100,7 @@ export type AdminSchoolRow = {
   name: string;
   slug: string;
   country: string;
+  identity_domain: string | null;
   created_at: string;
 };
 
@@ -105,9 +108,52 @@ export async function getAdminSchools(): Promise<AdminSchoolRow[]> {
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase
     .from('schools')
-    .select('id, name, slug, country, created_at')
+    .select('id, name, slug, country, identity_domain, created_at')
     .order('created_at', { ascending: false });
   return ((data ?? []) as AdminSchoolRow[]);
+}
+
+export type PendingApprovalRow = {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  created_at: string;
+};
+
+/**
+ * Profiler med status='pending' vars e-post matchar adminens skolas
+ * identity_domain. En pending-rad har school_id=null, vilket gör att den
+ * request-scopade klienten (RLS: profiles_select_same_school kräver
+ * `school_id = current_school_id()`, och `null = <uuid>` är aldrig true i
+ * Postgres) inte kan se den — service-role krävs, med behörighetskollen gjord
+ * explicit av anroparen (school_id kommer från getCurrentProfile()) istället
+ * för att förlita sig på RLS som service-role ändå kringgår.
+ */
+export async function getPendingApprovals(schoolId: string): Promise<PendingApprovalRow[]> {
+  const serviceRole = createSupabaseServiceRoleClient();
+
+  const { data: school } = await serviceRole
+    .from('schools')
+    .select('identity_domain')
+    .eq('id', schoolId)
+    .maybeSingle();
+
+  const domain = school?.identity_domain;
+  if (!domain) {
+    // Ingen konfigurerad SSO-domän för skolan → inget "pending via
+    // domänmatchning"-koncept att visa. Korrekt, inte en bugg.
+    return [];
+  }
+
+  const { data } = await serviceRole
+    .from('profiles')
+    .select('id, full_name, email, created_at')
+    .eq('status', 'pending')
+    .ilike('email', `%@${escapeForIlike(domain)}`)
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  return (data ?? []) as PendingApprovalRow[];
 }
 
 export type AdminStats = {

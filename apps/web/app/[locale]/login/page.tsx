@@ -3,11 +3,25 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
+import type { Dictionary } from '@/lib/i18n/types';
+import { Divider } from '@/components/ui/Divider';
+import { SsoButtons } from '@/components/auth/SsoButtons';
 import { LoginForm } from './LoginForm';
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
+};
+
+// `?error=`-koder som kan landa här från OAuth-callbacken
+// (apps/web/app/api/auth/callback/route.ts). `invite-expired`/`invite-claimed`
+// hör till mejl-länk-flödet (senare task) — lägg till dem här när de finns,
+// listan är byggd för att växa utan omstrukturering.
+const OAUTH_ERROR_MESSAGE_KEYS: Partial<Record<string, keyof Dictionary['auth']['login']>> = {
+  'unauthorized-domain': 'errorUnauthorizedDomain',
+  pending: 'errorPending',
+  callback: 'errorGeneric',
+  config: 'errorGeneric',
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -26,9 +40,12 @@ export default async function LoginPage({ params, searchParams }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
-  const { next } = await searchParams;
+  const { next, error } = await searchParams;
   const labels = dict.auth.login;
   const sv = locale === 'sv';
+
+  const oauthErrorKey = error ? OAUTH_ERROR_MESSAGE_KEYS[error] : undefined;
+  const oauthErrorMessage = oauthErrorKey ? labels[oauthErrorKey] : null;
 
   return (
     <div className="min-h-screen bg-[var(--color-canvas)]">
@@ -49,20 +66,22 @@ export default async function LoginPage({ params, searchParams }: Props) {
           </p>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 space-y-6">
+          {oauthErrorMessage ? (
+            <p
+              role="alert"
+              className="rounded-lg border border-[var(--color-error)]/30 bg-[var(--color-error)]/5 px-4 py-3 text-sm text-[var(--color-error)]"
+            >
+              {oauthErrorMessage}
+            </p>
+          ) : null}
+
+          <SsoButtons locale={locale} labels={labels} />
+
+          <Divider label={labels.ssoDivider} />
+
           <LoginForm locale={locale} next={next} labels={labels} />
         </div>
-
-        <p className="mt-8 text-[0.875rem] text-[var(--color-ink-muted)]">
-          {labels.noAccount}{' '}
-          <Link
-            href={`/${locale}/signup`}
-            className="font-medium text-[var(--color-ink)] underline-offset-4 hover:underline"
-          >
-            {labels.signupLink}
-          </Link>
-        </p>
-
       </div>
     </div>
   );
