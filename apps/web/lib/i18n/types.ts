@@ -419,6 +419,29 @@ export type Dictionary = {
           updating: string;
           updateSuccess: string;
           updateError: string;
+          invite: {
+            heading: string;
+            nameLabel: string;
+            emailLabel: string;
+            roleLabel: string;
+            roleStudent: string;
+            roleTeacher: string;
+            roleAdmin: string;
+            submit: string;
+            sending: string;
+            success: string;
+            errorExists: string;
+            errorGeneric: string;
+          };
+          import: {
+            heading: string;
+            fileLabel: string;
+            fileHint: string;
+            submit: string;
+            importing: string;
+            successCount: string;
+            errorGeneric: string;
+          };
         };
         schools: {
           title: string;
@@ -433,6 +456,16 @@ export type Dictionary = {
           createSuccess: string;
           createError: string;
           createdLabel: string;
+          bootstrapAdmin: {
+            heading: string;
+            nameLabel: string;
+            emailLabel: string;
+            submit: string;
+            sending: string;
+            success: string;
+            errorExists: string;
+            errorGeneric: string;
+          };
         };
         stats: {
           title: string;
