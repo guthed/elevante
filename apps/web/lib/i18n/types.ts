@@ -148,6 +148,8 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
@@ -175,6 +177,8 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
@@ -201,6 +205,8 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
@@ -466,6 +472,50 @@ export type Dictionary = {
             errorExists: string;
             errorGeneric: string;
           };
+        };
+        classes: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          studentsLabel: string;
+          lessonsLabel: string;
+          delete: string;
+          deleting: string;
+          deleteErrorHasLessons: string;
+          deleteErrorGeneric: string;
+          createTitle: string;
+          nameLabel: string;
+          yearLabel: string;
+          yearHint: string;
+          createSubmit: string;
+          creating: string;
+          createSuccess: string;
+          createErrorDuplicate: string;
+          createErrorGeneric: string;
+        };
+        courses: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          delete: string;
+          deleting: string;
+          deleteErrorHasLessons: string;
+          deleteErrorGeneric: string;
+          teachersHeading: string;
+          noTeachers: string;
+          removeTeacher: string;
+          pickTeacher: string;
+          assign: string;
+          assigning: string;
+          assignError: string;
+          createTitle: string;
+          codeLabel: string;
+          nameLabel: string;
+          createSubmit: string;
+          creating: string;
+          createSuccess: string;
+          createErrorDuplicate: string;
+          createErrorGeneric: string;
         };
         stats: {
           title: string;
