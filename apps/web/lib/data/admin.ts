@@ -264,3 +264,82 @@ export async function getAdminStats(): Promise<AdminStats> {
     },
   };
 }
+
+export type AdminClassRow = {
+  id: string;
+  name: string;
+  year: number | null;
+  studentsCount: number;
+  lessonsCount: number;
+};
+
+export async function getAdminClasses(schoolId: string): Promise<AdminClassRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const [classesRes, membersRes, lessonsRes] = await Promise.all([
+    supabase.from('classes').select('id, name, year').eq('school_id', schoolId).order('name'),
+    supabase.from('class_members').select('class_id'),
+    supabase.from('lessons').select('class_id').eq('school_id', schoolId).is('archived_at', null),
+  ]);
+
+  const studentCounts = new Map<string, number>();
+  for (const row of (membersRes.data ?? []) as { class_id: string }[]) {
+    studentCounts.set(row.class_id, (studentCounts.get(row.class_id) ?? 0) + 1);
+  }
+  const lessonCounts = new Map<string, number>();
+  for (const row of lessonsRes.data ?? []) {
+    lessonCounts.set(row.class_id, (lessonCounts.get(row.class_id) ?? 0) + 1);
+  }
+
+  return (classesRes.data ?? []).map((c) => ({
+    ...c,
+    studentsCount: studentCounts.get(c.id) ?? 0,
+    lessonsCount: lessonCounts.get(c.id) ?? 0,
+  }));
+}
+
+export type AdminCourseTeacher = { id: string; fullName: string | null };
+
+export type AdminCourseRow = {
+  id: string;
+  code: string;
+  name: string;
+  teachers: AdminCourseTeacher[];
+};
+
+export async function getAdminCourses(schoolId: string): Promise<AdminCourseRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const [coursesRes, teachersRes] = await Promise.all([
+    supabase.from('courses').select('id, code, name').eq('school_id', schoolId).order('code'),
+    supabase.from('course_teachers').select('course_id, profiles ( id, full_name )'),
+  ]);
+
+  type TeacherJoin = {
+    course_id: string;
+    profiles: { id: string; full_name: string | null } | null;
+  };
+  const byCourse = new Map<string, AdminCourseTeacher[]>();
+  for (const row of (teachersRes.data ?? []) as unknown as TeacherJoin[]) {
+    if (!row.profiles) continue;
+    const list = byCourse.get(row.course_id) ?? [];
+    list.push({ id: row.profiles.id, fullName: row.profiles.full_name });
+    byCourse.set(row.course_id, list);
+  }
+
+  return (coursesRes.data ?? []).map((c) => ({
+    ...c,
+    teachers: byCourse.get(c.id) ?? [],
+  }));
+}
+
+export type AdminTeacherOption = { id: string; fullName: string | null; email: string | null };
+
+export async function getSchoolTeachers(schoolId: string): Promise<AdminTeacherOption[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, full_name, email')
+    .eq('school_id', schoolId)
+    .eq('role', 'teacher')
+    .order('full_name');
+  return (data ?? []).map((p) => ({ id: p.id, fullName: p.full_name, email: p.email }));
+}
