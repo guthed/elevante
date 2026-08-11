@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
 import type { UserRole } from '@/lib/supabase/database';
 
 export type UpdateRoleState =
@@ -67,7 +68,7 @@ export async function createSchool(
     return { status: 'error', code: 'invalid' };
   }
 
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabaseServiceRoleClient();
   const { error } = await supabase.from('schools').insert({
     name,
     slug,

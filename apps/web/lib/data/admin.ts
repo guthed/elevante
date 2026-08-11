@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
 import type { SchoolProspect, TranscriptStatus, UserRole } from '@/lib/supabase/database';
 
 export type AdminOverview = {
@@ -99,15 +100,29 @@ export type AdminSchoolRow = {
   slug: string;
   country: string;
   created_at: string;
+  adminCount: number;
 };
 
 export async function getAdminSchools(): Promise<AdminSchoolRow[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('schools')
-    .select('id, name, slug, country, created_at')
-    .order('created_at', { ascending: false });
-  return ((data ?? []) as AdminSchoolRow[]);
+  const supabase = createSupabaseServiceRoleClient();
+  const [schoolsRes, adminsRes] = await Promise.all([
+    supabase
+      .from('schools')
+      .select('id, name, slug, country, created_at')
+      .order('created_at', { ascending: false }),
+    supabase.from('profiles').select('school_id').eq('role', 'admin'),
+  ]);
+
+  const adminCounts = new Map<string, number>();
+  for (const row of adminsRes.data ?? []) {
+    if (!row.school_id) continue;
+    adminCounts.set(row.school_id, (adminCounts.get(row.school_id) ?? 0) + 1);
+  }
+
+  return (schoolsRes.data ?? []).map((s) => ({
+    ...s,
+    adminCount: adminCounts.get(s.id) ?? 0,
+  }));
 }
 
 export type AdminStats = {
