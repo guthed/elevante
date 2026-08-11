@@ -7,6 +7,7 @@ import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
 import { inviteUserCore } from '@/lib/admin/invite-user';
 import type { UserRole } from '@/lib/supabase/database';
 import { isLocale, type Locale } from '@/lib/i18n/config';
+import { parseCsv } from '@/lib/csv';
 
 export type UpdateRoleState =
   | { status: 'idle' }
@@ -454,4 +455,134 @@ export async function removeTeacherFromCourse(
   revalidatePath('/sv/app/admin/kurser');
   revalidatePath('/en/app/admin/kurser');
   return { status: 'success' };
+}
+
+export type ImportStudentsState =
+  | { status: 'idle' }
+  | { status: 'success'; invited: number; skipped: { email: string; reason: string }[] }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
+
+export async function importStudents(
+  _prev: ImportStudentsState,
+  formData: FormData,
+): Promise<ImportStudentsState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const file = formData.get('file');
+  if (!(file instanceof File) || file.size === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Ingen fil vald' };
+  }
+  const locale = (formData.get('locale') ?? 'sv').toString() as Locale;
+
+  let text: string;
+  try {
+    text = await file.text();
+  } catch {
+    return { status: 'error', code: 'invalid', detail: 'Kunde inte läsa filen' };
+  }
+
+  const rows = parseCsv(text);
+  if (rows.length === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Filen är tom' };
+  }
+
+  const required = ['full_name', 'email', 'class_name'];
+  const missing = required.filter((k) => !(k in rows[0]!));
+  if (missing.length > 0) {
+    return {
+      status: 'error',
+      code: 'invalid',
+      detail: `Rubriker saknas: ${missing.join(', ')}`,
+    };
+  }
+  // Skydd mot att en enda stor fil blockerar Server Action-requesten
+  // (varje rad gör ett separat Auth Admin API-anrop, som i sin tur
+  // skickar ett mejl, plus en DB-insert) eller triggar Supabase Auths
+  // rate limit för inviteUserByEmail. vercel.json sätter maxDuration: 30
+  // för app/**/*.tsx (routen den här actionen körs på); vid 150–500 ms/rad
+  // rymmer det 30s-taket bekvämt bara upp till ~40–60 rader, inte 200 —
+  // därav den lägre gränsen. En riktig bakgrundsjobb/kö-arkitektur för
+  // större importer är en rimlig framtida förbättring, utanför scope här.
+  if (rows.length > 40) {
+    return { status: 'error', code: 'invalid', detail: 'Max 40 rader per import' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data: classes } = await supabase
+    .from('classes')
+    .select('id, name')
+    .eq('school_id', profile.school_id);
+  const classMap = new Map((classes ?? []).map((c) => [c.name, c.id]));
+
+  let invited = 0;
+  const skipped: { email: string; reason: string }[] = [];
+
+  for (const row of rows) {
+    const email = (row['email'] ?? '').trim();
+    const fullName = (row['full_name'] ?? '').trim();
+    const className = (row['class_name'] ?? '').trim();
+    const classId = classMap.get(className);
+
+    if (!email || !fullName || !classId) {
+      skipped.push({ email: email || '(saknas)', reason: 'invalid-row' });
+      continue;
+    }
+
+    const result = await inviteUserCore({
+      email,
+      fullName,
+      role: 'student',
+      schoolId: profile.school_id,
+      locale,
+    });
+
+    let studentId: string;
+    if (!result.ok) {
+      if (result.code === 'already-exists') {
+        // Kan vara en omuppladdning efter en avbruten import (t.ex.
+        // timeout mitt i loopen) — kontot finns redan men hann kanske
+        // aldrig få sin class_members-länk. Hämta profilen (scopad till
+        // samma skola — vi rör aldrig ett konto som hör till en annan
+        // skola vid en e-postkrock) och länka ändå, annars blir kontot
+        // permanent oklassat utan att gå att laga via omuppladdning.
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', email)
+          .eq('school_id', profile.school_id)
+          .maybeSingle();
+        if (!existing) {
+          skipped.push({ email, reason: result.code });
+          continue;
+        }
+        studentId = existing.id;
+      } else {
+        skipped.push({ email, reason: result.code });
+        continue;
+      }
+    } else {
+      studentId = result.userId;
+    }
+
+    // Upsert (inte insert) så att en omuppladdning av en redan fullt
+    // lyckad rad inte faller på en duplicate-key-krock — hela importen
+    // blir därmed idempotent och självläkande vid omuppladdning.
+    const { error: memberError } = await supabase
+      .from('class_members')
+      .upsert({ class_id: classId, profile_id: studentId }, { onConflict: 'class_id,profile_id' });
+    if (memberError) {
+      skipped.push({ email, reason: 'class-link-failed' });
+      continue;
+    }
+    invited += 1;
+  }
+
+  revalidatePath('/sv/app/admin/anvandare');
+  revalidatePath('/en/app/admin/anvandare');
+  revalidatePath('/sv/app/admin/klasser');
+  revalidatePath('/en/app/admin/klasser');
+  return { status: 'success', invited, skipped };
 }
