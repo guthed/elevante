@@ -176,3 +176,99 @@ export async function inviteUser(
   revalidatePath('/en/app/admin/skolor');
   return { status: 'success', email };
 }
+
+const createClassSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  year: z.coerce.number().int().min(1).max(12).optional(),
+});
+
+export type CreateClassState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'duplicate' | 'generic'; detail?: string };
+
+export async function createClass(
+  _prev: CreateClassState,
+  formData: FormData,
+): Promise<CreateClassState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const yearRaw = formData.get('year');
+  const parsed = createClassSchema.safeParse({
+    name: formData.get('name'),
+    year: yearRaw && yearRaw.toString().length > 0 ? yearRaw : undefined,
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from('classes').insert({
+    school_id: profile.school_id,
+    name: parsed.data.name,
+    year: parsed.data.year ?? null,
+  });
+  if (error) {
+    if (error.code === '23505') return { status: 'error', code: 'duplicate' };
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/klasser');
+  revalidatePath('/en/app/admin/klasser');
+  return { status: 'success' };
+}
+
+export type DeleteClassState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | { status: 'error'; code: 'unauthorized' | 'has-lessons' | 'generic'; detail?: string };
+
+export async function deleteClass(
+  _prev: DeleteClassState,
+  formData: FormData,
+): Promise<DeleteClassState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const classId = (formData.get('class_id') ?? '').toString();
+  if (!classId) return { status: 'error', code: 'unauthorized' };
+  if (!z.string().uuid().safeParse(classId).success) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+
+  // lessons.class_id är ON DELETE CASCADE — blockera radering om
+  // klassen har inspelade lektioner, annars försvinner transkript och
+  // chatthistorik tyst med den. Räknar AVSIKTLIGT även arkiverade
+  // lektioner (ingen .is('archived_at', null)) — cascaden skulle radera
+  // dem lika tyst, så de ska också blockera radering.
+  const { count, error: countError } = await supabase
+    .from('lessons')
+    .select('id', { count: 'exact', head: true })
+    .eq('class_id', classId);
+  if (countError) {
+    return { status: 'error', code: 'generic', detail: countError.message };
+  }
+  if ((count ?? 0) > 0) {
+    return { status: 'error', code: 'has-lessons' };
+  }
+
+  const { error } = await supabase
+    .from('classes')
+    .delete()
+    .eq('id', classId)
+    .eq('school_id', profile.school_id);
+  if (error) {
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/klasser');
+  revalidatePath('/en/app/admin/klasser');
+  return { status: 'success' };
+}
