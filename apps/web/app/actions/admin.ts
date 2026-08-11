@@ -272,3 +272,186 @@ export async function deleteClass(
   revalidatePath('/en/app/admin/klasser');
   return { status: 'success' };
 }
+
+const createCourseSchema = z.object({
+  code: z.string().trim().min(1).max(20),
+  name: z.string().trim().min(1).max(200),
+});
+
+export type CreateCourseState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'duplicate' | 'generic'; detail?: string };
+
+export async function createCourse(
+  _prev: CreateCourseState,
+  formData: FormData,
+): Promise<CreateCourseState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const parsed = createCourseSchema.safeParse({
+    code: formData.get('code'),
+    name: formData.get('name'),
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.from('courses').insert({
+    school_id: profile.school_id,
+    code: parsed.data.code,
+    name: parsed.data.name,
+  });
+  if (error) {
+    if (error.code === '23505') return { status: 'error', code: 'duplicate' };
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/kurser');
+  revalidatePath('/en/app/admin/kurser');
+  return { status: 'success' };
+}
+
+export type DeleteCourseState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | { status: 'error'; code: 'unauthorized' | 'has-lessons' | 'generic'; detail?: string };
+
+export async function deleteCourse(
+  _prev: DeleteCourseState,
+  formData: FormData,
+): Promise<DeleteCourseState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const courseId = (formData.get('course_id') ?? '').toString();
+  if (!courseId) return { status: 'error', code: 'unauthorized' };
+  if (!z.string().uuid().safeParse(courseId).success) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+
+  // lessons.course_id är ON DELETE CASCADE — blockera radering om
+  // kursen har inspelade lektioner, annars försvinner transkript och
+  // chatthistorik tyst med den. Räknar AVSIKTLIGT även arkiverade
+  // lektioner (ingen .is('archived_at', null)) — cascaden skulle radera
+  // dem lika tyst, så de ska också blockera radering.
+  const { count, error: countError } = await supabase
+    .from('lessons')
+    .select('id', { count: 'exact', head: true })
+    .eq('course_id', courseId);
+  if (countError) {
+    return { status: 'error', code: 'generic', detail: countError.message };
+  }
+  if ((count ?? 0) > 0) {
+    return { status: 'error', code: 'has-lessons' };
+  }
+
+  const { error } = await supabase
+    .from('courses')
+    .delete()
+    .eq('id', courseId)
+    .eq('school_id', profile.school_id);
+  if (error) {
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/kurser');
+  revalidatePath('/en/app/admin/kurser');
+  return { status: 'success' };
+}
+
+const assignTeacherSchema = z.object({
+  courseId: z.string().uuid(),
+  teacherId: z.string().uuid(),
+});
+
+export type AssignTeacherState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'duplicate' | 'generic'; detail?: string };
+
+export async function assignTeacherToCourse(
+  _prev: AssignTeacherState,
+  formData: FormData,
+): Promise<AssignTeacherState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const parsed = assignTeacherSchema.safeParse({
+    courseId: formData.get('course_id'),
+    teacherId: formData.get('teacher_id'),
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+
+  // RLS på course_teachers kollar bara att kursen tillhör adminens
+  // skola — inte att den valda profilen gör det. Måste kollas i kod.
+  const { data: teacher } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', parsed.data.teacherId)
+    .eq('school_id', profile.school_id)
+    .eq('role', 'teacher')
+    .maybeSingle();
+  if (!teacher) {
+    return { status: 'error', code: 'invalid', detail: 'Läraren tillhör inte din skola' };
+  }
+
+  const { error } = await supabase.from('course_teachers').insert({
+    course_id: parsed.data.courseId,
+    profile_id: parsed.data.teacherId,
+  });
+  if (error) {
+    if (error.code === '23505') return { status: 'error', code: 'duplicate' };
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/kurser');
+  revalidatePath('/en/app/admin/kurser');
+  return { status: 'success' };
+}
+
+export async function removeTeacherFromCourse(
+  _prev: AssignTeacherState,
+  formData: FormData,
+): Promise<AssignTeacherState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const parsed = assignTeacherSchema.safeParse({
+    courseId: formData.get('course_id'),
+    teacherId: formData.get('teacher_id'),
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from('course_teachers')
+    .delete()
+    .eq('course_id', parsed.data.courseId)
+    .eq('profile_id', parsed.data.teacherId);
+  if (error) {
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/kurser');
+  revalidatePath('/en/app/admin/kurser');
+  return { status: 'success' };
+}

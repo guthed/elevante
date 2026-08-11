@@ -50,6 +50,11 @@ export type Course = {
   created_at: string;
 };
 
+export type CourseTeacher = {
+  course_id: string;
+  profile_id: string;
+};
+
 export type Class = {
   id: string;
   school_id: string;
@@ -485,6 +490,11 @@ type CourseInsert = {
   created_at?: string;
 };
 
+type CourseTeacherInsert = {
+  course_id: string;
+  profile_id: string;
+};
+
 type ClassInsert = {
   school_id: string;
   name: string;
@@ -593,6 +603,7 @@ export type Database = {
       schools: TableDef<School, SchoolInsert>;
       profiles: TableDef<Profile, ProfileInsert>;
       courses: TableDef<Course, CourseInsert>;
+      course_teachers: TableDef<CourseTeacher, CourseTeacherInsert>;
       classes: TableDef<Class, ClassInsert>;
       timeslots: TableDef<Timeslot, TimeslotInsert>;
       lessons: TableDef<Lesson, LessonInsert>;
