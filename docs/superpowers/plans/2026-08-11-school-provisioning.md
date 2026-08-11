@@ -133,6 +133,147 @@ alla skolor, inte en per-skola-vy — det är rätt att gå runt RLS här."
 
 ---
 
+### Task 1b: `is_staff`-flagga — stäng cross-tenant-läckan i /admin/skolor, /admin/crm, /admin/intresse
+
+**Tillagd efter code review av Task 1.** Reviewern flaggade att `/admin/skolor` (nu med service-role, Task 1), `/admin/crm` och `/admin/intresse` bara gatas på `profile.role === 'admin'` — det finns ingen separat "Elevante-personal"-roll i datamodellen. Innan Task 1 skyddade RLS av misstag `/admin/skolor` mot andra skolor, men det skyddet är nu borta (medvetet, service-role krävs för att sidan ska fungera alls). `/admin/crm` och `/admin/intresse` har aldrig haft RLS-skydd eftersom de inte är skol-scopade tabeller. Så fort Task 7 bjuder in en riktig admin åt en kundskola (t.ex. Amerikanska Gymnasiet) skulle den adminen se alla tre sidorna i sin sidomeny och kunna bläddra andra skolors namn/slug/land/admin-antal, skapa nya skolor, och se Elevantes hela sälj-CRM. Detta måste stängas innan Task 7 körs.
+
+**Files:**
+- Create: `supabase/migrations/20260811130000_admin_staff_flag.sql`
+- Modify: `apps/web/lib/supabase/database.ts` (`Profile`, `ProfileInsert`)
+- Modify: `apps/web/lib/supabase/server.ts` (`getCurrentProfile`)
+- Modify: `apps/web/app/actions/admin.ts` (`createSchool`-guarden)
+- Modify: `apps/web/app/actions/crm.ts` (`requireAdmin`)
+- Modify: `apps/web/app/[locale]/app/[role]/skolor/page.tsx`
+- Modify: `apps/web/app/[locale]/app/[role]/crm/page.tsx`
+- Modify: `apps/web/app/[locale]/app/[role]/intresse/page.tsx`
+- Modify: `apps/web/lib/app/nav.ts`
+- Modify: `apps/web/components/app/Sidebar.tsx`, `apps/web/components/app/MobileNav.tsx`, `apps/web/components/app/AppShell.tsx`
+- Modify: `apps/web/app/[locale]/app/[role]/layout.tsx`
+
+- [ ] **Step 1: Migration**
+
+```sql
+alter table public.profiles
+  add column if not exists is_staff boolean not null default false;
+
+comment on column public.profiles.is_staff is
+  'Elevante-personal (inte en kunds egen admin). Gate:ar /admin/skolor, /admin/crm, /admin/intresse och bootstrap av en ny skolas första admin.';
+```
+
+Applicera mot prod på samma sätt (och med samma försiktighet) som Task 2:s migration — se den uppgiftens Step 2 för tillvägagångssätt. Kör därefter manuellt, för varje känt Elevante-konto (loggade i Notion "Nycklar"):
+
+```sql
+update public.profiles set is_staff = true where email = 'din-elevante-epost@exempel.se';
+```
+
+- [ ] **Step 2: Utöka typerna i `database.ts`**
+
+I `Profile`, lägg till `is_staff: boolean;` (efter `updated_at`). I `ProfileInsert`, lägg till `is_staff?: boolean;`.
+
+- [ ] **Step 3: `getCurrentProfile` läser `is_staff`**
+
+I `apps/web/lib/supabase/server.ts`, ändra select-raden i `getCurrentProfile`:
+
+```ts
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, role, school_id, full_name, email, is_staff')
+      .eq('id', user.id)
+      .maybeSingle();
+```
+
+- [ ] **Step 4: Gata Server Actions**
+
+I `apps/web/app/actions/admin.ts`, i `createSchool`, ändra guarden:
+
+```ts
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+```
+
+I `apps/web/app/actions/crm.ts`, ändra `requireAdmin`:
+
+```ts
+async function requireAdmin() {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) throw new Error('Ej behörig');
+}
+```
+
+- [ ] **Step 5: Gata sidorna**
+
+I `skolor/page.tsx`, `crm/page.tsx`, `intresse/page.tsx`, ändra respektive guard-rad (`if (!profile || profile.role !== 'admin') redirect(...)`) till att även kräva `!profile.is_staff`:
+
+```ts
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) redirect(`/${locale}/app`);
+```
+
+- [ ] **Step 6: Dölj nav-länkarna för icke-staff**
+
+I `apps/web/lib/app/nav.ts`, lägg till en fjärde parameter till `navItemsFor`:
+
+```ts
+export function navItemsFor(role: Role, base: string, dict: Dictionary, isStaff: boolean): NavItem[] {
+```
+
+I admin-grenen, filtrera bort `schools`, `crm` och `prospects` när `!isStaff`:
+
+```ts
+  const a = dict.app.sidebar.admin;
+  const m = dict.app.mobileNav.admin;
+  const d = dict.app.navDescriptions.admin;
+  const items: NavItem[] = [
+    { id: 'overview', href: `${base}/admin`, label: a.overview, mobileLabel: m.overview, description: d.overview },
+    { id: 'schools', href: `${base}/admin/skolor`, label: a.schools, mobileLabel: m.schools, description: d.schools },
+    { id: 'users', href: `${base}/admin/anvandare`, label: a.users, mobileLabel: m.users, description: d.users },
+    { id: 'schedule', href: `${base}/admin/schema`, label: a.schedule, mobileLabel: m.schedule, description: d.schedule },
+    { id: 'stats', href: `${base}/admin/statistik`, label: a.stats, mobileLabel: m.stats, description: d.stats },
+    { id: 'prospects', href: `${base}/admin/intresse`, label: a.prospects, mobileLabel: m.prospects, description: d.prospects },
+    { id: 'crm', href: `${base}/admin/crm`, label: a.crm, mobileLabel: m.crm, description: d.crm },
+  ];
+  const staffOnly: NavId[] = ['schools', 'prospects', 'crm'];
+  return isStaff ? items : items.filter((item) => !staffOnly.includes(item.id));
+```
+
+- [ ] **Step 7: Trä igenom `isStaff` från layout till nav**
+
+I `apps/web/app/[locale]/app/[role]/layout.tsx`, skicka med `isStaff={profile.is_staff}` till `<AppShell>`.
+
+I `apps/web/components/app/AppShell.tsx`, lägg till `isStaff: boolean;` i `Props`, och skicka vidare till `<Sidebar>` och `<Topbar>` (Topbar kan strunta i den om den inte renderar nav-items — kolla filen; om den bara visar användarmeny kan parametern hoppas över där).
+
+I `apps/web/components/app/Sidebar.tsx` och `apps/web/components/app/MobileNav.tsx`, lägg till `isStaff: boolean;` i `Props` och skicka med som fjärde argument till `navItemsFor(role, base, dict, isStaff)`.
+
+- [ ] **Step 8: Verifiera typer och lint**
+
+```bash
+pnpm --filter @elevante/web typecheck
+pnpm --filter @elevante/web lint
+```
+
+- [ ] **Step 9: Manuell verifiering**
+
+Logga in som ett vanligt (icke-staff) admin-konto. Bekräfta att "Skolor", "CRM" och "Intresse" är borta ur både sidomeny och mobilnav, och att direktnavigering till `/admin/skolor`, `/admin/crm`, `/admin/intresse` redirectar bort. Sätt sedan `is_staff = true` på ditt eget testkonto, ladda om, bekräfta att länkarna är tillbaka och sidorna fungerar som innan.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add supabase/migrations/20260811130000_admin_staff_flag.sql apps/web/lib/supabase/database.ts apps/web/lib/supabase/server.ts apps/web/app/actions/admin.ts apps/web/app/actions/crm.ts apps/web/app/[locale]/app/[role]/skolor/page.tsx apps/web/app/[locale]/app/[role]/crm/page.tsx apps/web/app/[locale]/app/[role]/intresse/page.tsx apps/web/lib/app/nav.ts apps/web/components/app/Sidebar.tsx apps/web/components/app/MobileNav.tsx apps/web/components/app/AppShell.tsx apps/web/app/[locale]/app/[role]/layout.tsx
+git commit -m "fix(admin): inför is_staff och stäng cross-tenant-läckan i /admin/skolor, /admin/crm, /admin/intresse
+
+Task 1s service-role-fix tog bort ett RLS-skydd som av misstag höll
+cross-tenant-läsning nere. Det fanns aldrig ett verkligt gate — bara
+role='admin', som en framtida kunds egen admin också har. Utan detta
+skulle Task 7:s admin-inbjudan ge kundens admin insyn i alla andra
+skolor plus Elevantes sälj-CRM."
+```
+
+---
+
+**Not till Task 4 nedan:** bootstrap-grenen i `inviteUser` (`allowed = (count ?? 0) === 0 && role === 'admin'` när `!isOwnSchool`) måste även kräva `profile.is_staff` — annars kan en kunds egen admin bootstrap:a admin åt VILKEN skola som helst utan admin sedan tidigare. Task 4:s implementerare ska lägga till det villkoret; se uppdaterad kod i Task 4 nedan.
+
+---
+
 ### Task 2: Trigger-migration — läs roll + skola från inbjudningsmetadata
 
 **Files:**
@@ -351,7 +492,12 @@ export async function inviteUser(
 
   if (!isOwnSchool) {
     // Bootstrap: en skola utan admin ännu får sin första admin av
-    // valfri befintlig Elevante-admin (samma grind som createSchool).
+    // valfri befintlig Elevante-STAFF-admin (samma grind som
+    // createSchool efter Task 1b — inte "vilken admin som helst",
+    // annars kan en kunds egen admin bootstrap:a admin åt andra skolor).
+    if (!profile.is_staff) {
+      return { status: 'error', code: 'unauthorized' };
+    }
     const supabase = await createSupabaseServerClient();
     const { count } = await supabase
       .from('profiles')
