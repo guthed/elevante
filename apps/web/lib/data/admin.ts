@@ -278,7 +278,12 @@ export async function getAdminClasses(schoolId: string): Promise<AdminClassRow[]
   const [classesRes, membersRes, lessonsRes] = await Promise.all([
     supabase.from('classes').select('id, name, year').eq('school_id', schoolId).order('name'),
     supabase.from('class_members').select('class_id'),
-    supabase.from('lessons').select('class_id').eq('school_id', schoolId).is('archived_at', null),
+    // Räknar AVSIKTLIGT även arkiverade lektioner (ingen .is('archived_at',
+    // null)) — måste spegla deleteClass i app/actions/admin.ts, som blockerar
+    // radering baserat på ALLA lektioner inklusive arkiverade. Om den här
+    // räkningen exkluderade arkiverade skulle admin kunna se "0 lektioner"
+    // på en klass som ändå avvisas med deleteErrorHasLessons vid radering.
+    supabase.from('lessons').select('class_id').eq('school_id', schoolId),
   ]);
 
   const studentCounts = new Map<string, number>();

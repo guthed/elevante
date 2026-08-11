@@ -8,30 +8,43 @@ import { PageWrapper } from '@/components/app/PageWrapper';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getTeacherClasses } from '@/lib/data/teacher';
+import { getAdminClasses } from '@/lib/data/admin';
+import { AdminClassesView } from './AdminClassesView';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale, role } = await params;
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
-  return {
-    title: dict.app.pages.teacher.classes.title,
-    robots: { index: false, follow: false },
-  };
+  const title =
+    role === 'admin' ? dict.app.pages.admin.classes.title : dict.app.pages.teacher.classes.title;
+  return { title, robots: { index: false, follow: false } };
 }
 
-export default async function TeacherClassesPage({ params }: Props) {
+export default async function ClassesPage({ params }: Props) {
   const { locale, role } = await params;
   if (!isLocale(locale) || !isRole(role)) notFound();
-  if (role !== 'teacher') redirect(`/${locale}/app/${role}`);
+  if (role !== 'teacher' && role !== 'admin') redirect(`/${locale}/app/${role}`);
 
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
 
   const dict = await getDictionary(locale);
+
+  if (role === 'admin') {
+    if (profile.role !== 'admin' || !profile.school_id) redirect(`/${locale}/app`);
+    const labels = dict.app.pages.admin.classes;
+    const classes = await getAdminClasses(profile.school_id);
+    return (
+      <PageWrapper title={labels.title} subtitle={labels.subtitle}>
+        <AdminClassesView classes={classes} labels={labels} />
+      </PageWrapper>
+    );
+  }
+
   const labels = dict.app.pages.teacher.classes;
   const classes = await getTeacherClasses(profile.id);
   const base = `/${locale}/app/teacher`;
