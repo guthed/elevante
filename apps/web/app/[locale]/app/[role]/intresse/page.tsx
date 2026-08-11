@@ -26,7 +26,7 @@ export default async function AdminIntressePage({ params }: Props) {
   const locale: Locale = rawLocale;
 
   const profile = await getCurrentProfile();
-  if (!profile || profile.role !== 'admin') redirect(`/${locale}/app`);
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) redirect(`/${locale}/app`);
 
   const { prospects, total } = await getCampaignProspects();
   const sv = locale === 'sv';

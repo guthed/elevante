@@ -10,7 +10,7 @@ import { SITE_URL } from '@/lib/site';
 
 async function requireAdmin() {
   const profile = await getCurrentProfile();
-  if (!profile || profile.role !== 'admin') throw new Error('Ej behörig');
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) throw new Error('Ej behörig');
 }
 
 const searchSchema = z.object({

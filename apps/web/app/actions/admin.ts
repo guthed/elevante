@@ -56,7 +56,7 @@ export async function createSchool(
   formData: FormData,
 ): Promise<CreateSchoolState> {
   const profile = await getCurrentProfile();
-  if (!profile || profile.role !== 'admin') {
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) {
     return { status: 'error', code: 'unauthorized' };
   }
 

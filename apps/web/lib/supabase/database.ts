@@ -39,6 +39,7 @@ export type Profile = {
   email: string | null;
   created_at: string;
   updated_at: string;
+  is_staff: boolean;
 };
 
 export type Course = {
@@ -473,6 +474,7 @@ type ProfileInsert = {
   role?: UserRole;
   full_name?: string | null;
   email?: string | null;
+  is_staff?: boolean;
 };
 
 type CourseInsert = {

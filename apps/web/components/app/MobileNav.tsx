@@ -47,12 +47,13 @@ type Props = {
   locale: Locale;
   role: Role;
   dict: Dictionary;
+  isStaff: boolean;
 };
 
-export function MobileNav({ locale, role, dict }: Props) {
+export function MobileNav({ locale, role, dict, isStaff }: Props) {
   const pathname = usePathname();
   const base = `/${locale}/app`;
-  const items = navItemsFor(role, base, dict);
+  const items = navItemsFor(role, base, dict, isStaff);
   const overviewHref = `${base}/${role}`;
 
   // Fokusläge: dölj nav i aktiv chatt-tråd så meddelandefältet kan sitta längst ned.

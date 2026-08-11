@@ -31,7 +31,7 @@ export default async function AdminSchoolsPage({ params }: Props) {
   if (role !== 'admin') redirect(`/${locale}/app/${role}`);
 
   const profile = await getCurrentProfile();
-  if (!profile || profile.role !== 'admin') redirect(`/${locale}/app`);
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) redirect(`/${locale}/app`);
 
   const dict = await getDictionary(locale);
   const labels = dict.app.pages.admin.schools;
