@@ -32,6 +32,7 @@ const ICONS: Record<NavId, ReactNode> = {
   examPrep: I(<><path d="M4 4h16v14H7l-3 3z" /></>),
   learnerProfile: I(<><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></>),
   classes: I(<><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /></>),
+  courses: I(<><path d="M12 4L3 8l9 4 9-4-9-4z" /><path d="M7 10v6c0 1.5 2.5 3 5 3s5-1.5 5-3v-6" /></>),
   lessons: I(<><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>),
   sharedTests: I(<><path d="M9 11l3 3 8-8" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>),
   classTests: I(<><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M9 9h6M9 13h4" /><path d="M14 17l2 2 4-4" /></>),

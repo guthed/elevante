@@ -9,6 +9,7 @@ export type NavId =
   | 'learnerProfile'
   | 'classTests'
   | 'classes'
+  | 'courses'
   | 'lessons'
   | 'sharedTests'
   | 'schools'
@@ -63,6 +64,8 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary, isStaff:
   const items: NavItem[] = [
     { id: 'overview', href: `${base}/admin`, label: a.overview, mobileLabel: m.overview, description: d.overview },
     { id: 'schools', href: `${base}/admin/skolor`, label: a.schools, mobileLabel: m.schools, description: d.schools },
+    { id: 'classes', href: `${base}/admin/klasser`, label: a.classes, mobileLabel: m.classes, description: d.classes },
+    { id: 'courses', href: `${base}/admin/kurser`, label: a.courses, mobileLabel: m.courses, description: d.courses },
     { id: 'users', href: `${base}/admin/anvandare`, label: a.users, mobileLabel: m.users, description: d.users },
     { id: 'schedule', href: `${base}/admin/schema`, label: a.schedule, mobileLabel: m.schedule, description: d.schedule },
     { id: 'stats', href: `${base}/admin/statistik`, label: a.stats, mobileLabel: m.stats, description: d.stats },
