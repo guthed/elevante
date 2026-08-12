@@ -37,6 +37,7 @@ export type Profile = {
   role: UserRole;
   full_name: string | null;
   email: string | null;
+  avatar_url: string | null;
   created_at: string;
   updated_at: string;
   is_staff: boolean;
@@ -484,6 +485,7 @@ type ProfileInsert = {
   role?: UserRole;
   full_name?: string | null;
   email?: string | null;
+  avatar_url?: string | null;
   is_staff?: boolean;
 };
 

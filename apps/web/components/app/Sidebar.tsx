@@ -16,6 +16,7 @@ type Props = {
   user: {
     fullName: string | null;
     email: string | null;
+    avatarUrl: string | null;
   } | null;
   schoolName: string | null;
   className: string | null;
@@ -71,7 +72,7 @@ export function Sidebar({ locale, role, dict, user, schoolName, className, isSta
             href={`${base}/${role}/konto`}
             className="-mx-1 flex min-w-0 flex-1 items-center gap-3 rounded-[12px] px-1 py-1 transition-colors hover:bg-[var(--color-surface-soft)]"
           >
-            <Avatar name={displayName} size="sm" />
+            <Avatar name={displayName} size="sm" src={user?.avatarUrl} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
                 {displayName}

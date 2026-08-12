@@ -7,6 +7,7 @@ import { getCurrentProfile } from '@/lib/supabase/server';
 import { signOut } from '@/app/actions/auth';
 import { LanguageSwitcher } from '@/components/public/LanguageSwitcher';
 import { AccountForms } from '@/components/app/AccountForms';
+import { AvatarUploadForm } from '@/components/app/AvatarUploadForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -48,6 +49,16 @@ export default async function AccountPage({ params }: Props) {
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
           {a.subtitle}
         </p>
+
+        <div className="mt-10">
+          <AvatarUploadForm
+            locale={locale}
+            role={role}
+            name={profile.full_name ?? profile.email ?? '?'}
+            avatarUrl={profile.avatar_url}
+            labels={a}
+          />
+        </div>
 
         <div className="mt-10">
           <AccountForms

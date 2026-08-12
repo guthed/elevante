@@ -46,7 +46,7 @@ export default async function RoleLayout({ children, params }: Props) {
         locale={locale}
         role={typedRole}
         dict={dict}
-        user={{ fullName: profile.full_name, email: profile.email }}
+        user={{ fullName: profile.full_name, email: profile.email, avatarUrl: profile.avatar_url }}
         schoolName={schoolName}
         className={className}
         isStaff={profile.is_staff}

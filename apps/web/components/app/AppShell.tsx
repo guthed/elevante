@@ -13,6 +13,7 @@ type Props = {
   user: {
     fullName: string | null;
     email: string | null;
+    avatarUrl: string | null;
   } | null;
   schoolName: string | null;
   className: string | null;
