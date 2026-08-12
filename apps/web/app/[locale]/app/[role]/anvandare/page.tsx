@@ -5,9 +5,10 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getAdminUsers, type AdminUserRow } from '@/lib/data/admin';
+import { getAdminUsers, getAdminClasses, type AdminUserRow } from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
 import { InviteUserForm } from './InviteUserForm';
+import { MassInviteForm } from './MassInviteForm';
 import { ImportUsersForm } from './ImportUsersForm';
 
 type Props = {
@@ -42,7 +43,10 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
   const sv = locale === 'sv';
   const { filter, q } = await searchParams;
 
-  const all = await getAdminUsers();
+  const [all, classes] = await Promise.all([
+    getAdminUsers(),
+    getAdminClasses(profile.school_id),
+  ]);
 
   const counts = {
     all: all.length,
@@ -98,6 +102,15 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
             locale={locale}
             labels={labels.invite}
           />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+        <h2 className="text-[0.9375rem] font-medium text-[var(--color-ink)]">
+          {labels.massInvite.heading}
+        </h2>
+        <div className="mt-4">
+          <MassInviteForm locale={locale} classes={classes} labels={labels.massInvite} />
         </div>
       </section>
 

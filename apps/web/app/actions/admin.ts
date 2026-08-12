@@ -812,3 +812,173 @@ export async function importUsers(
   revalidatePath('/en/app/admin/klasser');
   return { status: 'success', invited, skipped };
 }
+
+const EMAIL_PATTERN = /[^\s<>,;]+@[^\s<>,;]+\.[^\s<>,;]+/;
+
+// Tolererar friformat per rad: "Namn <mejl>", "Namn, mejl", "Namn mejl"
+// eller bara "mejl" (namnet gissas då fram ur mejladressens lokaldel).
+// Adminen ska kunna klistra in en lista utan att formatera om den.
+function parseMassInviteLine(line: string): { fullName: string; email: string } | null {
+  const trimmed = line.trim();
+  if (!trimmed) return null;
+  const match = trimmed.match(EMAIL_PATTERN);
+  if (!match) return null;
+  const email = match[0];
+  const rest = trimmed
+    .replace(email, '')
+    .replace(/[<>,;]/g, ' ')
+    .trim();
+  if (rest) {
+    return { fullName: rest, email };
+  }
+  const localPart = email.split('@')[0] ?? email;
+  const guessedName = localPart
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+  return { fullName: guessedName || email, email };
+}
+
+export type MassInviteState =
+  | { status: 'idle' }
+  | { status: 'success'; invited: number; skipped: { email: string; reason: string }[] }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
+
+const massInviteSchema = z.object({
+  role: z.enum(['student', 'teacher', 'admin']),
+  classId: z.string().uuid().optional(),
+  entries: z.string().trim().min(1),
+  locale: z.string(),
+});
+
+const MAX_MASS_INVITE_ROWS = 3000;
+
+export async function massInvite(
+  _prev: MassInviteState,
+  formData: FormData,
+): Promise<MassInviteState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const rawLocale = (formData.get('locale') ?? '').toString();
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'sv';
+  const parsed = massInviteSchema.safeParse({
+    role: formData.get('role'),
+    classId: (formData.get('class_id') ?? '').toString() || undefined,
+    entries: formData.get('entries'),
+    locale,
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+  const { role, classId } = parsed.data;
+
+  if (role === 'student' && !classId) {
+    return { status: 'error', code: 'invalid', detail: 'Klass krävs för elever' };
+  }
+
+  const lines = parsed.data.entries.split('\n');
+  const entries = lines
+    .map(parseMassInviteLine)
+    .filter((e): e is { fullName: string; email: string } => e !== null);
+  if (entries.length === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Ingen giltig rad hittades' };
+  }
+  if (entries.length > MAX_MASS_INVITE_ROWS) {
+    return {
+      status: 'error',
+      code: 'invalid',
+      detail: `Max ${MAX_MASS_INVITE_ROWS} rader per omgång`,
+    };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const schoolId = profile.school_id;
+  const [{ data: school }, { data: className }] = await Promise.all([
+    supabase.from('schools').select('name').eq('id', schoolId).maybeSingle(),
+    classId
+      ? supabase.from('classes').select('name').eq('id', classId).maybeSingle()
+      : Promise.resolve({ data: null as { name: string } | null }),
+  ]);
+  if (!school) {
+    return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
+  }
+  if (role === 'student' && !className) {
+    return { status: 'error', code: 'invalid', detail: 'Klassen hittades inte' };
+  }
+  const schoolName = school.name;
+
+  type RowResult =
+    | { invited: true }
+    | { invited: false; skipped: { email: string; reason: string } };
+
+  async function processEntry(entry: { fullName: string; email: string }): Promise<RowResult> {
+    const result = await inviteUserCore({
+      email: entry.email,
+      fullName: entry.fullName,
+      role,
+      schoolId,
+      schoolName,
+      className: role === 'student' ? className!.name : undefined,
+      locale,
+    });
+
+    let userId: string;
+    if (!result.ok) {
+      if (result.code === 'already-exists') {
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', entry.email)
+          .eq('school_id', schoolId)
+          .maybeSingle();
+        if (!existing) {
+          return { invited: false, skipped: { email: entry.email, reason: result.code } };
+        }
+        userId = existing.id;
+      } else {
+        return { invited: false, skipped: { email: entry.email, reason: result.code } };
+      }
+    } else {
+      userId = result.userId;
+    }
+
+    if (role !== 'student') {
+      return { invited: true };
+    }
+
+    const { error: memberError } = await supabase
+      .from('class_members')
+      .upsert({ class_id: classId!, profile_id: userId }, { onConflict: 'class_id,profile_id' });
+    if (memberError) {
+      return { invited: false, skipped: { email: entry.email, reason: 'class-link-failed' } };
+    }
+    return { invited: true };
+  }
+
+  // Samma batchning + Loops-retry som importUsers (se den för resonemang
+  // kring PARALLEL_ROWS och maxDuration).
+  const PARALLEL_ROWS = 5;
+  let invited = 0;
+  const skipped: { email: string; reason: string }[] = [];
+  for (let i = 0; i < entries.length; i += PARALLEL_ROWS) {
+    const batch = entries.slice(i, i + PARALLEL_ROWS);
+    const results = await Promise.all(batch.map(processEntry));
+    for (const result of results) {
+      if (result.invited) {
+        invited += 1;
+      } else {
+        skipped.push(result.skipped);
+      }
+    }
+  }
+
+  revalidatePath('/sv/app/admin/anvandare');
+  revalidatePath('/en/app/admin/anvandare');
+  revalidatePath('/sv/app/admin/klasser');
+  revalidatePath('/en/app/admin/klasser');
+  return { status: 'success', invited, skipped };
+}
