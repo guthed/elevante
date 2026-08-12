@@ -18,11 +18,12 @@ type Props = {
   } | null;
   schoolName: string | null;
   className: string | null;
+  isStaff: boolean;
 };
 
-export function Sidebar({ locale, role, dict, user, schoolName, className }: Props) {
+export function Sidebar({ locale, role, dict, user, schoolName, className, isStaff }: Props) {
   const base = `/${locale}/app`;
-  const items = navItemsFor(role, base, dict);
+  const items = navItemsFor(role, base, dict, isStaff);
   const overviewHref = `${base}/${role}`;
   const roleLabel = dict.app.roleTitles[role];
   const displayName = user?.fullName ?? user?.email ?? roleLabel;

@@ -16,6 +16,7 @@ type Props = {
   } | null;
   schoolName: string | null;
   className: string | null;
+  isStaff: boolean;
   children: ReactNode;
 };
 
@@ -26,6 +27,7 @@ export function AppShell({
   user,
   schoolName,
   className,
+  isStaff,
   children,
 }: Props) {
   return (
@@ -43,6 +45,7 @@ export function AppShell({
         user={user}
         schoolName={schoolName}
         className={className}
+        isStaff={isStaff}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
@@ -60,7 +63,7 @@ export function AppShell({
           {children}
         </main>
       </div>
-      <MobileNav locale={locale} role={role} dict={dict} />
+      <MobileNav locale={locale} role={role} dict={dict} isStaff={isStaff} />
     </div>
   );
 }

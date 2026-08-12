@@ -49,6 +49,7 @@ export default async function RoleLayout({ children, params }: Props) {
         user={{ fullName: profile.full_name, email: profile.email }}
         schoolName={schoolName}
         className={className}
+        isStaff={profile.is_staff}
       >
         {children}
       </AppShell>

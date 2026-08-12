@@ -7,6 +7,8 @@ import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getAdminUsers, type AdminUserRow } from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
+import { InviteUserForm } from './InviteUserForm';
+import { ImportStudentsForm } from './ImportStudentsForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -33,6 +35,7 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
 
   const profile = await getCurrentProfile();
   if (!profile || profile.role !== 'admin') redirect(`/${locale}/app`);
+  if (!profile.school_id) redirect(`/${locale}/app`);
 
   const dict = await getDictionary(locale);
   const labels = dict.app.pages.admin.users;
@@ -85,7 +88,29 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
         </div>
       </header>
 
-      {/* Search + invite */}
+      <section className="mt-8 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+        <h2 className="text-[0.9375rem] font-medium text-[var(--color-ink)]">
+          {labels.invite.heading}
+        </h2>
+        <div className="mt-4">
+          <InviteUserForm
+            schoolId={profile.school_id}
+            locale={locale}
+            labels={labels.invite}
+          />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+        <h2 className="text-[0.9375rem] font-medium text-[var(--color-ink)]">
+          {labels.import.heading}
+        </h2>
+        <div className="mt-4 max-w-md">
+          <ImportStudentsForm locale={locale} labels={labels.import} />
+        </div>
+      </section>
+
+      {/* Search */}
       <form className="mt-8 flex flex-wrap items-center gap-3" action={base}>
         <div className="relative flex-1 min-w-[280px]">
           <span

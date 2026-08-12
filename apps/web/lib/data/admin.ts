@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { SchoolProspect, TranscriptStatus, UserRole } from '@/lib/supabase/database';
+import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
+import type { TranscriptStatus, UserRole } from '@/lib/supabase/database';
 
 export type AdminOverview = {
   schoolsCount: number;
@@ -99,15 +100,29 @@ export type AdminSchoolRow = {
   slug: string;
   country: string;
   created_at: string;
+  adminCount: number;
 };
 
 export async function getAdminSchools(): Promise<AdminSchoolRow[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('schools')
-    .select('id, name, slug, country, created_at')
-    .order('created_at', { ascending: false });
-  return ((data ?? []) as AdminSchoolRow[]);
+  const supabase = createSupabaseServiceRoleClient();
+  const [schoolsRes, adminsRes] = await Promise.all([
+    supabase
+      .from('schools')
+      .select('id, name, slug, country, created_at')
+      .order('created_at', { ascending: false }),
+    supabase.from('profiles').select('school_id').eq('role', 'admin'),
+  ]);
+
+  const adminCounts = new Map<string, number>();
+  for (const row of adminsRes.data ?? []) {
+    if (!row.school_id) continue;
+    adminCounts.set(row.school_id, (adminCounts.get(row.school_id) ?? 0) + 1);
+  }
+
+  return (schoolsRes.data ?? []).map((s) => ({
+    ...s,
+    adminCount: adminCounts.get(s.id) ?? 0,
+  }));
 }
 
 export type AdminStats = {
@@ -119,71 +134,6 @@ export type AdminStats = {
     admins: number;
   };
 };
-
-export type CampaignProspectsResult = {
-  prospects: SchoolProspect[];
-  total: number;
-};
-
-export async function getCampaignProspects(): Promise<CampaignProspectsResult> {
-  const supabase = await createSupabaseServerClient();
-
-  const [prospectsRes, countRes] = await Promise.all([
-    supabase
-      .from('school_prospects')
-      .select(
-        'id, school_unit_code, school_name, municipality, huvudman_name, students, ' +
-        'lookup_count, ai_brief, enrichment_status, contact_address, contact_phone, ' +
-        'contact_email, latest_lead_email, first_seen_at, last_seen_at, ' +
-        'created_at, updated_at, contact_web, principal_type, school_orientation, ' +
-        'latest_lead_message, latest_lead_at, notion_page_id',
-      )
-      .order('last_seen_at', { ascending: false })
-      .limit(200),
-    supabase
-      .from('school_prospects')
-      .select('id', { count: 'exact', head: true }),
-  ]);
-
-  return {
-    prospects: ((prospectsRes.data ?? []) as unknown as SchoolProspect[]),
-    total: countRes.count ?? 0,
-  };
-}
-
-export type ProspectListItem = {
-  code: string;
-  name: string;
-  municipality: string | null;
-  students: number | null;
-  skolform: string[] | null;
-  syncStatus: string | null;
-  lastSyncedAt: string | null;
-  notionPageId: string | null;
-  createdVia: string;
-};
-
-export async function getProspects(): Promise<ProspectListItem[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('school_prospects')
-    .select(
-      'school_unit_code, school_name, municipality, students, skolform, sync_status, last_synced_at, notion_page_id, created_via',
-    )
-    .order('last_synced_at', { ascending: false, nullsFirst: false })
-    .limit(200);
-  return (data ?? []).map((r) => ({
-    code: r.school_unit_code,
-    name: r.school_name,
-    municipality: r.municipality,
-    students: r.students,
-    skolform: r.skolform,
-    syncStatus: r.sync_status,
-    lastSyncedAt: r.last_synced_at,
-    notionPageId: r.notion_page_id,
-    createdVia: r.created_via,
-  }));
-}
 
 export async function getAdminStats(): Promise<AdminStats> {
   const supabase = await createSupabaseServerClient();
@@ -248,4 +198,88 @@ export async function getAdminStats(): Promise<AdminStats> {
       admins: profiles.filter((p) => p.role === 'admin').length,
     },
   };
+}
+
+export type AdminClassRow = {
+  id: string;
+  name: string;
+  year: number | null;
+  studentsCount: number;
+  lessonsCount: number;
+};
+
+export async function getAdminClasses(schoolId: string): Promise<AdminClassRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const [classesRes, membersRes, lessonsRes] = await Promise.all([
+    supabase.from('classes').select('id, name, year').eq('school_id', schoolId).order('name'),
+    supabase.from('class_members').select('class_id'),
+    // Räknar AVSIKTLIGT även arkiverade lektioner (ingen .is('archived_at',
+    // null)) — måste spegla deleteClass i app/actions/admin.ts, som blockerar
+    // radering baserat på ALLA lektioner inklusive arkiverade. Om den här
+    // räkningen exkluderade arkiverade skulle admin kunna se "0 lektioner"
+    // på en klass som ändå avvisas med deleteErrorHasLessons vid radering.
+    supabase.from('lessons').select('class_id').eq('school_id', schoolId),
+  ]);
+
+  const studentCounts = new Map<string, number>();
+  for (const row of (membersRes.data ?? []) as { class_id: string }[]) {
+    studentCounts.set(row.class_id, (studentCounts.get(row.class_id) ?? 0) + 1);
+  }
+  const lessonCounts = new Map<string, number>();
+  for (const row of lessonsRes.data ?? []) {
+    lessonCounts.set(row.class_id, (lessonCounts.get(row.class_id) ?? 0) + 1);
+  }
+
+  return (classesRes.data ?? []).map((c) => ({
+    ...c,
+    studentsCount: studentCounts.get(c.id) ?? 0,
+    lessonsCount: lessonCounts.get(c.id) ?? 0,
+  }));
+}
+
+export type AdminCourseTeacher = { id: string; fullName: string | null };
+
+export type AdminCourseRow = {
+  id: string;
+  code: string;
+  name: string;
+  teachers: AdminCourseTeacher[];
+};
+
+export async function getAdminCourses(schoolId: string): Promise<AdminCourseRow[]> {
+  const supabase = await createSupabaseServerClient();
+  const [coursesRes, teachersRes] = await Promise.all([
+    supabase.from('courses').select('id, code, name').eq('school_id', schoolId).order('code'),
+    supabase.from('course_teachers').select('course_id, profiles ( id, full_name )'),
+  ]);
+
+  type TeacherJoin = {
+    course_id: string;
+    profiles: { id: string; full_name: string | null } | null;
+  };
+  const byCourse = new Map<string, AdminCourseTeacher[]>();
+  for (const row of (teachersRes.data ?? []) as unknown as TeacherJoin[]) {
+    if (!row.profiles) continue;
+    const list = byCourse.get(row.course_id) ?? [];
+    list.push({ id: row.profiles.id, fullName: row.profiles.full_name });
+    byCourse.set(row.course_id, list);
+  }
+
+  return (coursesRes.data ?? []).map((c) => ({
+    ...c,
+    teachers: byCourse.get(c.id) ?? [],
+  }));
+}
+
+export type AdminTeacherOption = { id: string; fullName: string | null; email: string | null };
+
+export async function getSchoolTeachers(schoolId: string): Promise<AdminTeacherOption[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, full_name, email')
+    .eq('school_id', schoolId)
+    .eq('role', 'teacher')
+    .order('full_name');
+  return (data ?? []).map((p) => ({ id: p.id, fullName: p.full_name, email: p.email }));
 }

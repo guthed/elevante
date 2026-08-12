@@ -148,11 +148,11 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     // Korta etiketter för mobil bottom-nav (sidebar-etiketterna är för långa).
@@ -175,11 +175,11 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     navDescriptions: {
@@ -201,11 +201,11 @@ export type Dictionary = {
       admin: {
         overview: string;
         schools: string;
+        classes: string;
+        courses: string;
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     account: {
@@ -419,6 +419,33 @@ export type Dictionary = {
           updating: string;
           updateSuccess: string;
           updateError: string;
+          invite: {
+            heading: string;
+            nameLabel: string;
+            emailLabel: string;
+            roleLabel: string;
+            roleStudent: string;
+            roleTeacher: string;
+            roleAdmin: string;
+            submit: string;
+            sending: string;
+            success: string;
+            errorExists: string;
+            errorGeneric: string;
+          };
+          import: {
+            heading: string;
+            fileLabel: string;
+            fileHint: string;
+            submit: string;
+            importing: string;
+            successCount: string;
+            errorGeneric: string;
+            reasonInvalidRow: string;
+            reasonAlreadyExists: string;
+            reasonClassLinkFailed: string;
+            reasonGeneric: string;
+          };
         };
         schools: {
           title: string;
@@ -433,6 +460,60 @@ export type Dictionary = {
           createSuccess: string;
           createError: string;
           createdLabel: string;
+          bootstrapAdmin: {
+            heading: string;
+            nameLabel: string;
+            emailLabel: string;
+            submit: string;
+            sending: string;
+            success: string;
+            errorExists: string;
+            errorGeneric: string;
+          };
+        };
+        classes: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          studentsLabel: string;
+          lessonsLabel: string;
+          delete: string;
+          deleting: string;
+          deleteErrorHasLessons: string;
+          deleteErrorGeneric: string;
+          createTitle: string;
+          nameLabel: string;
+          yearLabel: string;
+          yearHint: string;
+          createSubmit: string;
+          creating: string;
+          createSuccess: string;
+          createErrorDuplicate: string;
+          createErrorGeneric: string;
+        };
+        courses: {
+          title: string;
+          subtitle: string;
+          empty: string;
+          delete: string;
+          deleting: string;
+          deleteErrorHasLessons: string;
+          deleteErrorGeneric: string;
+          teachersHeading: string;
+          noTeachers: string;
+          removeTeacher: string;
+          pickTeacher: string;
+          assign: string;
+          assigning: string;
+          assignError: string;
+          createTitle: string;
+          codeLabel: string;
+          nameLabel: string;
+          createSubmit: string;
+          creating: string;
+          createSuccess: string;
+          createErrorDuplicate: string;
+          createErrorGeneric: string;
         };
         stats: {
           title: string;
@@ -441,31 +522,6 @@ export type Dictionary = {
           statusHeading: string;
           activityHeading: string;
           noData: string;
-        };
-        crm: {
-          title: string;
-          subtitle: string;
-          searchLabel: string;
-          searchPlaceholder: string;
-          sync: string;
-          resync: string;
-          synced: string;
-          empty: string;
-          openNotion: string;
-          visitLink: {
-            rektor: string;
-            larare: string;
-            copied: string;
-            failed: string;
-          };
-          cols: {
-            name: string;
-            kommun: string;
-            students: string;
-            status: string;
-            synced: string;
-            link: string;
-          };
         };
       };
     };

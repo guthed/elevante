@@ -61,7 +61,7 @@ export const getCurrentProfile = cache(async () => {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, role, school_id, full_name, email')
+      .select('id, role, school_id, full_name, email, is_staff')
       .eq('id', user.id)
       .maybeSingle();
     if (error) return null;

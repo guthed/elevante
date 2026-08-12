@@ -32,6 +32,7 @@ const ICONS: Record<NavId, ReactNode> = {
   examPrep: I(<><path d="M4 4h16v14H7l-3 3z" /></>),
   learnerProfile: I(<><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></>),
   classes: I(<><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /></>),
+  courses: I(<><path d="M12 4L3 8l9 4 9-4-9-4z" /><path d="M7 10v6c0 1.5 2.5 3 5 3s5-1.5 5-3v-6" /></>),
   lessons: I(<><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></>),
   sharedTests: I(<><path d="M9 11l3 3 8-8" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>),
   classTests: I(<><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M9 9h6M9 13h4" /><path d="M14 17l2 2 4-4" /></>),
@@ -39,20 +40,19 @@ const ICONS: Record<NavId, ReactNode> = {
   users: I(<><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /></>),
   schedule: I(<><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></>),
   stats: I(<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></>),
-  prospects: I(<><path d="M21 12a8 8 0 0 1-11 7L3 21l2-7a8 8 0 1 1 16-2z" /></>),
-  crm: I(<><ellipse cx="12" cy="5" rx="8" ry="3" /><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5" /><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" /></>),
 };
 
 type Props = {
   locale: Locale;
   role: Role;
   dict: Dictionary;
+  isStaff: boolean;
 };
 
-export function MobileNav({ locale, role, dict }: Props) {
+export function MobileNav({ locale, role, dict, isStaff }: Props) {
   const pathname = usePathname();
   const base = `/${locale}/app`;
-  const items = navItemsFor(role, base, dict);
+  const items = navItemsFor(role, base, dict, isStaff);
   const overviewHref = `${base}/${role}`;
 
   // Fokusläge: dölj nav i aktiv chatt-tråd så meddelandefältet kan sitta längst ned.

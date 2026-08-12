@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/Badge';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getAdminSchools } from '@/lib/data/admin';
 import { CreateSchoolForm } from './CreateSchoolForm';
+import { BootstrapAdminForm } from './BootstrapAdminForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -31,7 +32,7 @@ export default async function AdminSchoolsPage({ params }: Props) {
   if (role !== 'admin') redirect(`/${locale}/app/${role}`);
 
   const profile = await getCurrentProfile();
-  if (!profile || profile.role !== 'admin') redirect(`/${locale}/app`);
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) redirect(`/${locale}/app`);
 
   const dict = await getDictionary(locale);
   const labels = dict.app.pages.admin.schools;
@@ -64,6 +65,13 @@ export default async function AdminSchoolsPage({ params }: Props) {
                     </div>
                     <Badge tone="neutral">{school.country}</Badge>
                   </div>
+                  {school.adminCount === 0 ? (
+                    <BootstrapAdminForm
+                      schoolId={school.id}
+                      locale={locale}
+                      labels={dict.app.pages.admin.schools.bootstrapAdmin}
+                    />
+                  ) : null}
                 </CardBody>
               </Card>
             ))

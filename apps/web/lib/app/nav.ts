@@ -9,14 +9,13 @@ export type NavId =
   | 'learnerProfile'
   | 'classTests'
   | 'classes'
+  | 'courses'
   | 'lessons'
   | 'sharedTests'
   | 'schools'
   | 'users'
   | 'schedule'
-  | 'stats'
-  | 'prospects'
-  | 'crm';
+  | 'stats';
 
 // `label` = full etikett (sidomeny på laptop).
 // `mobileLabel` = kort etikett (bottom-nav på mobil).
@@ -31,7 +30,7 @@ export type NavItem = {
 
 // Enda källa för nav-items per roll. Konsumeras av både Sidebar (laptop)
 // och MobileNav (mobil). `base` är t.ex. `/sv/app`.
-export function navItemsFor(role: Role, base: string, dict: Dictionary): NavItem[] {
+export function navItemsFor(role: Role, base: string, dict: Dictionary, isStaff: boolean): NavItem[] {
   if (role === 'student') {
     const s = dict.app.sidebar.student;
     const m = dict.app.mobileNav.student;
@@ -60,13 +59,15 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary): NavItem
   const a = dict.app.sidebar.admin;
   const m = dict.app.mobileNav.admin;
   const d = dict.app.navDescriptions.admin;
-  return [
+  const items: NavItem[] = [
     { id: 'overview', href: `${base}/admin`, label: a.overview, mobileLabel: m.overview, description: d.overview },
     { id: 'schools', href: `${base}/admin/skolor`, label: a.schools, mobileLabel: m.schools, description: d.schools },
+    { id: 'classes', href: `${base}/admin/klasser`, label: a.classes, mobileLabel: m.classes, description: d.classes },
+    { id: 'courses', href: `${base}/admin/kurser`, label: a.courses, mobileLabel: m.courses, description: d.courses },
     { id: 'users', href: `${base}/admin/anvandare`, label: a.users, mobileLabel: m.users, description: d.users },
     { id: 'schedule', href: `${base}/admin/schema`, label: a.schedule, mobileLabel: m.schedule, description: d.schedule },
     { id: 'stats', href: `${base}/admin/statistik`, label: a.stats, mobileLabel: m.stats, description: d.stats },
-    { id: 'prospects', href: `${base}/admin/intresse`, label: a.prospects, mobileLabel: m.prospects, description: d.prospects },
-    { id: 'crm', href: `${base}/admin/crm`, label: a.crm, mobileLabel: m.crm, description: d.crm },
   ];
+  const staffOnly: NavId[] = ['schools'];
+  return isStaff ? items : items.filter((item) => !staffOnly.includes(item.id));
 }

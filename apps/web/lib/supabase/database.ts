@@ -39,6 +39,7 @@ export type Profile = {
   email: string | null;
   created_at: string;
   updated_at: string;
+  is_staff: boolean;
 };
 
 export type Course = {
@@ -47,6 +48,16 @@ export type Course = {
   code: string;
   name: string;
   created_at: string;
+};
+
+export type CourseTeacher = {
+  course_id: string;
+  profile_id: string;
+};
+
+export type ClassMember = {
+  class_id: string;
+  profile_id: string;
 };
 
 export type Class = {
@@ -473,6 +484,7 @@ type ProfileInsert = {
   role?: UserRole;
   full_name?: string | null;
   email?: string | null;
+  is_staff?: boolean;
 };
 
 type CourseInsert = {
@@ -481,6 +493,16 @@ type CourseInsert = {
   name: string;
   id?: string;
   created_at?: string;
+};
+
+type CourseTeacherInsert = {
+  course_id: string;
+  profile_id: string;
+};
+
+type ClassMemberInsert = {
+  class_id: string;
+  profile_id: string;
 };
 
 type ClassInsert = {
@@ -591,7 +613,9 @@ export type Database = {
       schools: TableDef<School, SchoolInsert>;
       profiles: TableDef<Profile, ProfileInsert>;
       courses: TableDef<Course, CourseInsert>;
+      course_teachers: TableDef<CourseTeacher, CourseTeacherInsert>;
       classes: TableDef<Class, ClassInsert>;
+      class_members: TableDef<ClassMember, ClassMemberInsert>;
       timeslots: TableDef<Timeslot, TimeslotInsert>;
       lessons: TableDef<Lesson, LessonInsert>;
       materials: TableDef<Material, MaterialInsert>;
