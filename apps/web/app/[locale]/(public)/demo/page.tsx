@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
+import { socialFor } from '@/lib/site';
 import { Container } from '@/components/public/Container';
 import { LinkButton } from '@/components/public/Button';
 import { AppDemo } from '@/components/public/AppDemo';
@@ -14,12 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = 'Demo — Elevante';
+  const description = sv
+    ? 'Klicka igenom hela Elevante — från lärarens inspelning till elevens svar med källa.'
+    : 'Click through all of Elevante — from the teacher\'s recording to the student\'s sourced answer.';
   return {
-    title: 'Demo — Elevante',
-    description: sv
-      ? 'Klicka igenom hela Elevante — från lärarens inspelning till elevens svar med källa.'
-      : 'Click through all of Elevante — from the teacher\'s recording to the student\'s sourced answer.',
+    title,
+    description,
     robots: { index: false, follow: false },
+    ...socialFor(locale, '/demo', title, description),
   };
 }
 

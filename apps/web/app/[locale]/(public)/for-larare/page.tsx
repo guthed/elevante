@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -17,12 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'För lärare — Elevante' : 'For teachers — Elevante';
+  const description = sv
+    ? 'Du bestämmer, du äger inspelningen. Elevante minns lektionen åt dina elever — inte ett övervakningsverktyg.'
+    : 'You decide, you own the recording. Elevante remembers the lesson for your students — not a surveillance tool.';
   return {
     alternates: alternatesFor(locale, '/for-larare'),
-    title: sv ? 'För lärare — Elevante' : 'For teachers — Elevante',
-    description: sv
-      ? 'Du bestämmer, du äger inspelningen. Elevante minns lektionen åt dina elever — inte ett övervakningsverktyg.'
-      : 'You decide, you own the recording. Elevante remembers the lesson for your students — not a surveillance tool.',
+    title,
+    description,
+    ...socialFor(locale, '/for-larare', title, description),
   };
 }
 
@@ -250,7 +253,7 @@ export default async function ForTeachersPage({ params }: Props) {
               <p className="mt-8 max-w-xl text-[1.125rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'Du spelar in lektionen när du vill — två tryck, sen är du klar. Elevante gör den sökbar för dina elever och ger dig tillbaka tid och överblick. Inspelningen är din.'
-                  : 'You record the lesson whenever you want — two taps and you’re done. Elevante makes it searchable for your students and gives you back time and oversight. The recording is yours.'}
+                  : 'You record the lesson whenever you want — two taps and you’re done. Elevante makes it searchable for your students and gives you back time and overview. The recording is yours.'}
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-5">
                 <LinkButton href={`${base}/kontakt?topic=demo`} size="lg">
@@ -334,7 +337,7 @@ export default async function ForTeachersPage({ params }: Props) {
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
               {sv
                 ? 'Elevante är inte ännu ett system att mata. Det tar bort arbete — och ger dig tillbaka tid och överblick.'
-                : 'Elevante isn’t one more system to feed. It removes work — and gives you back time and oversight.'}
+                : 'Elevante isn’t one more system to feed. It removes work — and gives you back time and overview.'}
             </p>
           </div>
 

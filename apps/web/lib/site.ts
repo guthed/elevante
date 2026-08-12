@@ -52,6 +52,30 @@ export function alternatesFor(locale: Locale, path = '') {
   };
 }
 
+// og:/twitter:-fält per undersida. Utan detta ärver varje sida oförändrat
+// locale-layoutens openGraph/twitter-objekt (generisk beskrivning + startsidans
+// url), eftersom Next.js inte djup-mergar dessa fält mellan route-segment —
+// ett omdeklarerat openGraph ersätter förälderns objekt helt, så siteName/type/
+// locale måste sättas om här, inte bara title/description.
+export function socialFor(locale: Locale, path: string, title: string, description: string) {
+  const url = `${SITE_URL}/${locale}${path}`;
+  return {
+    openGraph: {
+      type: 'website' as const,
+      siteName: 'Elevante',
+      title,
+      description,
+      url,
+      locale: locale === 'sv' ? 'sv_SE' : 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title,
+      description,
+    },
+  };
+}
+
 // BreadcrumbList-JSON-LD för en undersida: Hem → sidan. `name` är sidans namn,
 // `path` en sökväg utan locale-prefix (t.ex. '/priser').
 export function breadcrumbLd(locale: Locale, path: string, name: string) {

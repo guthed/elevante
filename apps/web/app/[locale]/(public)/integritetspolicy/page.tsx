@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LegalDoc, type LegalSection } from '@/components/public/LegalDoc';
 
@@ -11,12 +11,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'Integritetspolicy — Elevante' : 'Privacy policy — Elevante';
+  const description = sv
+    ? 'Så behandlar Elevante personuppgifter: all data inom EU, råljud raderas efter transkribering, och skolan är personuppgiftsansvarig för elevdata.'
+    : 'How Elevante processes personal data: all data inside the EU, raw audio deleted after transcription, and the school is the controller of student data.';
   return {
     alternates: alternatesFor(locale, '/integritetspolicy'),
-    title: sv ? 'Integritetspolicy — Elevante' : 'Privacy policy — Elevante',
-    description: sv
-      ? 'Så behandlar Elevante personuppgifter: all data inom EU, råljud raderas efter transkribering, och skolan är personuppgiftsansvarig för elevdata.'
-      : 'How Elevante processes personal data: all data inside the EU, raw audio deleted after transcription, and the school is the controller of student data.',
+    title,
+    description,
+    ...socialFor(locale, '/integritetspolicy', title, description),
   };
 }
 

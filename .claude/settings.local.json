@@ -12,7 +12,10 @@
       "mcp__66758609-a1ac-46e8-a787-54412f815c35__list_deployments",
       "mcp__66758609-a1ac-46e8-a787-54412f815c35__web_fetch_vercel_url",
       "mcp__66758609-a1ac-46e8-a787-54412f815c35__get_deployment_build_logs",
-      "Bash(git -c 'user.name=John Guthed' -c user.email=john@guthed.se commit -m 'chore: cache-bust globals.css för att tvinga fresh Vercel build *)"
+      "Bash(git -c 'user.name=John Guthed' -c user.email=john@guthed.se commit -m 'chore: cache-bust globals.css för att tvinga fresh Vercel build *)",
+      "mcp__6116c3ad-9758-4839-9bb3-e62295a45c83__notion-search",
+      "mcp__6116c3ad-9758-4839-9bb3-e62295a45c83__notion-fetch",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

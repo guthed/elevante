@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -17,12 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'För skolor — Elevante' : 'For schools — Elevante';
+  const description = sv
+    ? 'Lyft hela skolan. Inte bara en klass. GDPR-säkert, byggt i Sverige.'
+    : 'Lift the whole school. Not just one class. GDPR-safe, built in Sweden.';
   return {
     alternates: alternatesFor(locale, '/for-skolor'),
-    title: sv ? 'För skolor — Elevante' : 'For schools — Elevante',
-    description: sv
-      ? 'Lyft hela skolan. Inte bara en klass. GDPR-säkert, byggt i Sverige.'
-      : 'Lift the whole school. Not just one class. GDPR-safe, built in Sweden.',
+    title,
+    description,
+    ...socialFor(locale, '/for-skolor', title, description),
   };
 }
 

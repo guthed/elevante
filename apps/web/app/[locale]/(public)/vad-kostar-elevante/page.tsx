@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -16,14 +16,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv
+    ? 'Vad kostar Elevante? — Beräkna ert pris'
+    : 'How much does Elevante cost? — Calculate your price';
+  const description = sv
+    ? 'Sök din skola och se en uppskattad årskostnad för Elevante direkt. 500 kr per elev per år — beräkna ert pris på en minut.'
+    : 'Search for your school and see an estimated annual cost for Elevante right away. SEK 500 per student per year — calculate your price in a minute.';
   return {
     alternates: alternatesFor(locale, '/vad-kostar-elevante'),
-    title: sv
-      ? 'Vad kostar Elevante? — Beräkna ert pris'
-      : 'How much does Elevante cost? — Calculate your price',
-    description: sv
-      ? 'Sök din skola och se en uppskattad årskostnad för Elevante direkt. 500 kr per elev per år — beräkna ert pris på en minut.'
-      : 'Search for your school and see an estimated annual cost for Elevante right away. SEK 500 per student per year — calculate your price in a minute.',
+    title,
+    description,
+    ...socialFor(locale, '/vad-kostar-elevante', title, description),
   };
 }
 

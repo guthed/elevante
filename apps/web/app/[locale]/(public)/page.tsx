@@ -10,7 +10,7 @@ import { RotatingHeadline } from '@/components/public/RotatingHeadline';
 import { LessonTranscriptDemo } from '@/components/public/LessonTranscriptDemo';
 import { LoopStep, RecVisual, TranscribeVisual, AskVisual } from '@/components/showcase/LoopVisuals';
 import { notFound } from 'next/navigation';
-import { urlFor } from '@/lib/site';
+import { urlFor, socialFor } from '@/lib/site';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -20,14 +20,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
+  const title = `${dict.meta.siteName} — ${dict.meta.tagline}`;
+  const description =
+    locale === 'sv'
+      ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
+      : 'Elevante captures everything said in the classroom — so students can come back later and ask about what they missed, didn\'t quite get, or never thought to ask in the moment.';
   return {
     // Absolute title — undviker att layout-templaten lägger till "· Elevante"
     // efter en titel som redan inleds med "Elevante —".
-    title: { absolute: `${dict.meta.siteName} — ${dict.meta.tagline}` },
-    description:
-      locale === 'sv'
-        ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
-        : 'Elevante records and saves everything said in the classroom. Afterwards, students can go back and ask about anything they don\'t remember, didn\'t understand, or didn\'t think to ask while they were there.',
+    title: { absolute: title },
+    description,
+    ...socialFor(locale, '', title, description),
   };
 }
 
@@ -49,7 +52,7 @@ export default async function HomePage({ params }: Props) {
     : [
         'Raw audio is deleted as soon as the lesson is transcribed.',
         'A data processing agreement signed before the first upload.',
-        'Swedish speech recognition (KB-Whisper), tuned for Swedish.',
+        'Swedish speech recognition (KB-Whisper).',
         'No AI is trained on student data. Ever.',
       ];
 
@@ -115,7 +118,7 @@ export default async function HomePage({ params }: Props) {
               <p className="mt-8 max-w-xl text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)] md:text-[1.125rem]">
                 {sv
                   ? 'Elevante spelar in och sparar allt som sägs i klassrummet. Efteråt kan eleverna gå tillbaka och fråga om allt de inte minns, inte förstod eller inte tänkte på när de satt där.'
-                  : 'Elevante records and saves everything said in the classroom. Afterwards, students can go back and ask about anything they don\'t remember, didn\'t understand, or didn\'t think to ask while they were there.'}
+                  : 'Elevante captures everything said in the classroom — so students can come back later and ask about what they missed, didn\'t quite get, or never thought to ask in the moment.'}
               </p>
             </div>
 
@@ -225,7 +228,7 @@ export default async function HomePage({ params }: Props) {
               body={
                 sv
                   ? 'Du bestämmer när du spelar in. Inget övervakningsverktyg — tid och överblick tillbaka.'
-                  : 'You decide when to record. Not a surveillance tool — time and oversight back.'
+                  : 'You decide when to record. Not a surveillance tool — it gives you back time and a clear overview.'
               }
               cta={sv ? 'För lärare' : 'For teachers'}
               imageSrc="/images/amy-hirschi-unsplash.jpg"
@@ -268,7 +271,7 @@ export default async function HomePage({ params }: Props) {
               <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'Hela vår AI-pipeline körs hos Berget — en svensk leverantör vars servrar bokstavligen står inne i ett svenskt berg.'
-                  : 'Our entire AI pipeline runs on Berget — a Swedish provider whose servers literally sit inside a Swedish mountain.'}
+                  : 'Our entire AI pipeline runs on Berget — a Swedish provider whose servers literally sit inside a mountain.'}
               </p>
               <div className="mt-8 relative h-48 w-full overflow-hidden rounded-[16px]">
                 <Image

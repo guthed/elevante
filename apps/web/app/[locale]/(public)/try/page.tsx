@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor } from '@/lib/site';
+import { alternatesFor, socialFor } from '@/lib/site';
 import { Container } from '@/components/public/Container';
 import { LinkButton } from '@/components/public/Button';
 import { TRY_LESSONS } from '@/lib/try/lessons';
@@ -18,12 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'Prova Elevante — utan inloggning' : 'Try Elevante — no sign-in';
+  const description = sv
+    ? 'Välj lektioner, chatta med innehållet och låt Elevante skapa och rätta ett prov åt dig. Riktiga svar, med källa.'
+    : 'Pick lessons, chat with the content, and let Elevante build and grade a test for you. Real answers, with sources.';
   return {
-    title: sv ? 'Prova Elevante — utan inloggning' : 'Try Elevante — no sign-in',
-    description: sv
-      ? 'Välj lektioner, chatta med innehållet och låt Elevante skapa och rätta ett prov åt dig. Riktiga svar, med källa.'
-      : 'Pick lessons, chat with the content, and let Elevante build and grade a test for you. Real answers, with sources.',
+    title,
+    description,
     alternates: alternatesFor(locale, '/try'),
+    ...socialFor(locale, '/try', title, description),
   };
 }
 

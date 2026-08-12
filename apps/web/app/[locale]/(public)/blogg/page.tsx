@@ -5,7 +5,7 @@ import { Container } from '@/components/public/Container';
 import { JsonLd } from '@/components/public/JsonLd';
 import { BlogIndex } from '@/components/public/BlogIndex';
 import { getAllPosts, getCategories, toCardData } from '@/lib/blog';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL, socialFor } from '@/lib/site';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -20,11 +20,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (locale !== 'sv') return {};
+  const title = 'Blogg — Elevante';
+  const description =
+    'Guider och analyser om AI i skolan, GDPR, studieteknik och hur Elevante fungerar — skrivet för lärare, rektorer och elever.';
   return {
-    title: { absolute: 'Blogg — Elevante' },
-    description:
-      'Guider och analyser om AI i skolan, GDPR, studieteknik och hur Elevante fungerar — skrivet för lärare, rektorer och elever.',
+    title: { absolute: title },
+    description,
     alternates: { canonical: BLOG_URL },
+    ...socialFor('sv', '/blogg', title, description),
   };
 }
 

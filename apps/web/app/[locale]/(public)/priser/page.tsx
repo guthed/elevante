@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -17,12 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'Priser — Elevante' : 'Pricing — Elevante';
+  const description = sv
+    ? 'Ett tydligt pris för hela skolan — 500 kr per elev och år. Allt ingår, och det är inget läromedel ni köper per ämne.'
+    : 'A clear price for the whole school — SEK 500 per student per year. Everything included, and it is not a textbook you buy per subject.';
   return {
     alternates: alternatesFor(locale, '/priser'),
-    title: sv ? 'Priser — Elevante' : 'Pricing — Elevante',
-    description: sv
-      ? 'Ett tydligt pris för hela skolan — 500 kr per elev och år. Allt ingår, och det är inget läromedel ni köper per ämne.'
-      : 'A clear price for the whole school — SEK 500 per student per year. Everything included, and it is not a textbook you buy per subject.',
+    title,
+    description,
+    ...socialFor(locale, '/priser', title, description),
   };
 }
 

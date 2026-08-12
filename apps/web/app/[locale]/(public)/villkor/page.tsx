@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LegalDoc, type LegalSection } from '@/components/public/LegalDoc';
 
@@ -11,12 +11,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'Användarvillkor — Elevante' : 'Terms of service — Elevante';
+  const description = sv
+    ? 'Villkoren för att använda Elevante: avtal med skolan, tillåten användning, immateriella rättigheter, pris och svensk tillämplig lag.'
+    : 'The terms for using Elevante: agreement with the school, acceptable use, intellectual property, pricing and Swedish governing law.';
   return {
     alternates: alternatesFor(locale, '/villkor'),
-    title: sv ? 'Användarvillkor — Elevante' : 'Terms of service — Elevante',
-    description: sv
-      ? 'Villkoren för att använda Elevante: avtal med skolan, tillåten användning, immateriella rättigheter, pris och svensk tillämplig lag.'
-      : 'The terms for using Elevante: agreement with the school, acceptable use, intellectual property, pricing and Swedish governing law.',
+    title,
+    description,
+    ...socialFor(locale, '/villkor', title, description),
   };
 }
 

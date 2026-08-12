@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LegalDoc, type LegalSection } from '@/components/public/LegalDoc';
 import { CookieSettingsButton } from '@/components/public/CookieSettingsButton';
@@ -12,12 +12,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = 'Cookies — Elevante';
+  const description = sv
+    ? 'Vilka cookies Elevante använder: nödvändiga inloggningscookies, besöksidentifiering och anonymiserad analys — och hur du hanterar dem.'
+    : 'Which cookies Elevante uses: essential login cookies, visitor identification and anonymised analytics — and how to manage them.';
   return {
     alternates: alternatesFor(locale, '/cookies'),
-    title: sv ? 'Cookies — Elevante' : 'Cookies — Elevante',
-    description: sv
-      ? 'Vilka cookies Elevante använder: nödvändiga inloggningscookies, besöksidentifiering och anonymiserad analys — och hur du hanterar dem.'
-      : 'Which cookies Elevante uses: essential login cookies, visitor identification and anonymised analytics — and how to manage them.',
+    title,
+    description,
+    ...socialFor(locale, '/cookies', title, description),
   };
 }
 

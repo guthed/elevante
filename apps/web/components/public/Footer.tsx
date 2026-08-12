@@ -45,7 +45,7 @@ export function Footer({ locale, pathname, dict }: Props) {
           </p>
           <address className="mt-6 not-italic text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
             Elevante AB<br />
-            Stockholm, Sverige<br />
+            {locale === 'sv' ? 'Stockholm, Sverige' : 'Stockholm, Sweden'}<br />
             <a
               href="mailto:john@elevante.se"
               className="underline-offset-4 hover:underline"

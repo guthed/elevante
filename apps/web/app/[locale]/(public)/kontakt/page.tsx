@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { Container } from '@/components/public/Container';
 import { ContactForm } from './ContactForm';
@@ -16,10 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
+  const { title, subtitle: description } = dict.contact.hero;
   return {
     alternates: alternatesFor(locale, '/kontakt'),
-    title: dict.contact.hero.title,
-    description: dict.contact.hero.subtitle,
+    title,
+    description,
+    ...socialFor(locale, '/kontakt', title, description),
   };
 }
 
@@ -92,7 +94,7 @@ export default async function ContactPage({ params, searchParams }: Props) {
                     {sv ? 'Adress' : 'Address'}
                   </p>
                   <p className="mt-3 text-[1rem] leading-relaxed text-[var(--color-ink)]">
-                    Stockholm, Sverige
+                    {sv ? 'Stockholm, Sverige' : 'Stockholm, Sweden'}
                   </p>
                 </div>
               </div>

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { RotatingPhrase } from '@/components/public/RotatingPhrase';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -17,12 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'För elever — Elevante' : 'For students — Elevante';
+  const description = sv
+    ? 'Du missar inget. Lovar. Elevante kommer ihåg lektionen så du kan fråga om allt.'
+    : 'You miss nothing. Promise. Elevante remembers the lesson so you can ask anything.';
   return {
     alternates: alternatesFor(locale, '/for-elever'),
-    title: sv ? 'För elever — Elevante' : 'For students — Elevante',
-    description: sv
-      ? 'Du missar inget. Lovar. Elevante kommer ihåg lektionen så du kan fråga om allt.'
-      : 'You miss nothing. Promise. Elevante remembers the lesson so you can ask anything.',
+    title,
+    description,
+    ...socialFor(locale, '/for-elever', title, description),
   };
 }
 

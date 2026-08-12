@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
-import { alternatesFor, breadcrumbLd } from '@/lib/site';
+import { alternatesFor, breadcrumbLd, socialFor } from '@/lib/site';
 import { JsonLd } from '@/components/public/JsonLd';
 import { LinkButton } from '@/components/public/Button';
 import { Container } from '@/components/public/Container';
@@ -15,12 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const sv = locale === 'sv';
+  const title = sv ? 'Om oss — Elevante' : 'About — Elevante';
+  const description = sv
+    ? 'Vi byggde det som saknades i klassrummet.'
+    : 'We built what was missing in the classroom.';
   return {
     alternates: alternatesFor(locale, '/om-oss'),
-    title: sv ? 'Om oss — Elevante' : 'About — Elevante',
-    description: sv
-      ? 'Vi byggde det som saknades i klassrummet.'
-      : 'We built what was missing in the classroom.',
+    title,
+    description,
+    ...socialFor(locale, '/om-oss', title, description),
   };
 }
 
@@ -82,7 +85,7 @@ export default async function AboutPage({ params }: Props) {
         },
         {
           title: 'No two schools are alike.',
-          body: 'A school in the north and one in the south have different schedules, different subjects, different ways of talking to their students. Elevante gives them shared infrastructure — but doesn\'t dictate how they use it. The teacher knows what works in their classroom. We build the tool. They decide what it does.',
+          body: 'A school in Kiruna and one in Malmö have different schedules, different subjects, different ways of talking to their students. Elevante gives them shared infrastructure — but doesn\'t dictate how they use it. The teacher knows what works in their classroom. We build the tool. They decide what it does.',
         },
         {
           title: 'The teacher is the expert. AI is the assistant.',
@@ -169,7 +172,7 @@ export default async function AboutPage({ params }: Props) {
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
                   ? 'En matematiklärare på ett svenskt gymnasium sa det rakt ut över en kaffe: "Jag svarar samma fråga 30 gånger. Eleven som vågar höja handen får svar. De som inte vågar går hem och gissar."'
-                  : 'A math teacher at a Swedish gymnasium said it plainly over coffee: "I answer the same question 30 times. The student who dares raise their hand gets the answer. Those who don\'t go home and guess."'}
+                  : 'A math teacher at a Swedish upper-secondary school said it plainly over coffee: "I answer the same question 30 times. The student who dares raise their hand gets the answer. Those who don\'t go home and guess."'}
               </p>
               <p className="text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
                 {sv
