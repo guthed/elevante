@@ -6,7 +6,7 @@ const fieldBase =
 
 type FieldWrapperProps = {
   id: string;
-  label: string;
+  label: ReactNode;
   hint?: string;
   error?: string;
   children: ReactNode;
@@ -15,7 +15,10 @@ type FieldWrapperProps = {
 export function Field({ id, label, hint, error, children }: FieldWrapperProps) {
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-medium text-[var(--color-primary)]">
+      <label
+        htmlFor={id}
+        className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-primary)]"
+      >
         {label}
       </label>
       {children}

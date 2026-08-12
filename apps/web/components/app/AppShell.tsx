@@ -13,6 +13,7 @@ type Props = {
   user: {
     fullName: string | null;
     email: string | null;
+    avatarUrl: string | null;
   } | null;
   schoolName: string | null;
   className: string | null;
@@ -31,7 +32,7 @@ export function AppShell({
   children,
 }: Props) {
   return (
-    <div className="flex min-h-screen bg-[var(--color-canvas)]">
+    <div className="flex h-screen overflow-hidden bg-[var(--color-canvas)]">
       <a
         href="#app-main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-[12px] focus:bg-[var(--color-ink)] focus:px-4 focus:py-2 focus:text-sm focus:text-[var(--color-canvas)]"

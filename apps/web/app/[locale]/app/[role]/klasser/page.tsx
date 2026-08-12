@@ -40,7 +40,11 @@ export default async function ClassesPage({ params }: Props) {
     const classes = await getAdminClasses(profile.school_id);
     return (
       <PageWrapper title={labels.title} subtitle={labels.subtitle}>
-        <AdminClassesView classes={classes} labels={labels} />
+        <AdminClassesView
+          classes={classes}
+          labels={labels}
+          basePath={`/${locale}/app/admin/klasser`}
+        />
       </PageWrapper>
     );
   }

@@ -2,6 +2,7 @@
 
 import { startTransition, useActionState, useEffect, useRef } from 'react';
 import { requestFormReset } from 'react-dom';
+import Link from 'next/link';
 import {
   createClass,
   deleteClass,
@@ -20,16 +21,19 @@ type Labels = Dictionary['app']['pages']['admin']['classes'];
 type Props = {
   classes: AdminClassRow[];
   labels: Labels;
+  basePath: string;
 };
 
-export function AdminClassesView({ classes, labels }: Props) {
+export function AdminClassesView({ classes, labels, basePath }: Props) {
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <div className="space-y-4">
         {classes.length === 0 ? (
           <EmptyState title={labels.empty} />
         ) : (
-          classes.map((cls) => <ClassRow key={cls.id} cls={cls} labels={labels} />)
+          classes.map((cls) => (
+            <ClassRow key={cls.id} cls={cls} labels={labels} basePath={basePath} />
+          ))
         )}
       </div>
 
@@ -45,7 +49,15 @@ export function AdminClassesView({ classes, labels }: Props) {
   );
 }
 
-function ClassRow({ cls, labels }: { cls: AdminClassRow; labels: Labels }) {
+function ClassRow({
+  cls,
+  labels,
+  basePath,
+}: {
+  cls: AdminClassRow;
+  labels: Labels;
+  basePath: string;
+}) {
   const [state, formAction, pending] = useActionState<DeleteClassState, FormData>(deleteClass, {
     status: 'idle',
   });
@@ -54,12 +66,14 @@ function ClassRow({ cls, labels }: { cls: AdminClassRow; labels: Labels }) {
     <Card>
       <CardBody>
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <div className="font-serif text-2xl text-[var(--color-primary)]">{cls.name}</div>
+          <Link href={`${basePath}/${cls.id}`} className="min-w-0 flex-1 group">
+            <div className="font-serif text-2xl text-[var(--color-primary)] group-hover:text-[var(--color-accent)]">
+              {cls.name}
+            </div>
             <div className="mt-2 text-sm text-[var(--color-ink-muted)]">
               {cls.studentsCount} {labels.studentsLabel} · {cls.lessonsCount} {labels.lessonsLabel}
             </div>
-          </div>
+          </Link>
           <form action={formAction}>
             <input type="hidden" name="class_id" value={cls.id} />
             <Button type="submit" variant="danger" size="sm" disabled={pending}>

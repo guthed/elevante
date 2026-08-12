@@ -5,10 +5,11 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getAdminUsers, type AdminUserRow } from '@/lib/data/admin';
+import { getAdminUsers, getAdminClasses, type AdminUserRow } from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
 import { InviteUserForm } from './InviteUserForm';
-import { ImportStudentsForm } from './ImportStudentsForm';
+import { MassInviteForm } from './MassInviteForm';
+import { ImportUsersForm } from './ImportUsersForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -42,7 +43,10 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
   const sv = locale === 'sv';
   const { filter, q } = await searchParams;
 
-  const all = await getAdminUsers();
+  const [all, classes] = await Promise.all([
+    getAdminUsers(),
+    getAdminClasses(profile.school_id),
+  ]);
 
   const counts = {
     all: all.length,
@@ -103,10 +107,19 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
 
       <section className="mt-6 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
         <h2 className="text-[0.9375rem] font-medium text-[var(--color-ink)]">
+          {labels.massInvite.heading}
+        </h2>
+        <div className="mt-4">
+          <MassInviteForm locale={locale} classes={classes} labels={labels.massInvite} />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[20px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+        <h2 className="text-[0.9375rem] font-medium text-[var(--color-ink)]">
           {labels.import.heading}
         </h2>
         <div className="mt-4 max-w-md">
-          <ImportStudentsForm locale={locale} labels={labels.import} />
+          <ImportUsersForm locale={locale} labels={labels.import} />
         </div>
       </section>
 
@@ -209,20 +222,23 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
                   className="grid grid-cols-1 items-center gap-4 border-b border-[var(--color-sand)] px-6 py-4 last:border-b-0 md:grid-cols-12"
                 >
                   <div className="md:col-span-5">
-                    <div className="flex items-center gap-3">
+                    <a
+                      href={`${base}/${user.id}`}
+                      className="group flex items-center gap-3"
+                    >
                       <Avatar
                         name={user.full_name ?? user.email ?? '?'}
                         size="sm"
                       />
                       <div className="min-w-0">
-                        <p className="truncate text-[0.9375rem] font-medium text-[var(--color-ink)]">
+                        <p className="truncate text-[0.9375rem] font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
                           {user.full_name ?? '—'}
                         </p>
                         <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
                           {user.email ?? '—'}
                         </p>
                       </div>
-                    </div>
+                    </a>
                   </div>
                   <div className="md:col-span-3">
                     <RolePill role={user.role} sv={sv} />

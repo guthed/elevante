@@ -48,6 +48,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    // Uppladdade profilbilder ligger i Supabase Storage (elevante-avatars,
+    // publik bucket) — next/image optimerar bara vitlistade domäner.
+    remotePatterns: [{ protocol: 'https', hostname: '*.supabase.co' }],
+  },
   async redirects() {
     return [{ source: '/skolan', destination: '/rektor', permanent: false }];
   },

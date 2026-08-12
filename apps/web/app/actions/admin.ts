@@ -626,15 +626,15 @@ export async function removeTeacherFromCourse(
   return { status: 'success' };
 }
 
-export type ImportStudentsState =
+export type ImportUsersState =
   | { status: 'idle' }
   | { status: 'success'; invited: number; skipped: { email: string; reason: string }[] }
   | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
 
-export async function importStudents(
-  _prev: ImportStudentsState,
+export async function importUsers(
+  _prev: ImportUsersState,
   formData: FormData,
-): Promise<ImportStudentsState> {
+): Promise<ImportUsersState> {
   const profile = await getCurrentProfile();
   if (!profile || profile.role !== 'admin' || !profile.school_id) {
     return { status: 'error', code: 'unauthorized' };
@@ -668,15 +668,24 @@ export async function importStudents(
       detail: `Rubriker saknas: ${missing.join(', ')}`,
     };
   }
-  // Skydd mot att en enda stor fil blockerar Server Action-requesten
-  // (varje rad gör ett separat Auth Admin API-anrop plus ett Loops-anrop
-  // för mejlet, plus en DB-insert). vercel.json sätter maxDuration: 30
-  // för app/**/*.tsx (routen den här actionen körs på); vid 150–500 ms/rad
-  // rymmer det 30s-taket bekvämt bara upp till ~40–60 rader, inte 200 —
-  // därav den lägre gränsen. En riktig bakgrundsjobb/kö-arkitektur för
-  // större importer är en rimlig framtida förbättring, utanför scope här.
-  if (rows.length > 40) {
-    return { status: 'error', code: 'invalid', detail: 'Max 40 rader per import' };
+  // En admin ska kunna ladda upp en hel skola i ett svep (skolor har
+  // 2000+ elever), så importen körs i parallella batchar istället för en
+  // rad i taget (se PARALLEL_ROWS nedan). vercel.json ger den här sidan
+  // maxDuration: 300 (Vercel Pro-taket). Verifierat mot skarpt Loops+
+  // Supabase 2026-08-12 på 543 rader: ~23s vid concurrency 10, men det
+  // fick Loops att rate-limita (429) på en stor andel anrop. Concurrency
+  // sänkt till 5 + retry-med-backoff på 429 i lib/loops.ts. Med
+  // marginal för retries rymmer 3000 rader väl inom 300s-taket. En
+  // riktig bakgrundsjobb/kö-arkitektur (valfri filstorlek, progress,
+  // ingen timeout-risk alls) är en rimlig framtida förbättring om
+  // massimport av jättestora skolor blir vanligt.
+  const MAX_IMPORT_ROWS = 3000;
+  if (rows.length > MAX_IMPORT_ROWS) {
+    return {
+      status: 'error',
+      code: 'invalid',
+      detail: `Max ${MAX_IMPORT_ROWS} rader per import`,
+    };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -685,39 +694,62 @@ export async function importStudents(
     supabase.from('schools').select('name').eq('id', profile.school_id).maybeSingle(),
   ]);
   // Ska aldrig kunna hända (school_id är adminens egen) — men om det ändå
-  // gör det ska vi hellre avbryta hela importen än tyst skicka 40 mejl med
-  // tomt skolnamn.
+  // gör det ska vi hellre avbryta hela importen än tyst skicka massvis med
+  // mejl med tomt skolnamn.
   if (!school) {
     return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
   }
   const classMap = new Map((classes ?? []).map((c) => [c.name, c.id]));
   const schoolName = school.name;
+  const schoolId = profile.school_id;
 
-  let invited = 0;
-  const skipped: { email: string; reason: string }[] = [];
+  // Hur många rader som körs samtidigt per batch. Sänkt från 10 → 5 efter
+  // ett verkligt 543-raders test (2026-08-12) som fick Loops att svara
+  // 429 på en stor andel anrop vid concurrency 10 — se retry-fixen i
+  // lib/loops.ts (sendLoopsTransactional retry:ar nu på 429 också, men
+  // lägre concurrency minskar hur ofta det behövs överhuvudtaget).
+  const PARALLEL_ROWS = 5;
 
-  for (const row of rows) {
+  type RowResult =
+    | { invited: true }
+    | { invited: false; skipped: { email: string; reason: string } };
+
+  async function processRow(row: Record<string, string>): Promise<RowResult> {
     const email = (row['email'] ?? '').trim();
     const fullName = (row['full_name'] ?? '').trim();
     const className = (row['class_name'] ?? '').trim();
-    const classId = classMap.get(className);
+    const rawRole = (row['role'] ?? '').trim().toLowerCase();
+    // Tomt/saknat role-fält = elev (bakåtkompatibelt med filer utan
+    // role-kolumn). Bara student/teacher stöds här — bulk-invite av admins
+    // via CSV är avsiktligt inte tillåtet.
+    const role: 'student' | 'teacher' = rawRole === 'teacher' ? 'teacher' : 'student';
 
-    if (!email || !fullName || !classId) {
-      skipped.push({ email: email || '(saknas)', reason: 'invalid-row' });
-      continue;
+    if (rawRole && role !== rawRole) {
+      return { invited: false, skipped: { email: email || '(saknas)', reason: 'invalid-row' } };
+    }
+    if (!email || !fullName) {
+      return { invited: false, skipped: { email: email || '(saknas)', reason: 'invalid-row' } };
+    }
+
+    // Lärare är kopplade till klasser via kurser (course_teachers), inte
+    // class_members — den kopplingen görs på /admin/kurser, inte här.
+    // class_name är därför bara obligatoriskt för elever.
+    const classId = role === 'student' ? classMap.get(className) : undefined;
+    if (role === 'student' && !classId) {
+      return { invited: false, skipped: { email, reason: 'invalid-row' } };
     }
 
     const result = await inviteUserCore({
       email,
       fullName,
-      role: 'student',
-      schoolId: profile.school_id,
+      role,
+      schoolId,
       schoolName,
-      className,
+      className: role === 'student' ? className : undefined,
       locale,
     });
 
-    let studentId: string;
+    let userId: string;
     if (!result.ok) {
       if (result.code === 'already-exists') {
         // Kan vara en omuppladdning efter en avbruten import (t.ex.
@@ -730,19 +762,21 @@ export async function importStudents(
           .from('profiles')
           .select('id')
           .eq('email', email)
-          .eq('school_id', profile.school_id)
+          .eq('school_id', schoolId)
           .maybeSingle();
         if (!existing) {
-          skipped.push({ email, reason: result.code });
-          continue;
+          return { invited: false, skipped: { email, reason: result.code } };
         }
-        studentId = existing.id;
+        userId = existing.id;
       } else {
-        skipped.push({ email, reason: result.code });
-        continue;
+        return { invited: false, skipped: { email, reason: result.code } };
       }
     } else {
-      studentId = result.userId;
+      userId = result.userId;
+    }
+
+    if (role === 'teacher') {
+      return { invited: true };
     }
 
     // Upsert (inte insert) så att en omuppladdning av en redan fullt
@@ -750,12 +784,196 @@ export async function importStudents(
     // blir därmed idempotent och självläkande vid omuppladdning.
     const { error: memberError } = await supabase
       .from('class_members')
-      .upsert({ class_id: classId, profile_id: studentId }, { onConflict: 'class_id,profile_id' });
+      .upsert({ class_id: classId!, profile_id: userId }, { onConflict: 'class_id,profile_id' });
     if (memberError) {
-      skipped.push({ email, reason: 'class-link-failed' });
-      continue;
+      return { invited: false, skipped: { email, reason: 'class-link-failed' } };
     }
-    invited += 1;
+    return { invited: true };
+  }
+
+  let invited = 0;
+  const skipped: { email: string; reason: string }[] = [];
+
+  for (let i = 0; i < rows.length; i += PARALLEL_ROWS) {
+    const batch = rows.slice(i, i + PARALLEL_ROWS);
+    const results = await Promise.all(batch.map(processRow));
+    for (const result of results) {
+      if (result.invited) {
+        invited += 1;
+      } else {
+        skipped.push(result.skipped);
+      }
+    }
+  }
+
+  revalidatePath('/sv/app/admin/anvandare');
+  revalidatePath('/en/app/admin/anvandare');
+  revalidatePath('/sv/app/admin/klasser');
+  revalidatePath('/en/app/admin/klasser');
+  return { status: 'success', invited, skipped };
+}
+
+const EMAIL_PATTERN = /[^\s<>,;]+@[^\s<>,;]+\.[^\s<>,;]+/;
+
+// Tolererar friformat per rad: "Namn <mejl>", "Namn, mejl", "Namn mejl"
+// eller bara "mejl" (namnet gissas då fram ur mejladressens lokaldel).
+// Adminen ska kunna klistra in en lista utan att formatera om den.
+function parseMassInviteLine(line: string): { fullName: string; email: string } | null {
+  const trimmed = line.trim();
+  if (!trimmed) return null;
+  const match = trimmed.match(EMAIL_PATTERN);
+  if (!match) return null;
+  const email = match[0];
+  const rest = trimmed
+    .replace(email, '')
+    .replace(/[<>,;]/g, ' ')
+    .trim();
+  if (rest) {
+    return { fullName: rest, email };
+  }
+  const localPart = email.split('@')[0] ?? email;
+  const guessedName = localPart
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+  return { fullName: guessedName || email, email };
+}
+
+export type MassInviteState =
+  | { status: 'idle' }
+  | { status: 'success'; invited: number; skipped: { email: string; reason: string }[] }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
+
+const massInviteSchema = z.object({
+  role: z.enum(['student', 'teacher', 'admin']),
+  classId: z.string().uuid().optional(),
+  entries: z.string().trim().min(1),
+  locale: z.string(),
+});
+
+const MAX_MASS_INVITE_ROWS = 3000;
+
+export async function massInvite(
+  _prev: MassInviteState,
+  formData: FormData,
+): Promise<MassInviteState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const rawLocale = (formData.get('locale') ?? '').toString();
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'sv';
+  const parsed = massInviteSchema.safeParse({
+    role: formData.get('role'),
+    classId: (formData.get('class_id') ?? '').toString() || undefined,
+    entries: formData.get('entries'),
+    locale,
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+  const { role, classId } = parsed.data;
+
+  if (role === 'student' && !classId) {
+    return { status: 'error', code: 'invalid', detail: 'Klass krävs för elever' };
+  }
+
+  const lines = parsed.data.entries.split('\n');
+  const entries = lines
+    .map(parseMassInviteLine)
+    .filter((e): e is { fullName: string; email: string } => e !== null);
+  if (entries.length === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Ingen giltig rad hittades' };
+  }
+  if (entries.length > MAX_MASS_INVITE_ROWS) {
+    return {
+      status: 'error',
+      code: 'invalid',
+      detail: `Max ${MAX_MASS_INVITE_ROWS} rader per omgång`,
+    };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const schoolId = profile.school_id;
+  const [{ data: school }, { data: className }] = await Promise.all([
+    supabase.from('schools').select('name').eq('id', schoolId).maybeSingle(),
+    classId
+      ? supabase.from('classes').select('name').eq('id', classId).maybeSingle()
+      : Promise.resolve({ data: null as { name: string } | null }),
+  ]);
+  if (!school) {
+    return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
+  }
+  if (role === 'student' && !className) {
+    return { status: 'error', code: 'invalid', detail: 'Klassen hittades inte' };
+  }
+  const schoolName = school.name;
+
+  type RowResult =
+    | { invited: true }
+    | { invited: false; skipped: { email: string; reason: string } };
+
+  async function processEntry(entry: { fullName: string; email: string }): Promise<RowResult> {
+    const result = await inviteUserCore({
+      email: entry.email,
+      fullName: entry.fullName,
+      role,
+      schoolId,
+      schoolName,
+      className: role === 'student' ? className!.name : undefined,
+      locale,
+    });
+
+    let userId: string;
+    if (!result.ok) {
+      if (result.code === 'already-exists') {
+        const { data: existing } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', entry.email)
+          .eq('school_id', schoolId)
+          .maybeSingle();
+        if (!existing) {
+          return { invited: false, skipped: { email: entry.email, reason: result.code } };
+        }
+        userId = existing.id;
+      } else {
+        return { invited: false, skipped: { email: entry.email, reason: result.code } };
+      }
+    } else {
+      userId = result.userId;
+    }
+
+    if (role !== 'student') {
+      return { invited: true };
+    }
+
+    const { error: memberError } = await supabase
+      .from('class_members')
+      .upsert({ class_id: classId!, profile_id: userId }, { onConflict: 'class_id,profile_id' });
+    if (memberError) {
+      return { invited: false, skipped: { email: entry.email, reason: 'class-link-failed' } };
+    }
+    return { invited: true };
+  }
+
+  // Samma batchning + Loops-retry som importUsers (se den för resonemang
+  // kring PARALLEL_ROWS och maxDuration).
+  const PARALLEL_ROWS = 5;
+  let invited = 0;
+  const skipped: { email: string; reason: string }[] = [];
+  for (let i = 0; i < entries.length; i += PARALLEL_ROWS) {
+    const batch = entries.slice(i, i + PARALLEL_ROWS);
+    const results = await Promise.all(batch.map(processEntry));
+    for (const result of results) {
+      if (result.invited) {
+        invited += 1;
+      } else {
+        skipped.push(result.skipped);
+      }
+    }
   }
 
   revalidatePath('/sv/app/admin/anvandare');

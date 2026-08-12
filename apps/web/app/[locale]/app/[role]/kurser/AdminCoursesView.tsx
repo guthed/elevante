@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Field, Input, Select } from '@/components/ui/Input';
+import { HelpHint } from '@/components/ui/Tooltip';
 import type { AdminCourseRow, AdminTeacherOption } from '@/lib/data/admin';
 import type { Dictionary } from '@/lib/i18n/types';
 
@@ -200,7 +201,15 @@ function CreateCourseForm({ labels }: { labels: Labels }) {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-4">
-      <Field id="course-code" label={labels.codeLabel}>
+      <Field
+        id="course-code"
+        label={
+          <>
+            {labels.codeLabel}
+            <HelpHint label={labels.codeHint} />
+          </>
+        }
+      >
         <Input id="course-code" name="code" type="text" required placeholder="MA3" />
       </Field>
       <Field id="course-name" label={labels.nameLabel}>

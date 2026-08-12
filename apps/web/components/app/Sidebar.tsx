@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { signOut } from '@/app/actions/auth';
 import { SidebarNav } from './SidebarNav';
 import { SchoolBadge } from './SchoolBadge';
@@ -15,6 +16,7 @@ type Props = {
   user: {
     fullName: string | null;
     email: string | null;
+    avatarUrl: string | null;
   } | null;
   schoolName: string | null;
   className: string | null;
@@ -70,7 +72,7 @@ export function Sidebar({ locale, role, dict, user, schoolName, className, isSta
             href={`${base}/${role}/konto`}
             className="-mx-1 flex min-w-0 flex-1 items-center gap-3 rounded-[12px] px-1 py-1 transition-colors hover:bg-[var(--color-surface-soft)]"
           >
-            <Avatar name={displayName} size="sm" />
+            <Avatar name={displayName} size="sm" src={user?.avatarUrl} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-[0.875rem] font-medium text-[var(--color-ink)]">
                 {displayName}
@@ -80,31 +82,32 @@ export function Sidebar({ locale, role, dict, user, schoolName, className, isSta
               </p>
             </div>
           </Link>
-          <form action={signOutWithLocale}>
-            <button
-              type="submit"
-              aria-label={dict.auth.signOut}
-              title={dict.auth.signOut}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+          <Tooltip label={dict.auth.signOut}>
+            <form action={signOutWithLocale}>
+              <button
+                type="submit"
+                aria-label={dict.auth.signOut}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
               >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-            </button>
-          </form>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </form>
+          </Tooltip>
         </div>
       </div>
     </aside>

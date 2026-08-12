@@ -213,6 +213,15 @@ export type Dictionary = {
       title: string;
       subtitle: string;
       profileHeading: string;
+      avatarUpload: string;
+      avatarReplace: string;
+      avatarRemove: string;
+      avatarUploading: string;
+      avatarRemoving: string;
+      avatarHint: string;
+      avatarErrorInvalid: string;
+      avatarErrorTooLarge: string;
+      avatarErrorGeneric: string;
       nameLabel: string;
       emailLabel: string;
       emailHint: string;
@@ -407,6 +416,10 @@ export type Dictionary = {
           errorInvalid: string;
           errorGeneric: string;
           tableEmpty: string;
+          dayColumn: string;
+          startColumn: string;
+          endColumn: string;
+          roomColumn: string;
         };
         users: {
           title: string;
@@ -453,6 +466,35 @@ export type Dictionary = {
             reasonClassLinkFailed: string;
             reasonGeneric: string;
           };
+          detail: {
+            back: string;
+            createdLabel: string;
+            classesHeading: string;
+            classesEmpty: string;
+            coursesHeading: string;
+            coursesEmpty: string;
+          };
+          massInvite: {
+            heading: string;
+            roleLabel: string;
+            roleStudent: string;
+            roleTeacher: string;
+            roleAdmin: string;
+            classLabel: string;
+            classPlaceholder: string;
+            entriesLabel: string;
+            entriesHint: string;
+            entriesFormatHint: string;
+            entriesPlaceholder: string;
+            submit: string;
+            sending: string;
+            successCount: string;
+            errorGeneric: string;
+            reasonInvalidRow: string;
+            reasonAlreadyExists: string;
+            reasonClassLinkFailed: string;
+            reasonGeneric: string;
+          };
         };
         schools: {
           title: string;
@@ -461,6 +503,7 @@ export type Dictionary = {
           createTitle: string;
           nameLabel: string;
           slugLabel: string;
+          slugHint: string;
           countryLabel: string;
           createSubmit: string;
           creating: string;
@@ -490,6 +533,18 @@ export type Dictionary = {
             listEmpty: string;
             revoke: string;
             revoking: string;
+          };
+          detail: {
+            back: string;
+            studentsLabel: string;
+            teachersLabel: string;
+            adminsLabel: string;
+            classesHeading: string;
+            classesEmpty: string;
+            coursesHeading: string;
+            coursesEmpty: string;
+            adminsHeading: string;
+            adminsEmpty: string;
           };
         };
         classes: {
@@ -529,6 +584,7 @@ export type Dictionary = {
           assignError: string;
           createTitle: string;
           codeLabel: string;
+          codeHint: string;
           nameLabel: string;
           createSubmit: string;
           creating: string;

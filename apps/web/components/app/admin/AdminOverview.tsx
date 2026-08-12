@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n/config';
 import type { AdminOverview as AdminOverviewData } from '@/lib/data/admin';
+import { Tooltip } from '@/components/ui/Tooltip';
 
 // Editorial Calm — Stitch screen 13-admin-oversikt.png
 
@@ -133,15 +134,35 @@ export function AdminOverview({ locale, data }: Props) {
               {sv ? 'Status' : 'Status'}
             </h3>
             <ul className="mt-4 space-y-3 text-[0.875rem]">
-              <StatusRow name="Supabase EU" state="ok" />
               <StatusRow
-                name="Anthropic API"
-                state={process.env.ANTHROPIC_API_KEY ? 'ok' : 'pending'}
+                name={sv ? 'Datalagring' : 'Data storage'}
+                hint={
+                  sv
+                    ? 'Var elevernas och lärarnas uppgifter lagras. Allt inom EU.'
+                    : "Where students' and teachers' data is stored. Always within the EU."
+                }
+                state="ok"
+                sv={sv}
               />
               <StatusRow
-                name="Berget AI"
+                name={sv ? 'AI-motor' : 'AI engine'}
+                hint={
+                  sv
+                    ? 'Tjänsten som svarar på elevernas frågor och rättar prov.'
+                    : "The service that answers students' questions and grades tests."
+                }
+                state={process.env.ANTHROPIC_API_KEY ? 'ok' : 'pending'}
+                sv={sv}
+              />
+              <StatusRow
+                name={sv ? 'Transkribering' : 'Transcription'}
+                hint={
+                  sv
+                    ? 'Tjänsten som omvandlar inspelade lektioner till text.'
+                    : 'The service that turns recorded lessons into text.'
+                }
                 state={process.env.BERGET_AI_API_KEY ? 'ok' : 'pending'}
-                detail={sv ? 'Whisper' : 'Whisper'}
+                sv={sv}
               />
             </ul>
           </div>
@@ -207,11 +228,13 @@ function Stat({
 function StatusRow({
   name,
   state,
-  detail,
+  hint,
+  sv,
 }: {
   name: string;
   state: 'ok' | 'pending' | 'error';
-  detail?: string;
+  hint: string;
+  sv: boolean;
 }) {
   const dotClass =
     state === 'ok'
@@ -220,16 +243,25 @@ function StatusRow({
         ? 'status-dot status-dot--sand'
         : 'status-dot status-dot--coral';
   const stateLabel =
-    state === 'ok' ? 'OK' : state === 'pending' ? 'Pending' : 'Error';
+    state === 'ok'
+      ? 'OK'
+      : state === 'pending'
+        ? sv
+          ? 'Väntar'
+          : 'Pending'
+        : sv
+          ? 'Fel'
+          : 'Error';
   return (
     <li className="flex items-center gap-3">
       <span className={dotClass} aria-hidden="true" />
-      <span className="flex-1 text-[var(--color-ink)]">
+      <Tooltip
+        label={hint}
+        side="bottom"
+        className="flex-1 cursor-default text-[var(--color-ink)] underline decoration-[var(--color-sand)] decoration-dotted underline-offset-4"
+      >
         {name}
-        {detail ? (
-          <span className="ml-1 text-[var(--color-ink-muted)]">({detail})</span>
-        ) : null}
-      </span>
+      </Tooltip>
       <span className="text-[0.75rem] uppercase tracking-[0.1em] text-[var(--color-ink-muted)]">
         {stateLabel}
       </span>

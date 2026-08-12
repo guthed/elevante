@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { importStudents, type ImportStudentsState } from '@/app/actions/admin';
+import { importUsers, type ImportUsersState } from '@/app/actions/admin';
 import { Button } from '@/components/ui/Button';
 import { Field } from '@/components/ui/Input';
 import type { Dictionary } from '@/lib/i18n/types';
@@ -12,10 +12,10 @@ type Props = {
   labels: Dictionary['app']['pages']['admin']['users']['import'];
 };
 
-const initialState: ImportStudentsState = { status: 'idle' };
+const initialState: ImportUsersState = { status: 'idle' };
 
-export function ImportStudentsForm({ locale, labels }: Props) {
-  const [state, formAction, pending] = useActionState(importStudents, initialState);
+export function ImportUsersForm({ locale, labels }: Props) {
+  const [state, formAction, pending] = useActionState(importUsers, initialState);
 
   const reasonLabel: Record<string, string> = {
     'invalid-row': labels.reasonInvalidRow,
