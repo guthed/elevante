@@ -8,7 +8,7 @@ import { getCurrentProfile } from '@/lib/supabase/server';
 import { getAdminUsers, type AdminUserRow } from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
 import { InviteUserForm } from './InviteUserForm';
-import { ImportStudentsForm } from './ImportStudentsForm';
+import { ImportUsersForm } from './ImportUsersForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -106,7 +106,7 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
           {labels.import.heading}
         </h2>
         <div className="mt-4 max-w-md">
-          <ImportStudentsForm locale={locale} labels={labels.import} />
+          <ImportUsersForm locale={locale} labels={labels.import} />
         </div>
       </section>
 

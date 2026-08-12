@@ -434,9 +434,9 @@ const en: Dictionary = {
             errorGeneric: 'Could not send the invite.',
           },
           import: {
-            heading: 'Import students',
+            heading: 'Import users',
             fileLabel: 'CSV file',
-            fileHint: 'Headers: full_name, email, class_name. Max 40 rows.',
+            fileHint: 'Headers: full_name, email, class_name, optional role (student/teacher, defaults to student). Max 3000 rows — upload the whole school at once.',
             submit: 'Import',
             importing: 'Importing…',
             successCount: '{count} students invited.',

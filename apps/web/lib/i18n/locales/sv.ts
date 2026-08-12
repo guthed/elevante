@@ -434,9 +434,9 @@ const sv: Dictionary = {
             errorGeneric: 'Kunde inte skicka inbjudan.',
           },
           import: {
-            heading: 'Importera elever',
+            heading: 'Importera användare',
             fileLabel: 'CSV-fil',
-            fileHint: 'Rubriker: full_name, email, class_name. Max 40 rader.',
+            fileHint: 'Rubriker: full_name, email, class_name, valfri role (student/teacher, standard student). Max 3000 rader — ladda upp hela skolan på en gång.',
             submit: 'Importera',
             importing: 'Importerar…',
             successCount: '{count} elever inbjudna.',

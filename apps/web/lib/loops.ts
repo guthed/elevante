@@ -2,11 +2,22 @@ import 'server-only';
 
 const LOOPS = 'https://app.loops.so/api';
 
-// Fetch med timeout + en retry med backoff, samma mönster som lib/skolverket.ts.
+// Fetch med timeout + retries. Upptäckt vid en 543-raders bulkimport
+// (2026-08-12): Loops rate-limitar (429) vid många transactional-anrop i
+// snabb följd, och den gamla varianten retry:ade bara på nätverksfel —
+// ett 429-svar är ett "lyckat" fetch-anrop (res.ok=false), så det gick
+// aldrig igenom retry-vägen. Det ledde till att kontot redan hunnit
+// skapas (generateLink) men mejlet aldrig gick fram, och anroparen fick
+// ett hårt fel utan att veta att kontot existerade. Retry:ar nu även på
+// 429/5xx, med Retry-After-headern om Loops skickar en, annars backoff.
+const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
+
 async function loopsFetch(path: string, body: unknown): Promise<Response> {
   const apiKey = process.env.LOOPS_API_KEY;
   if (!apiKey) throw new Error('NO_KEY');
-  for (let attempt = 0; attempt < 2; attempt++) {
+  const maxAttempts = 4;
+  let lastRes: Response | undefined;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 15000);
@@ -20,13 +31,23 @@ async function loopsFetch(path: string, body: unknown): Promise<Response> {
         signal: ctrl.signal,
       });
       clearTimeout(timer);
-      return res;
+      if (res.ok || !RETRYABLE_STATUS.has(res.status) || attempt === maxAttempts - 1) {
+        return res;
+      }
+      lastRes = res;
+      const retryAfterHeader = Number(res.headers.get('retry-after'));
+      const delayMs = Number.isFinite(retryAfterHeader) && retryAfterHeader > 0
+        ? retryAfterHeader * 1000
+        : 500 * 2 ** attempt;
+      await new Promise((r) => setTimeout(r, delayMs));
     } catch (err) {
-      if (attempt === 1) throw err;
+      if (attempt === maxAttempts - 1) throw err;
       await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
     }
   }
-  throw new Error('unreachable');
+  // Ska aldrig kunna nås (sista varvet returnerar alltid), men lastRes
+  // täcker fallet om typescript-kontrollflödet ändå tar hit.
+  return lastRes!;
 }
 
 // Alla funktioner kastar aldrig uppåt: saknas nyckel eller felar API:t loggas det
