@@ -15,17 +15,20 @@ const NOTION_DB_ID = process.env.NOTION_SOKORDSINSIKTER_DB_ID!;
 const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID!;
 const GSC_SITE_URL = process.env.GSC_SITE_URL!; // t.ex. 'https://elevante.se/'
 
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    // Vercel env vars kan inte innehålla riktiga radbrytningar - byt ut \n vid inläsning
-    private_key: process.env.GOOGLE_SERVICE_ACCOUNT_KEY?.replace(/\\n/g, '\n'),
-  },
-  scopes: [
-    'https://www.googleapis.com/auth/analytics.readonly',
-    'https://www.googleapis.com/auth/webmasters.readonly',
-  ],
-});
+// GOOGLE_SERVICE_ACCOUNT_JSON_B64: hela service-account JSON base64-kodad
+// (undviker \n-escapingproblem med private_key i Vercel env vars)
+// Skapa: base64 -i service-account.json | tr -d '\n'
+function buildAuth() {
+  const b64 = process.env.GOOGLE_SERVICE_ACCOUNT_JSON_B64!;
+  const credentials = JSON.parse(Buffer.from(b64, 'base64').toString('utf-8'));
+  return new google.auth.GoogleAuth({
+    credentials,
+    scopes: [
+      'https://www.googleapis.com/auth/analytics.readonly',
+      'https://www.googleapis.com/auth/webmasters.readonly',
+    ],
+  });
+}
 
 const notion = new Client({ auth: NOTION_TOKEN });
 
@@ -37,11 +40,12 @@ export async function GET(req: Request) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
+  const auth = buildAuth();
   const period = lastNDays(7);
 
   const [gscRows, ga4Rows] = await Promise.all([
-    fetchSearchConsole(period),
-    fetchGA4(period),
+    fetchSearchConsole(period, auth),
+    fetchGA4(period, auth),
   ]);
 
   const results = await Promise.allSettled([
@@ -85,7 +89,7 @@ function lastNDays(n: number) {
 type GscRow = { query: string; clicks: number; impressions: number; ctr: number; position: number };
 type Ga4Row = { landingPage: string; sessions: number; engagementRate: number };
 
-async function fetchSearchConsole(period: { start: string; end: string }): Promise<GscRow[]> {
+async function fetchSearchConsole(period: { start: string; end: string }, auth: ReturnType<typeof buildAuth>): Promise<GscRow[]> {
   const searchconsole = google.searchconsole({ version: 'v1', auth });
   const res = await searchconsole.searchanalytics.query({
     siteUrl: GSC_SITE_URL,
@@ -105,7 +109,7 @@ async function fetchSearchConsole(period: { start: string; end: string }): Promi
   }));
 }
 
-async function fetchGA4(period: { start: string; end: string }): Promise<Ga4Row[]> {
+async function fetchGA4(period: { start: string; end: string }, auth: ReturnType<typeof buildAuth>): Promise<Ga4Row[]> {
   const analyticsdata = google.analyticsdata({ version: 'v1beta', auth });
   const res = await analyticsdata.properties.runReport({
     property: `properties/${GA4_PROPERTY_ID}`,

@@ -6,8 +6,7 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
       "env": [
-        "GOOGLE_SERVICE_ACCOUNT_EMAIL",
-        "GOOGLE_SERVICE_ACCOUNT_KEY",
+        "GOOGLE_SERVICE_ACCOUNT_JSON_B64",
         "GA4_PROPERTY_ID",
         "GSC_SITE_URL",
         "NOTION_SOKORDSINSIKTER_DB_ID"
