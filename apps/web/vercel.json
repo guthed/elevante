@@ -13,6 +13,7 @@
     }
   },
   "crons": [
-    { "path": "/api/cron/sync-prospects", "schedule": "0 3 * * *" }
+    { "path": "/api/cron/sync-prospects", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/sokordsinsikter", "schedule": "0 6 * * 1" }
   ]
 }

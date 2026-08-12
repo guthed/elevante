@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
+    "@notionhq/client": "^5.24.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.58.0",
+    "googleapis": "^174.0.1",
     "gray-matter": "^4.0.3",
     "next": "^16.0.0",
     "react": "^19.0.0",

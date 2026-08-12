@@ -4,7 +4,14 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL",
+        "GOOGLE_SERVICE_ACCOUNT_KEY",
+        "GA4_PROPERTY_ID",
+        "GSC_SITE_URL",
+        "NOTION_SOKORDSINSIKTER_DB_ID"
+      ]
     },
     "dev": {
       "cache": false,
