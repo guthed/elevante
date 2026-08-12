@@ -435,11 +435,15 @@ const en: Dictionary = {
           import: {
             heading: 'Import students',
             fileLabel: 'CSV file',
-            fileHint: 'Headers: full_name, email, class_name. Max 200 rows.',
+            fileHint: 'Headers: full_name, email, class_name. Max 40 rows.',
             submit: 'Import',
             importing: 'Importing…',
             successCount: '{count} students invited.',
             errorGeneric: 'Something went wrong during import.',
+            reasonInvalidRow: 'Incomplete row (missing name, email, or class)',
+            reasonAlreadyExists: 'Account already exists',
+            reasonClassLinkFailed: 'Could not link to the class',
+            reasonGeneric: 'Unknown error',
           },
         },
         schools: {

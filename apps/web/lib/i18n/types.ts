@@ -447,6 +447,10 @@ export type Dictionary = {
             importing: string;
             successCount: string;
             errorGeneric: string;
+            reasonInvalidRow: string;
+            reasonAlreadyExists: string;
+            reasonClassLinkFailed: string;
+            reasonGeneric: string;
           };
         };
         schools: {

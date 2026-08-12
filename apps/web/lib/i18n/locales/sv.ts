@@ -435,11 +435,15 @@ const sv: Dictionary = {
           import: {
             heading: 'Importera elever',
             fileLabel: 'CSV-fil',
-            fileHint: 'Rubriker: full_name, email, class_name. Max 200 rader.',
+            fileHint: 'Rubriker: full_name, email, class_name. Max 40 rader.',
             submit: 'Importera',
             importing: 'Importerar…',
             successCount: '{count} elever inbjudna.',
             errorGeneric: 'Något gick fel vid importen.',
+            reasonInvalidRow: 'Ofullständig rad (namn, e-post eller klass saknas)',
+            reasonAlreadyExists: 'Kontot finns redan',
+            reasonClassLinkFailed: 'Kunde inte koppla till klassen',
+            reasonGeneric: 'Okänt fel',
           },
         },
         schools: {
