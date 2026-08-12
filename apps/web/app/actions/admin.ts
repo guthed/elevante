@@ -249,14 +249,23 @@ export async function deleteClass(
   // chatthistorik tyst med den. Räknar AVSIKTLIGT även arkiverade
   // lektioner (ingen .is('archived_at', null)) — cascaden skulle radera
   // dem lika tyst, så de ska också blockera radering.
-  const { count, error: countError } = await supabase
-    .from('lessons')
-    .select('id', { count: 'exact', head: true })
-    .eq('class_id', classId);
-  if (countError) {
-    return { status: 'error', code: 'generic', detail: countError.message };
+  //
+  // timeslots.class_id är också ON DELETE CASCADE. I fönstret mellan att
+  // admin skapar en klass + laddar upp ett schema (CSV) och att den
+  // första lektionen faktiskt spelas in är lessonsCount 0 — utan denna
+  // koll skulle raderingen tyst sudda hela schemat (de timeslots
+  // mobilappens REC-flöde bygger på) utan varning.
+  const [lessonsResult, timeslotsResult] = await Promise.all([
+    supabase.from('lessons').select('id', { count: 'exact', head: true }).eq('class_id', classId),
+    supabase.from('timeslots').select('id', { count: 'exact', head: true }).eq('class_id', classId),
+  ]);
+  if (lessonsResult.error) {
+    return { status: 'error', code: 'generic', detail: lessonsResult.error.message };
   }
-  if ((count ?? 0) > 0) {
+  if (timeslotsResult.error) {
+    return { status: 'error', code: 'generic', detail: timeslotsResult.error.message };
+  }
+  if ((lessonsResult.count ?? 0) > 0 || (timeslotsResult.count ?? 0) > 0) {
     return { status: 'error', code: 'has-lessons' };
   }
 
@@ -344,14 +353,23 @@ export async function deleteCourse(
   // chatthistorik tyst med den. Räknar AVSIKTLIGT även arkiverade
   // lektioner (ingen .is('archived_at', null)) — cascaden skulle radera
   // dem lika tyst, så de ska också blockera radering.
-  const { count, error: countError } = await supabase
-    .from('lessons')
-    .select('id', { count: 'exact', head: true })
-    .eq('course_id', courseId);
-  if (countError) {
-    return { status: 'error', code: 'generic', detail: countError.message };
+  //
+  // timeslots.course_id är också ON DELETE CASCADE. I fönstret mellan att
+  // admin skapar en kurs + laddar upp ett schema (CSV) och att den första
+  // lektionen faktiskt spelas in är lessonsCount 0 — utan denna koll
+  // skulle raderingen tyst sudda hela schemat (de timeslots mobilappens
+  // REC-flöde bygger på) utan varning.
+  const [lessonsResult, timeslotsResult] = await Promise.all([
+    supabase.from('lessons').select('id', { count: 'exact', head: true }).eq('course_id', courseId),
+    supabase.from('timeslots').select('id', { count: 'exact', head: true }).eq('course_id', courseId),
+  ]);
+  if (lessonsResult.error) {
+    return { status: 'error', code: 'generic', detail: lessonsResult.error.message };
   }
-  if ((count ?? 0) > 0) {
+  if (timeslotsResult.error) {
+    return { status: 'error', code: 'generic', detail: timeslotsResult.error.message };
+  }
+  if ((lessonsResult.count ?? 0) > 0 || (timeslotsResult.count ?? 0) > 0) {
     return { status: 'error', code: 'has-lessons' };
   }
 
@@ -475,7 +493,8 @@ export async function importStudents(
   if (!(file instanceof File) || file.size === 0) {
     return { status: 'error', code: 'invalid', detail: 'Ingen fil vald' };
   }
-  const locale = (formData.get('locale') ?? 'sv').toString() as Locale;
+  const rawLocale = (formData.get('locale') ?? '').toString();
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'sv';
 
   let text: string;
   try {
