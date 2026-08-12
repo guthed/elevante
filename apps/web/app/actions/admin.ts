@@ -131,8 +131,25 @@ export async function inviteUser(
 
   const isOwnSchool = profile.school_id === schoolId;
   let allowed = isOwnSchool;
+  let schoolName: string | undefined;
 
-  if (!isOwnSchool) {
+  if (isOwnSchool) {
+    // RLS tillåter att läsa sin egen skola, ingen service-role behövs.
+    const supabase = await createSupabaseServerClient();
+    const { data: school } = await supabase
+      .from('schools')
+      .select('name')
+      .eq('id', schoolId)
+      .maybeSingle();
+    // Ska aldrig kunna hända (schoolId är adminens egen, redan validerad
+    // vid inloggning) — men om det ändå gör det ska vi hellre avbryta än
+    // tyst skicka ett mejl med tomt skolnamn ("Du har bjudits in till ,
+    // klass...").
+    if (!school) {
+      return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
+    }
+    schoolName = school.name;
+  } else {
     // Bootstrap: en skola utan admin ännu får sin första admin av
     // valfri befintlig Elevante-STAFF-admin (samma grind som
     // createSchool efter Task 1b — inte "vilken admin som helst",
@@ -148,12 +165,13 @@ export async function inviteUser(
     const serviceClient = createSupabaseServiceRoleClient();
     const { data: school } = await serviceClient
       .from('schools')
-      .select('id')
+      .select('id, name')
       .eq('id', schoolId)
       .maybeSingle();
     if (!school) {
       return { status: 'error', code: 'invalid' };
     }
+    schoolName = school.name;
     const { count } = await serviceClient
       .from('profiles')
       .select('id', { count: 'exact', head: true })
@@ -166,7 +184,14 @@ export async function inviteUser(
     return { status: 'error', code: 'unauthorized' };
   }
 
-  const result = await inviteUserCore({ email, fullName, role, schoolId, locale });
+  const result = await inviteUserCore({
+    email,
+    fullName,
+    role,
+    schoolId,
+    schoolName,
+    locale,
+  });
   if (!result.ok) {
     return { status: 'error', code: result.code, detail: result.detail };
   }
@@ -518,9 +543,8 @@ export async function importStudents(
     };
   }
   // Skydd mot att en enda stor fil blockerar Server Action-requesten
-  // (varje rad gör ett separat Auth Admin API-anrop, som i sin tur
-  // skickar ett mejl, plus en DB-insert) eller triggar Supabase Auths
-  // rate limit för inviteUserByEmail. vercel.json sätter maxDuration: 30
+  // (varje rad gör ett separat Auth Admin API-anrop plus ett Loops-anrop
+  // för mejlet, plus en DB-insert). vercel.json sätter maxDuration: 30
   // för app/**/*.tsx (routen den här actionen körs på); vid 150–500 ms/rad
   // rymmer det 30s-taket bekvämt bara upp till ~40–60 rader, inte 200 —
   // därav den lägre gränsen. En riktig bakgrundsjobb/kö-arkitektur för
@@ -530,11 +554,18 @@ export async function importStudents(
   }
 
   const supabase = await createSupabaseServerClient();
-  const { data: classes } = await supabase
-    .from('classes')
-    .select('id, name')
-    .eq('school_id', profile.school_id);
+  const [{ data: classes }, { data: school }] = await Promise.all([
+    supabase.from('classes').select('id, name').eq('school_id', profile.school_id),
+    supabase.from('schools').select('name').eq('id', profile.school_id).maybeSingle(),
+  ]);
+  // Ska aldrig kunna hända (school_id är adminens egen) — men om det ändå
+  // gör det ska vi hellre avbryta hela importen än tyst skicka 40 mejl med
+  // tomt skolnamn.
+  if (!school) {
+    return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
+  }
   const classMap = new Map((classes ?? []).map((c) => [c.name, c.id]));
+  const schoolName = school.name;
 
   let invited = 0;
   const skipped: { email: string; reason: string }[] = [];
@@ -555,6 +586,8 @@ export async function importStudents(
       fullName,
       role: 'student',
       schoolId: profile.school_id,
+      schoolName,
+      className,
       locale,
     });
 
