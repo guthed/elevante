@@ -453,6 +453,14 @@ export type Dictionary = {
             reasonClassLinkFailed: string;
             reasonGeneric: string;
           };
+          detail: {
+            back: string;
+            createdLabel: string;
+            classesHeading: string;
+            classesEmpty: string;
+            coursesHeading: string;
+            coursesEmpty: string;
+          };
         };
         schools: {
           title: string;
@@ -490,6 +498,18 @@ export type Dictionary = {
             listEmpty: string;
             revoke: string;
             revoking: string;
+          };
+          detail: {
+            back: string;
+            studentsLabel: string;
+            teachersLabel: string;
+            adminsLabel: string;
+            classesHeading: string;
+            classesEmpty: string;
+            coursesHeading: string;
+            coursesEmpty: string;
+            adminsHeading: string;
+            adminsEmpty: string;
           };
         };
         classes: {

@@ -94,6 +94,60 @@ export async function getAdminUsers(): Promise<AdminUserRow[]> {
   return ((data ?? []) as AdminUserRow[]);
 }
 
+export type AdminUserDetail = {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  role: UserRole;
+  created_at: string;
+  classes: { id: string; name: string }[];
+  courses: { id: string; name: string; code: string }[];
+};
+
+// Skol-scopat via RLS (profiles_select_same_school) som default, precis
+// som getAdminUsers. crossSchool=true (bara för is_staff, satt av
+// anroparen) byter till service-role — annars kan inte Elevante-personal
+// klicka sig in på en användare i en annan skola från skoldetaljvyn.
+export async function getAdminUserDetail(
+  userId: string,
+  crossSchool = false,
+): Promise<AdminUserDetail | null> {
+  const supabase = crossSchool ? createSupabaseServiceRoleClient() : await createSupabaseServerClient();
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id, full_name, email, role, created_at')
+    .eq('id', userId)
+    .maybeSingle();
+  if (!profile) return null;
+
+  const [classesRes, coursesRes] = await Promise.all([
+    profile.role === 'student'
+      ? supabase
+          .from('class_members')
+          .select('classes ( id, name )')
+          .eq('profile_id', userId)
+      : Promise.resolve({ data: [] }),
+    profile.role === 'teacher'
+      ? supabase
+          .from('course_teachers')
+          .select('courses ( id, name, code )')
+          .eq('profile_id', userId)
+      : Promise.resolve({ data: [] }),
+  ]);
+
+  type ClassJoin = { classes: { id: string; name: string } | null };
+  type CourseJoin = { courses: { id: string; name: string; code: string } | null };
+
+  const classes = ((classesRes.data ?? []) as ClassJoin[])
+    .map((row) => row.classes)
+    .filter((c): c is { id: string; name: string } => c !== null);
+  const courses = ((coursesRes.data ?? []) as CourseJoin[])
+    .map((row) => row.courses)
+    .filter((c): c is { id: string; name: string; code: string } => c !== null);
+
+  return { ...profile, classes, courses };
+}
+
 export type AdminSchoolRow = {
   id: string;
   name: string;
@@ -123,6 +177,61 @@ export async function getAdminSchools(): Promise<AdminSchoolRow[]> {
     ...s,
     adminCount: adminCounts.get(s.id) ?? 0,
   }));
+}
+
+export type SchoolDetail = {
+  id: string;
+  name: string;
+  slug: string;
+  country: string;
+  created_at: string;
+  studentsCount: number;
+  teachersCount: number;
+  admins: { id: string; full_name: string | null; email: string | null }[];
+  classes: { id: string; name: string; studentsCount: number }[];
+  courses: { id: string; name: string; code: string }[];
+};
+
+// Staff kan se valfri skola (cross-school), därför service-role precis
+// som getAdminSchools — RLS skulle annars göra andra skolors rader osynliga.
+export async function getSchoolDetail(schoolId: string): Promise<SchoolDetail | null> {
+  const supabase = createSupabaseServiceRoleClient();
+  const { data: school } = await supabase
+    .from('schools')
+    .select('id, name, slug, country, created_at')
+    .eq('id', schoolId)
+    .maybeSingle();
+  if (!school) return null;
+
+  const [profilesRes, classesRes, coursesRes] = await Promise.all([
+    supabase.from('profiles').select('id, full_name, email, role').eq('school_id', schoolId),
+    supabase.from('classes').select('id, name').eq('school_id', schoolId),
+    supabase.from('courses').select('id, name, code').eq('school_id', schoolId),
+  ]);
+
+  const profiles = profilesRes.data ?? [];
+  const classIds = (classesRes.data ?? []).map((c) => c.id);
+  const membersRes =
+    classIds.length > 0
+      ? await supabase.from('class_members').select('class_id').in('class_id', classIds)
+      : { data: [] as { class_id: string }[] };
+
+  const classMemberCounts = new Map<string, number>();
+  for (const row of membersRes.data ?? []) {
+    classMemberCounts.set(row.class_id, (classMemberCounts.get(row.class_id) ?? 0) + 1);
+  }
+
+  return {
+    ...school,
+    studentsCount: profiles.filter((p) => p.role === 'student').length,
+    teachersCount: profiles.filter((p) => p.role === 'teacher').length,
+    admins: profiles.filter((p) => p.role === 'admin'),
+    classes: (classesRes.data ?? []).map((c) => ({
+      ...c,
+      studentsCount: classMemberCounts.get(c.id) ?? 0,
+    })),
+    courses: coursesRes.data ?? [],
+  };
 }
 
 export type StaffAccountRow = {

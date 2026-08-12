@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionary';
@@ -54,11 +55,11 @@ export default async function AdminSchoolsPage({ params }: Props) {
               <Card key={school.id}>
                 <CardBody>
                   <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0 flex-1">
+                    <Link href={`/${locale}/app/admin/skolor/${school.id}`} className="group min-w-0 flex-1">
                       <div className="text-xs uppercase tracking-widest text-[var(--color-ink-subtle)]">
                         {school.slug}
                       </div>
-                      <div className="mt-1 font-serif text-2xl text-[var(--color-primary)]">
+                      <div className="mt-1 font-serif text-2xl text-[var(--color-primary)] group-hover:text-[var(--color-accent)]">
                         {school.name}
                       </div>
                       <div className="mt-2 text-xs text-[var(--color-ink-subtle)]">
@@ -67,7 +68,7 @@ export default async function AdminSchoolsPage({ params }: Props) {
                           locale === 'sv' ? 'sv-SE' : 'en-GB',
                         )}
                       </div>
-                    </div>
+                    </Link>
                     <Badge tone="neutral">{school.country}</Badge>
                   </div>
                   {school.adminCount === 0 ? (

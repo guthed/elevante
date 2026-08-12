@@ -30,18 +30,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ClassDetailPage({ params }: Props) {
   const { locale, role, id } = await params;
   if (!isLocale(locale) || !isRole(role)) notFound();
-  if (role !== 'teacher') redirect(`/${locale}/app/${role}`);
+  if (role !== 'teacher' && role !== 'admin') redirect(`/${locale}/app/${role}`);
 
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
+  if (role === 'admin' && (profile.role !== 'admin' || !profile.school_id)) {
+    redirect(`/${locale}/app`);
+  }
 
   const dict = await getDictionary(locale);
+  // Delar etiketter med lärarvyn — innehållet ("Kurser", "Lektioner",
+  // "Medlemmar") är rollneutralt, ingen anledning att duplicera i18n.
   const labels = dict.app.pages.teacher.classDetail;
 
+  // getClassDetail är redan skol-scopat via RLS på classes/class_members
+  // (samma säkerhetsmodell som getAdminUsers) — ingen extra kontroll
+  // behövs här utöver att adminen har ett school_id.
   const detail = await getClassDetail(id);
   if (!detail) notFound();
 
-  const base = `/${locale}/app/teacher`;
+  const base = `/${locale}/app/${role}`;
 
   return (
     <PageWrapper

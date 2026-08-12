@@ -209,20 +209,23 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
                   className="grid grid-cols-1 items-center gap-4 border-b border-[var(--color-sand)] px-6 py-4 last:border-b-0 md:grid-cols-12"
                 >
                   <div className="md:col-span-5">
-                    <div className="flex items-center gap-3">
+                    <a
+                      href={`${base}/${user.id}`}
+                      className="group flex items-center gap-3"
+                    >
                       <Avatar
                         name={user.full_name ?? user.email ?? '?'}
                         size="sm"
                       />
                       <div className="min-w-0">
-                        <p className="truncate text-[0.9375rem] font-medium text-[var(--color-ink)]">
+                        <p className="truncate text-[0.9375rem] font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
                           {user.full_name ?? '—'}
                         </p>
                         <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
                           {user.email ?? '—'}
                         </p>
                       </div>
-                    </div>
+                    </a>
                   </div>
                   <div className="md:col-span-3">
                     <RolePill role={user.role} sv={sv} />

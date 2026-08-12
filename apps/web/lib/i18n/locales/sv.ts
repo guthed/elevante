@@ -446,6 +446,14 @@ const sv: Dictionary = {
             reasonClassLinkFailed: 'Kunde inte koppla till klassen',
             reasonGeneric: 'Okänt fel',
           },
+          detail: {
+            back: 'Tillbaka till användare',
+            createdLabel: 'Skapad',
+            classesHeading: 'Klasser',
+            classesEmpty: 'Inte kopplad till någon klass.',
+            coursesHeading: 'Kurser',
+            coursesEmpty: 'Inte tilldelad någon kurs.',
+          },
         },
         schools: {
           title: 'Skolor',
@@ -483,6 +491,18 @@ const sv: Dictionary = {
             listEmpty: 'Ingen Elevante-personal registrerad.',
             revoke: 'Återkalla',
             revoking: 'Återkallar…',
+          },
+          detail: {
+            back: 'Tillbaka till skolor',
+            studentsLabel: 'elever',
+            teachersLabel: 'lärare',
+            adminsLabel: 'admins',
+            classesHeading: 'Klasser',
+            classesEmpty: 'Inga klasser ännu.',
+            coursesHeading: 'Kurser',
+            coursesEmpty: 'Inga kurser ännu.',
+            adminsHeading: 'Administratörer',
+            adminsEmpty: 'Ingen admin ännu.',
           },
         },
         classes: {

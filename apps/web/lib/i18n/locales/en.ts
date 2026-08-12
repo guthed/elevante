@@ -446,6 +446,14 @@ const en: Dictionary = {
             reasonClassLinkFailed: 'Could not link to the class',
             reasonGeneric: 'Unknown error',
           },
+          detail: {
+            back: 'Back to users',
+            createdLabel: 'Created',
+            classesHeading: 'Classes',
+            classesEmpty: 'Not part of any class.',
+            coursesHeading: 'Courses',
+            coursesEmpty: 'Not assigned to any course.',
+          },
         },
         schools: {
           title: 'Schools',
@@ -483,6 +491,18 @@ const en: Dictionary = {
             listEmpty: 'No Elevante staff registered.',
             revoke: 'Revoke',
             revoking: 'Revoking…',
+          },
+          detail: {
+            back: 'Back to schools',
+            studentsLabel: 'students',
+            teachersLabel: 'teachers',
+            adminsLabel: 'admins',
+            classesHeading: 'Classes',
+            classesEmpty: 'No classes yet.',
+            coursesHeading: 'Courses',
+            coursesEmpty: 'No courses yet.',
+            adminsHeading: 'Admins',
+            adminsEmpty: 'No admin yet.',
           },
         },
         classes: {
