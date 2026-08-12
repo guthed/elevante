@@ -40,8 +40,6 @@ const ICONS: Record<NavId, ReactNode> = {
   users: I(<><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /></>),
   schedule: I(<><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></>),
   stats: I(<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></>),
-  prospects: I(<><path d="M21 12a8 8 0 0 1-11 7L3 21l2-7a8 8 0 1 1 16-2z" /></>),
-  crm: I(<><ellipse cx="12" cy="5" rx="8" ry="3" /><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5" /><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" /></>),
 };
 
 type Props = {

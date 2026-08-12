@@ -153,8 +153,6 @@ export type Dictionary = {
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     // Korta etiketter för mobil bottom-nav (sidebar-etiketterna är för långa).
@@ -182,8 +180,6 @@ export type Dictionary = {
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     navDescriptions: {
@@ -210,8 +206,6 @@ export type Dictionary = {
         users: string;
         schedule: string;
         stats: string;
-        prospects: string;
-        crm: string;
       };
     };
     account: {
@@ -528,31 +522,6 @@ export type Dictionary = {
           statusHeading: string;
           activityHeading: string;
           noData: string;
-        };
-        crm: {
-          title: string;
-          subtitle: string;
-          searchLabel: string;
-          searchPlaceholder: string;
-          sync: string;
-          resync: string;
-          synced: string;
-          empty: string;
-          openNotion: string;
-          visitLink: {
-            rektor: string;
-            larare: string;
-            copied: string;
-            failed: string;
-          };
-          cols: {
-            name: string;
-            kommun: string;
-            students: string;
-            status: string;
-            synced: string;
-            link: string;
-          };
         };
       };
     };

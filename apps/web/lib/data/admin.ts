@@ -1,6 +1,6 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { createSupabaseServiceRoleClient } from '@/lib/supabase/service-role';
-import type { SchoolProspect, TranscriptStatus, UserRole } from '@/lib/supabase/database';
+import type { TranscriptStatus, UserRole } from '@/lib/supabase/database';
 
 export type AdminOverview = {
   schoolsCount: number;
@@ -134,71 +134,6 @@ export type AdminStats = {
     admins: number;
   };
 };
-
-export type CampaignProspectsResult = {
-  prospects: SchoolProspect[];
-  total: number;
-};
-
-export async function getCampaignProspects(): Promise<CampaignProspectsResult> {
-  const supabase = await createSupabaseServerClient();
-
-  const [prospectsRes, countRes] = await Promise.all([
-    supabase
-      .from('school_prospects')
-      .select(
-        'id, school_unit_code, school_name, municipality, huvudman_name, students, ' +
-        'lookup_count, ai_brief, enrichment_status, contact_address, contact_phone, ' +
-        'contact_email, latest_lead_email, first_seen_at, last_seen_at, ' +
-        'created_at, updated_at, contact_web, principal_type, school_orientation, ' +
-        'latest_lead_message, latest_lead_at, notion_page_id',
-      )
-      .order('last_seen_at', { ascending: false })
-      .limit(200),
-    supabase
-      .from('school_prospects')
-      .select('id', { count: 'exact', head: true }),
-  ]);
-
-  return {
-    prospects: ((prospectsRes.data ?? []) as unknown as SchoolProspect[]),
-    total: countRes.count ?? 0,
-  };
-}
-
-export type ProspectListItem = {
-  code: string;
-  name: string;
-  municipality: string | null;
-  students: number | null;
-  skolform: string[] | null;
-  syncStatus: string | null;
-  lastSyncedAt: string | null;
-  notionPageId: string | null;
-  createdVia: string;
-};
-
-export async function getProspects(): Promise<ProspectListItem[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('school_prospects')
-    .select(
-      'school_unit_code, school_name, municipality, students, skolform, sync_status, last_synced_at, notion_page_id, created_via',
-    )
-    .order('last_synced_at', { ascending: false, nullsFirst: false })
-    .limit(200);
-  return (data ?? []).map((r) => ({
-    code: r.school_unit_code,
-    name: r.school_name,
-    municipality: r.municipality,
-    students: r.students,
-    skolform: r.skolform,
-    syncStatus: r.sync_status,
-    lastSyncedAt: r.last_synced_at,
-    notionPageId: r.notion_page_id,
-    createdVia: r.created_via,
-  }));
-}
 
 export async function getAdminStats(): Promise<AdminStats> {
   const supabase = await createSupabaseServerClient();
