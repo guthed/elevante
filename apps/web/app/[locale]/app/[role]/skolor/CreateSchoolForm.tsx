@@ -4,6 +4,7 @@ import { useActionState } from 'react';
 import { createSchool, type CreateSchoolState } from '@/app/actions/admin';
 import { Button } from '@/components/ui/Button';
 import { Field, Input } from '@/components/ui/Input';
+import { HelpHint } from '@/components/ui/Tooltip';
 import type { Dictionary } from '@/lib/i18n/types';
 
 type Props = {
@@ -20,7 +21,15 @@ export function CreateSchoolForm({ labels }: Props) {
       <Field id="school-name" label={labels.nameLabel}>
         <Input id="school-name" name="name" type="text" required />
       </Field>
-      <Field id="school-slug" label={labels.slugLabel}>
+      <Field
+        id="school-slug"
+        label={
+          <>
+            {labels.slugLabel}
+            <HelpHint label={labels.slugHint} />
+          </>
+        }
+      >
         <Input
           id="school-slug"
           name="slug"

@@ -31,6 +31,27 @@ type TimeslotRow = {
   room: string | null;
 };
 
+const WEEKDAY_LABELS: Record<string, { sv: string; en: string }> = {
+  monday: { sv: 'Måndag', en: 'Monday' },
+  tuesday: { sv: 'Tisdag', en: 'Tuesday' },
+  wednesday: { sv: 'Onsdag', en: 'Wednesday' },
+  thursday: { sv: 'Torsdag', en: 'Thursday' },
+  friday: { sv: 'Fredag', en: 'Friday' },
+  saturday: { sv: 'Lördag', en: 'Saturday' },
+  sunday: { sv: 'Söndag', en: 'Sunday' },
+};
+
+function weekdayLabel(day: string, sv: boolean): string {
+  const entry = WEEKDAY_LABELS[day.toLowerCase()];
+  if (!entry) return day;
+  return sv ? entry.sv : entry.en;
+}
+
+// "08:15:00" → "08:15" — sekunderna tillför inget för ett lektionsschema.
+function trimSeconds(time: string): string {
+  return time.slice(0, 5);
+}
+
 export default async function AdminSchedulePage({ params }: Props) {
   const { locale, role } = await params;
   if (!isLocale(locale) || !isRole(role)) notFound();
@@ -53,6 +74,7 @@ export default async function AdminSchedulePage({ params }: Props) {
     .limit(100);
 
   const rows: TimeslotRow[] = (timeslots as TimeslotRow[] | null) ?? [];
+  const sv = locale === 'sv';
 
   return (
     <PageWrapper title={labels.title} subtitle={labels.subtitle}>
@@ -68,10 +90,10 @@ export default async function AdminSchedulePage({ params }: Props) {
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-[var(--color-border)] text-xs uppercase tracking-wider text-[var(--color-ink-subtle)]">
                   <tr>
-                    <th className="px-6 py-4">Day</th>
-                    <th className="px-6 py-4">Start</th>
-                    <th className="px-6 py-4">End</th>
-                    <th className="px-6 py-4">Room</th>
+                    <th className="px-6 py-4">{labels.dayColumn}</th>
+                    <th className="px-6 py-4">{labels.startColumn}</th>
+                    <th className="px-6 py-4">{labels.endColumn}</th>
+                    <th className="px-6 py-4">{labels.roomColumn}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,9 +102,11 @@ export default async function AdminSchedulePage({ params }: Props) {
                       key={slot.id}
                       className="border-b border-[var(--color-border)] last:border-0"
                     >
-                      <td className="px-6 py-3 text-[var(--color-primary)]">{slot.day}</td>
-                      <td className="px-6 py-3">{slot.start_time}</td>
-                      <td className="px-6 py-3">{slot.end_time}</td>
+                      <td className="px-6 py-3 text-[var(--color-primary)]">
+                        {weekdayLabel(slot.day, sv)}
+                      </td>
+                      <td className="px-6 py-3">{trimSeconds(slot.start_time)}</td>
+                      <td className="px-6 py-3">{trimSeconds(slot.end_time)}</td>
                       <td className="px-6 py-3">{slot.room ?? '—'}</td>
                     </tr>
                   ))}

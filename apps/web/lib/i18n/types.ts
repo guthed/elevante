@@ -407,6 +407,10 @@ export type Dictionary = {
           errorInvalid: string;
           errorGeneric: string;
           tableEmpty: string;
+          dayColumn: string;
+          startColumn: string;
+          endColumn: string;
+          roomColumn: string;
         };
         users: {
           title: string;
@@ -469,6 +473,7 @@ export type Dictionary = {
           createTitle: string;
           nameLabel: string;
           slugLabel: string;
+          slugHint: string;
           countryLabel: string;
           createSubmit: string;
           creating: string;
@@ -549,6 +554,7 @@ export type Dictionary = {
           assignError: string;
           createTitle: string;
           codeLabel: string;
+          codeHint: string;
           nameLabel: string;
           createSubmit: string;
           creating: string;
