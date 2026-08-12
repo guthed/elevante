@@ -315,7 +315,7 @@ campaign.ts (Server Action, service-role-klient):
    → upsert school_lookups (rå logg) + school_prospects (race-säkert)
    → bakgrundsanrikning: Skolverket-fakta → Claude säljbrief (lib/campaign-brief.ts)
    → upsert till Notion-databas (lib/notion.ts) → enrichment_status='done'
-admin → /admin/intresse → läser school_prospects (admin-read RLS)
+(ingen admin-UI längre — /admin/intresse borttagen 2026-08-12, Notion är enda vyn)
 ```
 
 `municipalities.json` (290 kommuner) översätter Skolverkets `geographicalAreaCode` → kommunnamn. `scripts/fetch-schools.ts` snapshottar gymnasieskolor (skolenhetskod rensas ur namnet).
@@ -325,12 +325,12 @@ admin → /admin/intresse → läser school_prospects (admin-read RLS)
 Inbound-flödet ovan evolverades till ett enat CRM som också stödjer outbound.
 
 ```
-admin → /sv/app/admin/crm → searchSchoolUnits (lib/data/school-units.json, 6 652 enheter)
-   → syncProspect (lib/prospects.ts, delad väg för inbound + admin + cron)
-        → fetchPupilCount + Skolverket-fakta
-        → Claude säljbrief + kontaktmejl-utkast (cachas i contact_email_draft)
-        → icke-destruktiv Notion-upsert
-        → school_sync_log
+syncProspect (lib/prospects.ts, delad väg för inbound + cron — admin-sökvägen
+   togs bort 2026-08-12, /admin/crm existerar inte längre)
+   → fetchPupilCount + Skolverket-fakta
+   → Claude säljbrief + kontaktmejl-utkast (cachas i contact_email_draft)
+   → icke-destruktiv Notion-upsert
+   → school_sync_log
 cron 0 3 * * * → /api/cron/sync-prospects (arn1, MAX_PER_RUN 20, CRON_SECRET-gate)
 ```
 
