@@ -54,10 +54,33 @@ export function ConfirmClient({ locale }: Props) {
 
     let cancelled = false;
     const supabase = createSupabaseBrowserClient();
+
+    // Om setSession() av någon anledning aldrig gör upp sig (blockerad eller
+    // trög nätverksförfrågan mot Supabase — innehållsblockerare är ett känt
+    // fall) ska sidan aldrig hänga kvar på "Loggar in…" i all evighet. Visa
+    // felläget istället efter en rimlig väntan; användaren kan be om en ny
+    // länk eller ladda om.
+    const timeout = setTimeout(() => {
+      if (!cancelled) setStatus('error');
+    }, 8000);
+
+    // Signa ut eventuell befintlig session INNAN den nya sätts — en gammal
+    // session i cookien kan annars kollidera med setSession() (GoTrues
+    // bakgrundsuppdatering av den gamla sessionen tävlar med anropet nedan)
+    // och lämna sidan hängande på "Loggar in…" istället för att logga in
+    // med den nya länkens konto. `scope: 'local'` gör detta till en ren
+    // lokal cookie-städning utan nätverksanrop — annars kan en trög eller
+    // blockerad förfrågan till Supabase (innehållsblockerare, dåligt nät)
+    // hänga hela kedjan för evigt eftersom den fångas av samma .catch().
     supabase.auth
-      .setSession({ access_token: accessToken, refresh_token: refreshToken })
+      .signOut({ scope: 'local' })
+      .catch(() => {})
+      .then(() =>
+        supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken }),
+      )
       .then(({ error }) => {
         if (cancelled) return;
+        clearTimeout(timeout);
         if (error) {
           setStatus('error');
           return;
@@ -65,11 +88,13 @@ export function ConfirmClient({ locale }: Props) {
         router.replace(next);
       })
       .catch(() => {
+        clearTimeout(timeout);
         if (!cancelled) setStatus('error');
       });
 
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
