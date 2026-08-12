@@ -29,7 +29,7 @@ export async function inviteUserCore(
       role: input.role,
       school_id: input.schoolId,
     },
-    redirectTo: `${siteUrl}/api/auth/callback?next=/${input.locale}/app/${input.role}/konto`,
+    redirectTo: `${siteUrl}/${input.locale}/auth/confirm?next=/${input.locale}/app/${input.role}/konto`,
   });
 
   if (error) {
