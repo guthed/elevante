@@ -50,6 +50,71 @@ export async function updateUserRole(
   return { status: 'success' };
 }
 
+export type RemoveUserState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | {
+      status: 'error';
+      code: 'unauthorized' | 'invalid' | 'self' | 'last-admin' | 'generic';
+      detail?: string;
+    };
+
+export async function removeUser(
+  _prev: RemoveUserState,
+  formData: FormData,
+): Promise<RemoveUserState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const userId = (formData.get('user_id') ?? '').toString();
+  if (!userId) {
+    return { status: 'error', code: 'invalid' };
+  }
+  if (userId === profile.id) {
+    return { status: 'error', code: 'self' };
+  }
+
+  const serviceClient = createSupabaseServiceRoleClient();
+  const { data: target } = await serviceClient
+    .from('profiles')
+    .select('id, role, school_id')
+    .eq('id', userId)
+    .maybeSingle();
+  if (!target) {
+    return { status: 'error', code: 'invalid' };
+  }
+  // Skol-scopat precis som updateUserRole — en admin kan bara ta bort
+  // användare i sin egen skola, staff är inte undantaget (samma grind som
+  // resten av /admin/anvandare).
+  if (target.school_id !== profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  if (target.role === 'admin') {
+    const { count } = await serviceClient
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .eq('school_id', profile.school_id)
+      .eq('role', 'admin');
+    if ((count ?? 0) <= 1) {
+      return { status: 'error', code: 'last-admin' };
+    }
+  }
+
+  // auth.admin.deleteUser cascadar till profiles (on delete cascade från
+  // auth.users) — samma mekanism som städningen av testkontona tidigare.
+  const { error } = await serviceClient.auth.admin.deleteUser(userId);
+  if (error) {
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/anvandare');
+  revalidatePath('/en/app/admin/anvandare');
+  return { status: 'success' };
+}
+
 export type CreateSchoolState =
   | { status: 'idle' }
   | { status: 'success' }
@@ -83,6 +148,67 @@ export async function createSchool(
     if (error.code === '23505' || error.message.includes('duplicate')) {
       return { status: 'error', code: 'duplicate', detail: error.message };
     }
+    return { status: 'error', code: 'generic', detail: error.message };
+  }
+
+  revalidatePath('/sv/app/admin/skolor');
+  revalidatePath('/en/app/admin/skolor');
+  return { status: 'success' };
+}
+
+const setStaffAccessSchema = z.object({
+  email: z.string().trim().email().max(200),
+  grant: z.enum(['true', 'false']),
+});
+
+export type SetStaffAccessState =
+  | { status: 'idle' }
+  | { status: 'success' }
+  | {
+      status: 'error';
+      code: 'unauthorized' | 'invalid' | 'not-found' | 'self' | 'generic';
+      detail?: string;
+    };
+
+export async function setStaffAccess(
+  _prev: SetStaffAccessState,
+  formData: FormData,
+): Promise<SetStaffAccessState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.is_staff) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const parsed = setStaffAccessSchema.safeParse({
+    email: formData.get('email'),
+    grant: formData.get('grant'),
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+  const grant = parsed.data.grant === 'true';
+
+  // Service-role: is_staff är skrivskyddat mot allt utom service-role
+  // (protect_is_staff-triggern) — det är den avsiktliga öppningen den här
+  // actionen använder, gated på att anroparen redan är is_staff.
+  const serviceClient = createSupabaseServiceRoleClient();
+  const { data: target } = await serviceClient
+    .from('profiles')
+    .select('id, email')
+    .eq('email', parsed.data.email)
+    .maybeSingle();
+  if (!target) {
+    return { status: 'error', code: 'not-found' };
+  }
+  if (target.id === profile.id && !grant) {
+    return { status: 'error', code: 'self' };
+  }
+
+  const { error } = await serviceClient
+    .from('profiles')
+    .update({ is_staff: grant })
+    .eq('id', target.id);
+  if (error) {
     return { status: 'error', code: 'generic', detail: error.message };
   }
 

@@ -419,6 +419,13 @@ export type Dictionary = {
           updating: string;
           updateSuccess: string;
           updateError: string;
+          remove: {
+            button: string;
+            removing: string;
+            confirm: string;
+            errorLastAdmin: string;
+            errorGeneric: string;
+          };
           invite: {
             heading: string;
             nameLabel: string;
@@ -469,6 +476,20 @@ export type Dictionary = {
             success: string;
             errorExists: string;
             errorGeneric: string;
+          };
+          staff: {
+            heading: string;
+            hint: string;
+            emailLabel: string;
+            grantSubmit: string;
+            granting: string;
+            success: string;
+            errorNotFound: string;
+            errorSelf: string;
+            errorGeneric: string;
+            listEmpty: string;
+            revoke: string;
+            revoking: string;
           };
         };
         classes: {

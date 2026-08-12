@@ -59,43 +59,12 @@ export async function signIn(
 
 export async function signUp(
   _prev: AuthState,
-  formData: FormData,
+  _formData: FormData,
 ): Promise<AuthState> {
-  const email = (formData.get('email') ?? '').toString().trim();
-  const password = (formData.get('password') ?? '').toString();
-  const fullName = (formData.get('name') ?? '').toString().trim();
-  const locale = ((formData.get('locale') ?? 'sv').toString() as Locale) ?? 'sv';
-
-  if (!email || !password || !fullName) {
-    return { status: 'error', code: 'invalid' };
-  }
-  if (password.length < 8) {
-    return { status: 'error', code: 'weak-password' };
-  }
-
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-  const supabase = await supabaseForAuth();
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${siteUrl}/api/auth/callback?next=/${locale}/app`,
-      data: { full_name: fullName },
-    },
-  });
-
-  if (error) {
-    const msg = error.message.toLowerCase();
-    if (msg.includes('already') || msg.includes('registered')) {
-      return { status: 'error', code: 'email-taken' };
-    }
-    if (msg.includes('weak') || msg.includes('short')) {
-      return { status: 'error', code: 'weak-password' };
-    }
-    return { status: 'error', code: 'generic' };
-  }
-
-  return { status: 'success' };
+  // Elevante är inbjudningsbaserat — öppen självregistrering är avstängd
+  // (se app/[locale]/signup/page.tsx). Denna action nås inte längre från
+  // något formulär, men avvisar ändå explicit ifall den anropas direkt.
+  return { status: 'error', code: 'generic' };
 }
 
 export async function signOut(locale: Locale = 'sv'): Promise<void> {

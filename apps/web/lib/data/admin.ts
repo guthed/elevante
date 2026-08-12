@@ -125,6 +125,25 @@ export async function getAdminSchools(): Promise<AdminSchoolRow[]> {
   }));
 }
 
+export type StaffAccountRow = {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+};
+
+// Elevante-personal spänner över skolor (is_staff), så det här är
+// medvetet inte skol-scopat — kräver service-role, precis som
+// getAdminSchools.
+export async function getStaffAccounts(): Promise<StaffAccountRow[]> {
+  const supabase = createSupabaseServiceRoleClient();
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, full_name, email')
+    .eq('is_staff', true)
+    .order('email', { ascending: true });
+  return (data ?? []) as StaffAccountRow[];
+}
+
 export type AdminStats = {
   weeklyLessons: { day: string; count: number }[];
   statusBreakdown: { status: TranscriptStatus; count: number }[];

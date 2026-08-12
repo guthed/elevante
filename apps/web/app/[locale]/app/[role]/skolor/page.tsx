@@ -8,9 +8,10 @@ import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Badge } from '@/components/ui/Badge';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getAdminSchools } from '@/lib/data/admin';
+import { getAdminSchools, getStaffAccounts } from '@/lib/data/admin';
 import { CreateSchoolForm } from './CreateSchoolForm';
 import { BootstrapAdminForm } from './BootstrapAdminForm';
+import { GrantStaffForm, RevokeStaffButton } from './StaffAccessForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -36,7 +37,11 @@ export default async function AdminSchoolsPage({ params }: Props) {
 
   const dict = await getDictionary(locale);
   const labels = dict.app.pages.admin.schools;
-  const schools = await getAdminSchools();
+  const staffLabels = labels.staff;
+  const [schools, staffAccounts] = await Promise.all([
+    getAdminSchools(),
+    getStaffAccounts(),
+  ]);
 
   return (
     <PageWrapper title={labels.title} subtitle={labels.subtitle}>
@@ -78,14 +83,54 @@ export default async function AdminSchoolsPage({ params }: Props) {
           )}
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{labels.createTitle}</CardTitle>
-          </CardHeader>
-          <CardBody>
-            <CreateSchoolForm labels={labels} />
-          </CardBody>
-        </Card>
+        <div className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>{labels.createTitle}</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <CreateSchoolForm labels={labels} />
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{staffLabels.heading}</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <div className="space-y-4">
+                <p className="text-xs text-[var(--color-ink-subtle)]">{staffLabels.hint}</p>
+                {staffAccounts.length === 0 ? (
+                  <p className="text-sm text-[var(--color-ink-subtle)]">
+                    {staffLabels.listEmpty}
+                  </p>
+                ) : (
+                  <ul className="space-y-2">
+                    {staffAccounts.map((account) => (
+                      <li
+                        key={account.id}
+                        className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] pb-2 last:border-b-0"
+                      >
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-[var(--color-primary)]">
+                            {account.full_name ?? '—'}
+                          </p>
+                          <p className="truncate text-xs text-[var(--color-ink-subtle)]">
+                            {account.email ?? '—'}
+                          </p>
+                        </div>
+                        {account.email ? (
+                          <RevokeStaffButton email={account.email} labels={staffLabels} />
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <GrantStaffForm labels={staffLabels} />
+              </div>
+            </CardBody>
+          </Card>
+        </div>
       </div>
     </PageWrapper>
   );

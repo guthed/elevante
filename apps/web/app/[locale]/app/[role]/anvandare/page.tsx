@@ -231,6 +231,7 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
                     <UserRoleForm
                       userId={user.id}
                       currentRole={user.role}
+                      isSelf={user.id === profile.id}
                       labels={labels}
                     />
                   </div>
