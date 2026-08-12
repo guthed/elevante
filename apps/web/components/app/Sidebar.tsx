@@ -4,6 +4,7 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { LanguageSwitcher } from '@/components/public/LanguageSwitcher';
 import { signOut } from '@/app/actions/auth';
 import { SidebarNav } from './SidebarNav';
 import { SchoolBadge } from './SchoolBadge';
@@ -67,6 +68,14 @@ export function Sidebar({ locale, role, dict, user, schoolName, className, isSta
 
       {/* User row */}
       <div className="border-t border-[var(--color-sand)]/60 px-4 py-4">
+        <div className="px-1 pb-3">
+          <LanguageSwitcher
+            currentLocale={locale}
+            pathname={overviewHref}
+            labels={{ sv: 'Svenska', en: 'English' }}
+            ariaLabel={dict.app.account.languageHeading}
+          />
+        </div>
         <div className="flex items-center gap-3">
           <Link
             href={`${base}/${role}/konto`}

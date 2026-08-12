@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { SchoolBadge } from './SchoolBadge';
+import { LanguageSwitcher } from '@/components/public/LanguageSwitcher';
 
 type Props = {
   locale: Locale;
@@ -38,27 +39,35 @@ export function Topbar({ locale, role, dict, schoolName, className }: Props) {
           Elevante
         </Link>
       )}
-      <Link
-        href={`/${locale}/app/${role}/konto`}
-        aria-label={dict.app.account.navLabel}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
+      <div className="flex items-center gap-3">
+        <LanguageSwitcher
+          currentLocale={locale}
+          pathname={`/${locale}/app/${role}`}
+          labels={{ sv: 'SV', en: 'EN' }}
+          ariaLabel={dict.app.account.languageHeading}
+        />
+        <Link
+          href={`/${locale}/app/${role}/konto`}
+          aria-label={dict.app.account.navLabel}
+          className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
         >
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-        </svg>
-      </Link>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+        </Link>
+      </div>
     </header>
   );
 }
