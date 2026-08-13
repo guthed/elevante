@@ -48,6 +48,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      // Server Actions har annars en inbyggd gräns på 1 MB oavsett vad
+      // appens egen kod tillåter — uploadAvatar (app/actions/account.ts)
+      // validerar upp till 5 MB (AVATAR_MAX_BYTES), men den koden körs
+      // aldrig om Next redan stoppat requesten på vägen in. 6 MB ger
+      // marginal för multipart/form-overhead ovanpå själva filen.
+      bodySizeLimit: '6mb',
+    },
+  },
   images: {
     // Uppladdade profilbilder ligger i Supabase Storage (elevante-avatars,
     // publik bucket) — next/image optimerar bara vitlistade domäner.
