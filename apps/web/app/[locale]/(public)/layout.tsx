@@ -91,9 +91,6 @@ export default async function PublicLayout({ children, params }: Props) {
 
   return (
     <>
-      <AlbacrossSiteId />
-      <Albacross />
-      <Snitcher />
       <CookieConsent locale={locale} />
       <JsonLd data={[orgSchema, websiteSchema, softwareSchema]} />
       <a
@@ -109,6 +106,13 @@ export default async function PublicLayout({ children, params }: Props) {
         </main>
         <Footer locale={locale} pathname={pathname} dict={dict} />
       </div>
+      {/* Analysskript sist i <body>: rå HTML (leverantörskrav) men ska inte
+          stå i vägen för att bygga hero-innehållet. Ordningen site-id →
+          track.js måste bevaras (AlbacrossSiteId sätter window._nQc innan
+          track.js läser den). */}
+      <AlbacrossSiteId />
+      <Albacross />
+      <Snitcher />
     </>
   );
 }
