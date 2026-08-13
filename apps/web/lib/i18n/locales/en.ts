@@ -466,6 +466,12 @@ const en: Dictionary = {
             classesEmpty: 'Not part of any class.',
             coursesHeading: 'Courses',
             coursesEmpty: 'Not assigned to any course.',
+            resendHeading: 'Sign-in link',
+            resendHint: 'Send a new link if the old one stopped working or was already used.',
+            resendSubmit: 'Send new link',
+            resendSending: 'Sending…',
+            resendSuccess: 'New link sent to {email}.',
+            resendErrorGeneric: 'Could not send the link.',
           },
           massInvite: {
             heading: 'Invite several at once',

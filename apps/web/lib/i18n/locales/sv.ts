@@ -466,6 +466,12 @@ const sv: Dictionary = {
             classesEmpty: 'Inte kopplad till någon klass.',
             coursesHeading: 'Kurser',
             coursesEmpty: 'Inte tilldelad någon kurs.',
+            resendHeading: 'Inloggningslänk',
+            resendHint: 'Skicka en ny länk om den gamla har slutat fungera eller redan använts.',
+            resendSubmit: 'Skicka ny länk',
+            resendSending: 'Skickar…',
+            resendSuccess: 'Ny länk skickad till {email}.',
+            resendErrorGeneric: 'Kunde inte skicka länken.',
           },
           massInvite: {
             heading: 'Bjud in flera på en gång',

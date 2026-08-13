@@ -329,6 +329,84 @@ export async function inviteUser(
   return { status: 'success', email };
 }
 
+const resendInviteSchema = z.object({
+  userId: z.string().uuid(),
+});
+
+export type ResendInviteState =
+  | { status: 'idle' }
+  | { status: 'success'; email: string }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'not-found' | 'generic'; detail?: string };
+
+// Löser en engångslänk som blivit förbrukad (t.ex. användaren klickade
+// den två gånger, eller nätverket hackade mitt i setSession() på
+// /auth/confirm) utan att kontot behöver raderas och bjudas in på nytt.
+// inviteUserCore försöker type:'invite' först, men den avvisas alltid
+// för ett redan existerande konto (dokumenterad GoTrue-begränsning, se
+// kommentaren i lib/admin/invite-user.ts) och faller då tillbaka till
+// type:'magiclink' — exakt samma väg som redan används för CSV-importens
+// "kontot fanns redan"-fall, bara nu explicit istället för implicit.
+export async function resendInvite(
+  _prev: ResendInviteState,
+  formData: FormData,
+): Promise<ResendInviteState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin') {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const parsed = resendInviteSchema.safeParse({ userId: formData.get('user_id') });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid' };
+  }
+  const rawLocale = (formData.get('locale') ?? '').toString();
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : 'sv';
+
+  // Icke-staff får bara skicka om till användare i sin egen skola (samma
+  // gräns som getAdminUserDetail sätter via RLS för dem). Staff kan skicka
+  // om tvärs skolor, precis som de kan öppna vilken användares detaljsida
+  // som helst.
+  const client = profile.is_staff
+    ? createSupabaseServiceRoleClient()
+    : await createSupabaseServerClient();
+
+  let targetQuery = client
+    .from('profiles')
+    .select('id, email, full_name, role, school_id')
+    .eq('id', parsed.data.userId);
+  if (!profile.is_staff) {
+    targetQuery = targetQuery.eq('school_id', profile.school_id ?? '');
+  }
+  const { data: target } = await targetQuery.maybeSingle();
+
+  if (!target || !target.email || !target.school_id) {
+    return { status: 'error', code: 'not-found' };
+  }
+
+  const { data: school } = await client
+    .from('schools')
+    .select('name')
+    .eq('id', target.school_id)
+    .maybeSingle();
+  if (!school) {
+    return { status: 'error', code: 'generic', detail: 'Skolan hittades inte' };
+  }
+
+  const result = await inviteUserCore({
+    email: target.email,
+    fullName: target.full_name ?? target.email,
+    role: target.role,
+    schoolId: target.school_id,
+    schoolName: school.name,
+    locale,
+  });
+  if (!result.ok) {
+    return { status: 'error', code: 'generic', detail: result.detail };
+  }
+
+  return { status: 'success', email: target.email };
+}
+
 const createClassSchema = z.object({
   name: z.string().trim().min(1).max(100),
   year: z.coerce.number().int().min(1).max(12).optional(),

@@ -10,6 +10,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
 import { getAdminUserDetail } from '@/lib/data/admin';
 import { UserRoleForm } from '../UserRoleForm';
+import { ResendInviteForm } from './ResendInviteForm';
 
 type Props = {
   params: Promise<{ locale: string; role: string; id: string }>;
@@ -131,6 +132,11 @@ export default async function AdminUserDetailPage({ params }: Props) {
                 labels={labels}
               />
             </div>
+            {detail.id === profile.id ? null : (
+              <div className="mt-6">
+                <ResendInviteForm userId={detail.id} locale={locale} labels={detailLabels} />
+              </div>
+            )}
           </CardBody>
         </Card>
       </div>

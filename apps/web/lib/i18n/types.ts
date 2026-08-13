@@ -473,6 +473,12 @@ export type Dictionary = {
             classesEmpty: string;
             coursesHeading: string;
             coursesEmpty: string;
+            resendHeading: string;
+            resendHint: string;
+            resendSubmit: string;
+            resendSending: string;
+            resendSuccess: string;
+            resendErrorGeneric: string;
           };
           massInvite: {
             heading: string;
