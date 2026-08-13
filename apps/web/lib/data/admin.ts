@@ -94,6 +94,39 @@ export async function getAdminUsers(): Promise<AdminUserRow[]> {
   return ((data ?? []) as AdminUserRow[]);
 }
 
+export type AdminUserAuthStatus = {
+  confirmedAt: string | null;
+  lastSignInAt: string | null;
+};
+
+// Staff-only (is_staff) — anropas bara från sidan när profile.is_staff är
+// sant. auth.users är inte nåbar via RLS/PostgREST, så det här går via
+// Admin-API:t (auth.admin.listUsers), inte en vanlig tabellfråga.
+// listUsers() hämtar hela projektets användare (inte skol-scopat) i en enda
+// sida — bra nog i nuvarande skala, men blir en flaskhals om Elevante växer
+// till tusentals användare totalt. Då behövs paginering eller
+// getUserById per rad istället.
+export async function getAuthStatusForUsers(
+  userIds: string[],
+): Promise<Map<string, AdminUserAuthStatus>> {
+  const map = new Map<string, AdminUserAuthStatus>();
+  if (userIds.length === 0) return map;
+
+  const supabase = createSupabaseServiceRoleClient();
+  const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  if (error || !data) return map;
+
+  const idSet = new Set(userIds);
+  for (const u of data.users) {
+    if (!idSet.has(u.id)) continue;
+    map.set(u.id, {
+      confirmedAt: u.confirmed_at ?? u.email_confirmed_at ?? null,
+      lastSignInAt: u.last_sign_in_at ?? null,
+    });
+  }
+  return map;
+}
+
 export type AdminUserDetail = {
   id: string;
   full_name: string | null;

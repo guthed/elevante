@@ -5,7 +5,13 @@ import { getDictionary } from '@/lib/i18n/dictionary';
 import { isRole } from '@/lib/app/roles';
 import { Avatar } from '@/components/ui/Avatar';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getAdminUsers, getAdminClasses, type AdminUserRow } from '@/lib/data/admin';
+import {
+  getAdminUsers,
+  getAdminClasses,
+  getAuthStatusForUsers,
+  type AdminUserRow,
+  type AdminUserAuthStatus,
+} from '@/lib/data/admin';
 import { UserRoleForm } from './UserRoleForm';
 import { InviteUserForm } from './InviteUserForm';
 import { MassInviteForm } from './MassInviteForm';
@@ -47,6 +53,12 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
     getAdminUsers(),
     getAdminClasses(profile.school_id),
   ]);
+
+  // Staff-only — inloggningsstatus är bara synlig för Elevante-personal,
+  // inte för skolans egna admins.
+  const authStatusMap = profile.is_staff
+    ? await getAuthStatusForUsers(all.map((u) => u.id))
+    : new Map<string, AdminUserAuthStatus>();
 
   const counts = {
     all: all.length,
@@ -237,6 +249,13 @@ export default async function AdminUsersPage({ params, searchParams }: Props) {
                         <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
                           {user.email ?? '—'}
                         </p>
+                        {profile.is_staff ? (
+                          <AuthStatusBadge
+                            status={authStatusMap.get(user.id)}
+                            sv={sv}
+                            locale={locale}
+                          />
+                        ) : null}
                       </div>
                     </a>
                   </div>
@@ -287,6 +306,52 @@ function FilterChip({
         {count}
       </span>
     </a>
+  );
+}
+
+// Staff-only (is_staff) — se profile.is_staff-koll ovan. Källan är
+// auth.users via Admin-API:t (getAuthStatusForUsers), inte profiles.
+function AuthStatusBadge({
+  status,
+  sv,
+  locale,
+}: {
+  status: AdminUserAuthStatus | undefined;
+  sv: boolean;
+  locale: Locale;
+}) {
+  if (!status?.confirmedAt) {
+    return (
+      <span className="mt-1 inline-flex items-center gap-1.5 text-[0.75rem] text-[var(--color-ink-muted)]">
+        <span
+          aria-hidden="true"
+          className="h-1.5 w-1.5 rounded-full bg-[var(--color-sand)]"
+        />
+        {sv ? 'Väntar på inloggning' : 'Awaiting sign-in'}
+      </span>
+    );
+  }
+
+  const dateStr = status.lastSignInAt
+    ? new Intl.DateTimeFormat(locale === 'sv' ? 'sv-SE' : 'en-GB', {
+        dateStyle: 'medium',
+      }).format(new Date(status.lastSignInAt))
+    : null;
+
+  return (
+    <span className="mt-1 inline-flex items-center gap-1.5 text-[0.75rem] text-[var(--color-ink-muted)]">
+      <span
+        aria-hidden="true"
+        className="h-1.5 w-1.5 rounded-full bg-[var(--color-sage)]"
+      />
+      {dateStr
+        ? sv
+          ? `Inloggad senast ${dateStr}`
+          : `Signed in ${dateStr}`
+        : sv
+          ? 'Bekräftat konto'
+          : 'Confirmed account'}
+    </span>
   );
 }
 
