@@ -352,11 +352,23 @@ Lokala mätningar visade hög varians mellan körningar med `--throttling-method
 
 **Slutsats:** Element render delay-förbättringen (Task 1:s huvudfynd) syns i lokala mätningar men med stor spridning mellan körningar (t.ex. 1500ms → 1028ms → 91ms i tre separata simulate-körningar) — konsekvent i rätt riktning men för brusigt för ett exakt tal. Den auktoritativa mätningen (PageSpeed Insights mot en riktig deploy, tre körningar, i linje med Step 3 nedan) återstår och kräver att branchen pushas — inte gjort i den här sessionen, väntar på användarens godkännande.
 
-- [ ] **Step 3: Deploya till en preview-miljö och kör PageSpeed Insights mobil mot den, tre gånger**
+- [x] **Step 3: Deploya till en preview-miljö och kör PageSpeed Insights mobil mot den, tre gånger**
 
-Pusha branchen och låt Vercel bygga en preview-deploy. Gå till `https://pagespeed.web.dev/analysis/<preview-url>?form_factor=mobile` och kör om testet minst tre gånger — enstaka körningar kan variera ±0,5s. Notera LCP och Prestanda-poängen för varje körning, jämför mot produktionsbaseline (Prestanda 81, LCP 4,5s, Element render delay 3130ms).
+PR #65 mergades till `main` innan denna mätning hanns göras (användarens beslut — koden var redan granskad tre gånger och lågriskklassad), så mätningen kördes mot **riktig produktion** (`www.elevante.se/sv`) direkt, istället för en preview-URL. Tre fristående körningar via PageSpeed Insights mobil:
 
-Om LCP inte flyttat sig märkbart trots alla tre uppgifterna: gå tillbaka till Task 1:s fynd och undersök om något Long-Task-block pekar på något som inte täcktes här (t.ex. ett fjärde tredjepartsskript, eller en font som laddas via en väg som missades i kodgranskningen).
+| Körning | Prestanda | LCP | Element render delay | TBT | CLS |
+|---|---|---|---|---|---|
+| 1 | 80 | 4,5s (score 0.37) | 2339ms | 10ms | 0.02 |
+| 2 | 82 | 4,4s (score 0.40) | 2359ms | 0ms | 0.012 |
+| 3 | 82 | 4,4s (score 0.40) | 2299ms | 40ms | 0.012 |
+
+Mycket konsekventa (element render delay-spridning på bara ~2 %, till skillnad från de brusiga lokala mätningarna).
+
+**Jämfört med produktionsbaseline (mätt i samma konversation, före alla ändringar):** Prestanda 81, LCP 4,5s, Element render delay 3130ms.
+
+**Resultat:** Element render delay sjönk **~3130ms → ~2330ms i snitt, en verklig och konsekvent minskning på ~800ms (~26 %).** Prestanda-poängen och LCP-siffran rör sig knappt (LCP stannar i "Poor"-facket, >4s, oavsett) eftersom Lighthouds poängfunktion är okänslig inom det intervallet — men den faktiska tidsminskningen är reell, reproducerbar och går i linje med Task 1:s diagnos (för mycket huvudtrådsarbete innan målning). CLS är grönt i produktion (0.01–0.02), vilket bekräftar att den tidigare CLS-observationen i lokala throttlade körningar var mätbrus/timing-känslighet, inte ett produktionsproblem.
+
+**Slutsats:** planens två lågriskfixar (Task 2 + 3) gav ett äkta, måttligt, mätbart resultat. Task 4:s hypotes (krymp JS-chunken) höll inte — bekräftat både lokalt och nu i produktion att LCP fortfarande domineras av samma elementrendering-fördröjning, bara ~800ms kortare än innan. Kvarstående flaskhals (~2,3s render delay) är sannolikt fortsatt ramverks-/hydreringsrelaterad (React/Next runtime, ~226 KB) — en egen, större utredning utanför den här planens scope om ytterligare förbättring önskas.
 
 - [x] **Step 4: Uppdatera CLAUDE.md:s fasminne**
 

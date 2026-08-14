@@ -202,34 +202,39 @@ skarp testkörning: utkast skrivet för "ai-bot för lärare" (två redaktionell
 en felattribuerad källa rättad), och en funktionell körning av veckojobbets promptlogik som
 avslöjade och löste en riktig bugg (Tema-fältet tomt på nya rader). Ingen ny app-kod. Spec+plan
 i `docs/superpowers/`.
-### Mobil LCP-fördröjning — diagnos + tre fixar: KODAT, VÄNTAR PÅ DEPLOY-VERIFIERING (2026-08-14)
+### Mobil LCP-fördröjning — diagnos + tre fixar: KLAR (2026-08-14)
 PageSpeed Insights (desktop 99/96/96/92) ledde till en mobilmätning som visade Prestanda 81 och
 LCP 4,5s trots TTFB 4ms — hela fördröjningen satt i "elementrendering" (3,1s) på startsidans
 hero-transkript (`LessonTranscriptDemo`). Lokal Lighthouse-baseline (`docs/superpowers/plans/
 2026-08-13-mobil-lcp-fordrojning.md`) visade `scriptEvaluation` dominera huvudtrådsarbetet
 (3,8s) — pekade mot för mycket JS att tolka/köra innan målning, inte en enskild blockerande
-resurs. Tre commits på branchen `worktree-mobil-lcp-fordrojning` (ej pushad/mergad än): **(1)**
-tredjeparts-analysskripten (Albacross, Snitcher) flyttade från toppen av `<body>` till slutet,
-i `apps/web/app/[locale]/(public)/layout.tsx` — leverantörskontrakten (rå HTML, `window._nQc`-
-ordning) opåverkade. **(2)** `PageFadeIn.tsx` — hoppar över `<main>`:s 280ms opacity-fade-in på
-allra första sidladdningen (ingen "föregående sida" att tona in från då); tre granskningsrundor
-hittade och fixade en riktig bugg på vägen (animationen slutade fungera efter första klientsid-
-navigeringen — löst med `key={pathname}`-baserad remount istället för en `useEffect`+boolean
-som fastnade permanent på `true`). **(3)** Bundle-analyserade den 72 KB/226 KB-chunk PageSpeed
-flaggade för oanvänd kod + legacy-polyfills — **ärligt negativt resultat**: chunken visade sig
-vara precompilerad `react-dom`/Next-runtime, inte en tredjepartsdependency eller egna kompo-
-nenter, så `browserslist`-fixen planen föreslog ger 0% mätbar effekt (verifierat, sedan reverterat
-enligt principen "ingen ändring behålls om den inte mätbart förbättrar"); `@next/bundle-analyzer`-
-verktyget (med `analyze`-npm-script, kräver `--webpack`-flagga eftersom Turbopack saknar stöd)
-behölls som framtida diagnosverktyg. **Sidoupptäckt:** en CLS-regression (0,013→0,40) i lokala
-mätningar visade sig vid utredning finnas redan i koden FÖRE de här ändringarna (orsak: webbfont-
-swap på Newsreader/Geist, `display: 'swap'`, helt orört av det här arbetet) — bekräftat genom att
-tillfälligt köra Lighthouse mot den återställda pre-ändrings-koden i samma worktree. Egen framtida
-uppgift, inte en regression härifrån. Lokala devtools-throttlade mätningar (samma maskin, samma
-beroenden, före/efter) visar konsekvent förbättring i rätt riktning (LCP 2,2s→1,9s, TBT 120ms→
-80ms) men med hög varians mellan körningar på en delad utvecklingsmaskin — den auktoritativa
-mätningen (PageSpeed Insights mot en riktig preview-deploy, tre körningar) återstår och kräver att
-branchen pushas, vilket inte gjorts i den här sessionen.
+resurs. Tre commits, granskade i tre omgångar (subagent-driven-development, spec- + kvalitets-
+granskning per uppgift), mergade till main via [PR #65](https://github.com/guthed/elevante/pull/65)
+(`1e7f9f8`): **(1)** tredjeparts-analysskripten (Albacross, Snitcher) flyttade från toppen av
+`<body>` till slutet, i `apps/web/app/[locale]/(public)/layout.tsx` — leverantörskontrakten
+(rå HTML, `window._nQc`-ordning) opåverkade. **(2)** `PageFadeIn.tsx` — hoppar över `<main>`:s
+280ms opacity-fade-in på allra första sidladdningen (ingen "föregående sida" att tona in från
+då); tre granskningsrundor hittade och fixade en riktig bugg på vägen (animationen slutade
+fungera efter första klientsidnavigeringen — löst med `key={pathname}`-baserad remount istället
+för en `useEffect`+boolean som fastnade permanent på `true`). **(3)** Bundle-analyserade den
+72 KB/226 KB-chunk PageSpeed flaggade för oanvänd kod + legacy-polyfills — **ärligt negativt
+resultat**: chunken visade sig vara precompilerad `react-dom`/Next-runtime, inte en tredjeparts-
+dependency eller egna komponenter, så `browserslist`-fixen planen föreslog gav 0% mätbar effekt
+(verifierat, sedan reverterat enligt principen "ingen ändring behålls om den inte mätbart
+förbättrar"); `@next/bundle-analyzer`-verktyget (med `analyze`-npm-script, kräver `--webpack`-
+flagga eftersom Turbopack saknar stöd) behölls som framtida diagnosverktyg. **Sidoupptäckt:** en
+CLS-regression (0,013→0,40) i lokala mätningar visade sig vid utredning finnas redan i koden
+FÖRE de här ändringarna (orsak: webbfont-swap på Newsreader/Geist, `display: 'swap'`, helt orört
+av det här arbetet) — bekräftat genom att tillfälligt köra Lighthouse mot den återställda pre-
+ändrings-koden i samma worktree, och bekräftat grönt igen (CLS 0.01–0.02) i produktionsmätningen
+nedan. **Auktoritativ mätning — tre körningar av PageSpeed Insights mot `www.elevante.se/sv` efter
+merge till produktion:** Element render delay sjönk **3130ms → ~2330ms i snitt (~800ms/26%
+minskning, mycket konsekvent mellan körningarna, ±2%)**. Prestanda-poängen (80–82) och LCP-talet
+(4,4–4,5s) rör sig knappt eftersom Lighthouds poängfunktion är trubbig inom "Poor"-intervallet
+(>4s) — den faktiska tidsminskningen är dock reell och reproducerbar. Kvarstående flaskhals
+(~2,3s render delay) är sannolikt fortsatt ramverks-/hydreringsrelaterad (React/Next-runtimen,
+samma ~226 KB-chunk som Task 4 inte kunde krympa) — en egen, större utredning om ytterligare
+LCP-förbättring önskas.
 
 ---
 
