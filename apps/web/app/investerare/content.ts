@@ -52,13 +52,13 @@ export const CALC = {
 export const MARKET_RINGS = [
   // Radie ∝ √(elevtal) → cirkelns YTA speglar antalet elever (perceptuellt korrekt).
   // multiple = ungefärlig jämförelse mot den svenska hemmamarknaden (1×).
-  { radius: 21, color: 'var(--color-coral)', fillOpacity: 0.42, value: '367 000', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholms län, ~88 000 gymnasieelever på knappt 200 skolor.', en: 'Home market — start: Stockholm county, ~88,000 upper-secondary students across nearly 200 schools.' } },
-  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 4×', label: { sv: 'elever på gymnasial nivå i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 4× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 4× the home market. Natural expansion after Swedish validation.' } },
-  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 50×', label: { sv: 'elever på gymnasial nivå i EU27', en: 'upper-secondary students in the EU27' }, sub: { sv: '≈ 50× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 50× the home market — the big opportunity. Same language model per market.' } },
+  { radius: 21, color: 'var(--color-coral)', fillOpacity: 0.42, value: '316 554', multiple: '1×', label: { sv: 'gymnasieelever i Sverige', en: 'upper-secondary students in Sweden' }, sub: { sv: 'Hemmamarknad — start: Stockholms län, 66 891 gymnasieelever på knappt 200 skolor.', en: 'Home market — start: Stockholm county, 66,891 upper-secondary students across nearly 200 schools.' } },
+  { radius: 43, color: 'var(--color-sage-deep)', fillOpacity: 0.26, value: '1,48 milj.', multiple: '≈ 4,7×', label: { sv: 'elever på gymnasial nivå i Norden', en: 'upper-secondary students in the Nordics' }, sub: { sv: '≈ 4,7× hemmamarknaden. Naturlig expansion efter svensk validering.', en: '≈ 4.7× the home market. Natural expansion after Swedish validation.' } },
+  { radius: 150, color: 'var(--color-ink)', fillOpacity: 0.1, value: '18,3 milj.', multiple: '≈ 58×', label: { sv: 'elever på gymnasial nivå i EU27', en: 'upper-secondary students in the EU27' }, sub: { sv: '≈ 58× hemmamarknaden — den stora möjligheten. Samma språkmodell per marknad.', en: '≈ 58× the home market — the big opportunity. Same language model per market.' } },
 ];
 
 export const EXPANSION = [
-  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '367 000 elever', en: '367,000 students' }, tam: '≈ 184 MSEK' },
+  { tag: { sv: 'FAS 1 · PILOT', en: 'PHASE 1 · PILOT' }, region: { sv: 'Sverige', en: 'Sweden' }, students: { sv: '316 554 elever', en: '316,554 students' }, tam: '≈ 158 MSEK' },
   { tag: { sv: 'FAS 2 · FÖRSTAMARKNAD', en: 'PHASE 2 · FIRST MARKET' }, region: { sv: 'Norden', en: 'The Nordics' }, students: { sv: '1,48 milj. elever', en: '1.48M students' }, tam: '≈ 740 MSEK' },
   { tag: { sv: 'FAS 3 · EXPANSION', en: 'PHASE 3 · EXPANSION' }, region: { sv: 'Europa · EU27', en: 'Europe · EU27' }, students: { sv: '18,3 milj. elever', en: '18.3M students' }, tam: '≈ 9,1 mdSEK' },
 ];
@@ -151,11 +151,6 @@ export const TRACTION: TractionItem[] = [
       sv: 'Amerikanska Gymnasiet. Avsedd pilot hösten 2026: 2–3 klasser, ~60–90 elever, 3–5 lärare. Koncernen omfattar 5 skolor / ~2 000 elever — expansion efter validerad pilot.',
       en: 'Amerikanska Gymnasiet. Intended pilot autumn 2026: 2–3 classes, ~60–90 students, 3–5 teachers. The group spans 5 schools / ~2,000 students — expansion after a validated pilot.',
     },
-  },
-  {
-    tag: { sv: 'PILOT', en: 'PILOT' },
-    title: { sv: 'Dialog med Nacka gymnasium', en: 'In dialogue with Nacka Gymnasium' },
-    desc: { sv: 'Samtal med rektor pågår. Pilot startar hösten 2026 (4–9 skolor).', en: 'Talks with the principal underway. Pilot starts autumn 2026 (4–9 schools).' },
   },
   {
     tag: { sv: 'PRODUKT', en: 'PRODUCT' },
@@ -276,6 +271,7 @@ export interface BusinessModelCopy {
   eyebrow: L;
   title: L;
   kpis: { value: string; label: L }[];
+  aiMargin: { value: string; label: L };
   callout: { part1: L; part2: L };
   source: L;
 }
@@ -334,6 +330,7 @@ export interface AskCopy {
   eyebrow: L;
   title: { part1: L; accent: string };
   lede: L;
+  instrument: { label: L; body: L };
   investorWish: L;
   plus: { label: L; body: L };
   fundsTitle: L;
@@ -812,8 +809,8 @@ export const COPY: {
       },
     },
     source: {
-      sv: 'Sverige: Skolverket, gymnasieskolan läsåret 2023/24 (367 000 elever) — vår faktiska hemmamarknad. Norden 1,48 milj. och EU27 18,3 milj.: Eurostat 2023, gymnasial nivå (ISCED 3, något bredare). Stockholms län ur Skolverkets register.',
-      en: 'Sweden: Skolverket, upper-secondary school 2023/24 (367,000 students) — our actual home market. Nordics 1.48M and EU27 18.3M: Eurostat 2023, upper-secondary level (ISCED 3, slightly broader). Stockholm county from Skolverket.',
+      sv: 'Sverige: Skolverket, gymnasieskolan läsåret 2023/24 (316 554 elever) — vår faktiska hemmamarknad. Norden 1,48 milj. och EU27 18,3 milj.: Eurostat 2023, gymnasial nivå (ISCED 3, något bredare). Stockholms län ur Skolverkets register.',
+      en: 'Sweden: Skolverket, upper-secondary school 2023/24 (316,554 students) — our actual home market. Nordics 1.48M and EU27 18.3M: Eurostat 2023, upper-secondary level (ISCED 3, slightly broader). Stockholm county from Skolverket.',
     },
   },
 
@@ -829,8 +826,8 @@ export const COPY: {
     },
     anchorStrip: {
       part1: {
-        sv: '500 SEK/elev/år är en bråkdel av en procent av per-elev-finansieringen',
-        en: '500 SEK/student/year is a fraction of a percent of per-student funding',
+        sv: '500 SEK/elev/år är 0,3–0,9 % av per-elev-finansieringen',
+        en: '500 SEK/student/year is 0.3–0.9% of per-student funding',
       },
       part2: {
         sv: ' i varje kartlagt land. Bäst matchande marknader utöver Norden: Polen och Italien.',
@@ -874,6 +871,13 @@ export const COPY: {
       { value: '100 %', label: { sv: 'återkommande intäkt — abonnemang per läsår', en: 'recurring revenue — subscription per school year' } },
       { value: '< 0,5 %', label: { sv: 'av skolpengen per elev', en: 'of the per-student grant' } },
     ],
+    aiMargin: {
+      value: '98,4 %',
+      label: {
+        sv: 'AI-bruttomarginal — AI-kostnaden är bara ~8 SEK per elev och år (transkribering, LLM och embeddings hos Berget AI).',
+        en: 'AI gross margin — AI cost is just ~8 SEK per student per year (transcription, LLM and embeddings via Berget AI).',
+      },
+    },
     callout: {
       part1: { sv: '500 SEK är under 0,5 % av skolpengen', en: '500 SEK is under 0.5% of the per-student grant' },
       part2: {
@@ -884,10 +888,12 @@ export const COPY: {
     source: {
       sv:
         'Skolpeng/per-elev-finansiering: Skolverkets kostnadsstatistik 2024 (≈ 100 000–130 000 SEK/gymnasieelev). ' +
-        'Bruttomarginal och enhetsekonomi är Elevantes egna estimat.',
+        'Bruttomarginal och enhetsekonomi är Elevantes egna estimat. AI-bruttomarginalen (98,4 %) bygger på verklig Berget AI-prissättning (aug 2026): ' +
+        'transkribering (KB-Whisper) ≈ 6,5 SEK, LLM-hybrid ≈ 1,3 SEK, embeddings ≈ 0,2 SEK per elev och år.',
       en:
         'Per-student grant/funding: Skolverket cost statistics 2024 (≈ 100,000–130,000 SEK/upper-secondary student). ' +
-        'Gross margin and unit economics are Elevante’s own estimates.',
+        'Gross margin and unit economics are Elevante’s own estimates. The AI gross margin (98.4%) is based on actual Berget AI pricing (Aug 2026): ' +
+        'transcription (KB-Whisper) ≈ 6.5 SEK, LLM hybrid ≈ 1.3 SEK, embeddings ≈ 0.2 SEK per student per year.',
     },
   },
 
@@ -910,10 +916,10 @@ export const COPY: {
         },
       },
       {
-        label: 'M21–22',
+        label: 'M17',
         desc: {
-          sv: 'Operativ break-even. Kapitalet räcker hela vägen.',
-          en: 'Operating break-even. Capital lasts all the way.',
+          sv: 'Operativ break-even — första månaden med positivt nettoresultat.',
+          en: 'Operating break-even — first month with a positive net result.',
         },
       },
       {
@@ -937,8 +943,8 @@ export const COPY: {
       scenarios: [
         {
           name: { sv: 'Enligt plan', en: 'On plan' },
-          cash: { sv: '8,2 MSEK', en: '8.2 MSEK' },
-          note: { sv: 'lägsta kassa · break-even månad 21', en: 'lowest cash · break-even month 21' },
+          cash: { sv: '7,9 MSEK', en: '7.9 MSEK' },
+          note: { sv: 'lägsta kassa, månad 16 (nov 2027) · break-even månad 17', en: 'lowest cash, month 16 (Nov 2027) · break-even month 17' },
         },
         {
           name: { sv: 'Halverad adoption', en: 'Halved adoption' },
@@ -954,8 +960,8 @@ export const COPY: {
       why: {
         label: { sv: 'Varför 14 MSEK? ', en: 'Why 14 MSEK? ' },
         body: {
-          sv: 'Basplanen dippar inte under 8,2 MSEK — men nedsido-scenarierna gör det, ner mot ~4 MSEK. Bufferten är inte slack; den låter oss hålla tempo och absorbera försening, högre kostnader eller lägre adoption utan en nödrunda vid sämsta läge.',
-          en: 'The base plan doesn’t dip below 8.2 MSEK — but the downside scenarios do, toward ~4 MSEK. The buffer isn’t slack; it lets us keep tempo and absorb delay, higher costs or slower adoption without an emergency round at the worst possible moment.',
+          sv: 'Basplanen dippar inte under 7,9 MSEK (månad 16) och stiger till 12,3 MSEK vid månad 24 — men nedsidoscenarierna dippar längre, ner mot ~4 MSEK. Bufferten är inte slack; den låter oss hålla tempo och absorbera försening, högre kostnader eller lägre adoption utan en nödrunda vid sämsta läge.',
+          en: 'The base plan doesn’t dip below 7.9 MSEK (month 16) and climbs to 12.3 MSEK by month 24 — but the downside scenarios dip further, toward ~4 MSEK. The buffer isn’t slack; it lets us keep tempo and absorb delay, higher costs or slower adoption without an emergency round at the worst possible moment.',
         },
       },
       source: {
@@ -976,8 +982,8 @@ export const COPY: {
       en: 'Product built. Pilot coming in.',
     },
     source: {
-      sv: 'Status per juni 2026 (Elevante). 18 månader i utveckling. LOI undertecknad med Amerikanska Gymnasiet — avsedd pilot hösten 2026: 2–3 klasser, ~60–90 elever, 3–5 lärare (koncernen 5 skolor / ~2 000 elever, expansion efter pilot); Nacka gymnasium i dialog; Berget-villkor under förhandling.',
-      en: 'Status as of June 2026 (Elevante). 18 months in development. LOI signed with Amerikanska Gymnasiet — intended pilot autumn 2026: 2–3 classes, ~60–90 students, 3–5 teachers (the group spans 5 schools / ~2,000 students, expansion after the pilot); Nacka Gymnasium in dialogue; Berget terms under negotiation.',
+      sv: 'Status per juni 2026 (Elevante). 18 månader i utveckling. LOI undertecknad med Amerikanska Gymnasiet — avsedd pilot hösten 2026: 2–3 klasser, ~60–90 elever, 3–5 lärare (koncernen 5 skolor / ~2 000 elever, expansion efter pilot); Berget-villkor under förhandling.',
+      en: 'Status as of June 2026 (Elevante). 18 months in development. LOI signed with Amerikanska Gymnasiet — intended pilot autumn 2026: 2–3 classes, ~60–90 students, 3–5 teachers (the group spans 5 schools / ~2,000 students, expansion after the pilot); Berget terms under negotiation.',
     },
   },
 
@@ -994,7 +1000,7 @@ export const COPY: {
     rows: [
       {
         category: { sv: 'Konsument-AI', en: 'Consumer AI' },
-        examples: 'ChatGPT, Copilot, Gemini',
+        examples: 'ChatGPT, Copilot, Khanmigo',
         desc: { sv: 'Hittar på fakta. Ingen läroplanskoppling.', en: 'Invents facts. No curriculum link.' },
         isElevante: false,
       },
@@ -1048,11 +1054,11 @@ export const COPY: {
         initials: 'JG',
         role: { sv: 'Grundare · Produkt & teknik', en: 'Founder · Product & tech' },
         bio: {
-          sv: 'Grundade Elevante och byggde hela produkten själv — inspelning, transkribering, frontend och infrastruktur — via Claude Code, utan att skriva en rad kod. 20+ år i digital och mobil produktutveckling: från tidiga mobilsatsningar för bolag som Telia till Creative Director på Activeark JWT och Mirum. Samma lean, AI-assisterade metod har redan levererat Ordo, Bokmässans programverktyg och Kompis — grundidén bakom Elevante.',
-          en: 'Founded Elevante and built the entire product himself — recording, transcription, frontend and infrastructure — via Claude Code, without writing a line of code. 20+ years in digital and mobile product development: from early mobile work for companies like Telia to Creative Director at Activeark JWT and Mirum. The same lean, AI-assisted method has already shipped Ordo, the Gothenburg Book Fair’s planning tool, and Kompis — the seed idea behind Elevante.',
+          sv: 'Grundade Elevante och byggde hela produkten själv — inspelning, transkribering, frontend och infrastruktur — via Claude Code, utan att skriva eller läsa en rad kod. 20+ år i digital och mobil produktutveckling: från tidiga mobilsatsningar på 12snap-Lokomobil och More Mobile Relations till Creative Director på Activeark JWT och Mirum. Samma lean, AI-assisterade metod har redan levererat Ordo, Bokmässans programverktyg och Kompis — grundidén bakom Elevante.',
+          en: 'Founded Elevante and built the entire product himself — recording, transcription, frontend and infrastructure — via Claude Code, without writing or reading a line of code. 20+ years in digital and mobile product development: from early mobile work at 12snap-Lokomobil and More Mobile Relations to Creative Director at Activeark JWT and Mirum. The same lean, AI-assisted method has already shipped Ordo, the Gothenburg Book Fair’s planning tool, and Kompis — the seed idea behind Elevante.',
         },
         highlights: [
-          { sv: 'VD, Availsthlm', en: 'CEO, Availsthlm' },
+          { sv: 'VD, Availsthlm sedan 2021', en: 'CEO, Availsthlm since 2021' },
           { sv: 'Creative Director — Activeark JWT & Mirum', en: 'Creative Director — Activeark JWT & Mirum' },
           { sv: '20+ år mobil & digital produkt', en: '20+ yrs mobile & digital product' },
         ],
@@ -1095,8 +1101,8 @@ export const COPY: {
       {
         title: { sv: 'Kapitaleffektivt', en: 'Capital-efficient' },
         desc: {
-          sv: '14 MSEK till break-even månad 22. Kassan återställd till ~20 MSEK månad 36 — utan ny finansiering.',
-          en: '14 MSEK to break-even in month 22. Cash restored to ~20 MSEK by month 36 — with no new financing.',
+          sv: '14 MSEK till break-even månad 17. Kassan stiger till 12,3 MSEK vid månad 24 (juli 2028) — utan ny finansiering.',
+          en: '14 MSEK to break-even in month 17. Cash climbs to 12.3 MSEK by month 24 (Jul 2028) — with no new financing.',
         },
       },
       {
@@ -1116,8 +1122,8 @@ export const COPY: {
       {
         title: { sv: 'Stor marknad', en: 'Large market' },
         desc: {
-          sv: '367 000 gymnasieelever i Sverige; 18,3 milj. på gymnasial nivå i EU27 — plus vuxen- och yrkesutbildning.',
-          en: '367,000 upper-secondary students in Sweden; 18.3M at upper-secondary level in the EU27 — plus adult and vocational education.',
+          sv: '316 554 gymnasieelever i Sverige; 18,3 milj. på gymnasial nivå i EU27 — plus vuxen- och yrkesutbildning.',
+          en: '316,554 upper-secondary students in Sweden; 18.3M at upper-secondary level in the EU27 — plus adult and vocational education.',
         },
       },
       {
@@ -1213,6 +1219,13 @@ export const COPY: {
     lede: {
       sv: 'En pre-seed-runda på 14 MSEK (€1,25M) för 24–30 månaders runway — räcker till operativ break-even utan ny finansiering.',
       en: 'A pre-seed round of 14 MSEK (€1.25M) for 24–30 months of runway — enough to reach operating break-even without new financing.',
+    },
+    instrument: {
+      label: { sv: 'Instrument: ', en: 'Instrument: ' },
+      body: {
+        sv: 'SAFE eller konvertibel, värderingstak (cap) ~65 MSEK, 20 % rabatt vid konvertering. Pre-money-intervall 45–60 MSEK, grundat i tre metoder: ägarandel/kapital, forward ARR-multipel och marknadsjämförelse mot nordisk pre-seed AI-SaaS.',
+        en: 'SAFE or convertible note, valuation cap ~65 MSEK, 20% discount on conversion. Pre-money range 45–60 MSEK, grounded in three methods: ownership stake, forward ARR multiple, and Nordic pre-seed AI SaaS comparables.',
+      },
     },
     investorWish: {
       sv: 'Vad vi vill av en investerare: en operativ partner med räckvidd in i skola och utbildning — inte bara kapital.',
