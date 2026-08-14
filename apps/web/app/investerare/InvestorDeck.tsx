@@ -298,21 +298,24 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
                   id: 'larare',
                   label: t(lang, MEDIA.productTabLarare),
                   panel: (
-                    <div className="overflow-hidden rounded-2xl bg-canvas shadow-lift">
-                      <div className="flex items-center gap-2 border-b border-ink/10 px-5 py-3">
-                        <span className="h-2.5 w-2.5 rounded-full bg-coral/70" aria-hidden />
-                        <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
-                        <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
-                        <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
-                        <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
-                          <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
-                          {t(lang, MEDIA.kartaLiveBadge)}
-                        </span>
+                    <>
+                      <div className="overflow-hidden rounded-2xl bg-canvas shadow-lift">
+                        <div className="flex items-center gap-2 border-b border-ink/10 px-5 py-3">
+                          <span className="h-2.5 w-2.5 rounded-full bg-coral/70" aria-hidden />
+                          <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
+                          <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
+                          <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
+                          <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
+                            <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
+                            {t(lang, MEDIA.kartaLiveBadge)}
+                          </span>
+                        </div>
+                        <div className="p-4 sm:p-6">
+                          <InsightHeatmap insight={DEMO_LESSON_INSIGHT} aiInsight={DEMO_AI_INSIGHT} />
+                        </div>
                       </div>
-                      <div className="p-4 sm:p-6">
-                        <InsightHeatmap insight={DEMO_LESSON_INSIGHT} aiInsight={DEMO_AI_INSIGHT} />
-                      </div>
-                    </div>
+                      <p className="mt-3 text-sm text-ink-muted">{t(lang, MEDIA.kartaLiveNote)}</p>
+                    </>
                   ),
                 },
               ]}
