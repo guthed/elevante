@@ -337,14 +337,20 @@ npx --yes lighthouse http://localhost:3100/sv \
 kill %1
 ```
 
-- [ ] **Step 2: Jämför mot baseline**
+- [x] **Step 2: Jämför mot baseline**
 
-| Mätvärde | Innan (Task 1, lokalt) | Efter |
+Lokala mätningar visade hög varians mellan körningar med `--throttling-method=simulate` (delad utvecklingsmaskin med många parallella processer under sessionen — inte en isolerad mätmiljö). Den mer tillförlitliga jämförelsen kör `--throttling-method=devtools` (verklig, inte simulerad, CPU/nätverksbegränsning) mot exakt samma commit-beroenden, före vs. efter Task 2–4, på samma maskin i samma session:
+
+| Mätvärde (devtools-throttling, lokalt) | Innan (`0d60502`) | Efter (`396bb69`) |
 |---|---|---|
-| Performance | 0.54 | ? |
-| LCP | 5,0s | ? |
-| Element render delay | 1500ms | ? |
-| Total Blocking Time | 1750ms | ? |
+| Performance | 0.77 | 0.79 |
+| LCP | 2,2s (score 0.94) | 1,9s (score 0.97) |
+| Total Blocking Time | 120ms | 80ms |
+| CLS | 0.396 | 0.403 |
+
+**CLS-observation:** `--throttling-method=simulate`-körningarna visade CLS 0.40+ (mot 0.013 i Task 1:s enda baseline-körning) — vid första anblick en regression. Utredde detta genom att tillfälligt återställa `layout.tsx` till pre-Task-2-versionen (samma worktree, samma `node_modules`, ingen commit) och köra om: **samma CLS ~0.396 uppstår även på den ORIGINALA koden.** Lighthouse pekar själv ut orsaken som `"Web font"` (Newsreader/Geist via `next/font/google`, `display: 'swap'`) — helt orört av Task 2–4. Detta är alltså en redan existerande, throttling-känslig egenhet, inte en regression, och utanför den här planens scope. Värt en egen framtida utredning (t.ex. `size-adjust`-fontmetrik eller `<link rel="preload">` för fontfilerna), men bekräftat att den INTE orsakats av det här arbetet.
+
+**Slutsats:** Element render delay-förbättringen (Task 1:s huvudfynd) syns i lokala mätningar men med stor spridning mellan körningar (t.ex. 1500ms → 1028ms → 91ms i tre separata simulate-körningar) — konsekvent i rätt riktning men för brusigt för ett exakt tal. Den auktoritativa mätningen (PageSpeed Insights mot en riktig deploy, tre körningar, i linje med Step 3 nedan) återstår och kräver att branchen pushas — inte gjort i den här sessionen, väntar på användarens godkännande.
 
 - [ ] **Step 3: Deploya till en preview-miljö och kör PageSpeed Insights mobil mot den, tre gånger**
 
@@ -352,6 +358,6 @@ Pusha branchen och låt Vercel bygga en preview-deploy. Gå till `https://pagesp
 
 Om LCP inte flyttat sig märkbart trots alla tre uppgifterna: gå tillbaka till Task 1:s fynd och undersök om något Long-Task-block pekar på något som inte täcktes här (t.ex. ett fjärde tredjepartsskript, eller en font som laddas via en väg som missades i kodgranskningen).
 
-- [ ] **Step 4: Uppdatera CLAUDE.md:s fasminne**
+- [x] **Step 4: Uppdatera CLAUDE.md:s fasminne**
 
-Lägg till en kort post under "Fasminne" i `CLAUDE.md` som sammanfattar vad som gjordes och de uppmätta före/efter-siffrorna, i linje med befintliga poster.
+Lagt till i `CLAUDE.md` (se Fasminne).
