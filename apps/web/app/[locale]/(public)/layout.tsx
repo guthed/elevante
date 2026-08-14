@@ -8,6 +8,7 @@ import { Footer } from '@/components/public/Footer';
 import { JsonLd } from '@/components/public/JsonLd';
 import { CookieConsent } from '@/components/public/CookieConsent';
 import { Albacross, AlbacrossSiteId, Snitcher } from '@/components/public/Analytics';
+import { PageFadeIn } from '@/components/public/PageFadeIn';
 
 type Props = {
   children: ReactNode;
@@ -91,9 +92,6 @@ export default async function PublicLayout({ children, params }: Props) {
 
   return (
     <>
-      <AlbacrossSiteId />
-      <Albacross />
-      <Snitcher />
       <CookieConsent locale={locale} />
       <JsonLd data={[orgSchema, websiteSchema, softwareSchema]} />
       <a
@@ -104,11 +102,16 @@ export default async function PublicLayout({ children, params }: Props) {
       </a>
       <div className="flex min-h-screen flex-col">
         <Header locale={locale} pathname={pathname} dict={dict} />
-        <main id="main-content" className="flex-1 animate-page-in">
-          {children}
-        </main>
+        <PageFadeIn>{children}</PageFadeIn>
         <Footer locale={locale} pathname={pathname} dict={dict} />
       </div>
+      {/* Analysskript sist i <body>: rå HTML (leverantörskrav) men ska inte
+          stå i vägen för att bygga hero-innehållet. Ordningen site-id →
+          track.js måste bevaras (AlbacrossSiteId sätter window._nQc innan
+          track.js läser den). */}
+      <AlbacrossSiteId />
+      <Albacross />
+      <Snitcher />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import createBundleAnalyzer from '@next/bundle-analyzer';
 
 const securityHeaders = [
   // Mindre permissivt än default; tillåter inline-stilar (Tailwind/PostCSS),
@@ -85,4 +86,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzer(nextConfig);
