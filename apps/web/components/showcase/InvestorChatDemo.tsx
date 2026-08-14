@@ -13,13 +13,15 @@ import {
 // Runtime-meddelande (upplöst till aktuellt språk). Live-svar kommer redan som strängar.
 type Msg = { role: 'user' | 'assistant'; content: string; citation?: { ts: string; quote: string } };
 
-export default function InvestorChatDemo({ lang }: { lang: Lang }) {
+export default function InvestorChatDemo({ lang, seeded = true }: { lang: Lang; seeded?: boolean }) {
   const [messages, setMessages] = useState<Msg[]>(() =>
-    DEMO_SEED.map((m) => ({
-      role: m.role,
-      content: t(lang, m.content),
-      citation: m.citation ? { ts: m.citation.ts, quote: t(lang, m.citation.quote) } : undefined,
-    })),
+    seeded
+      ? DEMO_SEED.map((m) => ({
+          role: m.role,
+          content: t(lang, m.content),
+          citation: m.citation ? { ts: m.citation.ts, quote: t(lang, m.citation.quote) } : undefined,
+        }))
+      : [],
   );
   const [input, setInput] = useState('');
   const [pending, setPending] = useState(false);
@@ -83,7 +85,7 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
           {' · '}
           {t(lang, DEMO_LESSON_TITLE)}
         </p>
-        <p className="mt-2 text-sm text-ink-secondary">{t(lang, CHAT_UI.lede)}</p>
+        <p className="mt-2 text-sm text-ink-secondary">{t(lang, seeded ? CHAT_UI.lede : CHAT_UI.ledeEmpty)}</p>
 
         {/* Konversation */}
         <div

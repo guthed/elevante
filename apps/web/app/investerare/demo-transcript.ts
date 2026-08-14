@@ -69,6 +69,10 @@ export const CHAT_UI: Record<string, L> = {
     sv: 'En pågående chatt om dagens Ekologi-lektion. Testa själv — ställ en egen fråga om ekologin nedan.',
     en: 'An ongoing chat about today’s Ecology lesson. Try it yourself — ask your own question about ecology below.',
   },
+  ledeEmpty: {
+    sv: 'Ställ en fråga om Ekologi-lektionen — eller prova ett förslag nedan.',
+    en: 'Ask a question about the Ecology lesson — or try a suggestion below.',
+  },
   placeholder: { sv: 'Ställ en fråga om ekologin…', en: 'Ask a question about ecology…' },
   send: { sv: 'Fråga', en: 'Ask' },
   thinking: { sv: 'Elevante läser lektionen…', en: 'Elevante is reading the lesson…' },
