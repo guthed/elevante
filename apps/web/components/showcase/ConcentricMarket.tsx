@@ -36,7 +36,7 @@ export default function ConcentricMarket({ rings, ariaLabel }: { rings: MarketRi
                 fill={r.color}
                 fillOpacity={r.fillOpacity ?? 0.18}
                 stroke={r.color}
-                strokeWidth={2.5}
+                strokeWidth={1}
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? 'scale(1)' : 'scale(0.2)',
