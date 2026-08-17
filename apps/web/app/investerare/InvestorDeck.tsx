@@ -541,12 +541,6 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             ))}
           </div>
           <Reveal>
-            <div className="mt-6 flex flex-wrap items-center gap-5 rounded-2xl bg-surface p-6 shadow-soft sm:gap-6">
-              <p className="font-serif text-4xl text-coral-deep">{COPY.businessmodel.aiMargin.value}</p>
-              <p className="max-w-md text-ink-muted">{t(lang, COPY.businessmodel.aiMargin.label)}</p>
-            </div>
-          </Reveal>
-          <Reveal>
             <p className="mt-10 max-w-2xl text-lg text-ink-secondary">
               <span className="font-semibold text-ink">{t(lang, COPY.businessmodel.callout.part1)}</span>
               {t(lang, COPY.businessmodel.callout.part2)}

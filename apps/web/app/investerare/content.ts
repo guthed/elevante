@@ -271,7 +271,6 @@ export interface BusinessModelCopy {
   eyebrow: L;
   title: L;
   kpis: { value: string; label: L }[];
-  aiMargin: { value: string; label: L };
   callout: { part1: L; part2: L };
   source: L;
 }
@@ -863,13 +862,6 @@ export const COPY: {
       { value: '100 %', label: { sv: 'återkommande intäkt — abonnemang per läsår', en: 'recurring revenue — subscription per school year' } },
       { value: '< 0,5 %', label: { sv: 'av skolpengen per elev', en: 'of the per-student grant' } },
     ],
-    aiMargin: {
-      value: '98,4 %',
-      label: {
-        sv: 'AI-bruttomarginal — AI-kostnaden är bara ~8 SEK per elev och år (transkribering, LLM och embeddings hos Berget AI).',
-        en: 'AI gross margin — AI cost is just ~8 SEK per student per year (transcription, LLM and embeddings via Berget AI).',
-      },
-    },
     callout: {
       part1: { sv: '500 SEK är under 0,5 % av skolpengen', en: '500 SEK is under 0.5% of the per-student grant' },
       part2: {
@@ -880,12 +872,10 @@ export const COPY: {
     source: {
       sv:
         'Skolpeng/per-elev-finansiering: Skolverkets kostnadsstatistik 2024 (≈ 100 000–130 000 SEK/gymnasieelev). ' +
-        'Bruttomarginal och enhetsekonomi är Elevantes egna estimat. AI-bruttomarginalen (98,4 %) bygger på verklig Berget AI-prissättning (aug 2026): ' +
-        'transkribering (KB-Whisper) ≈ 6,5 SEK, LLM-hybrid ≈ 1,3 SEK, embeddings ≈ 0,2 SEK per elev och år.',
+        'Bruttomarginal och enhetsekonomi är Elevantes egna estimat.',
       en:
         'Per-student grant/funding: Skolverket cost statistics 2024 (≈ 100,000–130,000 SEK/upper-secondary student). ' +
-        'Gross margin and unit economics are Elevante’s own estimates. The AI gross margin (98.4%) is based on actual Berget AI pricing (Aug 2026): ' +
-        'transcription (KB-Whisper) ≈ 6.5 SEK, LLM hybrid ≈ 1.3 SEK, embeddings ≈ 0.2 SEK per student per year.',
+        'Gross margin and unit economics are Elevante’s own estimates.',
     },
   },
 
