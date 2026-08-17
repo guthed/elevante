@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { t, type Lang } from '@/app/investerare/content';
 import {
   DEMO_SEED,
@@ -13,13 +13,16 @@ import {
 // Runtime-meddelande (upplöst till aktuellt språk). Live-svar kommer redan som strängar.
 type Msg = { role: 'user' | 'assistant'; content: string; citation?: { ts: string; quote: string } };
 
-export default function InvestorChatDemo({ lang }: { lang: Lang }) {
+export default function InvestorChatDemo({ lang, seeded = true }: { lang: Lang; seeded?: boolean }) {
+  const inputId = useId();
   const [messages, setMessages] = useState<Msg[]>(() =>
-    DEMO_SEED.map((m) => ({
-      role: m.role,
-      content: t(lang, m.content),
-      citation: m.citation ? { ts: m.citation.ts, quote: t(lang, m.citation.quote) } : undefined,
-    })),
+    seeded
+      ? DEMO_SEED.map((m) => ({
+          role: m.role,
+          content: t(lang, m.content),
+          citation: m.citation ? { ts: m.citation.ts, quote: t(lang, m.citation.quote) } : undefined,
+        }))
+      : [],
   );
   const [input, setInput] = useState('');
   const [pending, setPending] = useState(false);
@@ -83,7 +86,7 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
           {' · '}
           {t(lang, DEMO_LESSON_TITLE)}
         </p>
-        <p className="mt-2 text-sm text-ink-secondary">{t(lang, CHAT_UI.lede)}</p>
+        <p className="mt-2 text-sm text-ink-secondary">{t(lang, seeded ? CHAT_UI.lede : CHAT_UI.ledeEmpty)}</p>
 
         {/* Konversation */}
         <div
@@ -141,11 +144,11 @@ export default function InvestorChatDemo({ lang }: { lang: Lang }) {
           }}
           className="mt-4 flex items-center gap-2"
         >
-          <label htmlFor="demo-chat-input" className="sr-only">
+          <label htmlFor={`demo-chat-input-${inputId}`} className="sr-only">
             {t(lang, CHAT_UI.placeholder)}
           </label>
           <input
-            id="demo-chat-input"
+            id={`demo-chat-input-${inputId}`}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}

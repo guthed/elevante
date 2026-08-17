@@ -1,6 +1,5 @@
 import Eyebrow from '@/components/showcase/Eyebrow';
 import Reveal from '@/components/showcase/Reveal';
-import ZoomableShot from '@/components/showcase/ZoomableShot';
 import { LoopStep, RecVisual, TranscribeVisual, AskVisual } from '@/components/showcase/LoopVisuals';
 import ArrCalculator from '@/components/showcase/ArrCalculator';
 import DeckStats from '@/components/showcase/DeckStats';
@@ -9,6 +8,7 @@ import ConcentricMarket from '@/components/showcase/ConcentricMarket';
 import AllocationBar from '@/components/showcase/AllocationBar';
 import { ProofTicks, MiniRiskScale, EvidenceContrast } from '@/components/showcase/DeriskClarifiers';
 import InvestorChatDemo from '@/components/showcase/InvestorChatDemo';
+import RoleTabs from '@/components/showcase/RoleTabs';
 import { InsightHeatmap } from '@/components/app/teacher/InsightHeatmap';
 import { DEMO_LESSON_INSIGHT, DEMO_AI_INSIGHT } from './demo-insight';
 import Timeline from '@/components/showcase/Timeline';
@@ -35,8 +35,6 @@ import {
   MEDIA,
   CONTACTS,
 } from './content';
-
-import shotElev from '../../public/rektor/elev-oversikt.png';
 
 export default function InvestorDeck({ lang }: { lang: Lang }) {
   const sv = lang === 'sv';
@@ -282,41 +280,50 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
               </Reveal>
             ))}
           </div>
-          <div className="mt-12">
-            <Reveal>
-              <figure className="mx-auto max-w-xl">
-                <ZoomableShot
-                  src={shotElev}
-                  alt={t(lang, MEDIA.elevAlt)}
-                  sizes="(max-width: 768px) 100vw, 36rem"
-                  className="h-auto w-full rounded-2xl shadow-lift"
-                />
-                <figcaption className="eyebrow mt-4">
-                  {t(lang, MEDIA.elevCaption)}
-                </figcaption>
-              </figure>
-            </Reveal>
-          </div>
-          {/* Lärarens förståelsekarta — den riktiga, interaktiva produktvyn (syntetisk data).
-              OBS: ingen Reveal-wrapper här — .reveal har will-change:transform som skapar en
-              containing block för InsightHeatmaps fixed drawer-paneler och felplacerar dem. */}
+          {/* Elev/lärare-flikar — båda paneler är riktiga, interaktiva produktkomponenter
+              på samma syntetiska Ekologi-lektion. Båda paneler hålls monterade (RoleTabs
+              växlar via hidden-attributet, inte av/på-montering) så elevens påbörjade
+              chatt-konversation inte försvinner vid flikbyte. OBS: ingen transform-animation
+              — .reveal:s will-change:transform skapar en containing block som felplacerar
+              InsightHeatmaps fixed drawer-paneler, så RoleTabs-blocket ligger medvetet
+              utanför alla <Reveal>-wrappers. */}
           <div className="mt-10">
-            <div className="overflow-hidden rounded-2xl bg-canvas shadow-lift">
-              <div className="flex items-center gap-2 border-b border-ink/10 px-5 py-3">
-                <span className="h-2.5 w-2.5 rounded-full bg-coral/70" aria-hidden />
-                <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
-                <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
-                <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
-                <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
-                  <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
-                  {t(lang, MEDIA.kartaLiveBadge)}
-                </span>
-              </div>
-              <div className="p-4 sm:p-6">
-                <InsightHeatmap insight={DEMO_LESSON_INSIGHT} aiInsight={DEMO_AI_INSIGHT} />
-              </div>
-            </div>
-            <p className="mt-3 text-sm text-ink-muted">{t(lang, MEDIA.kartaLiveNote)}</p>
+            <RoleTabs
+              defaultId="larare"
+              ariaLabel={t(lang, MEDIA.productTabsAriaLabel)}
+              tabs={[
+                {
+                  id: 'elev',
+                  label: t(lang, MEDIA.productTabElev),
+                  panel: <InvestorChatDemo lang={lang} seeded={false} />,
+                },
+                {
+                  id: 'larare',
+                  label: t(lang, MEDIA.productTabLarare),
+                  panel: (
+                    <>
+                      <div className="overflow-hidden rounded-2xl bg-canvas shadow-lift">
+                        <div className="flex items-center gap-2 border-b border-ink/10 px-5 py-3">
+                          <span className="h-2.5 w-2.5 rounded-full bg-coral/70" aria-hidden />
+                          <span className="h-2.5 w-2.5 rounded-full bg-sand-strong" aria-hidden />
+                          <span className="h-2.5 w-2.5 rounded-full bg-sage" aria-hidden />
+                          <span className="eyebrow ml-2">{t(lang, MEDIA.kartaLiveChrome)}</span>
+                          <span className="eyebrow ml-auto flex items-center gap-1.5 text-coral-deep">
+                            <span className="h-1.5 w-1.5 rounded-full bg-coral" aria-hidden />
+                            {t(lang, MEDIA.kartaLiveBadge)}
+                          </span>
+                        </div>
+                        <div className="p-4 sm:p-6">
+                          <InsightHeatmap insight={DEMO_LESSON_INSIGHT} aiInsight={DEMO_AI_INSIGHT} />
+                        </div>
+                      </div>
+                      <p className="mt-3 text-sm text-ink-muted">{t(lang, MEDIA.kartaLiveNote)}</p>
+                    </>
+                  ),
+                },
+              ]}
+            />
+            <p className="mt-3 text-sm text-ink-muted">{t(lang, MEDIA.productSwitchNote)}</p>
           </div>
           <Reveal>
             <p className="mt-6 text-sm text-ink-muted">{t(lang, COPY.product.source)}</p>
