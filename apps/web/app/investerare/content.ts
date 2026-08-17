@@ -412,11 +412,13 @@ export const COPY: {
     },
     lede: {
       sv:
-        'Elevante spelar in och transkriberar lektioner i gymnasiet — och ger varje elev en personlig AI-handledare ' +
-        'som var med i rummet, som kan lektionen och som kan elevens styrkor och svagheter. Eleven frågar Elevante och får korrekta svar, med lärarens egna formuleringar.',
+        'Elevante spelar in, transkriberar och gör lektioner tillgängliga i efterhand. Med Elevante får varje elev ' +
+        'en personlig AI-handledare som var med i rummet, som kan lektionen och känner elevens styrkor och svagheter. ' +
+        'Eleven frågar Elevante och får svar grundade i vad läraren faktiskt sa — i lärarens egna ord.',
       en:
-        'Elevante records and transcribes upper-secondary lessons — and gives every student a personal AI tutor ' +
-        'that was in the room, that knows the lesson and that knows the student’s strengths and weaknesses. The student asks Elevante and gets correct answers, in the teacher’s own words.',
+        'Elevante records, transcribes and makes lessons available afterwards. With Elevante, every student gets ' +
+        'a personal AI tutor that was in the room, that knows the lesson and knows the student’s strengths and weaknesses. ' +
+        'The student asks Elevante and gets answers grounded in what the teacher actually said — in the teacher’s own words.',
     },
     traction: {
       sv: '18 månader i utveckling · LOI undertecknad · Pilot startar hösten 2026',
