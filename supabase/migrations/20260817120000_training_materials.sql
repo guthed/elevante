@@ -18,6 +18,14 @@ create table if not exists public.training_materials (
   generated_at timestamptz not null default now()
 );
 
+comment on table public.training_materials is
+  'Ett träningsunderlag per lektion. Item-id:n inuti jsonb-arrayerna är stabila '
+  'nycklar som flashcard_review_state och knowledge_check_attempts refererar utan '
+  'FK. Skrivs raden om (t.ex. vid omtranskribering) mintas nya item-id:n och '
+  'elevens progress för lektionen blir föräldralös — acceptabelt, eftersom '
+  'innehållet då faktiskt bytts ut, men överskriv aldrig en rad enbart för att '
+  'regenerera samma innehåll.';
+
 comment on column public.training_materials.concepts is
   '[{id, name, definition, example, misconception}]';
 comment on column public.training_materials.flashcards is
