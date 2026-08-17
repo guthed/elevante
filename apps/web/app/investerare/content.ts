@@ -757,18 +757,20 @@ export const COPY: {
         heading: { sv: 'Avanti Studios', en: 'Avanti Studios' },
         desc: {
           sv:
-            'Gustaf Hagman (grundare av LeoVegas) och Jonas Delin (grundare av Authentic Gaming) bygger ' +
-            'fotorealistiska realtidskloner i Unreal Engine + Metahuman — bevisat i live casino.',
+            'Gustaf Hagman (grundare av LeoVegas) och Jonas Delin (grundare av Authentic Gaming) bygger Avanti — ' +
+            'fotorealistiska, digitala croupier-avatarer i realtid (Unreal Engine + Metahuman) som redan kör livespel ' +
+            'dygnet runt i HD-video, utan mänsklig operatör vid bordet.',
           en:
-            'Gustaf Hagman (founder of LeoVegas) and Jonas Delin (founder of Authentic Gaming) build ' +
-            'photorealistic real-time clones in Unreal Engine + Metahuman — proven in live casino.',
+            'Gustaf Hagman (founder of LeoVegas) and Jonas Delin (founder of Authentic Gaming) build Avanti — ' +
+            'photorealistic, real-time digital dealer avatars (Unreal Engine + Metahuman) that already run live games ' +
+            'around the clock in HD video, with no human operator at the table.',
         },
       },
       {
         heading: { sv: 'Överfört till Elevante', en: 'Brought to Elevante' },
         desc: {
-          sv: 'Lärarens röst, rörelser och stil syntetiseras till en digital lärare — en per skola, ämne och språk.',
-          en: 'The teacher’s voice, movements and style are synthesised into a digital teacher — one per school, subject and language.',
+          sv: 'Samma teknik, en annan roll: istället för en digital croupier blir det en digital lärare — med röst, rörelser och sätt att förklara, tillgänglig när eleven frågar, inte bara under lektionstid.',
+          en: 'Same technology, a different role: instead of a digital dealer, a digital teacher — with voice, movements and way of explaining, available whenever the student asks, not just during class.',
         },
       },
     ],
