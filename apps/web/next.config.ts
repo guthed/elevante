@@ -26,11 +26,15 @@ const securityHeaders = [
   // stumt inga träffar i GA). Upptäckt 2026-08-17: GA-trafiken dog helt
   // 2026-08-14 utan någon matchande kodändring, sannolikt för att Google
   // bytte routing till regionala collect-endpoints för den här egendomen.
+  //
+  // Vercel Web Analytics: scriptet hämtas från va.vercel-scripts.com.
+  // Beacon-anropen går same-origin (/_vercel/insights/*) på produktion,
+  // så connect-src behöver ingen ny domän — bara script-src.
   {
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.google-analytics.com https://*.albacross.com https://*.snitcher.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.google-analytics.com https://*.albacross.com https://*.snitcher.com https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",

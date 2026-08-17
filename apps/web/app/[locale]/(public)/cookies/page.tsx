@@ -43,6 +43,7 @@ export default async function CookiesPage({ params }: Props) {
             'Nödvändiga cookies: håller dig inloggad och säkrar din session i webbappen. Dessa krävs för att tjänsten ska fungera och kan inte väljas bort.',
             'Analyscookies: vi använder ett analysverktyg som samlar anonymiserad statistik om hur webbplatsen används, så att vi kan förbättra den.',
             'Besöksidentifiering: vi använder tjänster som utifrån IP-adress visar vilka organisationer som besöker webbplatsen. Identifieringen sker på organisationsnivå — vi får veta att exempelvis en kommun eller skola varit här, inte vem du är. Används endast på den publika sajten, aldrig i appen.',
+            'Vercel Web Analytics: vår hostingleverantörs inbyggda, cookielösa besöksstatistik. Räknar sidvisningar utan att sätta någon cookie eller spara personuppgifter — kräver därför inget samtycke.',
           ],
         },
         {
@@ -79,6 +80,7 @@ export default async function CookiesPage({ params }: Props) {
             'Essential cookies: keep you logged in and secure your session in the web app. These are required for the service to work and cannot be opted out of.',
             'Analytics cookies: we use an analytics tool that collects anonymised statistics about how the website is used so we can improve it.',
             'Visitor identification: we use services that show, based on IP address, which organisations visit the website. Identification happens at organisation level — we learn that, say, a municipality or a school has been here, not who you are. Used only on the public site, never in the app.',
+            'Vercel Web Analytics: our hosting provider\'s built-in, cookieless visitor statistics. Counts page views without setting any cookie or storing personal data — so it does not require consent.',
           ],
         },
         {

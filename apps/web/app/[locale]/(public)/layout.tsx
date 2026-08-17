@@ -7,6 +7,7 @@ import { Header } from '@/components/public/Header';
 import { Footer } from '@/components/public/Footer';
 import { JsonLd } from '@/components/public/JsonLd';
 import { CookieConsent } from '@/components/public/CookieConsent';
+import { Analytics } from '@vercel/analytics/next';
 import { Albacross, AlbacrossSiteId, Snitcher } from '@/components/public/Analytics';
 import { PageFadeIn } from '@/components/public/PageFadeIn';
 
@@ -112,6 +113,11 @@ export default async function PublicLayout({ children, params }: Props) {
       <AlbacrossSiteId />
       <Albacross />
       <Snitcher />
+      {/* Vercel Web Analytics: cookielös, ingen samtyckesgrind (ingen cookie,
+          inga personuppgifter) — en samtyckesoberoende sanningskälla för
+          faktisk trafik, oavsett hur många som klickar bort GA:s
+          cookie-banner. Se cookies-sidan. */}
+      <Analytics />
     </>
   );
 }
