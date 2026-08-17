@@ -9,11 +9,21 @@ export type RoleTab = {
 };
 
 // Presentational tab-switcher — no data fetching, no animation, no external
-// state. IMPORTANT: switching tabs must stay a plain conditional render, not
-// a transform/opacity transition — InsightHeatmap's fixed-position drawer
-// panels break inside any ancestor with `will-change: transform` (see the
-// warning comment above its usage in InvestorDeck.tsx §6).
-export default function RoleTabs({ tabs, defaultId }: { tabs: RoleTab[]; defaultId?: string }) {
+// state. IMPORTANT: switching tabs must stay a plain visibility toggle (the
+// `hidden` attribute), not a transform/opacity transition and not an
+// unmount/remount — InsightHeatmap's fixed-position drawer panels break
+// inside any ancestor with `will-change: transform` (see the warning
+// comment above its usage in InvestorDeck.tsx §6), and remounting on every
+// switch would silently discard the student chat's in-progress conversation.
+export default function RoleTabs({
+  tabs,
+  defaultId,
+  ariaLabel,
+}: {
+  tabs: RoleTab[];
+  defaultId?: string;
+  ariaLabel?: string;
+}) {
   const instanceId = useId();
   const listRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(defaultId ?? tabs[0]?.id);
@@ -49,7 +59,7 @@ export default function RoleTabs({ tabs, defaultId }: { tabs: RoleTab[]; default
 
   return (
     <div>
-      <div ref={listRef} role="tablist" className="flex gap-2" onKeyDown={onKeyDown}>
+      <div ref={listRef} role="tablist" aria-label={ariaLabel} className="flex gap-2" onKeyDown={onKeyDown}>
         {tabs.map((tab, i) => {
           const isActive = tab.id === activeTab.id;
           return (
@@ -71,15 +81,18 @@ export default function RoleTabs({ tabs, defaultId }: { tabs: RoleTab[]; default
           );
         })}
       </div>
-      <div
-        key={activeTab.id}
-        role="tabpanel"
-        id={`${instanceId}-role-tabpanel-${activeTab.id}`}
-        aria-labelledby={`${instanceId}-role-tab-${activeTab.id}`}
-        className="mt-6"
-      >
-        {activeTab.panel}
-      </div>
+      {tabs.map((tab) => (
+        <div
+          key={tab.id}
+          role="tabpanel"
+          id={`${instanceId}-role-tabpanel-${tab.id}`}
+          aria-labelledby={`${instanceId}-role-tab-${tab.id}`}
+          hidden={tab.id !== activeTab.id}
+          className="mt-6"
+        >
+          {tab.panel}
+        </div>
+      ))}
     </div>
   );
 }

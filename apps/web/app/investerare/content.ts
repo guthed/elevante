@@ -1386,6 +1386,7 @@ export const MEDIA = {
   productTabElev:    { sv: 'Eleven', en: 'Student' },
   productTabLarare:  { sv: 'Läraren', en: 'Teacher' },
   productSwitchNote: { sv: 'Samma lektion — sett från två håll.', en: 'Same lesson — seen from both sides.' },
+  productTabsAriaLabel: { sv: 'Växla mellan elevens och lärarens vy', en: 'Switch between the student and teacher view' },
   arrAriaLabel: { sv: 'ARR-prognos 2026–2031, från 0 till 100 MSEK.', en: 'ARR forecast 2026–2031, from 0 to 100 MSEK.' },
   networkAriaLabel: { sv: 'Nätverksfält: transkriberade lektioner (coral) som var och en samlar ett kluster av elevfrågor (ink) — datamoaten tätnar för varje lektion och fråga.', en: 'Network field: transcribed lessons (coral), each gathering a cluster of student questions (ink) — the data moat thickens with every lesson and question.' },
   netLessonLabel: { sv: 'Transkriberad lektion', en: 'Transcribed lesson' },

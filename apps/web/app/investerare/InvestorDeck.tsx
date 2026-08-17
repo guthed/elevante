@@ -281,13 +281,16 @@ export default function InvestorDeck({ lang }: { lang: Lang }) {
             ))}
           </div>
           {/* Elev/lärare-flikar — båda paneler är riktiga, interaktiva produktkomponenter
-              på samma syntetiska Ekologi-lektion. OBS: RoleTabs växlar via ren villkorlig
-              rendering, ingen transform-animation — .reveal:s will-change:transform skapar
-              en containing block som felplacerar InsightHeatmaps fixed drawer-paneler, så
-              RoleTabs-blocket ligger medvetet utanför alla <Reveal>-wrappers. */}
+              på samma syntetiska Ekologi-lektion. Båda paneler hålls monterade (RoleTabs
+              växlar via hidden-attributet, inte av/på-montering) så elevens påbörjade
+              chatt-konversation inte försvinner vid flikbyte. OBS: ingen transform-animation
+              — .reveal:s will-change:transform skapar en containing block som felplacerar
+              InsightHeatmaps fixed drawer-paneler, så RoleTabs-blocket ligger medvetet
+              utanför alla <Reveal>-wrappers. */}
           <div className="mt-10">
             <RoleTabs
-              defaultId="elev"
+              defaultId="larare"
+              ariaLabel={t(lang, MEDIA.productTabsAriaLabel)}
               tabs={[
                 {
                   id: 'elev',
