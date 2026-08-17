@@ -24,6 +24,12 @@ export function Header({ locale, pathname, dict }: Props) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-sand)] bg-[var(--color-canvas)]/90 backdrop-blur-sm">
+      <input
+        type="checkbox"
+        id="elv-mobile-menu"
+        className="peer hidden"
+        aria-hidden="true"
+      />
       <div className="container-wide flex items-center justify-between py-5">
         <Link
           href={base}
@@ -74,36 +80,28 @@ export function Header({ locale, pathname, dict }: Props) {
 
 function MobileMenuToggle({ dict }: { dict: Dictionary }) {
   return (
-    <>
-      <label
-        htmlFor="elv-mobile-menu"
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-[var(--color-ink)] hover:bg-[var(--color-surface-soft)] md:hidden"
-        aria-label={dict.nav.openMenu}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <line x1="4" y1="7" x2="20" y2="7" />
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="17" x2="20" y2="17" />
-        </svg>
-      </label>
-      <input
-        type="checkbox"
-        id="elv-mobile-menu"
-        className="peer hidden"
+    <label
+      htmlFor="elv-mobile-menu"
+      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-[var(--color-ink)] hover:bg-[var(--color-surface-soft)] md:hidden"
+      aria-label={dict.nav.openMenu}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         aria-hidden="true"
-      />
-    </>
+      >
+        <line x1="4" y1="7" x2="20" y2="7" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="17" x2="20" y2="17" />
+      </svg>
+    </label>
   );
 }
 
