@@ -609,6 +609,126 @@ type TryShareInsert = {
   created_at?: string;
 };
 
+// --- Kunskapsträning (Foundation) ---
+
+export type TrainingConcept = {
+  id: string;
+  name: string;
+  definition: string;
+  example: string;
+  misconception: string;
+};
+
+export type TrainingFlashcard = {
+  id: string;
+  concept_id: string;
+  front: string;
+  back: string;
+};
+
+export type TrainingKnowledgeCheck = {
+  id: string;
+  concept_id: string;
+  question: string;
+  choices: string[];
+  correct_index: number;
+  explanation: string;
+};
+
+export type TrainingMaterial = {
+  id: string;
+  school_id: string;
+  lesson_id: string;
+  concepts: TrainingConcept[];
+  flashcards: TrainingFlashcard[];
+  knowledge_checks: TrainingKnowledgeCheck[];
+  model_version: string | null;
+  generated_at: string;
+};
+
+type TrainingMaterialInsert = {
+  school_id: string;
+  lesson_id: string;
+  concepts?: TrainingConcept[];
+  flashcards?: TrainingFlashcard[];
+  knowledge_checks?: TrainingKnowledgeCheck[];
+  model_version?: string | null;
+  id?: string;
+  generated_at?: string;
+};
+
+export type FlashcardGrade = 'again' | 'hard' | 'good';
+
+export type FlashcardReviewState = {
+  id: string;
+  student_id: string;
+  school_id: string;
+  lesson_id: string;
+  flashcard_id: string;
+  ease_factor: number;
+  interval_days: number;
+  repetitions: number;
+  due_at: string;
+  last_reviewed_at: string | null;
+  last_grade: FlashcardGrade | null;
+};
+
+type FlashcardReviewStateInsert = {
+  student_id: string;
+  school_id: string;
+  lesson_id: string;
+  flashcard_id: string;
+  ease_factor?: number;
+  interval_days?: number;
+  repetitions?: number;
+  due_at?: string;
+  last_reviewed_at?: string | null;
+  last_grade?: FlashcardGrade | null;
+  id?: string;
+};
+
+export type KnowledgeCheckAttempt = {
+  id: string;
+  student_id: string;
+  school_id: string;
+  lesson_id: string;
+  knowledge_check_id: string;
+  correct: boolean;
+  answered_at: string;
+};
+
+type KnowledgeCheckAttemptInsert = {
+  student_id: string;
+  school_id: string;
+  lesson_id: string;
+  knowledge_check_id: string;
+  correct: boolean;
+  id?: string;
+  answered_at?: string;
+};
+
+export type TrainingMode = 'flashcards' | 'knowledge_checks';
+
+export type TrainingSession = {
+  id: string;
+  student_id: string;
+  school_id: string;
+  mode: TrainingMode;
+  lesson_ids: string[];
+  item_ids: string[];
+  created_at: string;
+};
+
+type TrainingSessionInsert = {
+  student_id: string;
+  school_id: string;
+  mode: TrainingMode;
+  lesson_ids: string[];
+  item_ids: string[];
+  id?: string;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -632,6 +752,10 @@ export type Database = {
       school_prospects: TableDef<SchoolProspect, SchoolProspectInsert>;
       school_sync_log: TableDef<SchoolSyncLog, SchoolSyncLogInsert>;
       try_shares: TableDef<TryShare, TryShareInsert>;
+      training_materials: TableDef<TrainingMaterial, TrainingMaterialInsert>;
+      flashcard_review_state: TableDef<FlashcardReviewState, FlashcardReviewStateInsert>;
+      knowledge_check_attempts: TableDef<KnowledgeCheckAttempt, KnowledgeCheckAttemptInsert>;
+      training_sessions: TableDef<TrainingSession, TrainingSessionInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat
