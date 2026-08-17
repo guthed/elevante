@@ -117,7 +117,7 @@ kräver alltså ingen backfill av progress-tabellerna.
 
 ## Lager 1 — generering
 
-`lib/ai/anthropic.ts`: ny funktion `generateTrainingMaterial(transcript, teacherName)`
+Ny funktion `generateTrainingMaterial(transcript, teacherName)`
 + eget systemprompt, strukturellt likt `LESSON_CONTENT_SYSTEM_PROMPT` men fokuserat
 på: 4-8 koncept (namn/definition/exempel/vanligt missförstånd), ~2 flashcards per
 koncept, ~1-2 kunskapskollar (flerval, 4 alternativ) per koncept. JSON-svar,
@@ -128,10 +128,11 @@ samma fence-strip + validering som befintlig kod.
 transcript/summary/chat-uppdateringen. Vid lyckat anrop: insert i
 `training_materials` (upsert på `lesson_id` för omkörningsfall).
 
-**Backfill för befintliga lektioner:** Server Action (samma
-`generateTrainingMaterial`-funktion) triggas lat när en träningssession byggs
-för en lektion som saknar `training_materials`-rad — "Förbereder
-träningsmaterial…"-laddningsläge, ingen separat batch-skript.
+**Backfill för befintliga lektioner:** triggas lat när en träningssession byggs
+för en lektion som saknar `training_materials`-rad — inget separat batch-skript.
+Funktionen bor bara i Edge-funktionen (ett `training_material_only`-läge som
+Next.js anropar via `functions.invoke`), så pipelinen och backfillen delar en
+enda prompt och validering i stället för två implementationer som kan glida isär.
 
 ## Lager 2 — servering & schemaläggning
 
