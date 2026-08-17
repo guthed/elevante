@@ -24,11 +24,11 @@ Det här är heuristik, inte bevis. Men kombinerar man flera signaler vet man of
 
 ## Varför AI-detektorer inte räcker
 
-Turnitins AI-detektor, GPTZero, Copyleaks och [Originality.ai](http://Originality.ai) fungerar — sådär. [Forskning från Stanford 2023](https://hai.stanford.edu/news/ai-detectors-biased-against-non-native-english-writers) visade att de oftare flaggade icke-modersmålstalare som AI-författare. Och tekniken förändras snabbare än detektorerna.
+[Skolverket är tydliga](https://www.skolverket.se/kompetensutveckling/stod-i-arbetet/rad-om-ai-chattbottar-och-liknande-verktyg): "Det finns inget säkert sätt att avgöra om en text är AI-genererad." Turnitins AI-detektor, GPTZero, Copyleaks och [Originality.ai](http://Originality.ai) fungerar — sådär. [Stanford-forskning](https://www.sciencedirect.com/science/article/pii/S2666389923001307) (Liang m.fl., 2023) visade att över hälften av andraspråkstalares texter felaktigt flaggades som AI-genererade, medan detektorerna var nära perfekta på infödda elevers texter. Och tekniken förändras snabbare än detektorerna.
 
 Tre konkreta problem:
 
-1. **Falska positiva.** Elever har anklagats för fusk för texter de skrivit själva. Det förstör förtroendet.
+1. **Falska positiva.** Elever har anklagats för fusk för texter de skrivit själva. Turnitin marknadsförde sin detektor med under 1 procent falska positiva — bolaget [har senare medgett](https://www.turnitin.com/blog/understanding-the-false-positive-rate-for-sentences-of-our-ai-writing-detection-capability) att felfrekvensen på meningsnivå ligger runt 4 procent, särskilt i texter som blandar elevens egna och AI-genererade meningar. Det förstör förtroendet.
 2. **Lätt att kringgå.** Be ChatGPT skriva "i en 16-årings röst, med tre stavfel" — detektorn missar det.
 3. **Detektorerna är inte bevis.** Du kan inte sätta F på en elev baserat på "AI-sannolikhet 87 %".
 
@@ -76,8 +76,11 @@ Det beror på vad skolan har bestämt. Om skolan inte har en policy är gränsen
 **Hur upptäcker man AI-genererad text?**
 Genom kombination av textsignaler (för välbalanserad, perfekta övergångar, ytliga exempel) och muntlig uppföljning. AI-detektorer ensamt räcker inte.
 
+**Kan skolan se om man använder ChatGPT?**
+Inte tillförlitligt. [Skolverket skriver rakt av](https://www.skolverket.se/kompetensutveckling/stod-i-arbetet/rad-om-ai-chattbottar-och-liknande-verktyg) att det inte finns något säkert sätt att avgöra om en text är AI-genererad. Detektorer som Turnitin ger en sannolikhet, inte ett bevis — och har egna, dokumenterade felmarginaler.
+
 **Funkar Turnitin för att upptäcka ChatGPT?**
-Sådär. Den ger en sannolikhet, men inte bevis. Använd den som signal, inte som dom.
+Sådär. Bolaget marknadsförde under 1 procent falska positiva, men [har själva medgett](https://www.turnitin.com/blog/understanding-the-false-positive-rate-for-sentences-of-our-ai-writing-detection-capability) att felfrekvensen på meningsnivå ligger runt 4 procent. Den ger en sannolikhet, inte bevis. Använd den som signal, inte som dom.
 
 **Vad gör jag om jag misstänker AI-fusk?**
 Be om en muntlig redogörelse. Be eleven förklara texten, källorna och resonemanget. Bedömningen flyttas från text till process.
