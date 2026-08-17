@@ -76,7 +76,7 @@ export const GLANCE = {
   eyebrow: { sv: 'Affären i korthet', en: 'The deal at a glance' } as L,
   items: [
     { value: '14 MSEK', label: { sv: 'pre-seed — räcker till break-even', en: 'pre-seed — funds the path to break-even' } as L },
-    { value: 'Månad 22', label: { sv: 'operativ break-even', en: 'operating break-even' } as L },
+    { value: 'Månad 21', label: { sv: 'operativ break-even', en: 'operating break-even' } as L },
     { value: '< 0,5 %', label: { sv: 'av skolpengen — ryms i budget', en: 'of the per-student grant — fits the budget' } as L },
     { value: '~68 %', label: { sv: 'bruttomarginal, stärks vid skalning', en: 'gross margin, strengthens at scale' } as L },
     { value: '100 MSEK', label: { sv: 'ARR-prognos år 5', en: 'ARR forecast, year 5' } as L },
@@ -900,8 +900,15 @@ export const COPY: {
       {
         label: 'M17',
         desc: {
-          sv: 'Operativ break-even — första månaden med positivt nettoresultat.',
-          en: 'Operating break-even — first month with a positive net result.',
+          sv: 'Första positiva nettomånaden — kassaflödet vänder.',
+          en: 'First positive net-cash month — cash flow turns.',
+        },
+      },
+      {
+        label: 'M21',
+        desc: {
+          sv: 'Operativ break-even bekräftad.',
+          en: 'Operating break-even confirmed.',
         },
       },
       {
@@ -926,7 +933,7 @@ export const COPY: {
         {
           name: { sv: 'Enligt plan', en: 'On plan' },
           cash: { sv: '7,9 MSEK', en: '7.9 MSEK' },
-          note: { sv: 'lägsta kassa, månad 16 (nov 2027) · break-even månad 17', en: 'lowest cash, month 16 (Nov 2027) · break-even month 17' },
+          note: { sv: 'lägsta kassa, månad 16 (nov 2027) · positiv kassa från månad 17, break-even bekräftad månad 21', en: 'lowest cash, month 16 (Nov 2027) · cash turns positive month 17, break-even confirmed month 21' },
         },
         {
           name: { sv: 'Halverad adoption', en: 'Halved adoption' },
@@ -1083,8 +1090,8 @@ export const COPY: {
       {
         title: { sv: 'Kapitaleffektivt', en: 'Capital-efficient' },
         desc: {
-          sv: '14 MSEK till break-even månad 17. Kassan stiger till 12,3 MSEK vid månad 24 (juli 2028) — utan ny finansiering.',
-          en: '14 MSEK to break-even in month 17. Cash climbs to 12.3 MSEK by month 24 (Jul 2028) — with no new financing.',
+          sv: '14 MSEK till operativ break-even månad 21 (kassan vänder redan månad 17). Kassan stiger till 12,3 MSEK vid månad 24 (juli 2028) — utan ny finansiering.',
+          en: '14 MSEK to operating break-even in month 21 (cash already turns positive by month 17). Cash climbs to 12.3 MSEK by month 24 (Jul 2028) — with no new financing.',
         },
       },
       {
