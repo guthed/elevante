@@ -1,6 +1,8 @@
 // SM-2 spaced repetition. Tre-gradig indata (again/hard/good) i stället för
 // SM-2:s 0-5, eftersom elevens UI bara har tre knappar. Mappning: again→0,
-// hard→3, good→5. Ren funktion — inga beroenden, inget I/O.
+// hard→3, good→5. Inga externa beroenden, men inte strikt ren — dueAt
+// beräknas från Date.now(), så samma indata ger olika utdata beroende på när
+// funktionen körs.
 
 export type Sm2Grade = 'again' | 'hard' | 'good';
 

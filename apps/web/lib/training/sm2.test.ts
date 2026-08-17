@@ -35,6 +35,19 @@ describe('sm2', () => {
     expect(sm2(fresh, 'hard').easeFactor).toBeLessThan(fresh.easeFactor);
   });
 
+  it('räknar ease factor exakt enligt SM-2-formeln för varje betyg', () => {
+    // EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02)), q = again:0, hard:3, good:5
+    expect(sm2(fresh, 'good').easeFactor).toBeCloseTo(2.6, 5);
+    expect(sm2(fresh, 'hard').easeFactor).toBeCloseTo(2.36, 5);
+    expect(sm2(fresh, 'again').easeFactor).toBeCloseTo(1.7, 5);
+  });
+
+  it('behandlar "hard" som en svag godkänd repetition, inte som ett bortfall', () => {
+    const next = sm2(fresh, 'hard');
+    expect(next.repetitions).toBe(1);
+    expect(next.intervalDays).toBe(1);
+  });
+
   it('låter aldrig ease factor gå under 1.3', () => {
     let state = fresh;
     for (let i = 0; i < 20; i += 1) state = sm2(state, 'again');
