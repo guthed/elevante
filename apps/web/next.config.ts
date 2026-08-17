@@ -17,15 +17,24 @@ const securityHeaders = [
   // rapporterar in till radar.snitcher.com. Wildcard av samma skäl. Lägg ALLTID
   // till nya spårningsdomäner här samtidigt som scriptet, annars ser
   // leverantören en tyst blockerad integration.
+  //
+  // GA4: gtag.js hämtas från www.googletagmanager.com, men själva mät-
+  // träffarna ("collect") skickas till en REGIONAL subdomän — t.ex.
+  // region1.google-analytics.com — inte www.google-analytics.com. Samma
+  // missförstånd som Albacross-buggen ovan: en icke-wildcardad connect-src
+  // blockerar hitsen tyst (ingen JS-fel, ingen nätverksbild i UI:t — bara
+  // stumt inga träffar i GA). Upptäckt 2026-08-17: GA-trafiken dog helt
+  // 2026-08-14 utan någon matchande kodändring, sannolikt för att Google
+  // bytte routing till regionala collect-endpoints för den här egendomen.
   {
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.albacross.com https://*.snitcher.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.google-analytics.com https://*.albacross.com https://*.snitcher.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://*.albacross.com https://*.snitcher.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com",
+      "connect-src 'self' https://*.google-analytics.com https://*.albacross.com https://*.snitcher.com https://*.supabase.co wss://*.supabase.co https://api.berget.ai https://api.anthropic.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
