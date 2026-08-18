@@ -4,6 +4,7 @@ import { isLocale, type Locale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
 import { getOrCreateTrainingMaterials, type KnowledgeCheckSessionItem } from '@/lib/data/training';
+import { shuffleChoices } from '@/lib/training/shuffle';
 import type { TrainingSession } from '@/lib/supabase/database';
 import { KnowledgeCheckRunner } from './KnowledgeCheckRunner';
 
@@ -57,9 +58,23 @@ export default async function KnowledgeCheckSessionPage({ params }: Props) {
 
   // item_ids fryses vid sessionsskapandet, så en refresh visar samma frågor —
   // de resolvas här mot det underlag som finns just nu, inte om räknas.
+  //
+  // Alternativordningen slumpas här (server-side, vid varje resolve) med en
+  // seed byggd på session-id + fråge-id — INTE en gång vid sessionsskapandet
+  // i selectKnowledgeChecks. Det ger samma ordning på varje sidladdning
+  // (samma seed) men olika ordning i olika sessioner (annan seed), utan att
+  // frysa ordningen i databasen. Se lib/training/shuffle.ts för varför.
   const checks = session.item_ids
     .map((id) => byId.get(id))
-    .filter((c): c is KnowledgeCheckSessionItem => c !== undefined);
+    .filter((c): c is KnowledgeCheckSessionItem => c !== undefined)
+    .map((check) => {
+      const { choices, correctIndex } = shuffleChoices(
+        check.choices,
+        check.correct_index,
+        `${session.id}:${check.id}`,
+      );
+      return { ...check, choices, correct_index: correctIndex };
+    });
 
   return (
     <div className="container-wide py-10 md:py-14">
