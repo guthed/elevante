@@ -6,6 +6,7 @@ export type NavId =
   | 'library'
   | 'chat'
   | 'examPrep'
+  | 'training'
   | 'learnerProfile'
   | 'classTests'
   | 'classes'
@@ -40,6 +41,7 @@ export function navItemsFor(role: Role, base: string, dict: Dictionary, isStaff:
       { id: 'library', href: `${base}/student/bibliotek`, label: s.library, mobileLabel: m.library, description: d.library },
       { id: 'chat', href: `${base}/student/chat`, label: s.chat, mobileLabel: m.chat, description: d.chat },
       { id: 'examPrep', href: `${base}/student/provplugg`, label: s.examPrep, mobileLabel: m.examPrep, description: d.examPrep },
+      { id: 'training', href: `${base}/student/ova`, label: s.training, mobileLabel: m.training, description: d.training },
       { id: 'learnerProfile', href: `${base}/student/profil`, label: s.learnerProfile, mobileLabel: m.learnerProfile, description: d.learnerProfile },
       { id: 'classTests', href: `${base}/student/klassprov`, label: s.classTests, mobileLabel: m.classTests, description: d.classTests },
     ];
