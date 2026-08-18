@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
-import { startTrainingSession } from '@/app/actions/training';
+import { prepareTrainingSession, startTrainingSession } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
 import type { Locale } from '@/lib/i18n/config';
 import type { TrainingCourse } from '@/lib/data/training';
@@ -18,6 +18,23 @@ type Props = {
 const PROGRESS_POLL_MS = 2000;
 const PROGRESS_COPY_MS = 4000;
 const MAX_CONSECUTIVE_POLL_FAILURES = 2;
+
+// Tak för hur länge KLIENTEN väntar in backfillen innan den ger upp och
+// startar sessionen ändå (byggd av det underlag som råkar finnas då — se
+// startTrainingSessions egna { ok: false }-felväg om det blir noll). Det här
+// är skilt från serverns maxDuration (app/[locale]/app/[role]/ova/page.tsx):
+// den styr hur länge Vercel låter after()-jobbet fortsätta köra bakom
+// kulisserna, den här styr bara hur länge EN elevs webbläsare sitter och
+// pollar innan den slutar vänta och går vidare — generering fortsätter
+// oavsett i bakgrunden, en senare session av samma urval blir snabb.
+//
+// Uppmätt 2026-08-18: ~70 s för en lektion, ~90-100 s för två parallellt.
+// MAX_BACKFILL_PER_REQUEST (lib/data/training.ts) tillåter upp till 5
+// parallellt i en request — ingen mätning finns för det fallet, så 150 s ger
+// ~50-80 s marginal över det värsta uppmätta (100 s) för ökad kontention/
+// rate-limit-backoff vid högre parallellitet, utan att en elev riskerar
+// sitta och vänta orimligt länge om något faktiskt hänger sig.
+const READY_WAIT_CEILING_MS = 150_000;
 
 // Kringtexten beskriver vad pipelinen faktiskt gör (lyssna → hitta begrepp →
 // skriva kort) — sann text, inte fyllnadsord. Se app/actions/training.ts och
@@ -175,6 +192,35 @@ export function OvaPicker({ locale, courses }: Props) {
   const selectedCount = lessons.filter((l) => selected.has(l.id)).length;
   const canStart = selectedCount > 0 && !pending;
 
+  // Väntar in att backfillen (schemalagd av prepareTrainingSession via
+  // after(), se app/actions/training.ts) landar i training_materials, genom
+  // att fråga SAMMA /api/training/progress-endpoint som visningseffekten
+  // nedan pollar för räknaren. Två oberoende pollningsloopar mot samma
+  // billiga, read-only endpoint — en för UI:t, en för att veta NÄR
+  // startTrainingSession ska anropas — medvetet separerade så att den här
+  // väntan aldrig behöver rota i visningseffektens finjusterade
+  // frozen-total/skip-räknare-logik. READY_WAIT_CEILING_MS sätter taket.
+  async function waitForBackfill(lessonIds: string[]): Promise<void> {
+    const deadline = Date.now() + READY_WAIT_CEILING_MS;
+    while (Date.now() < deadline) {
+      try {
+        const res = await fetch('/api/training/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lessonIds }),
+        });
+        if (res.ok) {
+          const data = (await res.json()) as Progress;
+          if (data.ready >= data.total) return;
+        }
+      } catch {
+        // Enstaka nätverksfel ignoreras — försök igen nästa varv. Taket
+        // ovan garanterar att vi ändå aldrig väntar för evigt.
+      }
+      await new Promise((resolve) => setTimeout(resolve, PROGRESS_POLL_MS));
+    }
+  }
+
   // Knappen kan inte bära både name="mode" och en function formAction —
   // React kommandeerar "name" på en knapp med function-formAction för att
   // koda vilken action som ska köras, så mode-fältet skrevs aldrig till
@@ -188,8 +234,20 @@ export function OvaPicker({ locale, courses }: Props) {
       // hidden-inputs som formuläret postar) — det är vad pollningen ska
       // fråga om, oavsett om användaren hinner ändra kryssrutorna medan
       // sessionen förbereds. Sätts synkront i en ref (se motivering ovan).
-      activeLessonIdsRef.current = formData.getAll('lesson_ids').map((v) => v.toString());
+      const lessonIds = formData.getAll('lesson_ids').map((v) => v.toString());
+      activeLessonIdsRef.current = lessonIds;
       startTransition(async () => {
+        // Fas 1: avgör om något underlag saknas och, om så, schemalägger
+        // backfillen (körs bakom kulisserna, se prepareTrainingSession).
+        // Redan klart för alla valda lektioner → { ready: true } och vi går
+        // rakt till fas 2 utan att progress-UI:t någonsin blinkar till.
+        const prep = await prepareTrainingSession(formData);
+        if (!prep.ready) {
+          await waitForBackfill(lessonIds);
+        }
+        // Fas 2: bygg sessionen av vad som finns nu (klart, eller taket
+        // nått med delvis/inget underlag — { ok: false }-felvägen fångar
+        // det sistnämnda).
         const result = await startTrainingSession(formData);
         if (!result.ok) setError(true);
       });

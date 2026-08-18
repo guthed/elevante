@@ -69,27 +69,36 @@ export async function getTrainingCourses(studentId: string): Promise<TrainingCou
   return Array.from(byCourse.values()).filter((c) => c.lessons.length > 0);
 }
 
+export type GetTrainingMaterialsOptions = {
+  /**
+   * Om `true` (default — oförändrat beteende) backfillas lektioner som
+   * saknar underlag INLINE, och funktionen väntar in resultatet innan den
+   * returnerar. Sätt till `false` för att bara läsa vad som redan finns i
+   * `training_materials` utan att trigga någon generering — det är vad
+   * `startTrainingSession` (fas 2) ska göra numera, eftersom genereringen
+   * redan schemalagts av `prepareTrainingSession` (fas 1). Se
+   * app/actions/training.ts för tvåstegsflödet.
+   */
+  backfill?: boolean;
+};
+
 /**
- * Hämtar träningsunderlag för lektionerna. Lektioner som saknar underlag
- * (transkriberade innan funktionen fanns) backfillas lat genom att anropa
- * SAMMA Edge Function-läge som pipelinen använder (`training_material_only`)
- * — det finns bara EN implementation av AI-anropet, i Deno-funktionen.
+ * Backfillar upp till MAX_BACKFILL_PER_REQUEST av de angivna (redan kända
+ * SAKNANDE) lektionerna genom att anropa SAMMA Edge Function-läge som
+ * pipelinen använder (`training_material_only`) — det finns bara EN
+ * implementation av AI-anropet, i Deno-funktionen. Returnerar ingenting;
+ * anroparen läser om `training_materials` själv om den vill se resultatet.
+ *
+ * Delad av två anropare: `getOrCreateTrainingMaterials` (backfill=true,
+ * väntar in den här och läser om DB:n direkt efteråt) och
+ * `prepareTrainingSession` (kör den här inuti `after()` — väntar aldrig in
+ * den i requesten, klientens pollning mot /api/training/progress är det som
+ * upptäcker när den är klar).
  */
-export async function getOrCreateTrainingMaterials(
-  lessonIds: string[],
-): Promise<TrainingMaterial[]> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('training_materials')
-    .select('*')
-    .in('lesson_id', lessonIds);
-
-  const existing = (data ?? []) as TrainingMaterial[];
-  const haveFor = new Set(existing.map((m) => m.lesson_id));
-  const missing = lessonIds.filter((id) => !haveFor.has(id));
-  if (missing.length === 0) return existing;
-
-  // Backfilla bara ett fåtal lektioner per request, INTE alla `missing`.
+export async function backfillMissingTrainingMaterials(
+  missingLessonIds: string[],
+): Promise<void> {
+  // Backfilla bara ett fåtal lektioner per anrop, INTE alla `missing`.
   // Varje anrop är en ograviterad, icke-strömmande Claude-generation (upp
   // till 8192 tokens) — Task 6:s urvalsformulär tillåter upp till 50
   // lektioner, och att köra 50 sådana anrop parallellt i en och samma
@@ -99,8 +108,10 @@ export async function getOrCreateTrainingMaterials(
   // saknas första gången), och nästa besök till samma urval backfillar
   // nästa batch tills allt är genererat. Höj INTE den här gränsen utan att
   // också lösa rate limit-frågan.
-  const toBackfill = missing.slice(0, MAX_BACKFILL_PER_REQUEST);
+  const toBackfill = missingLessonIds.slice(0, MAX_BACKFILL_PER_REQUEST);
+  if (toBackfill.length === 0) return;
 
+  const supabase = await createSupabaseServerClient();
   const results = await Promise.allSettled(
     toBackfill.map((lessonId) =>
       supabase.functions.invoke('transcribe-lesson', {
@@ -119,17 +130,43 @@ export async function getOrCreateTrainingMaterials(
     const lessonId = toBackfill[i];
     if (result.status === 'rejected') {
       console.error(
-        `getOrCreateTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
+        `backfillMissingTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
         result.reason,
       );
     } else if (result.value.error) {
       console.error(
-        `getOrCreateTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
+        `backfillMissingTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
         result.value.error,
       );
     }
   });
+}
 
+/**
+ * Hämtar träningsunderlag för lektionerna. Lektioner som saknar underlag
+ * (transkriberade innan funktionen fanns, eller ännu inte klara av en
+ * schemalagd backfill) backfillas lat med `{ backfill: true }` (default).
+ */
+export async function getOrCreateTrainingMaterials(
+  lessonIds: string[],
+  { backfill = true }: GetTrainingMaterialsOptions = {},
+): Promise<TrainingMaterial[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from('training_materials')
+    .select('*')
+    .in('lesson_id', lessonIds);
+
+  const existing = (data ?? []) as TrainingMaterial[];
+  if (!backfill) return existing;
+
+  const haveFor = new Set(existing.map((m) => m.lesson_id));
+  const missing = lessonIds.filter((id) => !haveFor.has(id));
+  if (missing.length === 0) return existing;
+
+  await backfillMissingTrainingMaterials(missing);
+
+  const toBackfill = missing.slice(0, MAX_BACKFILL_PER_REQUEST);
   const { data: refreshed } = await supabase
     .from('training_materials')
     .select('*')
@@ -180,8 +217,9 @@ async function lessonTitles(lessonIds: string[]): Promise<Map<string, string | n
 export async function selectFlashcards(
   studentId: string,
   lessonIds: string[],
+  opts: GetTrainingMaterialsOptions = {},
 ): Promise<FlashcardSessionItem[]> {
-  const materials = await getOrCreateTrainingMaterials(lessonIds);
+  const materials = await getOrCreateTrainingMaterials(lessonIds, opts);
   const titles = await lessonTitles(lessonIds);
 
   const all: FlashcardSessionItem[] = materials.flatMap((m) =>
@@ -226,8 +264,9 @@ export async function selectFlashcards(
 export async function selectKnowledgeChecks(
   studentId: string,
   lessonIds: string[],
+  opts: GetTrainingMaterialsOptions = {},
 ): Promise<KnowledgeCheckSessionItem[]> {
-  const materials = await getOrCreateTrainingMaterials(lessonIds);
+  const materials = await getOrCreateTrainingMaterials(lessonIds, opts);
   const titles = await lessonTitles(lessonIds);
 
   const all: KnowledgeCheckSessionItem[] = materials.flatMap((m) =>
