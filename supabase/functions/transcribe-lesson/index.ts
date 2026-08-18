@@ -315,7 +315,42 @@ async function generateTrainingMaterial(
     throw new Error('Training material had no usable items');
   }
 
+  // Claude har en uppmätt, stark positionsbias för correct_index (i produktion:
+  // 8 frågor för en lektion gav 1,1,2,1,1,1,2,1 — ALDRIG index 0 eller 3). En
+  // elev kan lära sig "välj aldrig första alternativet" och gissa rätt utan att
+  // kunna innehållet. Att be modellen slumpa själv i prompten löser inte det —
+  // LLM:er är just dåliga på uniform slumpmässighet, vilket ÄR orsaken till
+  // biasen. Slumpa därför alternativens ordning här, i kod, efter genereringen.
+  // RÖR INTE DEN HÄR RADERN utan att förstå varför den finns.
+  parsed.knowledge_checks = parsed.knowledge_checks.map((k) => {
+    const { choices, correctIndex } = shuffleChoiceOrder(k.choices, k.correct_index);
+    return { ...k, choices, correct_index: correctIndex };
+  });
+
   return parsed;
+}
+
+/**
+ * Fisher–Yates-slumpning av svarsalternativ. Slumpar en INDEX-array (inte
+ * värdena direkt) så att dubblettvärden bland choices aldrig kan få det
+ * omräknade correct_index att peka fel. crypto.getRandomValues finns i Deno
+ * och är inte prestandakritiskt här (körs en gång per fråga, vid generering).
+ */
+function shuffleChoiceOrder(
+  choices: string[],
+  correctIndex: number,
+): { choices: string[]; correctIndex: number } {
+  const order = choices.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const buf = new Uint32Array(1);
+    crypto.getRandomValues(buf);
+    const j = buf[0] % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return {
+    choices: order.map((i) => choices[i]),
+    correctIndex: order.indexOf(correctIndex),
+  };
 }
 
 async function upsertTrainingMaterial(
