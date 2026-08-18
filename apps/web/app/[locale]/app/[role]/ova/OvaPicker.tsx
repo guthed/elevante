@@ -16,6 +16,7 @@ export function OvaPicker({ locale, courses }: Props) {
   const [pending, startTransition] = useTransition();
   const [courseId, setCourseId] = useState(courses[0]?.id ?? '');
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [error, setError] = useState(false);
 
   const course = useMemo(
     () => courses.find((c) => c.id === courseId) ?? courses[0],
@@ -46,10 +47,20 @@ export function OvaPicker({ locale, courses }: Props) {
   const selectedCount = lessons.filter((l) => selected.has(l.id)).length;
   const canStart = selectedCount > 0 && !pending;
 
-  function handleStart(formData: FormData) {
-    startTransition(() => {
-      startTrainingSession(formData);
-    });
+  // Knappen kan inte bära både name="mode" och en function formAction —
+  // React kommandeerar "name" på en knapp med function-formAction för att
+  // koda vilken action som ska köras, så mode-fältet skrevs aldrig till
+  // FormData (och orsakade en hydration-mismatch på köpet). Sätt mode
+  // manuellt i FormData istället, en distinkt handler per läge.
+  function startWith(mode: 'flashcards' | 'knowledge_checks') {
+    return (formData: FormData) => {
+      formData.set('mode', mode);
+      setError(false);
+      startTransition(async () => {
+        const result = await startTrainingSession(formData);
+        if (!result.ok) setError(true);
+      });
+    };
   }
 
   function formatDate(iso: string | null): string {
@@ -175,9 +186,7 @@ export function OvaPicker({ locale, courses }: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              name="mode"
-              value="flashcards"
-              formAction={handleStart}
+              formAction={startWith('flashcards')}
               disabled={!canStart}
             >
               {pending
@@ -205,9 +214,7 @@ export function OvaPicker({ locale, courses }: Props) {
             <Button
               type="submit"
               variant="secondary"
-              name="mode"
-              value="knowledge_checks"
-              formAction={handleStart}
+              formAction={startWith('knowledge_checks')}
               disabled={!canStart}
             >
               {pending
@@ -220,6 +227,14 @@ export function OvaPicker({ locale, courses }: Props) {
             </Button>
           </div>
         </div>
+
+        {error ? (
+          <p role="alert" className="mt-3 text-[0.8125rem] text-[var(--color-error)]">
+            {sv
+              ? 'Kunde inte starta träningen. Försök igen.'
+              : 'Could not start the session. Try again.'}
+          </p>
+        ) : null}
 
         {selectedCount === 0 ? (
           <p className="mt-3 text-[0.8125rem] text-[var(--color-ink-muted)]">

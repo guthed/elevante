@@ -17,28 +17,34 @@ const startSchema = z.object({
   locale: z.enum(['sv', 'en']),
 });
 
+export type TrainingActionResult = { ok: boolean };
+
 /**
  * Bygger en träningssession från ett lektionsurval och redirectar till den.
  * Urvalet sparas i training_sessions så att refresh inte blandar om korten
- * mitt i en session.
+ * mitt i en session. Returnerar { ok: false } på varje valideringsmiss eller
+ * tomt urval (t.ex. en lektion vars backfill misslyckades) — anroparen visar
+ * ett felmeddelande istället för att sitta tyst. redirect() kastar (typad
+ * `never`) på framgångsvägen, så det finns aldrig ett { ok: true } att
+ * returnera.
  */
-export async function startTrainingSession(formData: FormData): Promise<void> {
+export async function startTrainingSession(formData: FormData): Promise<TrainingActionResult> {
   const profile = await getCurrentProfile();
-  if (!profile || !profile.school_id) return;
+  if (!profile || !profile.school_id) return { ok: false };
 
   const parsed = startSchema.safeParse({
     mode: formData.get('mode')?.toString(),
     lessonIds: formData.getAll('lesson_ids').map((v) => v.toString()),
     locale: formData.get('locale')?.toString(),
   });
-  if (!parsed.success) return;
+  if (!parsed.success) return { ok: false };
   const { mode, lessonIds, locale } = parsed.data;
 
   const items =
     mode === 'flashcards'
       ? await selectFlashcards(profile.id, lessonIds)
       : await selectKnowledgeChecks(profile.id, lessonIds);
-  if (items.length === 0) return;
+  if (items.length === 0) return { ok: false };
 
   const supabase = await createSupabaseServerClient();
   const { data: session } = await supabase
@@ -53,7 +59,7 @@ export async function startTrainingSession(formData: FormData): Promise<void> {
     .select('id')
     .single();
 
-  if (!session) return;
+  if (!session) return { ok: false };
 
   const segment = mode === 'flashcards' ? 'repetera' : 'trana';
   redirect(`/${locale}/app/student/ova/${segment}/${(session as { id: string }).id}`);
@@ -64,8 +70,6 @@ const gradeSchema = z.object({
   flashcardId: z.string().uuid(),
   grade: z.enum(['again', 'hard', 'good']),
 });
-
-export type TrainingActionResult = { ok: boolean };
 
 /** Betygsätter ett flashcard (driver SM-2-schemaläggningen). */
 export async function gradeFlashcard(
