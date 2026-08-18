@@ -10,6 +10,7 @@ import type {
 
 const FLASHCARDS_PER_SESSION = 20;
 const KNOWLEDGE_CHECKS_PER_SESSION = 10;
+const MAX_BACKFILL_PER_REQUEST = 5;
 
 export type TrainingLesson = { id: string; title: string | null; recordedAt: string | null };
 export type TrainingCourse = {
@@ -84,16 +85,51 @@ export async function getOrCreateTrainingMaterials(
   const missing = lessonIds.filter((id) => !haveFor.has(id));
   if (missing.length === 0) return existing;
 
-  for (const lessonId of missing) {
-    await supabase.functions.invoke('transcribe-lesson', {
-      body: { lesson_id: lessonId, mode: 'training_material_only' },
-    });
-  }
+  // Backfilla bara ett fåtal lektioner per request, INTE alla `missing`.
+  // Varje anrop är en ograviterad, icke-strömmande Claude-generation (upp
+  // till 8192 tokens) — Task 6:s urvalsformulär tillåter upp till 50
+  // lektioner, och att köra 50 sådana anrop parallellt i en och samma
+  // request riskerar rate limits hos Anthropic. Den här nedskalningen är
+  // medveten och graciös, inte ett förbiseende: eleven får en fungerande
+  // session av det underlag som redan finns (eller inget alls om allt
+  // saknas första gången), och nästa besök till samma urval backfillar
+  // nästa batch tills allt är genererat. Höj INTE den här gränsen utan att
+  // också lösa rate limit-frågan.
+  const toBackfill = missing.slice(0, MAX_BACKFILL_PER_REQUEST);
+
+  const results = await Promise.allSettled(
+    toBackfill.map((lessonId) =>
+      supabase.functions.invoke('transcribe-lesson', {
+        body: { lesson_id: lessonId, mode: 'training_material_only' },
+      }),
+    ),
+  );
+
+  // functions.invoke() avvisar (rejects) ALDRIG på ett HTTP-fel — ett 500-svar
+  // från regenerateTrainingMaterial fångas internt och löser ut promisen med
+  // { data: null, error }. En riktig genereringsmiss är annars omöjlig att
+  // skilja från "lektionen fick inga kort" (Edge-funktionens egen validering
+  // garanterar minst ett kort/fråga vid framgång, så ett tomt resultat betyder
+  // nästan alltid ett osynligt fel) — logga därför båda felvägarna explicit.
+  results.forEach((result, i) => {
+    const lessonId = toBackfill[i];
+    if (result.status === 'rejected') {
+      console.error(
+        `getOrCreateTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
+        result.reason,
+      );
+    } else if (result.value.error) {
+      console.error(
+        `getOrCreateTrainingMaterials: backfill misslyckades för lektion ${lessonId}:`,
+        result.value.error,
+      );
+    }
+  });
 
   const { data: refreshed } = await supabase
     .from('training_materials')
     .select('*')
-    .in('lesson_id', missing);
+    .in('lesson_id', toBackfill);
 
   return [...existing, ...((refreshed ?? []) as TrainingMaterial[])];
 }
