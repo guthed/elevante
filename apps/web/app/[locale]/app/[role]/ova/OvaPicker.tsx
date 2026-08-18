@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { startTrainingSession } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
 import type { Locale } from '@/lib/i18n/config';
@@ -11,12 +11,140 @@ type Props = {
   courses: TrainingCourse[];
 };
 
+// Pollningsintervall för genereringsräknaren, samt hur ofta kringtexten
+// roterar. Ett par misslyckade pollningar i rad stänger av pollningen och
+// faller tillbaka till en neutral väntetext — hellre det än att hamra på
+// ett endpoint som redan visat sig svara fel.
+const PROGRESS_POLL_MS = 2000;
+const PROGRESS_COPY_MS = 4000;
+const MAX_CONSECUTIVE_POLL_FAILURES = 2;
+
+// Kringtexten beskriver vad pipelinen faktiskt gör (lyssna → hitta begrepp →
+// skriva kort) — sann text, inte fyllnadsord. Se app/actions/training.ts och
+// lib/data/training.ts för själva genereringen.
+const PROGRESS_COPY: Record<Locale, string[]> = {
+  sv: [
+    'Lyssnar igenom lektionen igen…',
+    'Letar efter begreppen som faktiskt togs upp…',
+    'Plockar fram lärarens egna exempel…',
+    'Funderar på vad som brukar blandas ihop…',
+    'Skriver korten…',
+    'Vänder på dem en sista gång…',
+  ],
+  en: [
+    'Listening through the lesson again…',
+    'Looking for the concepts that actually came up…',
+    "Picking out the teacher's own examples…",
+    'Thinking about what tends to get mixed up…',
+    'Writing the cards…',
+    'Turning them over one last time…',
+  ],
+};
+
+type Progress = { ready: number; total: number };
+
 export function OvaPicker({ locale, courses }: Props) {
   const sv = locale === 'sv';
   const [pending, startTransition] = useTransition();
   const [courseId, setCourseId] = useState(courses[0]?.id ?? '');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [error, setError] = useState(false);
+
+  // Lektionsurvalet vid starttillfället — fryst separat från `selected` så
+  // att pollningen frågar om exakt de lektioner som skickades in, oavsett om
+  // användaren hinner ändra kryssrutorna medan sessionen förbereds.
+  //
+  // Detta är en ref, inte state: en submit-knapps formAction körs av React
+  // som en Action, och en vanlig setState-anrop däri hamnar i samma
+  // (icke-brådskande) uppdatering som transitionens egen pending-flagga —
+  // uppmätt i praktiken landar de i OLIKA renders, där `pending` hinner bli
+  // sant och sedan falskt igen (hela anropet är snabbt) INNAN
+  // lektions-id:na någonsin syns i en render pollningseffekten kan agera på.
+  // En ref sätts synkront, samma tick som knapptrycket, och är alltid
+  // korrekt när effekten nedan faktiskt kör.
+  const activeLessonIdsRef = useRef<string[] | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
+  const [copyIndex, setCopyIndex] = useState(0);
+  // true så snart en pollning visat att inget behöver genereras (ready===total
+  // redan vid första svaret) — håller kvar det valet resten av väntan så
+  // räknaren aldrig blinkar fram och sedan försvinner.
+  const skipCounterRef = useRef(false);
+  const fixedTotalRef = useRef<number | null>(null);
+
+  const isGenerating = progress !== null && !skipCounterRef.current;
+
+  // Pollar /api/training/progress medan startTrainingSession() kör i
+  // bakgrunden. `total` fångas ur det FÖRSTA lyckade svaret och hålls fast —
+  // räknar man om det på varje pollning krymper "missing" i takt med att
+  // "ready" växer, vilket får nämnaren att krypa uppåt tillsammans med
+  // täljaren och aldrig visa en stabil siffra.
+  useEffect(() => {
+    const lessonIds = activeLessonIdsRef.current;
+    if (!pending || !lessonIds || lessonIds.length === 0) return;
+
+    let cancelled = false;
+    let consecutiveFailures = 0;
+
+    async function poll() {
+      try {
+        const res = await fetch('/api/training/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lessonIds }),
+        });
+        if (!res.ok) throw new Error('progress poll failed');
+        const data = (await res.json()) as Progress;
+        if (cancelled) return;
+        consecutiveFailures = 0;
+        if (fixedTotalRef.current === null) {
+          fixedTotalRef.current = data.total;
+          if (data.ready >= data.total) skipCounterRef.current = true;
+        }
+        setProgress({ ready: data.ready, total: fixedTotalRef.current });
+      } catch {
+        if (cancelled) return;
+        consecutiveFailures += 1;
+        if (consecutiveFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
+          clearInterval(intervalId);
+          setProgress(null);
+        }
+      }
+    }
+
+    poll();
+    const intervalId = setInterval(poll, PROGRESS_POLL_MS);
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
+    };
+    // activeLessonIdsRef.current med avsikt utanför dependency-arrayen — det
+    // är en ref, ändringar i den triggar inte om körningen (och lint-regeln
+    // kräver den inte). Effekten ska bara reagera på `pending`; refens värde
+    // läses en gång när effekten kör.
+  }, [pending]);
+
+  // Roterar kringtexten var 4:e sekund, bara medan räknaren faktiskt visas.
+  useEffect(() => {
+    if (!pending || !isGenerating) {
+      setCopyIndex(0);
+      return;
+    }
+    const id = setInterval(() => {
+      setCopyIndex((i) => (i + 1) % PROGRESS_COPY[locale].length);
+    }, PROGRESS_COPY_MS);
+    return () => clearInterval(id);
+  }, [pending, isGenerating, locale]);
+
+  // Städa upp när transitionen är klar (framgång eller fel) så nästa
+  // starttryck börjar från ett rent tillstånd.
+  useEffect(() => {
+    if (pending) return;
+    activeLessonIdsRef.current = null;
+    setProgress(null);
+    fixedTotalRef.current = null;
+    skipCounterRef.current = false;
+  }, [pending]);
 
   const course = useMemo(
     () => courses.find((c) => c.id === courseId) ?? courses[0],
@@ -56,6 +184,11 @@ export function OvaPicker({ locale, courses }: Props) {
     return (formData: FormData) => {
       formData.set('mode', mode);
       setError(false);
+      // Fångar exakt de lektions-id:n som faktiskt skickas in (samma
+      // hidden-inputs som formuläret postar) — det är vad pollningen ska
+      // fråga om, oavsett om användaren hinner ändra kryssrutorna medan
+      // sessionen förbereds. Sätts synkront i en ref (se motivering ovan).
+      activeLessonIdsRef.current = formData.getAll('lesson_ids').map((v) => v.toString());
       startTransition(async () => {
         const result = await startTrainingSession(formData);
         if (!result.ok) setError(true);
@@ -227,6 +360,41 @@ export function OvaPicker({ locale, courses }: Props) {
             </Button>
           </div>
         </div>
+
+        {pending ? (
+          <div className="mt-4">
+            {isGenerating && progress ? (
+              <>
+                <p className="text-[0.8125rem] text-[var(--color-ink-secondary)] tabular-nums">
+                  {sv
+                    ? `${progress.ready} av ${progress.total} lektioner klara`
+                    : `${progress.ready} of ${progress.total} lessons ready`}
+                </p>
+                <div
+                  role="progressbar"
+                  aria-valuenow={progress.ready}
+                  aria-valuemin={0}
+                  aria-valuemax={progress.total}
+                  className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--color-sand)]"
+                >
+                  <div
+                    className="h-full rounded-full bg-[var(--color-accent)] transition-[width] duration-300 ease-out"
+                    style={{
+                      width: `${progress.total > 0 ? (progress.ready / progress.total) * 100 : 0}%`,
+                    }}
+                  />
+                </div>
+                <p aria-live="polite" className="mt-2 text-[0.8125rem] text-[var(--color-ink-muted)]">
+                  {PROGRESS_COPY[locale][copyIndex]}
+                </p>
+              </>
+            ) : (
+              <p aria-live="polite" className="text-[0.8125rem] text-[var(--color-ink-muted)]">
+                {sv ? 'Förbereder träningen…' : 'Preparing your session…'}
+              </p>
+            )}
+          </div>
+        ) : null}
 
         {error ? (
           <p role="alert" className="mt-3 text-[0.8125rem] text-[var(--color-error)]">

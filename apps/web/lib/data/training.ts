@@ -10,7 +10,10 @@ import type {
 
 const FLASHCARDS_PER_SESSION = 20;
 const KNOWLEDGE_CHECKS_PER_SESSION = 10;
-const MAX_BACKFILL_PER_REQUEST = 5;
+// Exporterad så att /api/training/progress kan räkna ut samma `total`-tak som
+// backfillen faktiskt kommer att uppnå denna request — ingen andra
+// implementation av samma gräns.
+export const MAX_BACKFILL_PER_REQUEST = 5;
 
 export type TrainingLesson = { id: string; title: string | null; recordedAt: string | null };
 export type TrainingCourse = {
