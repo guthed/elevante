@@ -103,7 +103,7 @@ export function FlashcardRunner({ locale, cards }: Props) {
       ) : null}
 
       <div className="lg:grid lg:grid-cols-[1fr_320px] lg:items-start lg:gap-8">
-        <div className="space-y-4">
+        <div>
           <button
             ref={cardButtonRef}
             type="button"
@@ -126,34 +126,6 @@ export function FlashcardRunner({ locale, cards }: Props) {
               </p>
             )}
           </button>
-
-          {flipped ? (
-            <div className="flex flex-wrap justify-center gap-3">
-              <Button type="button" variant="outline" onClick={() => handleGrade('again')}>
-                {sv ? 'Vet inte' : "Don't know"}
-              </Button>
-              <Button type="button" variant="secondary" onClick={() => handleGrade('hard')}>
-                {sv ? 'Osäker' : 'Unsure'}
-              </Button>
-              <Button type="button" onClick={() => handleGrade('good')}>
-                {sv ? 'Kan det' : 'Got it'}
-              </Button>
-            </div>
-          ) : null}
-
-          {/* Under 1024px: fyller det tomma utrymmet mellan betygsknapparna och
-              bottennavigationen istället för att slösas bort. Döljs på lg där
-              samma innehåll istället ligger i sidopanelen till höger. */}
-          {flipped && hasMisconception ? (
-            <div className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface-soft)] p-4 lg:hidden">
-              <p className="text-[0.75rem] font-medium uppercase tracking-wide text-[var(--color-coral)]">
-                {misconceptionLabel}
-              </p>
-              <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
-                {card.conceptMisconception}
-              </p>
-            </div>
-          ) : null}
         </div>
 
         {hasMisconception ? (
@@ -179,6 +151,49 @@ export function FlashcardRunner({ locale, cards }: Props) {
           </div>
         ) : null}
       </div>
+
+      {/* Staplas fullbredd under 640px för större tumytor och för att fylla
+          det tomma utrymmet under kortet; en rad från sm och uppåt. Ligger
+          utanför lg:grid-rutnätet ovan så att raden får hela innehållsbredden
+          att fördela mellan de tre (nu längre) knapptexterna istället för att
+          klämmas in i vänsterkolumnens 1fr — annars radbryts etiketterna. */}
+      {flipped ? (
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => handleGrade('again')}
+          >
+            {sv ? 'Det här visste jag inte' : "I didn't know this"}
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full sm:w-auto"
+            onClick={() => handleGrade('hard')}
+          >
+            {sv ? 'Det här var jag osäker på' : "I wasn't sure"}
+          </Button>
+          <Button type="button" className="w-full sm:w-auto" onClick={() => handleGrade('good')}>
+            {sv ? 'Det här visste jag' : 'I knew this'}
+          </Button>
+        </div>
+      ) : null}
+
+      {/* Under 1024px: fyller det tomma utrymmet mellan betygsknapparna och
+          bottennavigationen istället för att slösas bort. Döljs på lg där
+          samma innehåll istället ligger i sidopanelen till höger. */}
+      {flipped && hasMisconception ? (
+        <div className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface-soft)] p-4 lg:hidden">
+          <p className="text-[0.75rem] font-medium uppercase tracking-wide text-[var(--color-coral)]">
+            {misconceptionLabel}
+          </p>
+          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+            {card.conceptMisconception}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
