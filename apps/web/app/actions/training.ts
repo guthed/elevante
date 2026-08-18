@@ -1,9 +1,12 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
 import { z } from 'zod';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
 import {
+  backfillMissingTrainingMaterials,
+  getOrCreateTrainingMaterials,
   recordFlashcardGrade,
   recordKnowledgeCheckAnswer,
   selectFlashcards,
@@ -20,13 +23,68 @@ const startSchema = z.object({
 export type TrainingActionResult = { ok: boolean };
 
 /**
- * Bygger en träningssession från ett lektionsurval och redirectar till den.
- * Urvalet sparas i training_sessions så att refresh inte blandar om korten
- * mitt i en session. Returnerar { ok: false } på varje valideringsmiss eller
- * tomt urval (t.ex. en lektion vars backfill misslyckades) — anroparen visar
- * ett felmeddelande istället för att sitta tyst. redirect() kastar (typad
- * `never`) på framgångsvägen, så det finns aldrig ett { ok: true } att
- * returnera.
+ * FAS 1 av tvåstegsflödet. Avgör om något av de valda lektionerna saknar
+ * träningsunderlag; om ja, schemalägger den faktiska genereringen via
+ * `after()` och returnerar OMEDELBART UTAN att invänta den — Claude-anropet
+ * (~70 s för en lektion, ~90-100 s för två parallellt, uppmätt 2026-08-18)
+ * körs alltså aldrig på den öppna klient-anslutningen längre. Klienten
+ * pollar /api/training/progress för att se när det är klart och anropar
+ * sedan startTrainingSession (fas 2) — se OvaPicker.tsx.
+ *
+ * VIKTIGT: `after()` håller den här funktionsinvokeringen vid liv med
+ * waitUntil så länge sidans (ova/page.tsx) maxDuration tillåter — inte
+ * längre. Requesten mot KLIENTEN återvänder direkt, men själva Claude-
+ * genereringen behöver fortfarande hela den tiden för att hinna klart INNAN
+ * Vercel dödar invokeringen. Sänk inte page.tsx:s maxDuration under vad
+ * backfillen faktiskt kan ta, annars avbryts genereringen i tysthet
+ * mitt i (ingen throw, ingen loggad orsak — den ser bara ut att aldrig bli
+ * klar och pollningens tak tar över istället).
+ *
+ * Om inget saknas returneras { ready: true } direkt — klienten går rakt
+ * vidare till fas 2 utan att pollningen/progress-UI:t någonsin visas.
+ */
+export async function prepareTrainingSession(
+  formData: FormData,
+): Promise<{ ready: boolean }> {
+  const profile = await getCurrentProfile();
+  if (!profile || !profile.school_id) return { ready: false };
+
+  const parsed = startSchema.safeParse({
+    mode: formData.get('mode')?.toString(),
+    lessonIds: formData.getAll('lesson_ids').map((v) => v.toString()),
+    locale: formData.get('locale')?.toString(),
+  });
+  if (!parsed.success) return { ready: false };
+  const { lessonIds } = parsed.data;
+
+  const existing = await getOrCreateTrainingMaterials(lessonIds, { backfill: false });
+  const haveFor = new Set(existing.map((m) => m.lesson_id));
+  const missing = lessonIds.filter((id) => !haveFor.has(id));
+  if (missing.length === 0) return { ready: true };
+
+  after(async () => {
+    try {
+      await backfillMissingTrainingMaterials(missing);
+    } catch (err) {
+      console.error('prepareTrainingSession: backfill via after() misslyckades:', err);
+    }
+  });
+
+  return { ready: false };
+}
+
+/**
+ * FAS 2 av tvåstegsflödet. Bygger en träningssession från ett lektionsurval
+ * och redirectar till den. Läser bara BEFINTLIGT underlag (backfill: false)
+ * — genereringen är prepareTrainingSessions jobb (fas 1); vid det här laget
+ * finns underlaget antingen redan, eller så gör det aldrig det den här
+ * gången (klienten anropar fas 2 även om pollningens tak nås utan att allt
+ * blev klart, se OvaPicker.tsx). Urvalet sparas i training_sessions så att
+ * refresh inte blandar om korten mitt i en session. Returnerar { ok: false }
+ * på varje valideringsmiss eller tomt urval (t.ex. en lektion vars backfill
+ * misslyckades eller aldrig hann klart) — anroparen visar ett felmeddelande
+ * istället för att sitta tyst. redirect() kastar (typad `never`) på
+ * framgångsvägen, så det finns aldrig ett { ok: true } att returnera.
  */
 export async function startTrainingSession(formData: FormData): Promise<TrainingActionResult> {
   const profile = await getCurrentProfile();
@@ -42,8 +100,8 @@ export async function startTrainingSession(formData: FormData): Promise<Training
 
   const items =
     mode === 'flashcards'
-      ? await selectFlashcards(profile.id, lessonIds)
-      : await selectKnowledgeChecks(profile.id, lessonIds);
+      ? await selectFlashcards(profile.id, lessonIds, { backfill: false })
+      : await selectKnowledgeChecks(profile.id, lessonIds, { backfill: false });
   if (items.length === 0) return { ok: false };
 
   const supabase = await createSupabaseServerClient();

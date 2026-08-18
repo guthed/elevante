@@ -6,17 +6,30 @@ import { getCurrentProfile } from '@/lib/supabase/server';
 import { getTrainingCourses } from '@/lib/data/training';
 import { OvaPicker } from './OvaPicker';
 
-// Att bygga en session kan behöva backfilla träningsunderlag via Edge Function
-// (ett Claude-anrop per lektion, parallellt). MÄTT 2026-08-18 mot riktiga
-// lektioner: ~70 s för EN lektion, ~90-100 s för två parallellt — inte de
-// 10-30 s som först antogs. Med 60 s dödades server-actionen i produktion
-// innan ens första lektionen blev klar (syns aldrig lokalt, där maxDuration
-// inte tillämpas). Sänk inte utan att mäta om.
+// Generering av träningsunderlag väntas INTE längre in på klientens öppna
+// anslutning. prepareTrainingSession (app/actions/training.ts, fas 1) kollar
+// bara vad som saknas och schemalägger backfillen via next/server after() —
+// requesten mot klienten returnerar direkt. startTrainingSession (fas 2)
+// läser bara befintligt underlag och gör aldrig någon generering.
 //
-// Detta är ett plåster: rätt lösning är att inte vänta in genereringen i
-// requesten alls, utan låta klientens pollning driva den. Se
-// docs/superpowers/plans/ för den uppgiften.
-export const maxDuration = 300;
+// MEN: Server Actions ärver maxDuration från SIDAN de anropas från (det
+// finns ingen separat per-action-config), och after()-jobbet hålls vid liv
+// av Vercels waitUntil bara så länge den ursprungliga invokeringens
+// maxDuration tillåter — se next/server after()-dokumentationen. Den här
+// konstanten styr alltså fortfarande hur lång tid den FAKTISKA Claude-
+// genereringen får innan Vercel dödar invokeringen, precis som förut — bara
+// att det numera sker bakom kulisserna istället för på klientens anslutning.
+// Sänk den INTE till en kort siffra bara för att requesten känns snabb.
+//
+// MÄTT 2026-08-18 mot riktiga lektioner: ~70 s för EN lektion, ~90-100 s för
+// två parallellt. MAX_BACKFILL_PER_REQUEST (lib/data/training.ts) tillåter
+// upp till 5 parallellt i en enda backfill — aldrig uppmätt, så 240 s ger
+// ~140 s marginal över det värsta uppmätta för ökad kontention/rate-limit-
+// backoff vid högre parallellitet. Fortfarande lägre än den gamla
+// blankettsiffran 300, som var dimensionerad för ett helt annat problem
+// (att hålla en enda klientanslutning öppen hela vägen) — sänk inte utan att
+// mäta om, precis som innan.
+export const maxDuration = 240;
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
