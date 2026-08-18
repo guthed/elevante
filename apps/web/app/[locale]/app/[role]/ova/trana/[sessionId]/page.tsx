@@ -3,7 +3,11 @@ import { notFound, redirect } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
-import { getOrCreateTrainingMaterials, type KnowledgeCheckSessionItem } from '@/lib/data/training';
+import {
+  findTrainingConcept,
+  getOrCreateTrainingMaterials,
+  type KnowledgeCheckSessionItem,
+} from '@/lib/data/training';
 import { shuffleChoices } from '@/lib/training/shuffle';
 import type { TrainingSession } from '@/lib/supabase/database';
 import { KnowledgeCheckRunner } from './KnowledgeCheckRunner';
@@ -52,7 +56,14 @@ export default async function KnowledgeCheckSessionPage({ params }: Props) {
   const byId = new Map<string, KnowledgeCheckSessionItem>();
   for (const m of materials) {
     for (const k of m.knowledge_checks) {
-      byId.set(k.id, { ...k, lessonId: m.lesson_id, lessonTitle: titles.get(m.lesson_id) ?? null });
+      const concept = findTrainingConcept(m, k.concept_id);
+      byId.set(k.id, {
+        ...k,
+        lessonId: m.lesson_id,
+        lessonTitle: titles.get(m.lesson_id) ?? null,
+        conceptName: concept?.name ?? null,
+        conceptDefinition: concept?.definition ?? null,
+      });
     }
   }
 
@@ -78,7 +89,7 @@ export default async function KnowledgeCheckSessionPage({ params }: Props) {
 
   return (
     <div className="container-wide py-10 md:py-14">
-      <div className="mx-auto max-w-xl">
+      <div className="mx-auto max-w-xl lg:max-w-4xl">
         <h1 className="font-serif text-[1.75rem] leading-tight text-[var(--color-ink)]">
           {sv ? 'Kunskapskoll' : 'Knowledge check'}
         </h1>

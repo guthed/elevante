@@ -3,7 +3,11 @@ import { notFound, redirect } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
-import { getOrCreateTrainingMaterials, type FlashcardSessionItem } from '@/lib/data/training';
+import {
+  findTrainingConcept,
+  getOrCreateTrainingMaterials,
+  type FlashcardSessionItem,
+} from '@/lib/data/training';
 import type { TrainingSession } from '@/lib/supabase/database';
 import { FlashcardRunner } from './FlashcardRunner';
 
@@ -49,7 +53,14 @@ export default async function FlashcardSessionPage({ params }: Props) {
   const byId = new Map<string, FlashcardSessionItem>();
   for (const m of materials) {
     for (const f of m.flashcards) {
-      byId.set(f.id, { ...f, lessonId: m.lesson_id, lessonTitle: titles.get(m.lesson_id) ?? null });
+      const concept = findTrainingConcept(m, f.concept_id);
+      byId.set(f.id, {
+        ...f,
+        lessonId: m.lesson_id,
+        lessonTitle: titles.get(m.lesson_id) ?? null,
+        conceptName: concept?.name ?? null,
+        conceptMisconception: concept?.misconception ?? null,
+      });
     }
   }
 
@@ -61,7 +72,7 @@ export default async function FlashcardSessionPage({ params }: Props) {
 
   return (
     <div className="container-wide py-10 md:py-14">
-      <div className="mx-auto max-w-xl">
+      <div className="mx-auto max-w-xl lg:max-w-4xl">
         <h1 className="font-serif text-[1.75rem] leading-tight text-[var(--color-ink)]">
           Flashcards
         </h1>

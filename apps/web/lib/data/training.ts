@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { sm2, type Sm2Grade } from '@/lib/training/sm2';
 import type {
   FlashcardReviewState,
+  TrainingConcept,
   TrainingFlashcard,
   TrainingKnowledgeCheck,
   TrainingMaterial,
@@ -140,12 +141,28 @@ export async function getOrCreateTrainingMaterials(
 export type FlashcardSessionItem = TrainingFlashcard & {
   lessonId: string;
   lessonTitle: string | null;
+  conceptName: string | null;
+  conceptMisconception: string | null;
 };
 
 export type KnowledgeCheckSessionItem = TrainingKnowledgeCheck & {
   lessonId: string;
   lessonTitle: string | null;
+  conceptName: string | null;
+  conceptDefinition: string | null;
 };
+
+/**
+ * Slår upp konceptet ett kort/en fråga hör till i samma träningsunderlags-rad
+ * (concept_id pekar in i materialets egen `concepts`-array — ingen extra
+ * fråga). Kan saknas om underlaget genererades innan koncept-fältet fanns.
+ */
+export function findTrainingConcept(
+  material: TrainingMaterial,
+  conceptId: string,
+): TrainingConcept | undefined {
+  return material.concepts.find((c) => c.id === conceptId);
+}
 
 async function lessonTitles(lessonIds: string[]): Promise<Map<string, string | null>> {
   const supabase = await createSupabaseServerClient();
@@ -168,11 +185,16 @@ export async function selectFlashcards(
   const titles = await lessonTitles(lessonIds);
 
   const all: FlashcardSessionItem[] = materials.flatMap((m) =>
-    m.flashcards.map((f) => ({
-      ...f,
-      lessonId: m.lesson_id,
-      lessonTitle: titles.get(m.lesson_id) ?? null,
-    })),
+    m.flashcards.map((f) => {
+      const concept = findTrainingConcept(m, f.concept_id);
+      return {
+        ...f,
+        lessonId: m.lesson_id,
+        lessonTitle: titles.get(m.lesson_id) ?? null,
+        conceptName: concept?.name ?? null,
+        conceptMisconception: concept?.misconception ?? null,
+      };
+    }),
   );
   if (all.length === 0) return [];
 
@@ -209,11 +231,16 @@ export async function selectKnowledgeChecks(
   const titles = await lessonTitles(lessonIds);
 
   const all: KnowledgeCheckSessionItem[] = materials.flatMap((m) =>
-    m.knowledge_checks.map((k) => ({
-      ...k,
-      lessonId: m.lesson_id,
-      lessonTitle: titles.get(m.lesson_id) ?? null,
-    })),
+    m.knowledge_checks.map((k) => {
+      const concept = findTrainingConcept(m, k.concept_id);
+      return {
+        ...k,
+        lessonId: m.lesson_id,
+        lessonTitle: titles.get(m.lesson_id) ?? null,
+        conceptName: concept?.name ?? null,
+        conceptDefinition: concept?.definition ?? null,
+      };
+    }),
   );
   if (all.length === 0) return [];
 
