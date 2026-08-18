@@ -7,17 +7,23 @@
 //   2. Anropa Berget AI Whisper för transkribering
 //   3. Chunka transcript (~500 tecken per chunk, 80 tecken overlap)
 //   4. Anropa Berget AI embeddings för varje chunk
-//   5. Insert i public.lesson_chunks
-//   6. Update lessons.transcript_text + transcript_status='ready'
-//   7. Radera audio från Storage (GDPR — råljud raderas efter transkribering)
+//   5. Radera ev. gamla chunks och insert i public.lesson_chunks
+//   6. Claude: sammanfattning, startfrågor, ämne och koncept
+//   7. Update lessons.transcript_text + transcript_status='ready'
+//   8. Claude: träningsunderlag (koncept, flashcards, kunskapskollar)
+//      → public.training_materials. Best effort — får aldrig blockera resten.
+//   9. Radera audio från Storage (GDPR — råljud raderas efter transkribering)
 //
-// Funktionen är ett SKELETON. Den kör helt utan externa anrop om
-// BERGET_AI_API_KEY saknas — då markeras lektionen som 'failed' med
-// en tydlig felmeddelande, så pipelinen kan testas end-to-end utan keys.
+// Om BERGET_AI_API_KEY saknas markeras lektionen som 'failed' med ett tydligt
+// felmeddelande, så pipelinen kan testas end-to-end utan keys.
 //
 // Om request-body innehåller transcript_text används det direkt: stegen
 // audio-download + Whisper hoppas över. Används för att seeda demo-lektioner
 // med ett färdigt transkript (ingen ljudfil finns att radera då).
+//
+// mode='training_material_only' kör BARA steg 8 mot ett redan sparat
+// transkript. Används för lat backfill från webbappens datalager av lektioner
+// som transkriberades innan träningsunderlaget fanns.
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
@@ -318,7 +324,7 @@ async function upsertTrainingMaterial(
   training: RawTrainingMaterial,
 ): Promise<void> {
   const conceptIds = training.concepts.map(() => crypto.randomUUID());
-  await supabase.from('training_materials').upsert(
+  const { error: upsertErr } = await supabase.from('training_materials').upsert(
     {
       school_id: schoolId,
       lesson_id: lessonId,
@@ -341,6 +347,13 @@ async function upsertTrainingMaterial(
     },
     { onConflict: 'lesson_id' },
   );
+  // Kastar medvetet — anroparens try/catch loggar och går vidare. Utan den
+  // här kontrollen försvinner ett misslyckat skrivförsök helt tyst
+  // (supabase-js kastar inte vid PostgREST-fel), och eleven ser bara en tom
+  // träningssession utan spår i loggarna.
+  if (upsertErr) {
+    throw new Error(`Training material upsert failed: ${upsertErr.message}`);
+  }
 }
 
 async function processLesson(
