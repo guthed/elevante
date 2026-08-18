@@ -197,6 +197,33 @@ Ingen delning med lärare i v1 (explicit ute ur scope enligt Notion-sidan).
 - Delning av träningsresultat med lärare.
 - Modellval Claude/Berget-konfiguration — Lager 3-spec.
 
+## Avvikelser från specen vid implementation (2026-08-18)
+
+Specen ovan står kvar som den godkändes. Detta hände i verkligheten:
+
+1. **AI-anropet flyttades till Edge-funktionen.** Specen la
+   `generateTrainingMaterial` i `lib/ai/anthropic.ts`. Det hade krävt TVÅ
+   implementationer — en i Deno för pipelinen, en i Next.js för backfill — med
+   två prompts som kan glida isär. Ligger nu bara i Edge-funktionen, med ett
+   `training_material_only`-läge som Next.js anropar via `functions.invoke`.
+2. **Backfill capad och parallelliserad.** Sekventiella anrop hade timeoutat.
+   `MAX_BACKFILL_PER_REQUEST = 5`, `Promise.allSettled`, fel loggas. Taket
+   skyddar dock INTE mot timeout — se punkt 4.
+3. **Svarsalternativen slumpas i två lager.** Claude lade aldrig facit först
+   eller sist (mätt 8/8). Fisher-Yates vid generering + seedad blandning per
+   `session:fråga` vid visning, så återkommande frågor inte kan memoreras på
+   position.
+4. **`maxDuration` höjd 60 → 300.** Mätt: ~70 s för EN lektion, inte de 10–30 s
+   som antogs. Plåster; rätt lösning är att inte vänta in genereringen i
+   requesten (egen uppgift).
+5. **`MIN_TRANSCRIPT_CHARS = 1000`** i både `generateTrainingMaterial` och
+   `generateLessonContent` — en 91 teckens mikrofontest gav annars ett påhittat
+   koncept om Orwells *1984*, i strid med hela strikt-RAG-principen.
+6. **Progressindikator tillkom** (fanns inte i specen): pollad räkning av
+   färdiga `training_materials` + roterande texter under genereringen.
+7. **Namnbyte:** `/ova` heter **Plugga**, `/provplugg` heter **Testa dina
+   kunskaper**. Rutterna är oförändrade.
+
 ## Testning
 
 - `sm2()` — ren funktion, unit-testbar utan Supabase (grade-sekvenser →

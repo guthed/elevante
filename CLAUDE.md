@@ -235,6 +235,44 @@ minskning, mycket konsekvent mellan körningarna, ±2%)**. Prestanda-poängen (8
 (~2,3s render delay) är sannolikt fortsatt ramverks-/hydreringsrelaterad (React/Next-runtimen,
 samma ~226 KB-chunk som Task 4 inte kunde krympa) — en egen, större utredning om ytterligare
 LCP-förbättring önskas.
+### Kunskapsträning före prov — Foundation: KLAR (2026-08-18)
+Nytt träningslager i elevappen: flashcards (Repetera) och kunskapskollar (Träna), nåbara från
+nav-posten **Plugga**. Tre lager enligt Notion-briefen: **Lager 1** genererar träningsunderlag
+EN gång per lektion i `transcribe-lesson` (nytt steg efter sammanfattningen, eget try/catch —
+får aldrig blockera transkript/summary/GDPR-radering) till `training_materials` (jsonb: koncept
+med definition/exempel/missförstånd, flashcards, kunskapskollar; item-id:n är stabila uuid:n).
+**Lager 2** är ren applogik: SM-2 (`lib/training/sm2.ts`, egen ~50-radersimplementation, tre-gradig
+indata again/hard/good) schemalägger korten, kunskapskollar viktas mot koncept eleven svarat sämst
+på, urvalet fryses i `training_sessions.item_ids` så refresh inte blandar om. **Lager 3** (Förhör
+mig, Förklara med egna ord) ingår INTE. AI-anropet finns på EN plats — Edge-funktionen — och lat
+backfill av äldre lektioner anropar samma funktion via `mode:'training_material_only'` i stället
+för en andra implementation i Next.js. Progressindikator med riktig mätning (pollar
+`/api/training/progress`, klienten fryser nämnaren från första svaret) + roterande, pipeline-sanna
+texter. `provplugg` omdöpt till **Testa dina kunskaper** — de två funktionerna låg för nära i namn;
+den ena mäter, den andra bygger. Rutterna `/ova` och `/provplugg` är oförändrade.
+**Sex fel som bygge/typkontroll/lint var gröna igenom och bara skarp körning hittade:**
+(1) **React kapar `name` på submit-knappar med `formAction={function}`** — `mode` nådde aldrig
+FormData, Zod föll, actionen returnerade tyst och funktionen gjorde bokstavligen ingenting. Löst
+med per-knapp-handlers som sätter `formData.set('mode', …)`. (2) **Prod-drift:** deployad v7 hade
+idempotent `delete lesson_chunks` + titel från kursnamn som ALDRIG committats — en deploy från
+repot hade tyst regredierat båda. (3) Sekventiell backfill hade timeoutat; parallelliserad + capad
+till 5/request + fel loggas. (4) **Fokus föll till `<body>`** efter varje betygsatt kort och varje
+besvarad fråga (avmonterad resp. `disabled` knapp kan inte hålla fokus) — obrukbart med tangentbord.
+(5) **Hallucination:** en mikrofontest på 91 tecken ("Tjugofyra Nitton, John Guthed…") blev ett
+påhittat koncept om Orwells *1984*; samma hål fanns i `generateLessonContent`, som hittade på en
+sammanfattning och tillskrev den läraren vid namn. Löst med `MIN_TRANSCRIPT_CHARS = 1000` i båda
+funktionerna (riktiga lektioner: 4 260–30 515 tecken; skräpet: 88 och 91), fabricerad data raderad.
+(6) **`maxDuration = 60` dödade genereringen i produktion** — mätt ~70 s för EN lektion, ~90–100 s
+för två parallellt, inte de 10–30 s som antogs. Syns ALDRIG lokalt: Next tillämpar inte
+`maxDuration` i dev. Höjd till 300 som plåster; rätt lösning är att inte vänta in genereringen i
+requesten alls. Dessutom: Claude lägger inte facit slumpmässigt (8/8 frågor hade rätt svar på plats
+2 eller 3, aldrig först eller sist) — löst i två lager, Fisher-Yates vid generering + seedad
+blandning per `session:fråga` vid visning, mätt efteråt till {0:14, 1:10, 2:15, 3:5} över 44 frågor.
+Vitest infört (repots första tester): 19 st för `sm2()` och `shuffle()`, muteringstestade.
+**Öppet:** laptop-layouten har död yta och visar aldrig de genererade koncepten; publik copy på
+`/for-larare` säger fortfarande "Provplugg"; tvåstegsflödet som tar genereringen ur requesten;
+RLS-isolering mellan elever är granskad men aldrig körd med två konton samtidigt.
+Spec+plan i `docs/superpowers/`.
 
 ---
 
