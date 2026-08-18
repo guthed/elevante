@@ -46,7 +46,7 @@ export default async function PracticeTestPage({ params }: Props) {
       <div className="mx-auto max-w-3xl">
         <nav className="mb-6 text-[0.8125rem] text-[var(--color-ink-muted)]">
           <Link href={`${base}/provplugg`} className="hover:text-[var(--color-ink)]">
-            {sv ? 'Plugga inför prov' : 'Exam prep'}
+            {sv ? 'Testa dina kunskaper' : 'Test yourself'}
           </Link>
           <span className="px-2 text-[var(--color-sand-strong)]">/</span>
           <span className="text-[var(--color-ink-secondary)]">

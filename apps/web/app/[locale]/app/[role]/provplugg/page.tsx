@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const sv = locale === 'sv';
   return {
-    title: sv ? 'Plugga inför prov' : 'Exam prep',
+    title: sv ? 'Testa dina kunskaper' : 'Test yourself',
     robots: { index: false, follow: false },
   };
 }
@@ -39,12 +39,12 @@ export default async function ProvpluggPage({ params }: Props) {
     <div className="container-wide py-10 md:py-14">
       <div className="mx-auto max-w-2xl">
         <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-          {sv ? 'Plugga inför prov' : 'Exam prep'}
+          {sv ? 'Testa dina kunskaper' : 'Test yourself'}
         </h1>
         <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
           {sv
-            ? 'Välj de lektioner provet täcker, så hjälper Elevante dig att repetera — med svar som bara bygger på det som faktiskt sagts på lektionerna.'
-            : 'Pick the lessons your exam covers and Elevante helps you review — with answers grounded only in what was actually said in class.'}
+            ? 'Välj de lektioner provet täcker, så gör Elevante ett övningsprov åt dig och visar var du står — med frågor och svar som bara bygger på det som faktiskt sagts på lektionerna.'
+            : 'Pick the lessons your exam covers and Elevante builds a practice test to show you where you stand — with questions and answers grounded only in what was actually said in class.'}
         </p>
 
         <div className="mt-10">

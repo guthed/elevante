@@ -96,10 +96,10 @@ export default async function StudentChatThreadPage({ params }: Props) {
           {thread.chat.scope === 'selection' && thread.chat.lesson_ids ? (
             <p className="mb-3 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--color-ink-muted)]">
               {sv
-                ? `Provplugg · ${thread.chat.lesson_ids.length} ${
+                ? `Testa dina kunskaper · ${thread.chat.lesson_ids.length} ${
                     thread.chat.lesson_ids.length === 1 ? 'lektion' : 'lektioner'
                   }`
-                : `Exam prep · ${thread.chat.lesson_ids.length} ${
+                : `Test yourself · ${thread.chat.lesson_ids.length} ${
                     thread.chat.lesson_ids.length === 1 ? 'lesson' : 'lessons'
                   }`}
             </p>

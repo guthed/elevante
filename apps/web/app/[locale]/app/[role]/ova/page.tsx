@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const sv = locale === 'sv';
   return {
-    title: sv ? 'Öva' : 'Practise',
+    title: sv ? 'Plugga' : 'Study',
     robots: { index: false, follow: false },
   };
 }
@@ -39,7 +39,7 @@ export default async function OvaPage({ params }: Props) {
     <div className="container-wide py-10 md:py-14">
       <div className="mx-auto max-w-2xl">
         <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-          {sv ? 'Öva' : 'Practise'}
+          {sv ? 'Plugga' : 'Study'}
         </h1>
         <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
           {sv
