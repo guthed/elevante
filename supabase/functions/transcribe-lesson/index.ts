@@ -110,6 +110,18 @@ async function embedTexts(inputs: string[]): Promise<number[][]> {
 const ANTHROPIC_KEY = Deno.env.get('ANTHROPIC_API_KEY');
 const ANTHROPIC_MODEL = Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-sonnet-4-5-20250929';
 
+// Minsta transkriptlängd (tecken) innan vi låter Claude generera lektions-
+// innehåll eller träningsunderlag. Bekräftad produktionsbugg (2026-08-17):
+// lesson 2416c8cd-324e-4ad8-a3de-ec223986de3a var ett 91-tecken mikrofontest
+// ("Tjugofyra Nitton, John Guthed. Jag pratar för att testa...") — trots att
+// båda systemprompterna nedan börjar med "hitta aldrig på fakta", genererade
+// Claude ett koncept "Tjugofyra nitton (1984)" med definitionen "Dystopisk
+// roman av George Orwell..." och ett flashcard om romanens tema. Ett riktigt
+// lektionstranskript i den här databasen är 4 260–30 515 tecken; 91 tecken
+// ger modellen inget att grunda sig i, så den fyller tomrummet med tränings-
+// data istället. RÖR INTE DEN HÄR GRÄNSEN utan att förstå varför den finns.
+const MIN_TRANSCRIPT_CHARS = 1000;
+
 const LESSON_CONTENT_SYSTEM_PROMPT = `Du är Elevante — en varm mentor som var med på lektionen och hjälper elever förstå vad som hände.
 
 Du får ett transkript från en lektion. Ditt jobb är att:
@@ -145,6 +157,7 @@ async function generateLessonContent(
   teacherName: string | null,
 ): Promise<LessonContent | null> {
   if (!ANTHROPIC_KEY) return null;
+  if (transcript.trim().length < MIN_TRANSCRIPT_CHARS) return null;
 
   const userMessage = teacherName
     ? `Lärare: ${teacherName}\n\nTranskript:\n${transcript}`
@@ -243,6 +256,7 @@ async function generateTrainingMaterial(
   teacherName: string | null,
 ): Promise<RawTrainingMaterial | null> {
   if (!ANTHROPIC_KEY) return null;
+  if (transcript.trim().length < MIN_TRANSCRIPT_CHARS) return null;
 
   const userMessage = teacherName
     ? `Lärare: ${teacherName}\n\nTranskript:\n${transcript.slice(0, 20000)}`
@@ -599,6 +613,12 @@ async function regenerateTrainingMaterial(
   }
   if (!lesson.transcript_text || !lesson.transcript_text.trim()) {
     return { ok: false, detail: 'Lesson har inget transcript_text att generera underlag från' };
+  }
+  if (lesson.transcript_text.trim().length < MIN_TRANSCRIPT_CHARS) {
+    return {
+      ok: false,
+      detail: `Transkriptet är för kort (${lesson.transcript_text.trim().length} tecken, minst ${MIN_TRANSCRIPT_CHARS} krävs) för att bygga träningsunderlag utan risk för hittepåfakta`,
+    };
   }
 
   let teacherName: string | null = null;
