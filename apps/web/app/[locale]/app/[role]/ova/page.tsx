@@ -3,12 +3,20 @@ import { notFound, redirect } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n/config';
 import { isRole } from '@/lib/app/roles';
 import { getCurrentProfile } from '@/lib/supabase/server';
-import { getStudentCoursesWithLessons } from '@/lib/data/student';
-import { ExamPrepPicker } from './ExamPrepPicker';
+import { getTrainingCourses } from '@/lib/data/training';
+import { OvaPicker } from './OvaPicker';
 
-// Provgenereringen anropar Claude med flera lektioners transkript — det tar
-// längre tid än en vanlig chat, så Server Action behöver en högre timeout.
-export const maxDuration = 60;
+// Att bygga en session kan behöva backfilla träningsunderlag via Edge Function
+// (ett Claude-anrop per lektion, parallellt). MÄTT 2026-08-18 mot riktiga
+// lektioner: ~70 s för EN lektion, ~90-100 s för två parallellt — inte de
+// 10-30 s som först antogs. Med 60 s dödades server-actionen i produktion
+// innan ens första lektionen blev klar (syns aldrig lokalt, där maxDuration
+// inte tillämpas). Sänk inte utan att mäta om.
+//
+// Detta är ett plåster: rätt lösning är att inte vänta in genereringen i
+// requesten alls, utan låta klientens pollning driva den. Se
+// docs/superpowers/plans/ för den uppgiften.
+export const maxDuration = 300;
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -18,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const sv = locale === 'sv';
   return {
-    title: sv ? 'Testa dina kunskaper' : 'Test yourself',
+    title: sv ? 'Plugga' : 'Study',
     robots: { index: false, follow: false },
   };
 }
 
-export default async function ProvpluggPage({ params }: Props) {
+export default async function OvaPage({ params }: Props) {
   const { locale: rawLocale, role } = await params;
   if (!isLocale(rawLocale) || !isRole(role)) notFound();
   if (role !== 'student') redirect(`/${rawLocale}/app/${role}`);
@@ -33,29 +41,29 @@ export default async function ProvpluggPage({ params }: Props) {
   const profile = await getCurrentProfile();
   if (!profile) redirect(`/${locale}/login`);
 
-  const courses = await getStudentCoursesWithLessons(profile.id);
+  const courses = await getTrainingCourses(profile.id);
 
   return (
     <div className="container-wide py-10 md:py-14">
       <div className="mx-auto max-w-2xl">
         <h1 className="font-serif text-[clamp(2rem,3vw+1rem,3rem)] leading-[1.05] tracking-[-0.01em] text-[var(--color-ink)]">
-          {sv ? 'Testa dina kunskaper' : 'Test yourself'}
+          {sv ? 'Plugga' : 'Study'}
         </h1>
         <p className="mt-4 text-[1.0625rem] leading-relaxed text-[var(--color-ink-secondary)]">
           {sv
-            ? 'Välj de lektioner provet täcker, så gör Elevante ett övningsprov åt dig och visar var du står — med frågor och svar som bara bygger på det som faktiskt sagts på lektionerna.'
-            : 'Pick the lessons your exam covers and Elevante builds a practice test to show you where you stand — with questions and answers grounded only in what was actually said in class.'}
+            ? 'Ta reda på vad du faktiskt kan — innan det räknas. Välj lektioner och träna på det som togs upp där.'
+            : 'Find out what you actually know — before it counts. Pick lessons and practise what was covered.'}
         </p>
 
         <div className="mt-10">
           {courses.length === 0 ? (
             <p className="text-[0.9375rem] text-[var(--color-ink-muted)]">
               {sv
-                ? 'Du har inga färdiga lektioner att plugga på ännu.'
-                : 'You have no finished lessons to study yet.'}
+                ? 'Du har inga färdiga lektioner att träna på ännu.'
+                : 'You have no finished lessons to practise on yet.'}
             </p>
           ) : (
-            <ExamPrepPicker locale={locale} courses={courses} />
+            <OvaPicker locale={locale} courses={courses} />
           )}
         </div>
       </div>

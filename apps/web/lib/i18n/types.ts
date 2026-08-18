@@ -134,6 +134,7 @@ export type Dictionary = {
         chat: string;
         library: string;
         examPrep: string;
+        training: string;
         learnerProfile: string;
         classTests: string;
       };
@@ -162,6 +163,7 @@ export type Dictionary = {
         library: string;
         chat: string;
         examPrep: string;
+        training: string;
         learnerProfile: string;
         classTests: string;
       };
@@ -188,6 +190,7 @@ export type Dictionary = {
         library: string;
         chat: string;
         examPrep: string;
+        training: string;
         learnerProfile: string;
         classTests: string;
       };

@@ -30,6 +30,7 @@ const ICONS: Record<NavId, ReactNode> = {
   library: I(<><path d="M4 5h12v15H4z" /><path d="M16 5h4v15h-4" /></>),
   chat: I(<path d="M21 12a8 8 0 0 1-11 7L3 21l2-7a8 8 0 1 1 16-2z" />),
   examPrep: I(<><path d="M4 4h16v14H7l-3 3z" /></>),
+  training: I(<><rect x="7" y="7" width="13" height="13" rx="2" /><rect x="4" y="4" width="13" height="13" rx="2" /></>),
   learnerProfile: I(<><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></>),
   classes: I(<><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20c0-3 3-5 6-5s6 2 6 5" /></>),
   courses: I(<><path d="M12 4L3 8l9 4 9-4-9-4z" /><path d="M7 10v6c0 1.5 2.5 3 5 3s5-1.5 5-3v-6" /></>),

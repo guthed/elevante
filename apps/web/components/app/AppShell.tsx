@@ -48,7 +48,7 @@ export function AppShell({
         className={className}
         isStaff={isStaff}
       />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <Topbar
           locale={locale}
           role={role}
@@ -59,7 +59,7 @@ export function AppShell({
         />
         <main
           id="app-main"
-          className="flex-1 overflow-y-auto animate-page-in pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"
+          className="min-h-0 flex-1 overflow-y-auto animate-page-in pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"
         >
           {children}
         </main>

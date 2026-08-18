@@ -56,15 +56,15 @@ export default async function LearnerProfilePage({ params }: Props) {
               </p>
               <p className="mx-auto mt-2 max-w-md text-[0.875rem] leading-relaxed text-[var(--color-ink-muted)]">
                 {sv
-                  ? 'Gör ditt första testprov i Plugga inför prov — då börjar Elevante lära känna hur du arbetar.'
-                  : 'Take your first practice test in Exam prep — then Elevante starts learning how you work.'}
+                  ? 'Gör ditt första testprov i Testa dina kunskaper — då börjar Elevante lära känna hur du arbetar.'
+                  : 'Take your first practice test in Test yourself — then Elevante starts learning how you work.'}
               </p>
               <div className="mt-5">
                 <Link
                   href={`${base}/provplugg`}
                   className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-5 py-2.5 text-[0.9375rem] font-medium text-[var(--color-canvas)] transition-opacity hover:opacity-90"
                 >
-                  {sv ? 'Till Plugga inför prov' : 'Go to Exam prep'}
+                  {sv ? 'Till Testa dina kunskaper' : 'Go to Test yourself'}
                 </Link>
               </div>
             </div>
