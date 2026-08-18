@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { answerKnowledgeCheck } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
 import type { Locale } from '@/lib/i18n/config';
@@ -18,11 +18,47 @@ export function KnowledgeCheckRunner({ locale, checks }: Props) {
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
+  const done = index >= checks.length;
 
-  if (index >= checks.length) {
+  const questionCardRef = useRef<HTMLDivElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
+  const summaryHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isFirstRender = useRef(true);
+
+  // Att svara sätter disabled på ALLA valknappar, inklusive den som just
+  // hade fokus — en disabled knapp kan inte hålla fokus, så webbläsaren
+  // släpper det till <body>. Flytta fokus till knappen som precis dök upp
+  // ("Nästa fråga"/"Se resultatet") så flödet fortsätter naturligt.
+  useEffect(() => {
+    if (picked !== null) {
+      nextButtonRef.current?.focus();
+    }
+  }, [picked]);
+
+  // Mellan frågor: "Nästa fråga"-knappen (som hade fokus) avmonteras när
+  // picked återställs och index avancerar — samma fokusförlust som ovan,
+  // fast mellan frågor istället för inom en fråga. Hoppar över första
+  // renderingen så vi inte stjäl fokus vid sidladdning.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (done) {
+      summaryHeadingRef.current?.focus();
+    } else {
+      questionCardRef.current?.focus();
+    }
+  }, [index, done]);
+
+  if (done) {
     return (
       <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 text-center">
-        <h2 className="font-serif text-[1.375rem] text-[var(--color-ink)]">
+        <h2
+          ref={summaryHeadingRef}
+          tabIndex={-1}
+          className="rounded-[8px] font-serif text-[1.375rem] text-[var(--color-ink)]"
+        >
           {sv ? 'Klart' : 'Done'}
         </h2>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
@@ -69,7 +105,11 @@ export function KnowledgeCheckRunner({ locale, checks }: Props) {
         </p>
       </div>
 
-      <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6">
+      <div
+        ref={questionCardRef}
+        tabIndex={-1}
+        className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-6"
+      >
         <p className="font-serif text-[1.0625rem] leading-snug text-[var(--color-ink)]">
           {check.question}
         </p>
@@ -112,7 +152,7 @@ export function KnowledgeCheckRunner({ locale, checks }: Props) {
               {check.explanation}
             </p>
             <div className="mt-4">
-              <Button type="button" onClick={handleNext}>
+              <Button type="button" ref={nextButtonRef} onClick={handleNext}>
                 {isLast
                   ? sv
                     ? 'Se resultatet'

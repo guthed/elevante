@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { gradeFlashcard } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
 import type { Locale } from '@/lib/i18n/config';
@@ -20,12 +20,39 @@ export function FlashcardRunner({ locale, cards }: Props) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [grades, setGrades] = useState<Grade[]>([]);
+  const done = index >= cards.length;
 
-  if (index >= cards.length) {
+  const cardButtonRef = useRef<HTMLButtonElement>(null);
+  const summaryHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isFirstRender = useRef(true);
+
+  // Varje betyg avmonterar den knapp som just hade fokus (nästa korts
+  // flip-knapp tar dess plats, eller sammanfattningen om sessionen är
+  // klar) — utan explicit refokusering hamnar webbläsarens fokus på
+  // <body>, och en tangentbords-/skärmläsaranvändare måste tabba från
+  // sidans topp igen för varje kort. Hoppar över den allra första
+  // renderingen så vi inte stjäl fokus från någon som bara läser sidan.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (done) {
+      summaryHeadingRef.current?.focus();
+    } else {
+      cardButtonRef.current?.focus();
+    }
+  }, [index, done]);
+
+  if (done) {
     const shaky = grades.filter((g) => g !== 'good').length;
     return (
       <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-8 text-center">
-        <h2 className="font-serif text-[1.375rem] text-[var(--color-ink)]">
+        <h2
+          ref={summaryHeadingRef}
+          tabIndex={-1}
+          className="rounded-[8px] font-serif text-[1.375rem] text-[var(--color-ink)]"
+        >
           {sv ? 'Klart för den här gången' : 'Done for now'}
         </h2>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
@@ -65,6 +92,7 @@ export function FlashcardRunner({ locale, cards }: Props) {
       </div>
 
       <button
+        ref={cardButtonRef}
         type="button"
         onClick={() => setFlipped((f) => !f)}
         aria-expanded={flipped}

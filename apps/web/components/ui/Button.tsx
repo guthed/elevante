@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { cn } from './cn';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger';
@@ -34,7 +34,7 @@ type SharedProps = {
   children: ReactNode;
 };
 
-export type ButtonProps = SharedProps & ComponentPropsWithoutRef<'button'>;
+export type ButtonProps = SharedProps & ComponentPropsWithRef<'button'>;
 
 export function Button({
   variant = 'primary',
@@ -42,10 +42,12 @@ export function Button({
   className,
   children,
   type = 'button',
+  ref,
   ...rest
 }: ButtonProps) {
   return (
     <button
+      ref={ref}
       type={type}
       className={cn(base, variantClass[variant], sizeClass[size], className)}
       {...rest}
