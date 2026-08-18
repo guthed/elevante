@@ -132,7 +132,7 @@ export function FlashcardRunner({ locale, cards }: Props) {
           <div className="hidden lg:block">
             {flipped ? (
               <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface-soft)] p-6">
-                <p className="text-[0.8125rem] font-medium uppercase tracking-wide text-[var(--color-coral)]">
+                <p className="text-[0.8125rem] font-medium uppercase tracking-wide text-coral-deep">
                   {misconceptionLabel}
                 </p>
                 <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--color-ink-secondary)]">
@@ -156,7 +156,15 @@ export function FlashcardRunner({ locale, cards }: Props) {
           det tomma utrymmet under kortet; en rad från sm och uppåt. Ligger
           utanför lg:grid-rutnätet ovan så att raden får hela innehållsbredden
           att fördela mellan de tre (nu längre) knapptexterna istället för att
-          klämmas in i vänsterkolumnens 1fr — annars radbryts etiketterna. */}
+          klämmas in i vänsterkolumnens 1fr — annars radbryts etiketterna.
+
+          Färgsättning: knapparna skiljs åt med TYNGD (outline → sand → ink),
+          inte med kulör. Medvetet varken rött eller grönt — det här är en
+          självskattning, inte rätt/fel. Färgar vi "visste inte" som ett fel
+          slutar elever svara ärligt för att slippa känslan, och då faller hela
+          SM-2-schemaläggningen, som bygger på att svaret är sant. Accenten
+          (--color-accent) används inte: den ska enligt designmanualen användas
+          sparsamt, och det här är funktionens mest tryckta kontroll. */}
       {flipped ? (
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
           <Button
@@ -169,13 +177,18 @@ export function FlashcardRunner({ locale, cards }: Props) {
           </Button>
           <Button
             type="button"
-            variant="secondary"
-            className="w-full sm:w-auto"
+            variant="outline"
+            className="w-full border-transparent bg-[var(--color-sand)] text-[var(--color-ink)] hover:bg-[var(--color-sand-strong)] sm:w-auto"
             onClick={() => handleGrade('hard')}
           >
             {sv ? 'Det här var jag osäker på' : "I wasn't sure"}
           </Button>
-          <Button type="button" className="w-full sm:w-auto" onClick={() => handleGrade('good')}>
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full sm:w-auto"
+            onClick={() => handleGrade('good')}
+          >
             {sv ? 'Det här visste jag' : 'I knew this'}
           </Button>
         </div>
@@ -186,7 +199,7 @@ export function FlashcardRunner({ locale, cards }: Props) {
           samma innehåll istället ligger i sidopanelen till höger. */}
       {flipped && hasMisconception ? (
         <div className="rounded-[12px] border border-[var(--color-sand)] bg-[var(--color-surface-soft)] p-4 lg:hidden">
-          <p className="text-[0.75rem] font-medium uppercase tracking-wide text-[var(--color-coral)]">
+          <p className="text-[0.75rem] font-medium uppercase tracking-wide text-coral-deep">
             {misconceptionLabel}
           </p>
           <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
