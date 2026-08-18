@@ -527,7 +527,7 @@ export const COPY: {
         },
       },
       {
-        title: { sv: 'Repetition, provplugg, veckosammanfattning', en: 'Review, exam prep, weekly summary' },
+        title: { sv: 'Flashcards, övningsprov, veckosammanfattning', en: 'Flashcards, practice tests, weekly summary' },
         desc: {
           sv: 'Eleven kommer ikapp i egen takt; föräldrar får veckans innehåll.',
           en: 'Students catch up at their own pace; parents get the week’s content.',

@@ -102,7 +102,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'Eleverna kommer förberedda',
-          body: 'Provplugg och AI-övningsprov gör att de pluggar på det du sa på lektionen — inte på en gissning från nätet.',
+          body: 'Flashcards, kunskapskollar och AI-övningsprov byggda på det du faktiskt sa på lektionen — inte på en gissning från nätet.',
         },
         {
           title: 'Rättvisare för alla elever',
@@ -136,7 +136,7 @@ export default async function ForTeachersPage({ params }: Props) {
         },
         {
           title: 'Students arrive prepared',
-          body: 'Exam prep and AI practice tests mean they study what you said in the lesson — not a guess from the internet.',
+          body: 'Flashcards, knowledge checks and AI practice tests built on what you actually said in the lesson — not a guess from the internet.',
         },
         {
           title: 'Fairer for every student',
