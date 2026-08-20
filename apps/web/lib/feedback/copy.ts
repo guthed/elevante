@@ -57,7 +57,7 @@ export const CATEGORY_COPY: Record<
 };
 
 export const FEEDBACK_COPY = {
-  trigger: { sv: 'Rapportera', en: 'Report' },
+  trigger: { sv: 'Rapportera ett fel', en: 'Report a problem' },
   triggerAria: {
     sv: 'Rapportera något som inte fungerar',
     en: 'Report something that is not working',
