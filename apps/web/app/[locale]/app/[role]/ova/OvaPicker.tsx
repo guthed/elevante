@@ -366,56 +366,65 @@ export function OvaPicker({ locale, courses }: Props) {
           {sv ? '3 · Hur vill du träna?' : '3 · How do you want to practise?'}
         </p>
 
-        {/* Flashcards — primär väg */}
-        <div className="rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-5">
-          <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">Flashcards</h3>
-          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
-            {sv
-              ? 'Vänd kort och betygsätt dig själv. Elevante kommer ihåg vad du kunde och tar upp det igen när du håller på att glömma.'
-              : 'Flip cards and rate yourself. Elevante remembers what you knew and brings it back just as you start forgetting.'}
-          </p>
-          <div className="mt-4">
-            <Button
-              type="submit"
-              formAction={startWith('flashcards')}
-              disabled={!canStart}
-            >
-              {pending
-                ? sv
-                  ? 'Förbereder…'
-                  : 'Preparing…'
-                : sv
-                  ? 'Börja med flashcards'
-                  : 'Start flashcards'}
-            </Button>
+        {/* Båda vägarna sida vid sida från sm och uppåt — staplade föll
+            Kunskapskoll under vikbrytningen, så eleven såg bara flashcards
+            utan att scrolla. Flashcards behåller sin fyllda yta och sin
+            primära knapp: sidoställningen tar bort rangordningen i höjdled,
+            inte den visuella. */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* Flashcards — primär väg */}
+          <div className="flex flex-col rounded-[16px] border border-[var(--color-sand)] bg-[var(--color-surface)] p-4 lg:p-5">
+            <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">Flashcards</h3>
+            <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Vänd kort och betygsätt dig själv. Elevante kommer ihåg vad du kunde och tar upp det igen när du håller på att glömma.'
+                : 'Flip cards and rate yourself. Elevante remembers what you knew and brings it back just as you start forgetting.'}
+            </p>
+            <div className="mt-3 sm:mt-auto sm:pt-1">
+              <Button
+                type="submit"
+                className="w-full"
+                formAction={startWith('flashcards')}
+                disabled={!canStart}
+              >
+                {pending
+                  ? sv
+                    ? 'Förbereder…'
+                    : 'Preparing…'
+                  : sv
+                    ? 'Börja med flashcards'
+                    : 'Start flashcards'}
+              </Button>
+            </div>
           </div>
-        </div>
 
-        {/* Kunskapskoll — sekundär väg */}
-        <div className="mt-4 rounded-[16px] border border-[var(--color-sand)] p-5">
-          <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
-            {sv ? 'Kunskapskoll' : 'Knowledge check'}
-          </h3>
-          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
-            {sv
-              ? 'Korta flervalsfrågor med svar direkt. Du ser på en gång vad du kan och vad du behöver läsa om.'
-              : 'Short multiple-choice questions with instant answers. You see right away what you know and what needs another pass.'}
-          </p>
-          <div className="mt-4">
-            <Button
-              type="submit"
-              variant="secondary"
-              formAction={startWith('knowledge_checks')}
-              disabled={!canStart}
-            >
-              {pending
-                ? sv
-                  ? 'Förbereder…'
-                  : 'Preparing…'
-                : sv
-                  ? 'Börja kunskapskoll'
-                  : 'Start knowledge check'}
-            </Button>
+          {/* Kunskapskoll — sekundär väg */}
+          <div className="flex flex-col rounded-[16px] border border-[var(--color-sand)] p-4 lg:p-5">
+            <h3 className="font-serif text-[1.125rem] text-[var(--color-ink)]">
+              {sv ? 'Kunskapskoll' : 'Knowledge check'}
+            </h3>
+            <p className="mt-1.5 text-[0.875rem] leading-relaxed text-[var(--color-ink-secondary)]">
+              {sv
+                ? 'Korta flervalsfrågor med svar direkt. Du ser på en gång vad du kan och vad du behöver läsa om.'
+                : 'Short multiple-choice questions with instant answers. You see right away what you know and what needs another pass.'}
+            </p>
+            <div className="mt-3 sm:mt-auto sm:pt-1">
+              <Button
+                type="submit"
+                variant="secondary"
+                className="w-full"
+                formAction={startWith('knowledge_checks')}
+                disabled={!canStart}
+              >
+                {pending
+                  ? sv
+                    ? 'Förbereder…'
+                    : 'Preparing…'
+                  : sv
+                    ? 'Börja kunskapskoll'
+                    : 'Start knowledge check'}
+              </Button>
+            </div>
           </div>
         </div>
 
