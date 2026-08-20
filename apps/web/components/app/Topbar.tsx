@@ -4,6 +4,7 @@ import type { Dictionary } from '@/lib/i18n/types';
 import type { Role } from '@/lib/app/roles';
 import { SchoolBadge } from './SchoolBadge';
 import { LanguageSwitcher } from '@/components/public/LanguageSwitcher';
+import { FeedbackButton } from './feedback/FeedbackButton';
 
 type Props = {
   locale: Locale;
@@ -40,6 +41,10 @@ export function Topbar({ locale, role, dict, schoolName, className }: Props) {
         </Link>
       )}
       <div className="flex items-center gap-3">
+        {/* Rapportera — renderas bara för elever (FeedbackButton returnerar
+            null utan providern). Medvetet HÄR och inte flytande nere till
+            höger: den zonen krockar med bottennavigeringen på mobil. */}
+        <FeedbackButton locale={locale} />
         <LanguageSwitcher
           currentLocale={locale}
           pathname={`/${locale}/app/${role}`}

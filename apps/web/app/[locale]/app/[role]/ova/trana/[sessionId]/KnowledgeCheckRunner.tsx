@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { answerKnowledgeCheck } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
+import { FeedbackButton } from '@/components/app/feedback/FeedbackButton';
+import { useFeedbackItem } from '@/components/app/feedback/useFeedbackItem';
 import type { Locale } from '@/lib/i18n/config';
 import type { KnowledgeCheckSessionItem } from '@/lib/data/training';
 
@@ -19,6 +21,23 @@ export function KnowledgeCheckRunner({ locale, checks }: Props) {
   const [picked, setPicked] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const done = index >= checks.length;
+
+  // Se motsvarande kommentar i FlashcardRunner: registrerar frågan eleven är
+  // på så att en rapport bär med lektion, frågeid och begrepp automatiskt.
+  // Ligger före den tidiga returen — hooks får inte hoppas över.
+  const currentCheck: KnowledgeCheckSessionItem | undefined = checks[index];
+  useFeedbackItem(
+    currentCheck
+      ? {
+          lessonId: currentCheck.lessonId,
+          lessonTitle: currentCheck.lessonTitle,
+          itemType: 'knowledge_check',
+          itemId: currentCheck.id,
+          itemLabel: currentCheck.question,
+          conceptName: currentCheck.conceptName,
+        }
+      : null,
+  );
 
   const questionCardRef = useRef<HTMLDivElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
@@ -102,9 +121,19 @@ export function KnowledgeCheckRunner({ locale, checks }: Props) {
         <p className="text-[0.8125rem] text-[var(--color-ink-muted)]">
           {sv ? 'Fråga' : 'Question'} {index + 1} {sv ? 'av' : 'of'} {checks.length}
         </p>
-        <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
-          {check.lessonTitle ?? ''}
-        </p>
+        <div className="flex items-baseline gap-2 sm:justify-end">
+          <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {check.lessonTitle ?? ''}
+          </p>
+          {/* Samma resonemang som på flashcard-skärmen: knappen ska synas där
+              felen uppstår, och frågan bifogas automatiskt. */}
+          <FeedbackButton
+            locale={locale}
+            variant="inline"
+            className="-my-1 shrink-0"
+            label={sv ? 'Fel på frågan?' : 'Wrong with this question?'}
+          />
+        </div>
       </div>
 
       {check.conceptName ? (

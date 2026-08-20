@@ -8,6 +8,7 @@ import { LanguageSwitcher } from '@/components/public/LanguageSwitcher';
 import { signOut } from '@/app/actions/auth';
 import { SidebarNav } from './SidebarNav';
 import { SchoolBadge } from './SchoolBadge';
+import { FeedbackButton } from './feedback/FeedbackButton';
 import { navItemsFor } from '@/lib/app/nav';
 
 type Props = {
@@ -68,6 +69,11 @@ export function Sidebar({ locale, role, dict, user, schoolName, className, isSta
 
       {/* User row */}
       <div className="border-t border-[var(--color-sand)]/60 px-4 py-4">
+        {/* Topbaren är dold från md och uppåt — utan den här skulle knappen
+            försvinna helt på laptop. Renderas bara för elever. */}
+        <div className="-mx-1 pb-2">
+          <FeedbackButton locale={locale} variant="inline" />
+        </div>
         <div className="px-1 pb-3">
           <LanguageSwitcher
             currentLocale={locale}
