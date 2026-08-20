@@ -415,7 +415,12 @@ export type Dictionary = {
           uploadHint: string;
           uploadSubmit: string;
           uploading: string;
+          termStartLabel: string;
+          termEndLabel: string;
+          termEndHint: string;
           success: string;
+          successDetail: string;
+          unmappedTeachers: string;
           errorInvalid: string;
           errorGeneric: string;
           tableEmpty: string;

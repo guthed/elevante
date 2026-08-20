@@ -48,6 +48,8 @@ export type Course = {
   school_id: string;
   code: string;
   name: string;
+  external_ref: string | null;
+  recordable: boolean;
   created_at: string;
 };
 
@@ -79,6 +81,8 @@ export type Timeslot = {
   start_time: string;
   end_time: string;
   room: string | null;
+  external_ref: string | null;
+  weeks: number[] | null;
   valid_from: string;
   valid_until: string | null;
   created_at: string;
@@ -493,6 +497,8 @@ type CourseInsert = {
   school_id: string;
   code: string;
   name: string;
+  external_ref?: string | null;
+  recordable?: boolean;
   id?: string;
   created_at?: string;
 };
@@ -524,6 +530,8 @@ type TimeslotInsert = {
   end_time: string;
   teacher_id?: string | null;
   room?: string | null;
+  external_ref?: string | null;
+  weeks?: number[] | null;
   valid_from?: string;
   valid_until?: string | null;
   id?: string;
@@ -762,6 +770,64 @@ type FeedbackReportInsert = {
   created_at?: string;
 };
 
+export type TimeslotClass = {
+  timeslot_id: string;
+  class_id: string;
+};
+
+type TimeslotClassInsert = {
+  timeslot_id: string;
+  class_id: string;
+};
+
+export type ScheduleTeacherMap = {
+  id: string;
+  school_id: string;
+  external_ref: string;
+  display_name: string;
+  profile_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type ScheduleTeacherMapInsert = {
+  school_id: string;
+  external_ref: string;
+  display_name: string;
+  profile_id?: string | null;
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type ScheduleImportSource = 'csv' | 'royal-schedule-file' | 'ss12000';
+
+export type ScheduleImport = {
+  id: string;
+  school_id: string;
+  source: ScheduleImportSource;
+  started_by: string | null;
+  started_at: string;
+  finished_at: string | null;
+  created_count: number;
+  updated_count: number;
+  skipped_count: number;
+  error: string | null;
+};
+
+type ScheduleImportInsert = {
+  school_id: string;
+  source: ScheduleImportSource;
+  started_by?: string | null;
+  started_at?: string;
+  finished_at?: string | null;
+  created_count?: number;
+  updated_count?: number;
+  skipped_count?: number;
+  error?: string | null;
+  id?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -772,6 +838,9 @@ export type Database = {
       classes: TableDef<Class, ClassInsert>;
       class_members: TableDef<ClassMember, ClassMemberInsert>;
       timeslots: TableDef<Timeslot, TimeslotInsert>;
+      timeslot_classes: TableDef<TimeslotClass, TimeslotClassInsert>;
+      schedule_teacher_map: TableDef<ScheduleTeacherMap, ScheduleTeacherMapInsert>;
+      schedule_imports: TableDef<ScheduleImport, ScheduleImportInsert>;
       lessons: TableDef<Lesson, LessonInsert>;
       materials: TableDef<Material, MaterialInsert>;
       chats: TableDef<Chat, ChatInsert>;

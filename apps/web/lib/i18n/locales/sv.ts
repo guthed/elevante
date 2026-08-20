@@ -408,7 +408,13 @@ const sv: Dictionary = {
             'Rubriker: course_code, class_name, day, start_time, end_time, room',
           uploadSubmit: 'Ladda upp',
           uploading: 'Laddar upp…',
+          termStartLabel: 'Terminen börjar',
+          termEndLabel: 'Terminen slutar',
+          termEndHint: 'Lämna tomt om schemat gäller tills vidare.',
           success: 'Schemat är uppdaterat.',
+          successDetail: '{created} nya pass, {updated} uppdaterade, {skipped} överhoppade.',
+          unmappedTeachers:
+            'Lärare utan konto i Elevante — deras pass syns inte i lärarappen förrän de kopplats:',
           errorInvalid: 'CSV-filen är felformaterad. Kolla rubrikraden.',
           errorGeneric: 'Något gick fel vid uppladdning.',
           tableEmpty: 'Inget schema uppladdat än.',

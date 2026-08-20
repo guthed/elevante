@@ -408,7 +408,13 @@ const en: Dictionary = {
             'Headers: course_code, class_name, day, start_time, end_time, room',
           uploadSubmit: 'Upload',
           uploading: 'Uploading…',
+          termStartLabel: 'Term starts',
+          termEndLabel: 'Term ends',
+          termEndHint: 'Leave empty if the schedule runs until further notice.',
           success: 'Schedule updated.',
+          successDetail: '{created} new slots, {updated} updated, {skipped} skipped.',
+          unmappedTeachers:
+            'Teachers without an Elevante account — their lessons stay hidden in the teacher app until linked:',
           errorInvalid: 'The CSV is malformed. Check the header row.',
           errorGeneric: 'Something went wrong during upload.',
           tableEmpty: 'No schedule uploaded yet.',
