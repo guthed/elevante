@@ -274,6 +274,37 @@ Vitest infört (repots första tester): 19 st för `sm2()` och `shuffle()`, mute
 RLS-isolering mellan elever är granskad men aldrig körd med två konton samtidigt.
 Spec+plan i `docs/superpowers/`.
 
+### Elevrapportering — elever rapporterar app-problem i appen: KLAR (2026-08-20)
+Elever kan rapportera direkt i appen inför piloten. Bärande idé: **läraren fyller i var i
+flödet något hände, eleven behöver inte — appen vet redan**. Eleven bidrar med EN sak: ett av
+tre val i elevspråk (`Något fungerar inte` · `Jag förstår inte hur jag gör` · `Något ser
+konstigt ut`) plus valfri fritext; en rapport får bestå av bara ett tryck. Sida, lektion,
+kort-/frågeid, begrepp, klass och skola bifogas automatiskt och visas för eleven innan hen
+skickar — ingen insamling i smyg. Bladet inleds med *"Det här handlar om appen — inte om
+ämnet"* och pekar vidare till chatten; utan den ramen blir databasen en läxhjälpskanal.
+Knappen sitter i topbaren (mobil), sidomenyn (laptop) och tydligare i flashcard-/kunskapskoll-
+vyerna — medvetet INTE flytande nere till höger, den zonen krockar med bottennavigeringen.
+**Supabase är sanningen, Notion är arbetsytan:** `feedback_reports` (elev INSERT på egna rader,
+lärare/admin SELECT samma skola, eleven läser inget alls) skrivs först och synkas sedan via
+`after()`, best-effort. **Notion får aldrig namn eller mejl** — bara klass, skola, lektion,
+kontext och en deterministisk ogenomskinlig `Elevreferens` (sha256 av student_id + `FEEDBACK_REF_SALT`),
+eftersom Notion är US-baserat och det här är minderåriga. Egen Notion-DB `💬 Elevante –
+Elevfeedback` (`f8255a60a83a45e88abefd65a40efd78`), skild från lärarnas.
+**Två fel som bygge, typer och lint var gröna igenom:** (1) `.insert().select()` föll på RLS —
+Postgres kräver SELECT-behörighet när en INSERT har RETURNING, och eleven saknar medvetet
+select-policy, så *varje* rapport hade fallit på `new row violates row-level security policy`;
+id:t genereras nu med `randomUUID()` i actionen. (2) Bladet renderades i vänsterkanten —
+Tailwinds preflight nollar `<dialog>`-elementets `margin: auto`; centreringen sätts nu explicit.
+Ett tredje fel fångades av lint: setState i bladets öppna-effekt gav kaskadrenders — löst med
+`key`-baserad remount per öppning i stället.
+Verifierat mot prod: RLS-matrisen med rollimpersonering (egen insert OK · insert på annan elev
+blockerad · eleven ser 0 rader · lärare samma skola ser raden · admin annan skola ser 0) och tre
+riktiga rapporter från picker, flashcard och kunskapskoll med korrekt kontext i både Supabase och
+Notion. Samma elev fick samma Elevreferens över alla tre. Testdata städad.
+**Öppet:** mobillayouten på bladet är inte ögongranskad (Chrome vägrade ändra fönsterstorlek);
+ingen lärarvy i appen för att läsa rapporterna — RLS:en finns, men Notion är arbetsytan och
+uppslag referens → elev går via SQL så länge. Spec i `docs/superpowers/specs/`.
+
 ---
 
 ## Ekonomi
