@@ -19,6 +19,25 @@ type Props = {
   className?: string;
 };
 
+// Signalfärg. Koral, inte den blå accenten: blått betyder primär HANDLING i
+// designsystemet (Button variant="primary"), och en rapportknapp som ser ut som
+// sidans huvudknapp drar tryck till sig som eleven inte menade. Koral är
+// palettens uppmärksamhetsfärg.
+//
+// Texten/ikonen använder coral-deep (#c4452f), inte --color-coral (#ff7a6b):
+// den ljusa koralen ger bara 2,39:1 mot ivory och faller WCAG AA. Den ljusa
+// tonen används därför bara som genomskinlig FYLLNING, där kontrastkravet inte
+// gäller. Se kommentaren vid .text-coral-deep i globals.css.
+const CORAL_SIGNAL = [
+  'bg-[var(--color-coral)]/15 text-coral-deep',
+  'transition-colors hover:bg-[var(--color-coral)]/25',
+].join(' ');
+
+// Egna <button> ärver inte Button-komponentens fokusring, och rapportknappen
+// ska gå att nå med tangentbord lika tydligt som med muspekare.
+const FOCUS_RING =
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c4452f] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-canvas)]';
+
 function FlagIcon() {
   return (
     <svg
@@ -58,8 +77,9 @@ export function FeedbackButton({ locale, variant = 'icon', item, label, classNam
         aria-label={aria}
         title={aria}
         className={[
-          'flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-ink-muted)]',
-          'transition-colors hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]',
+          'flex h-9 w-9 items-center justify-center rounded-full',
+          CORAL_SIGNAL,
+          FOCUS_RING,
           className ?? '',
         ].join(' ')}
       >
@@ -73,9 +93,9 @@ export function FeedbackButton({ locale, variant = 'icon', item, label, classNam
       type="button"
       onClick={() => feedback.open(item)}
       className={[
-        'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.8125rem]',
-        'text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-surface-soft)]',
-        'hover:text-[var(--color-ink)]',
+        'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.8125rem] font-medium',
+        CORAL_SIGNAL,
+        FOCUS_RING,
         className ?? '',
       ].join(' ')}
     >
