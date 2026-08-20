@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { gradeFlashcard } from '@/app/actions/training';
 import { Button } from '@/components/ui/Button';
+import { FeedbackButton } from '@/components/app/feedback/FeedbackButton';
+import { useFeedbackItem } from '@/components/app/feedback/useFeedbackItem';
 import type { Locale } from '@/lib/i18n/config';
 import type { FlashcardSessionItem } from '@/lib/data/training';
 
@@ -21,6 +23,24 @@ export function FlashcardRunner({ locale, cards }: Props) {
   const [flipped, setFlipped] = useState(false);
   const [grades, setGrades] = useState<Grade[]>([]);
   const done = index >= cards.length;
+
+  // Registrerar vilket kort eleven tittar på, så att en rapport från VAR SOM
+  // HELST i appen (topbaren, sidomenyn) automatiskt bär med lektion, kort-id
+  // och begrepp. Måste ligga före den tidiga returen nedan — hooks får inte
+  // hoppas över mellan renders.
+  const currentCard: FlashcardSessionItem | undefined = cards[index];
+  useFeedbackItem(
+    currentCard
+      ? {
+          lessonId: currentCard.lessonId,
+          lessonTitle: currentCard.lessonTitle,
+          itemType: 'flashcard',
+          itemId: currentCard.id,
+          itemLabel: currentCard.front,
+          conceptName: currentCard.conceptName,
+        }
+      : null,
+  );
 
   const cardButtonRef = useRef<HTMLButtonElement>(null);
   const summaryHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -91,9 +111,19 @@ export function FlashcardRunner({ locale, cards }: Props) {
         <p className="text-[0.8125rem] text-[var(--color-ink-muted)]">
           {sv ? 'Kort' : 'Card'} {index + 1} {sv ? 'av' : 'of'} {cards.length}
         </p>
-        <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
-          {card.lessonTitle ?? ''}
-        </p>
+        <div className="flex items-baseline gap-2 sm:justify-end">
+          <p className="truncate text-[0.8125rem] text-[var(--color-ink-muted)]">
+            {card.lessonTitle ?? ''}
+          </p>
+          {/* Tydligare här än i topbaren: det är på korten problemen troligast
+              uppstår, och kortet eleven är på bifogas automatiskt. */}
+          <FeedbackButton
+            locale={locale}
+            variant="inline"
+            className="-my-1 shrink-0"
+            label={sv ? 'Fel på kortet?' : 'Wrong with this card?'}
+          />
+        </div>
       </div>
 
       {card.conceptName ? (

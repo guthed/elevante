@@ -729,6 +729,39 @@ type TrainingSessionInsert = {
   created_at?: string;
 };
 
+export type FeedbackCategory = 'not_working' | 'confused' | 'looks_wrong';
+
+/**
+ * En elevrapport om appen. `context` är avsiktligt löst typad (Record) — den
+ * växer med nya vyer, och läsare ska tåla saknade nycklar. Se
+ * lib/feedback/context.ts för vad appen faktiskt bifogar idag.
+ */
+export type FeedbackReport = {
+  id: string;
+  school_id: string;
+  student_id: string;
+  category: FeedbackCategory;
+  message: string | null;
+  surface: string;
+  lesson_id: string | null;
+  context: Record<string, unknown>;
+  notion_page_id: string | null;
+  created_at: string;
+};
+
+type FeedbackReportInsert = {
+  school_id: string;
+  student_id: string;
+  category: FeedbackCategory;
+  surface: string;
+  message?: string | null;
+  lesson_id?: string | null;
+  context?: Record<string, unknown>;
+  notion_page_id?: string | null;
+  id?: string;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -756,6 +789,7 @@ export type Database = {
       flashcard_review_state: TableDef<FlashcardReviewState, FlashcardReviewStateInsert>;
       knowledge_check_attempts: TableDef<KnowledgeCheckAttempt, KnowledgeCheckAttemptInsert>;
       training_sessions: TableDef<TrainingSession, TrainingSessionInsert>;
+      feedback_reports: TableDef<FeedbackReport, FeedbackReportInsert>;
     };
     Views: Record<string, never>;
     // RPC:erna match_lesson_chunks och match_course_chunks finns i schemat

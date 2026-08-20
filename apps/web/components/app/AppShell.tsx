@@ -5,6 +5,7 @@ import type { Role } from '@/lib/app/roles';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { MobileNav } from './MobileNav';
+import { FeedbackProvider } from './feedback/FeedbackProvider';
 
 type Props = {
   locale: Locale;
@@ -31,7 +32,11 @@ export function AppShell({
   isStaff,
   children,
 }: Props) {
-  return (
+  // Rapporteringen är elevernas väg in — lärare har sitt Notion-formulär, och
+  // feedback_reports.student_id vore en lögn för en lärarrad. Providern
+  // renderas därför bara för elever; FeedbackButton returnerar null utan den,
+  // så app-chrome kan innehålla knappen oavsett roll.
+  const shell = (
     <div className="flex h-screen overflow-hidden bg-[var(--color-canvas)]">
       <a
         href="#app-main"
@@ -66,5 +71,12 @@ export function AppShell({
       </div>
       <MobileNav locale={locale} role={role} dict={dict} isStaff={isStaff} />
     </div>
+  );
+
+  if (role !== 'student') return shell;
+  return (
+    <FeedbackProvider locale={locale} role={role}>
+      {shell}
+    </FeedbackProvider>
   );
 }
