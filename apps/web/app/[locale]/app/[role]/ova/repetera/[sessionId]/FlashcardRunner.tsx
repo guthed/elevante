@@ -16,6 +16,43 @@ type Props = {
   cards: FlashcardSessionItem[];
 };
 
+// Ordningen är svagast → starkast, och knapparna skiljs åt med TYNGD
+// (outline → sand → ink), inte med kulör: det här är en självskattning, inte
+// rätt/fel. Se den längre motiveringen vid betygsraden nedan.
+const GRADES: Array<{
+  grade: Grade;
+  variant: 'outline' | 'secondary';
+  extraClass?: string;
+}> = [
+  { grade: 'again', variant: 'outline' },
+  {
+    grade: 'hard',
+    variant: 'outline',
+    extraClass:
+      'border-transparent bg-[var(--color-sand)] text-[var(--color-ink)] hover:bg-[var(--color-sand-strong)]',
+  },
+  { grade: 'good', variant: 'secondary' },
+];
+
+function gradeLabel(grade: Grade, sv: boolean, form: 'short' | 'long'): string {
+  const labels: Record<Grade, Record<'short' | 'long', { sv: string; en: string }>> = {
+    again: {
+      short: { sv: 'Visste inte', en: "Didn't know" },
+      long: { sv: 'Det här visste jag inte', en: "I didn't know this" },
+    },
+    hard: {
+      short: { sv: 'Osäker', en: 'Unsure' },
+      long: { sv: 'Det här var jag osäker på', en: "I wasn't sure" },
+    },
+    good: {
+      short: { sv: 'Visste', en: 'Knew it' },
+      long: { sv: 'Det här visste jag', en: 'I knew this' },
+    },
+  };
+  const l = labels[grade][form];
+  return sv ? l.sv : l.en;
+}
+
 export function FlashcardRunner({ locale, cards }: Props) {
   const sv = locale === 'sv';
   const [, startTransition] = useTransition();
@@ -196,31 +233,30 @@ export function FlashcardRunner({ locale, cards }: Props) {
           (--color-accent) används inte: den ska enligt designmanualen användas
           sparsamt, och det här är funktionens mest tryckta kontroll. */}
       {flipped ? (
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full sm:w-auto"
-            onClick={() => handleGrade('again')}
-          >
-            {sv ? 'Det här visste jag inte' : "I didn't know this"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full border-transparent bg-[var(--color-sand)] text-[var(--color-ink)] hover:bg-[var(--color-sand-strong)] sm:w-auto"
-            onClick={() => handleGrade('hard')}
-          >
-            {sv ? 'Det här var jag osäker på' : "I wasn't sure"}
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            className="w-full sm:w-auto"
-            onClick={() => handleGrade('good')}
-          >
-            {sv ? 'Det här visste jag' : 'I knew this'}
-          </Button>
+        <div className="flex flex-row flex-wrap justify-center gap-2 sm:gap-3">
+          {GRADES.map(({ grade, variant, extraClass }) => (
+            <Button
+              key={grade}
+              type="button"
+              variant={variant}
+              aria-label={gradeLabel(grade, sv, 'long')}
+              className={[
+                'flex-1 px-3 text-[0.875rem] sm:flex-none sm:px-5 sm:text-[0.95rem]',
+                extraClass ?? '',
+              ].join(' ')}
+              onClick={() => handleGrade(grade)}
+            >
+              {/* Kort etikett på mobil, hel mening från sm. Alla tre måste
+                  synas SAMTIDIGT — staplade fullbreddsknappar under ett vänt
+                  kort (som växer med svarstexten) tryckte alternativ två och
+                  tre under vikningen på telefon, och då blir självskattningen
+                  inte längre ett val mellan tre grader utan ett enda synligt
+                  alternativ. Den hela meningen bor kvar i aria-label, så det
+                  tillgängliga namnet är detsamma oavsett skärmbredd. */}
+              <span className="sm:hidden">{gradeLabel(grade, sv, 'short')}</span>
+              <span className="hidden sm:inline">{gradeLabel(grade, sv, 'long')}</span>
+            </Button>
+          ))}
         </div>
       ) : null}
 
