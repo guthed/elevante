@@ -780,6 +780,16 @@ type TimeslotClassInsert = {
   class_id: string;
 };
 
+export type TimeslotTeacher = {
+  timeslot_id: string;
+  teacher_map_id: string;
+};
+
+type TimeslotTeacherInsert = {
+  timeslot_id: string;
+  teacher_map_id: string;
+};
+
 export type ScheduleTeacherMap = {
   id: string;
   school_id: string;
@@ -839,6 +849,7 @@ export type Database = {
       class_members: TableDef<ClassMember, ClassMemberInsert>;
       timeslots: TableDef<Timeslot, TimeslotInsert>;
       timeslot_classes: TableDef<TimeslotClass, TimeslotClassInsert>;
+      timeslot_teachers: TableDef<TimeslotTeacher, TimeslotTeacherInsert>;
       schedule_teacher_map: TableDef<ScheduleTeacherMap, ScheduleTeacherMapInsert>;
       schedule_imports: TableDef<ScheduleImport, ScheduleImportInsert>;
       lessons: TableDef<Lesson, LessonInsert>;

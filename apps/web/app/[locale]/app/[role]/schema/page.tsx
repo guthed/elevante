@@ -8,6 +8,12 @@ import { PageWrapper } from '@/components/app/PageWrapper';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Card } from '@/components/ui/Card';
 import { ScheduleUploadForm } from './ScheduleUploadForm';
+import { TeacherMapForm } from './TeacherMapForm';
+import {
+  getScheduleTeachers,
+  getSchoolTeacherOptions,
+  suggestProfileForName,
+} from '@/lib/data/schedule';
 
 type Props = {
   params: Promise<{ locale: string; role: string }>;
@@ -66,6 +72,19 @@ export default async function AdminSchedulePage({ params }: Props) {
   const labels = dict.app.pages.admin.schedule;
 
   const supabase = await createSupabaseServerClient();
+  const [scheduleTeachers, teacherOptions] = await Promise.all([
+    getScheduleTeachers(profile.school_id!),
+    getSchoolTeacherOptions(profile.school_id!),
+  ]);
+  // Förslagen räknas ut på servern: klienten ska inte behöva hela
+  // lärarlistan för att gissa, och logiken hör hemma nära datat.
+  const suggestions = Object.fromEntries(
+    scheduleTeachers.map((t) => [
+      t.externalRef,
+      suggestProfileForName(t.displayName, teacherOptions),
+    ]),
+  );
+
   const { data: timeslots } = await supabase
     .from('timeslots')
     .select('id, day, start_time, end_time, room')
@@ -116,6 +135,18 @@ export default async function AdminSchedulePage({ params }: Props) {
           )}
         </Card>
       </div>
+
+      <Card padded={false} className="mt-8">
+        <h2 className="px-6 pt-6 pb-2 font-[family-name:var(--font-serif)] text-xl text-[var(--color-primary)]">
+          {labels.teacherMapTitle}
+        </h2>
+        <TeacherMapForm
+          teachers={scheduleTeachers}
+          options={teacherOptions}
+          suggestions={suggestions}
+          labels={labels}
+        />
+      </Card>
     </PageWrapper>
   );
 }

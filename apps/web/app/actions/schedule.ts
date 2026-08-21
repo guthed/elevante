@@ -121,3 +121,152 @@ export async function uploadSchedule(
     };
   }
 }
+
+export type MapTeacherState =
+  | { status: 'idle' }
+  | { status: 'success'; linkedTimeslots: number; linkedCourses: number }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
+
+const mapTeacherSchema = z.object({
+  teacherMapId: z.string().uuid(),
+  // Tom sträng = koppla loss. Adminen ska kunna ångra en felaktig mappning.
+  profileId: z.string().uuid().nullable(),
+});
+
+/**
+ * Kopplar en lärare i schemat till ett Elevante-konto — och backfyllar.
+ *
+ * Backfyllet är hela poängen. En mappning som bara skriver
+ * `schedule_teacher_map.profile_id` gör ingenting förrän nästa import:
+ * passen ligger redan inne med `teacher_id = null`, och mobilappens
+ * getTodayLessons() slår upp via `course_teachers`. Därför skrivs båda här,
+ * för alla pass som redan pekar på den här schemaläraren.
+ */
+export async function mapScheduleTeacher(
+  _prev: MapTeacherState,
+  formData: FormData,
+): Promise<MapTeacherState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
+  }
+
+  const rawProfileId = (formData.get('profile_id') ?? '').toString().trim();
+  const parsed = mapTeacherSchema.safeParse({
+    teacherMapId: (formData.get('teacher_map_id') ?? '').toString(),
+    profileId: rawProfileId === '' ? null : rawProfileId,
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid', detail: 'Ogiltigt val' };
+  }
+  const { teacherMapId, profileId } = parsed.data;
+
+  const supabase = await createSupabaseServerClient();
+
+  // Kontot måste tillhöra samma skola. RLS på profiles skulle redan hindra
+  // en läsning över skolgräns, men vi vill ge ett begripligt fel i stället
+  // för en tyst no-op.
+  if (profileId) {
+    const { data: target } = await supabase
+      .from('profiles')
+      .select('id, role')
+      .eq('id', profileId)
+      .eq('school_id', profile.school_id)
+      .maybeSingle();
+    if (!target) {
+      return { status: 'error', code: 'invalid', detail: 'Kontot finns inte i din skola' };
+    }
+    if (target.role === 'student') {
+      return { status: 'error', code: 'invalid', detail: 'Elevkonton kan inte undervisa' };
+    }
+  }
+
+  const updated = await supabase
+    .from('schedule_teacher_map')
+    .update({ profile_id: profileId, updated_at: new Date().toISOString() })
+    .eq('id', teacherMapId)
+    .eq('school_id', profile.school_id)
+    .select('id');
+  if (updated.error) {
+    return { status: 'error', code: 'generic', detail: updated.error.message };
+  }
+  if ((updated.data ?? []).length === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Läraren finns inte i schemat' };
+  }
+
+  // Vilka pass hör till den här schemaläraren?
+  const { data: links, error: linkError } = await supabase
+    .from('timeslot_teachers')
+    .select('timeslot_id')
+    .eq('teacher_map_id', teacherMapId);
+  if (linkError) {
+    return { status: 'error', code: 'generic', detail: linkError.message };
+  }
+  const timeslotIds = (links ?? []).map((l) => l.timeslot_id);
+  if (timeslotIds.length === 0) {
+    revalidatePath('/sv/app/admin/schema');
+    revalidatePath('/en/app/admin/schema');
+    return { status: 'success', linkedTimeslots: 0, linkedCourses: 0 };
+  }
+
+  const { data: slots, error: slotError } = await supabase
+    .from('timeslots')
+    .select('id, course_id, teacher_id')
+    .in('id', timeslotIds);
+  if (slotError) {
+    return { status: 'error', code: 'generic', detail: slotError.message };
+  }
+
+  // Sätt primär lärare bara där ingen redan är satt — ett pass med två
+  // lärare ska inte byta ansikte för att den andra mappades senare.
+  const claimable = (slots ?? []).filter(
+    (s) => s.teacher_id === null || s.teacher_id === profileId,
+  );
+  if (profileId && claimable.length > 0) {
+    const { error } = await supabase
+      .from('timeslots')
+      .update({ teacher_id: profileId })
+      .in('id', claimable.map((s) => s.id));
+    if (error) return { status: 'error', code: 'generic', detail: error.message };
+  }
+  if (!profileId) {
+    // Koppling borttagen: nolla teacher_id på de pass som pekade hit.
+    const owned = (slots ?? []).filter((s) => s.teacher_id !== null).map((s) => s.id);
+    if (owned.length > 0) {
+      await supabase.from('timeslots').update({ teacher_id: null }).in('id', owned);
+    }
+  }
+
+  const courseIds = [...new Set((slots ?? []).map((s) => s.course_id))];
+  let linkedCourses = 0;
+  if (profileId && courseIds.length > 0) {
+    const { error } = await supabase
+      .from('course_teachers')
+      .upsert(
+        courseIds.map((course_id) => ({ course_id, profile_id: profileId })),
+        { onConflict: 'course_id,profile_id' },
+      );
+    if (error) return { status: 'error', code: 'generic', detail: error.message };
+    linkedCourses = courseIds.length;
+  }
+  if (!profileId && courseIds.length > 0) {
+    // Ta bara bort kopplingen till kurser som INTE har något annat pass
+    // med samma lärare — annars raderar vi en koppling läraren behöver.
+    const previous = (slots ?? []).find((s) => s.teacher_id)?.teacher_id;
+    if (previous) {
+      await supabase
+        .from('course_teachers')
+        .delete()
+        .eq('profile_id', previous)
+        .in('course_id', courseIds);
+    }
+  }
+
+  revalidatePath('/sv/app/admin/schema');
+  revalidatePath('/en/app/admin/schema');
+  return {
+    status: 'success',
+    linkedTimeslots: profileId ? claimable.length : timeslotIds.length,
+    linkedCourses,
+  };
+}

@@ -202,7 +202,7 @@ async function runCommit(
   // ---------------------------------------------------------------------
   // Lärare: schemakällans id → Elevante-konto
   // ---------------------------------------------------------------------
-  const { profileIdByRef, unmappedTeachers } = await syncTeacherMap(
+  const { profileIdByRef, mapIdByRef, unmappedTeachers } = await syncTeacherMap(
     supabase,
     schoolId,
     schedule.teachers.filter((t) =>
@@ -271,6 +271,7 @@ async function runCommit(
   }
 
   await syncTimeslotClasses(supabase, selected, slotIdByRef, classIdByRef);
+  await syncTimeslotTeachers(supabase, selected, slotIdByRef, mapIdByRef);
   await syncCourseTeachers(supabase, selected, courseIdByRef, profileIdByRef);
 
   return { created, updated, skipped, unmappedTeachers, issues: [] };
@@ -394,11 +395,13 @@ async function syncTeacherMap(
   teachers: { externalRef: string; displayName: string; email: string | null }[],
 ): Promise<{
   profileIdByRef: Map<string, string | null>;
+  mapIdByRef: Map<string, string>;
   unmappedTeachers: { externalRef: string; displayName: string }[];
 }> {
   const profileIdByRef = new Map<string, string | null>();
+  const mapIdByRef = new Map<string, string>();
   const unmappedTeachers: { externalRef: string; displayName: string }[] = [];
-  if (teachers.length === 0) return { profileIdByRef, unmappedTeachers };
+  if (teachers.length === 0) return { profileIdByRef, mapIdByRef, unmappedTeachers };
 
   const existing = await supabase
     .from('schedule_teacher_map')
@@ -454,10 +457,12 @@ async function syncTeacherMap(
 
   const upserted = await supabase
     .from('schedule_teacher_map')
-    .upsert(rows, { onConflict: 'school_id,external_ref' });
+    .upsert(rows, { onConflict: 'school_id,external_ref' })
+    .select('id, external_ref');
   if (upserted.error) throw new ScheduleCommitError(upserted.error.message);
+  for (const row of upserted.data ?? []) mapIdByRef.set(row.external_ref, row.id);
 
-  return { profileIdByRef, unmappedTeachers };
+  return { profileIdByRef, mapIdByRef, unmappedTeachers };
 }
 
 async function syncTimeslotClasses(
@@ -495,6 +500,50 @@ async function syncTimeslotClasses(
   const inserted = await supabase
     .from('timeslot_classes')
     .upsert(rows, { onConflict: 'timeslot_id,class_id' });
+  if (inserted.error) throw new ScheduleCommitError(inserted.error.message);
+}
+
+/**
+ * Kopplar passet till schemakällans lärare (inte till kontot).
+ *
+ * Utan den här raden finns inget spår av vilken schemalärare ett pass hörde
+ * till när läraren ännu är omappad — och en mappning som görs efteråt kan
+ * inte appliceras på någonting. Här ligger också alla lärare på ett pass,
+ * inte bara den första; `timeslots.teacher_id` är fortsatt primär lärare.
+ */
+async function syncTimeslotTeachers(
+  supabase: Client,
+  slots: CanonicalSchedule['timeslots'],
+  slotIdByRef: Map<string, string>,
+  mapIdByRef: Map<string, string>,
+): Promise<void> {
+  const rows: { timeslot_id: string; teacher_map_id: string }[] = [];
+  const touchedSlotIds: string[] = [];
+
+  for (const slot of slots) {
+    const slotId = slotIdByRef.get(slot.externalRef);
+    if (!slotId) continue;
+    touchedSlotIds.push(slotId);
+    for (const ref of slot.teacherRefs) {
+      const mapId = mapIdByRef.get(ref);
+      if (mapId) rows.push({ timeslot_id: slotId, teacher_map_id: mapId });
+    }
+  }
+
+  if (touchedSlotIds.length === 0) return;
+
+  // Ersätt hela mängden per pass, precis som timeslot_classes: en lärare
+  // som tagits bort ur schemat ska inte ligga kvar från förra importen.
+  const cleared = await supabase
+    .from('timeslot_teachers')
+    .delete()
+    .in('timeslot_id', touchedSlotIds);
+  if (cleared.error) throw new ScheduleCommitError(cleared.error.message);
+
+  if (rows.length === 0) return;
+  const inserted = await supabase
+    .from('timeslot_teachers')
+    .upsert(rows, { onConflict: 'timeslot_id,teacher_map_id' });
   if (inserted.error) throw new ScheduleCommitError(inserted.error.message);
 }
 
