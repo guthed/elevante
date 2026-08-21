@@ -35,8 +35,12 @@ export const PHASES: readonly Phase[] = [
 /**
  * Statusvärden som medvetet inte ska ge något event. Raden räknas som
  * "hoppas över", inte som ett fel.
+ *
+ * "Redan i dialog" är skolor vi redan har en relation med — Amerikanska
+ * Gymnasiet har påskriven LOI. De ska aldrig få ett kall-outreach-mejl, och
+ * en tom fas är rätt svar för dem, inte en varning.
  */
-export const IGNORED_STATUSES: readonly string[] = ['Ej påbörjad'];
+export const IGNORED_STATUSES: readonly string[] = ['Ej påbörjad', 'Redan i dialog'];
 
 /**
  * Statusvärden jämförs normaliserat: Notion, CSV-exporter och handpåläggning

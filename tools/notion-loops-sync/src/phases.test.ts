@@ -28,6 +28,7 @@ test('tom, ignorerad och okänd status skiljs åt', () => {
   assert.equal(lookupPhase(null).kind, 'empty');
   assert.equal(lookupPhase('').kind, 'empty');
   assert.equal(lookupPhase('Ej påbörjad').kind, 'ignored');
+  assert.equal(lookupPhase('Redan i dialog').kind, 'ignored');
   assert.equal(lookupPhase('Fas 7 – rymden').kind, 'unknown');
 });
 

@@ -110,6 +110,7 @@ där påverkar det ingenting härifrån.
 | `Flaggskepp – prioritera parallellt` | `outreach_flaggskepp_started` |
 | `Kommunal – tidig dialog` | `outreach_kommunal_dialog_started` |
 | `Ej påbörjad` | *(inget — hoppas över)* |
+| `Redan i dialog` | *(inget — befintlig relation, ska inte kallkontaktas)* |
 
 Statusvärden jämförs normaliserat (skiftläge, dubbla blanksteg och alla
 dash-varianter `-` `–` `—` behandlas lika), så en osynlig teckenskillnad mellan
