@@ -147,11 +147,16 @@ async function main(): Promise<number> {
   }
 
   const logger = createLogger(args.logLevel);
+  // Först hittat värde per nyckel vinner, så en .env här överskuggar webbappens.
+  // apps/web/.env.local är med sist eftersom det är dit `vercel env pull` skriver
+  // — LOOPS_API_KEY och NOTION_TOKEN finns redan där och behöver inte dubbleras.
   const envFiles = loadEnvFiles([
     resolve(PKG_DIR, '.env'),
     resolve(PKG_DIR, '.env.local'),
     resolve(REPO_ROOT, '.env'),
     resolve(REPO_ROOT, '.env.local'),
+    resolve(REPO_ROOT, 'apps/web/.env.local'),
+    resolve(REPO_ROOT, 'apps/web/.env'),
   ]);
   if (envFiles.length > 0) logger.debug(`Läste env från: ${envFiles.join(', ')}`);
 

@@ -38,8 +38,19 @@ noll runtime-beroenden.
 
 ## Miljövariabler
 
-Läses från `.env` / `.env.local` i den här katalogen, eller från repo-roten.
-Redan satta miljövariabler vinner alltid över filen.
+Läses i tur och ordning från `.env` / `.env.local` i den här katalogen, repo-roten,
+och sist `apps/web/.env.local`. Först hittat värde per nyckel vinner, och redan
+satta miljövariabler vinner alltid över filerna.
+
+`LOOPS_API_KEY` och `NOTION_TOKEN` finns redan i Vercel för `elevante-web`. Hämta
+dem lokalt i stället för att dubblera dem för hand:
+
+```bash
+cd apps/web && vercel env pull .env.local
+```
+
+Verktyget läser den filen direkt — ingen kopiering behövs. `NOTION_DATABASE_ID`
+är specifikt för det här verktyget och ligger förifyllt i `.env.example`.
 
 | Variabel | Krävs | Beskrivning |
 |---|---|---|
