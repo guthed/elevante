@@ -1,7 +1,7 @@
-Skolnamn,Skolenhetskod,Rektor (namn),E-post (skolans allmänna),Rektor e-post (direkt),Personlig kontakt?,Mottagaradress (utskick),Hälsningsvariant (utskick),Kontaktstatus,Kommun,Huvudman,Telefon,Webbplats,Adress
-Exempelgymnasiet,12345678,Anna Svensson,info.exempel@example.com,anna.svensson@example.com,Yes,anna.svensson@example.com,"Hej Anna,",Att kontakta – Fas 1,Stockholm,Fristående,08-000 00 01,https://exempelgymnasiet.example.com,Exempelgatan 1
-Norra Exempelskolan,23456789,,info.norra@example.com,,No,info.norra@example.com,"Hej,",Att kontakta – Fas 1,Solna,Fristående,08-000 00 02,https://norra.example.com,Exempelvägen 2
-Flaggskeppsgymnasiet,34567890,Erik Lund,info.flaggskepp@example.com,erik.lund@example.com,Yes,erik.lund@example.com,"Hej Erik,",Flaggskepp – prioritera parallellt,Stockholm,Fristående,08-000 00 03,https://flaggskepp.example.com,Exempeltorget 3
-Kommunala Exempelgymnasiet,45678901,Karin Berg,gymnasiet@test.com,karin.berg@test.com,Yes,karin.berg@test.com,"Hej Karin,",Kommunal – tidig dialog,Nacka,Kommunal,08-000 00 04,https://kommun.example.com,Exempelallén 4
-Ej Påbörjad-skolan,56789012,,info.ejpaborjad@example.com,,No,info.ejpaborjad@example.com,"Hej,",Ej påbörjad,Sollentuna,Kommunal,08-000 00 05,https://ejpaborjad.example.com,Exempelstigen 5
-Skolan Utan E-post,67890123,,,,No,,"Hej,",Att kontakta – Fas 1,Täby,Fristående,08-000 00 06,,Exempelbacken 6
+Skolnamn,Skolenhetskod,Rektor (namn),E-post (skolans allmänna),Rektor e-post (direkt),Personlig kontakt?,Mottagaradress (utskick),Kontaktstatus,Kommun,Huvudman,Telefon,Webbplats,Adress
+Exempelgymnasiet,12345678,Anna Svensson,info.exempel@example.com,anna.svensson@example.com,Yes,anna.svensson@example.com,Att kontakta – Fas 1,Stockholm,Fristående,08-000 00 01,https://exempelgymnasiet.example.com,Exempelgatan 1
+Norra Exempelskolan,23456789,,info.norra@example.com,,No,info.norra@example.com,Att kontakta – Fas 1,Solna,Fristående,08-000 00 02,https://norra.example.com,Exempelvägen 2
+Flaggskeppsgymnasiet,34567890,Erik Lund,info.flaggskepp@example.com,erik.lund@example.com,Yes,erik.lund@example.com,Flaggskepp – prioritera parallellt,Stockholm,Fristående,08-000 00 03,https://flaggskepp.example.com,Exempeltorget 3
+Kommunala Exempelgymnasiet,45678901,Karin Berg,gymnasiet@test.com,karin.berg@test.com,Yes,karin.berg@test.com,Kommunal – tidig dialog,Nacka,Kommunal,08-000 00 04,https://kommun.example.com,Exempelallén 4
+Ej Påbörjad-skolan,56789012,,info.ejpaborjad@example.com,,No,info.ejpaborjad@example.com,Ej påbörjad,Sollentuna,Kommunal,08-000 00 05,https://ejpaborjad.example.com,Exempelstigen 5
+Skolan Utan E-post,67890123,,,,No,,Att kontakta – Fas 1,Täby,Fristående,08-000 00 06,,Exempelbacken 6

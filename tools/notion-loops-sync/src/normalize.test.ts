@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeEmail, normalizeRow, splitName } from './normalize.js';
+import { normalizeEmail, normalizeRow } from './normalize.js';
 
-test('använder formelfälten när de finns i källan', () => {
+test('använder formelfälten när de finns i källan — men aldrig hälsningen', () => {
   const row = normalizeRow(
     {
       Skolnamn: 'Kungsholmens gymnasium',
@@ -19,7 +19,6 @@ test('använder formelfälten när de finns i källan', () => {
     'page-1',
   );
   assert.equal(row.recipientEmail, 'anna.svensson@kungsholmens.se');
-  assert.equal(row.greeting, 'Hej Anna,');
   assert.equal(row.personalContact, true);
 });
 
@@ -35,7 +34,6 @@ test('härleder mottagare, hälsning och personlig kontakt när formlerna saknas
   );
   assert.equal(personal.personalContact, true);
   assert.equal(personal.recipientEmail, 'erik.lund@vrg.se');
-  assert.equal(personal.greeting, 'Hej Erik Lund,');
 
   const general = normalizeRow(
     { Skolnamn: 'Thorildsplans gymnasium', 'E-post (skolans allmänna)': 'info@thorildsplan.se' },
@@ -43,7 +41,6 @@ test('härleder mottagare, hälsning och personlig kontakt när formlerna saknas
   );
   assert.equal(general.personalContact, false);
   assert.equal(general.recipientEmail, 'info@thorildsplan.se');
-  assert.equal(general.greeting, 'Hej,');
 });
 
 test('checkbox läses även som text från en CSV-export', () => {
@@ -52,7 +49,6 @@ test('checkbox läses även som text från en CSV-export', () => {
     'csv:2',
   );
   assert.equal(row.personalContact, true);
-  assert.equal(row.greeting, 'Hej Rut,');
 });
 
 test('e-post normaliseras och ogiltiga adresser blir null', () => {
@@ -68,9 +64,16 @@ test('rad utan användbar adress ger recipientEmail null i stället för skräp'
   assert.equal(row.recipientEmail, null);
 });
 
-test('splitName delar upp namnet men lämnar tomt som null', () => {
-  assert.deepEqual(splitName('Anna Svensson'), { firstName: 'Anna', lastName: 'Svensson' });
-  assert.deepEqual(splitName('Anna Maria Svensson'), { firstName: 'Anna', lastName: 'Maria Svensson' });
-  assert.deepEqual(splitName('Anna'), { firstName: 'Anna', lastName: null });
-  assert.deepEqual(splitName(null), { firstName: null, lastName: null });
+test('en personaliserad Hälsningsvariant i Notion läses inte in', () => {
+  const row = normalizeRow(
+    {
+      Skolnamn: 'Franska Skolan',
+      'Rektor (namn)': 'Kremena Söderström',
+      'Rektor e-post (direkt)': 'krs@adm.franskaskolan.se',
+      'Hälsningsvariant (utskick)': 'Hej Kremena,',
+    },
+    'page-4',
+  );
+  assert.equal('greeting' in row, false);
+  assert.equal(row.rectorName, 'Kremena Söderström');
 });

@@ -199,11 +199,14 @@ test('ett misslyckat event skrivs inte till state — nästa körning försöker
   assert.equal(retry.summary.eventsSent, 1);
 });
 
-test('firstName sätts bara vid personlig kontakt', async () => {
+test('inget förnamn och ingen hälsning skickas till Loops', () => {
   const personal = contactProperties(row(), 'outreach_fas1_started');
-  assert.equal(personal.firstName, 'Anna');
+  assert.equal('firstName' in personal, false);
+  assert.equal('lastName' in personal, false);
+  assert.equal('halsning' in personal, false);
+  // Namnet följer med som referens, aldrig som tilltal.
+  assert.equal(personal.rektor, 'Anna Svensson');
   assert.equal(personal.personligKontakt, true);
-  assert.equal(personal.halsning, 'Hej Anna Svensson,');
 
   const general = contactProperties(
     row({ 'Rektor e-post (direkt)': null, 'Personlig kontakt?': false }),
@@ -211,7 +214,6 @@ test('firstName sätts bara vid personlig kontakt', async () => {
   );
   assert.equal('firstName' in general, false);
   assert.equal(general.personligKontakt, false);
-  assert.equal(general.halsning, 'Hej,');
 });
 
 test('isTestAddress känner igen testdomäner men inte riktiga', () => {

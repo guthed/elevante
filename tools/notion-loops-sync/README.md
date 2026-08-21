@@ -86,16 +86,19 @@ sparar med semikolon).
 |---|---|
 | `Skolnamn` (title) | Loops-property `skolnamn` |
 | `Skolenhetskod` | Loops-property `skolenhetskod` (stabil nyckel per skolenhet) |
-| `Rektor (namn)` | `firstName` / `lastName` — bara vid personlig kontakt |
+| `Rektor (namn)` | Loops-property `rektor` — referens, aldrig tilltal |
 | `Mottagaradress (utskick)` (formel) | Kontaktens e-post i Loops |
-| `Hälsningsvariant (utskick)` (formel) | Loops-property `halsning` |
 | `Personlig kontakt?` (formel) | Loops-property `personligKontakt` (boolean) |
 | `Kommun` (select), `Huvudman` | Loops-properties `kommun`, `huvudman` |
 | `Kontaktstatus` (select) | Avgör vilket event som triggas |
 
 Saknas formelfälten i källan räknas de om lokalt: personlig kontakt = rektorns
 direktadress finns, mottagare = direktadressen om den finns annars skolans
-allmänna, hälsning = `Hej [Rektorsnamn],` respektive `Hej,`.
+allmänna.
+
+`Hälsningsvariant (utskick)` läses **inte**. Alla mejl inleds `Hej,` utan namn —
+skriv hälsningen direkt i Loops-mallen. Fältet kan tas bort i Notion; ändras det
+där påverkar det ingenting härifrån.
 
 ---
 
@@ -209,16 +212,13 @@ Följande custom properties registreras automatiskt i Loops vid varje skarp
 körning (`POST /v1/contacts/properties`, best-effort — redan skapade properties
 ger bara en debug-rad):
 
-`skolnamn` · `skolenhetskod` · `kommun` · `huvudman` · `halsning` ·
+`skolnamn` · `skolenhetskod` · `rektor` · `kommun` · `huvudman` ·
 `personligKontakt` (boolean) · `kontaktstatus` · `outreachEvent`
 
-Plus Loops inbyggda `firstName` / `lastName`, som **bara** sätts när vi har en
-personlig kontakt — annars utelämnas nycklarna helt, så ett befintligt värde inte
-nollas.
-
-I mallarna: använd `{{halsning}}` som hälsningsrad. Den är alltid komplett och
-korrekt (`Hej Anna,` eller `Hej,`), medan `{{firstName}}` är tomt för skolor där
-vi bara har en allmän adress.
+**Inget förnamn skickas.** Loops inbyggda `firstName` sätts medvetet inte: vi har
+rektorns direktadress för en minoritet av skolorna, så ett `{{firstName}}` i en
+mall hade gett namn åt några och tomrum åt resten. Skriv `Hej,` rakt i mallen.
+`rektor` finns som referens i Loops-gränssnittet — använd den inte som tilltal.
 
 Eventen bär med sig `skolnamn`, `skolenhetskod`, `kommun`, `kontaktstatus` och
 `personligKontakt` som eventProperties, så de går att villkora på inne i ett

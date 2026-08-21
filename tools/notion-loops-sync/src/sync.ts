@@ -1,5 +1,4 @@
 import { lookupPhase } from './phases.js';
-import { splitName } from './normalize.js';
 import { getContactState, hashProperties, setContactState, type StateFile } from './state.js';
 import type { LoopsApi } from './loops.js';
 import type { Logger } from './log.js';
@@ -52,34 +51,35 @@ export type SyncSummary = {
 };
 
 /**
- * Kontakt-propertyn som skrivs till Loops. Utelämnade nycklar rörs inte —
- * därför sätts firstName bara när vi faktiskt har en personlig kontakt, i
- * stället för att skickas som tom sträng (det hade nollat ett befintligt värde).
+ * Kontakt-propertyn som skrivs till Loops.
+ *
+ * Inget förnamn skickas: alla mejl inleds "Hej," rakt av. Loops inbyggda
+ * firstName sätts därför medvetet inte — hade den funnits för de tre skolor
+ * där vi har rektorns direktadress, och varit tom för resten, räckte ett
+ * `{{firstName}}` i en mall för att återinföra precis den ojämnheten.
+ * Rektorns namn följer med som `rektor`, som referens i Loops — inte som
+ * tilltal i ett mejl.
  */
 export function contactProperties(row: SchoolRow, eventName: string): Record<string, unknown> {
-  const { firstName, lastName } = splitName(row.personalContact ? row.rectorName : null);
-  const props: Record<string, unknown> = {
+  return {
     skolnamn: row.schoolName,
     skolenhetskod: row.schoolUnitCode ?? '',
+    rektor: row.rectorName ?? '',
     kommun: row.municipality ?? '',
     huvudman: row.huvudman ?? '',
-    halsning: row.greeting ?? 'Hej,',
     personligKontakt: row.personalContact,
     kontaktstatus: row.contactStatus ?? '',
     outreachEvent: eventName,
   };
-  if (firstName) props.firstName = firstName;
-  if (lastName) props.lastName = lastName;
-  return props;
 }
 
 /** Loops-properties som måste finnas innan de går att segmentera på. */
 export const CUSTOM_PROPERTIES: ReadonlyArray<{ name: string; type: 'string' | 'boolean' }> = [
   { name: 'skolnamn', type: 'string' },
   { name: 'skolenhetskod', type: 'string' },
+  { name: 'rektor', type: 'string' },
   { name: 'kommun', type: 'string' },
   { name: 'huvudman', type: 'string' },
-  { name: 'halsning', type: 'string' },
   { name: 'personligKontakt', type: 'boolean' },
   { name: 'kontaktstatus', type: 'string' },
   { name: 'outreachEvent', type: 'string' },

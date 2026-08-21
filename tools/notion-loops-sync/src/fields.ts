@@ -13,7 +13,6 @@ export const FIELDS = {
   rectorEmail: ['Rektor e-post (direkt)', 'Rektor e-post'],
   personalContact: ['Personlig kontakt?', 'Personlig kontakt'],
   recipientEmail: ['Mottagaradress (utskick)', 'Mottagaradress'],
-  greeting: ['Hälsningsvariant (utskick)', 'Hälsningsvariant'],
   contactStatus: ['Kontaktstatus', 'Status'],
   schoolUnitCode: ['Skolenhetskod'],
   municipality: ['Kommun'],

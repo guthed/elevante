@@ -11,8 +11,6 @@ export type SchoolRow = {
   personalContact: boolean;
   /** "Mottagaradress (utskick)" — den adress vi faktiskt skickar till. */
   recipientEmail: string | null;
-  /** "Hälsningsvariant (utskick)" — t.ex. "Hej Anna," eller "Hej,". */
-  greeting: string | null;
   contactStatus: string | null;
   /** Skolverkets skolenhetskod — stabil nyckel för samma skola i CRM och Loops. */
   schoolUnitCode: string | null;

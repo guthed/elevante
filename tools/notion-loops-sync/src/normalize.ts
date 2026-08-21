@@ -43,9 +43,12 @@ export function normalizeEmail(value: string | null | undefined): string | null 
 /**
  * Gör en rå rad till en SchoolRow.
  *
- * Formelfälten (Personlig kontakt?, Mottagaradress, Hälsningsvariant) räknas om
- * lokalt när de saknas i källan — en CSV kan vara exporterad innan formlerna
- * fanns, och då ska synken fungera ändå i stället för att tappa hela raden.
+ * Formelfälten (Personlig kontakt?, Mottagaradress) räknas om lokalt när de
+ * saknas i källan — en CSV kan vara exporterad innan formlerna fanns, och då
+ * ska synken fungera ändå i stället för att tappa hela raden.
+ *
+ * "Hälsningsvariant (utskick)" läses medvetet INTE: alla mejl inleds "Hej,"
+ * utan namn, så en personaliserad hälsning i Notion ska inte kunna smyga in.
  */
 export function normalizeRow(raw: RawRow, sourceId: string): SchoolRow {
   const rectorName = asText(pick(raw, 'rectorName'));
@@ -59,10 +62,6 @@ export function normalizeRow(raw: RawRow, sourceId: string): SchoolRow {
   const recipientEmail =
     declaredRecipient ?? (personalContact ? rectorEmail : null) ?? rectorEmail ?? schoolEmail;
 
-  const declaredGreeting = asText(pick(raw, 'greeting'));
-  const greeting =
-    declaredGreeting ?? (personalContact && rectorName ? `Hej ${rectorName},` : 'Hej,');
-
   return {
     sourceId,
     schoolName: asText(pick(raw, 'schoolName')) ?? '(namnlös skola)',
@@ -71,7 +70,6 @@ export function normalizeRow(raw: RawRow, sourceId: string): SchoolRow {
     rectorEmail,
     personalContact,
     recipientEmail,
-    greeting,
     contactStatus: asText(pick(raw, 'contactStatus')),
     schoolUnitCode: asText(pick(raw, 'schoolUnitCode')),
     municipality: asText(pick(raw, 'municipality')),
@@ -80,18 +78,4 @@ export function normalizeRow(raw: RawRow, sourceId: string): SchoolRow {
     website: asText(pick(raw, 'website')),
     address: asText(pick(raw, 'address')),
   };
-}
-
-/**
- * Loops har inbyggda firstName/lastName. Hela hälsningsraden ligger kvar i
- * `halsning` — det är den mallarna bör använda. firstName finns för de fall
- * där man vill skriva "{{firstName}}" mitt i en mening.
- */
-export function splitName(fullName: string | null): { firstName: string | null; lastName: string | null } {
-  if (!fullName) return { firstName: null, lastName: null };
-  const parts = fullName.trim().split(/\s+/);
-  if (parts.length === 0) return { firstName: null, lastName: null };
-  const firstName = parts[0]!;
-  const lastName = parts.length > 1 ? parts.slice(1).join(' ') : null;
-  return { firstName, lastName };
 }
