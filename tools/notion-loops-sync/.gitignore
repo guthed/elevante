@@ -1,0 +1,10 @@
+node_modules
+dist
+.state/
+
+# Riktig skoldata hålls utanför repot — bara exempelfilen versioneras.
+data/*.csv
+!data/skolor.example.csv
+
+# Rotens .gitignore matchar .env* överallt. Mallen ska med i repot.
+!.env.example
