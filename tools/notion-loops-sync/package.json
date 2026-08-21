@@ -1,0 +1,20 @@
+{
+  "name": "@elevante/notion-loops-sync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Synkar skolkontakter från Notion (eller CSV) till Loops och triggar rätt outreach-event per Kontaktstatus.",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "sync": "tsc -p tsconfig.json && node dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsc -p tsconfig.json && node --test \"dist/**/*.test.js\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}
