@@ -12,6 +12,7 @@
  * en tom REC-skärm trots att schemat ligger inne. Därför skrivs båda.
  */
 
+import { randomUUID } from 'node:crypto';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type {
   Database,
@@ -52,10 +53,17 @@ export type CommitResult = {
 
 export class ScheduleCommitError extends Error {
   readonly issues: string[];
-  constructor(message: string, issues: string[] = []) {
+  /**
+   * true = felet sitter i filen (adminen kan fixa det).
+   * false = felet sitter hos oss (databas, nätverk) — då ska vi INTE
+   * skylla på filen, det skickar adminen på en omöjlig felsökning.
+   */
+  readonly fromInput: boolean;
+  constructor(message: string, issues: string[] = [], fromInput = false) {
     super(message);
     this.name = 'ScheduleCommitError';
     this.issues = issues;
+    this.fromInput = fromInput;
   }
 }
 
@@ -95,7 +103,7 @@ export async function commitSchedule(
     (i) => `${i.scope} ${i.externalRef}: ${i.message}`,
   );
   if (issues.length > 0) {
-    throw new ScheduleCommitError('Schemat är inte internt konsistent', issues);
+    throw new ScheduleCommitError('Schemat är inte internt konsistent', issues, true);
   }
 
   const { schoolId } = options;
@@ -240,7 +248,12 @@ async function runCommit(
     const teacherRef = slot.teacherRefs.find((ref) => profileIdByRef.get(ref));
 
     return {
-      ...(existingId ? { id: existingId } : {}),
+      // ALLTID ett id, även för nya rader. PostgREST tar unionen av
+      // nycklar över alla rader i en bulk-upsert och fyller de saknade
+      // med null — inte med kolumnens default. Blandar man rader med och
+      // utan id (normalfallet så fort ett schema ändras: några pass finns,
+      // några är nya) faller hela anropet på not-null på `id`.
+      id: existingId ?? randomUUID(),
       school_id: schoolId,
       course_id: courseIdByRef.get(slot.courseRef)!,
       class_id: classIdByRef.get(primaryClassRef ?? '')!,
@@ -368,7 +381,9 @@ async function upsertCourses(
     const existingId = idByExternalRef.get(course.externalRef) ?? idByCode.get(code);
 
     return {
-      ...(existingId ? { id: existingId } : {}),
+      // Se kommentaren i runCommit: id måste alltid vara satt i en
+      // bulk-upsert, annars blir det null för de nya raderna.
+      id: existingId ?? randomUUID(),
       school_id: schoolId,
       code,
       name: course.name,

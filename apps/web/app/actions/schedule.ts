@@ -112,7 +112,8 @@ export async function uploadSchedule(
     if (error instanceof ScheduleCommitError) {
       return {
         status: 'error',
-        code: 'invalid',
+        // Bara fel som faktiskt sitter i filen ska säga "kolla rubrikraden".
+        code: error.fromInput ? 'invalid' : 'generic',
         detail: error.message,
         issues: error.issues.slice(0, 10),
       };
