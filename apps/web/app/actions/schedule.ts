@@ -1,51 +1,46 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 import { createSupabaseServerClient, getCurrentProfile } from '@/lib/supabase/server';
-import { parseCsv } from '@/lib/csv';
-import type { DayOfWeek } from '@/lib/supabase/database';
+import { commitSchedule, ScheduleCommitError } from '@/lib/schedule/commit';
+import { parseGenericScheduleCsv } from '@/lib/schedule/parse-generic-csv';
 
 export type ScheduleUploadState =
   | { status: 'idle' }
-  | { status: 'success'; inserted: number }
-  | { status: 'error'; code: 'invalid' | 'unauthorized' | 'generic'; detail?: string };
+  | {
+      status: 'success';
+      created: number;
+      updated: number;
+      skipped: number;
+      unmappedTeachers: string[];
+    }
+  | {
+      status: 'error';
+      code: 'invalid' | 'unauthorized' | 'generic';
+      detail?: string;
+      issues?: string[];
+    };
 
-const validDays: ReadonlySet<DayOfWeek> = new Set([
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-]);
-
-function normalizeDay(raw: string): DayOfWeek | null {
-  const value = raw.trim().toLowerCase();
-  if (validDays.has(value as DayOfWeek)) return value as DayOfWeek;
-  // Svenska alias
-  const alias: Record<string, DayOfWeek> = {
-    måndag: 'monday',
-    tisdag: 'tuesday',
-    onsdag: 'wednesday',
-    torsdag: 'thursday',
-    fredag: 'friday',
-    lördag: 'saturday',
-    söndag: 'sunday',
-  };
-  return alias[value] ?? null;
-}
-
-function normalizeTime(raw: string): string | null {
-  // Accepterar HH:MM eller HH:MM:SS
-  const m = raw.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
-  if (!m) return null;
-  const [, h, mm, ss] = m;
-  const hour = Number(h);
-  const minute = Number(mm);
-  if (hour > 23 || minute > 59) return null;
-  return `${hour.toString().padStart(2, '0')}:${mm}:${ss ?? '00'}`;
-}
+const optionsSchema = z.object({
+  // Terminsdatum styr valid_from/valid_until. Default = idag och tills
+  // vidare, precis som det fungerade före omskrivningen.
+  termStart: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Ogiltigt startdatum')
+    .optional(),
+  termEnd: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Ogiltigt slutdatum')
+    .nullable()
+    .optional(),
+  // Tom lista = alla klasser. Piloten kör 2–3 av skolans klasser.
+  includeClasses: z.array(z.string().min(1)).default([]),
+  // Default false: lunch, mentorstid och möten ska normalt INTE bli pass.
+  // Läses ur en kryssruta, så värdet är alltid satt — .default() är bara
+  // ett skydd om fältet någon gång försvinner ur formuläret igen.
+  includeNonRecordable: z.boolean().default(false),
+});
 
 export async function uploadSchedule(
   _prev: ScheduleUploadState,
@@ -61,6 +56,23 @@ export async function uploadSchedule(
     return { status: 'error', code: 'invalid', detail: 'Ingen fil vald' };
   }
 
+  const parsedOptions = optionsSchema.safeParse({
+    termStart: (formData.get('term_start') ?? '').toString() || undefined,
+    termEnd: (formData.get('term_end') ?? '').toString() || null,
+    includeClasses: formData
+      .getAll('include_classes')
+      .map((value) => value.toString().trim())
+      .filter(Boolean),
+    includeNonRecordable: formData.get('include_non_recordable') !== null,
+  });
+  if (!parsedOptions.success) {
+    return {
+      status: 'error',
+      code: 'invalid',
+      detail: parsedOptions.error.issues[0]?.message ?? 'Ogiltiga inställningar',
+    };
+  }
+
   let text: string;
   try {
     text = await file.text();
@@ -68,87 +80,197 @@ export async function uploadSchedule(
     return { status: 'error', code: 'invalid', detail: 'Kunde inte läsa filen' };
   }
 
-  const rows = parseCsv(text);
-  if (rows.length === 0) {
-    return { status: 'error', code: 'invalid', detail: 'Filen är tom' };
-  }
-
-  const required = ['course_code', 'class_name', 'day', 'start_time', 'end_time'];
-  const first = rows[0]!;
-  const missing = required.filter((k) => !(k in first));
-  if (missing.length > 0) {
-    return {
-      status: 'error',
-      code: 'invalid',
-      detail: `Rubriker saknas: ${missing.join(', ')}`,
-    };
+  const parsed = parseGenericScheduleCsv(text);
+  if (!parsed.ok) {
+    return { status: 'error', code: 'invalid', detail: parsed.detail };
   }
 
   const supabase = await createSupabaseServerClient();
+  const options = parsedOptions.data;
 
-  // Hämta kurser + klasser för den här skolan för att mappa code/name → id
-  const [coursesRes, classesRes] = await Promise.all([
-    supabase
-      .from('courses')
-      .select('id, code')
-      .eq('school_id', profile.school_id),
-    supabase
-      .from('classes')
-      .select('id, name')
-      .eq('school_id', profile.school_id),
-  ]);
-  if (coursesRes.error || classesRes.error) {
-    return { status: 'error', code: 'generic' };
-  }
-  const courseMap = new Map(coursesRes.data.map((c) => [c.code, c.id]));
-  const classMap = new Map(classesRes.data.map((c) => [c.name, c.id]));
+  try {
+    const result = await commitSchedule(supabase, parsed.schedule, {
+      schoolId: profile.school_id,
+      startedBy: profile.id,
+      source: 'csv',
+      termStart: options.termStart ?? new Date().toISOString().slice(0, 10),
+      termEnd: options.termEnd ?? null,
+      includeClasses: options.includeClasses,
+      includeNonRecordable: options.includeNonRecordable,
+    });
 
-  type TimeslotInsert = {
-    school_id: string;
-    course_id: string;
-    class_id: string;
-    day: DayOfWeek;
-    start_time: string;
-    end_time: string;
-    room: string | null;
-    valid_from: string;
-  };
-  const toInsert: TimeslotInsert[] = [];
-  for (const row of rows) {
-    const courseCode = row['course_code'] ?? '';
-    const className = row['class_name'] ?? '';
-    const day = normalizeDay(row['day'] ?? '');
-    const startTime = normalizeTime(row['start_time'] ?? '');
-    const endTime = normalizeTime(row['end_time'] ?? '');
-    const courseId = courseMap.get(courseCode);
-    const classId = classMap.get(className);
-
-    if (!day || !startTime || !endTime || !courseId || !classId) {
+    revalidatePath('/sv/app/admin/schema');
+    revalidatePath('/en/app/admin/schema');
+    return {
+      status: 'success',
+      created: result.created,
+      updated: result.updated,
+      skipped: result.skipped,
+      unmappedTeachers: result.unmappedTeachers.map((t) => t.displayName),
+    };
+  } catch (error) {
+    if (error instanceof ScheduleCommitError) {
       return {
         status: 'error',
-        code: 'invalid',
-        detail: `Rad med course_code=${courseCode}, class_name=${className} kunde inte mappas`,
+        // Bara fel som faktiskt sitter i filen ska säga "kolla rubrikraden".
+        code: error.fromInput ? 'invalid' : 'generic',
+        detail: error.message,
+        issues: error.issues.slice(0, 10),
       };
     }
+    return {
+      status: 'error',
+      code: 'generic',
+      detail: error instanceof Error ? error.message : undefined,
+    };
+  }
+}
 
-    toInsert.push({
-      school_id: profile.school_id,
-      course_id: courseId,
-      class_id: classId,
-      day,
-      start_time: startTime,
-      end_time: endTime,
-      room: row['room'] ?? null,
-      valid_from: new Date().toISOString().slice(0, 10),
-    });
+export type MapTeacherState =
+  | { status: 'idle' }
+  | { status: 'success'; linkedTimeslots: number; linkedCourses: number }
+  | { status: 'error'; code: 'unauthorized' | 'invalid' | 'generic'; detail?: string };
+
+const mapTeacherSchema = z.object({
+  teacherMapId: z.string().uuid(),
+  // Tom sträng = koppla loss. Adminen ska kunna ångra en felaktig mappning.
+  profileId: z.string().uuid().nullable(),
+});
+
+/**
+ * Kopplar en lärare i schemat till ett Elevante-konto — och backfyllar.
+ *
+ * Backfyllet är hela poängen. En mappning som bara skriver
+ * `schedule_teacher_map.profile_id` gör ingenting förrän nästa import:
+ * passen ligger redan inne med `teacher_id = null`, och mobilappens
+ * getTodayLessons() slår upp via `course_teachers`. Därför skrivs båda här,
+ * för alla pass som redan pekar på den här schemaläraren.
+ */
+export async function mapScheduleTeacher(
+  _prev: MapTeacherState,
+  formData: FormData,
+): Promise<MapTeacherState> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== 'admin' || !profile.school_id) {
+    return { status: 'error', code: 'unauthorized' };
   }
 
-  const { error } = await supabase.from('timeslots').insert(toInsert);
-  if (error) {
-    return { status: 'error', code: 'generic', detail: error.message };
+  const rawProfileId = (formData.get('profile_id') ?? '').toString().trim();
+  const parsed = mapTeacherSchema.safeParse({
+    teacherMapId: (formData.get('teacher_map_id') ?? '').toString(),
+    profileId: rawProfileId === '' ? null : rawProfileId,
+  });
+  if (!parsed.success) {
+    return { status: 'error', code: 'invalid', detail: 'Ogiltigt val' };
+  }
+  const { teacherMapId, profileId } = parsed.data;
+
+  const supabase = await createSupabaseServerClient();
+
+  // Kontot måste tillhöra samma skola. RLS på profiles skulle redan hindra
+  // en läsning över skolgräns, men vi vill ge ett begripligt fel i stället
+  // för en tyst no-op.
+  if (profileId) {
+    const { data: target } = await supabase
+      .from('profiles')
+      .select('id, role')
+      .eq('id', profileId)
+      .eq('school_id', profile.school_id)
+      .maybeSingle();
+    if (!target) {
+      return { status: 'error', code: 'invalid', detail: 'Kontot finns inte i din skola' };
+    }
+    if (target.role === 'student') {
+      return { status: 'error', code: 'invalid', detail: 'Elevkonton kan inte undervisa' };
+    }
+  }
+
+  const updated = await supabase
+    .from('schedule_teacher_map')
+    .update({ profile_id: profileId, updated_at: new Date().toISOString() })
+    .eq('id', teacherMapId)
+    .eq('school_id', profile.school_id)
+    .select('id');
+  if (updated.error) {
+    return { status: 'error', code: 'generic', detail: updated.error.message };
+  }
+  if ((updated.data ?? []).length === 0) {
+    return { status: 'error', code: 'invalid', detail: 'Läraren finns inte i schemat' };
+  }
+
+  // Vilka pass hör till den här schemaläraren?
+  const { data: links, error: linkError } = await supabase
+    .from('timeslot_teachers')
+    .select('timeslot_id')
+    .eq('teacher_map_id', teacherMapId);
+  if (linkError) {
+    return { status: 'error', code: 'generic', detail: linkError.message };
+  }
+  const timeslotIds = (links ?? []).map((l) => l.timeslot_id);
+  if (timeslotIds.length === 0) {
+    revalidatePath('/sv/app/admin/schema');
+    revalidatePath('/en/app/admin/schema');
+    return { status: 'success', linkedTimeslots: 0, linkedCourses: 0 };
+  }
+
+  const { data: slots, error: slotError } = await supabase
+    .from('timeslots')
+    .select('id, course_id, teacher_id')
+    .in('id', timeslotIds);
+  if (slotError) {
+    return { status: 'error', code: 'generic', detail: slotError.message };
+  }
+
+  // Sätt primär lärare bara där ingen redan är satt — ett pass med två
+  // lärare ska inte byta ansikte för att den andra mappades senare.
+  const claimable = (slots ?? []).filter(
+    (s) => s.teacher_id === null || s.teacher_id === profileId,
+  );
+  if (profileId && claimable.length > 0) {
+    const { error } = await supabase
+      .from('timeslots')
+      .update({ teacher_id: profileId })
+      .in('id', claimable.map((s) => s.id));
+    if (error) return { status: 'error', code: 'generic', detail: error.message };
+  }
+  if (!profileId) {
+    // Koppling borttagen: nolla teacher_id på de pass som pekade hit.
+    const owned = (slots ?? []).filter((s) => s.teacher_id !== null).map((s) => s.id);
+    if (owned.length > 0) {
+      await supabase.from('timeslots').update({ teacher_id: null }).in('id', owned);
+    }
+  }
+
+  const courseIds = [...new Set((slots ?? []).map((s) => s.course_id))];
+  let linkedCourses = 0;
+  if (profileId && courseIds.length > 0) {
+    const { error } = await supabase
+      .from('course_teachers')
+      .upsert(
+        courseIds.map((course_id) => ({ course_id, profile_id: profileId })),
+        { onConflict: 'course_id,profile_id' },
+      );
+    if (error) return { status: 'error', code: 'generic', detail: error.message };
+    linkedCourses = courseIds.length;
+  }
+  if (!profileId && courseIds.length > 0) {
+    // Ta bara bort kopplingen till kurser som INTE har något annat pass
+    // med samma lärare — annars raderar vi en koppling läraren behöver.
+    const previous = (slots ?? []).find((s) => s.teacher_id)?.teacher_id;
+    if (previous) {
+      await supabase
+        .from('course_teachers')
+        .delete()
+        .eq('profile_id', previous)
+        .in('course_id', courseIds);
+    }
   }
 
   revalidatePath('/sv/app/admin/schema');
   revalidatePath('/en/app/admin/schema');
-  return { status: 'success', inserted: toInsert.length };
+  return {
+    status: 'success',
+    linkedTimeslots: profileId ? claimable.length : timeslotIds.length,
+    linkedCourses,
+  };
 }
