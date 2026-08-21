@@ -36,7 +36,10 @@ const optionsSchema = z.object({
     .optional(),
   // Tom lista = alla klasser. Piloten kör 2–3 av skolans klasser.
   includeClasses: z.array(z.string().min(1)).default([]),
-  includeNonRecordable: z.boolean().default(true),
+  // Default false: lunch, mentorstid och möten ska normalt INTE bli pass.
+  // Läses ur en kryssruta, så värdet är alltid satt — .default() är bara
+  // ett skydd om fältet någon gång försvinner ur formuläret igen.
+  includeNonRecordable: z.boolean().default(false),
 });
 
 export async function uploadSchedule(

@@ -3,7 +3,7 @@
  *
  * Format (rubrikrad krävs):
  *   course_code, class_name, day, start_time, end_time
- *   valfritt: course_name, room, teacher_email
+ *   valfritt: course_name, room, teacher_name, teacher_email
  *
  * Det här är samma format som `uploadSchedule` tagit sedan Fas 2, men det
  * går numera via `CanonicalSchedule` som alla andra källor. Två skillnader
@@ -109,14 +109,21 @@ export function parseGenericScheduleCsv(text: string): GenericCsvParseResult {
     }
 
     const teacherEmail = (row['teacher_email'] ?? '').trim().toLowerCase();
+    const teacherName = (row['teacher_name'] ?? '').trim();
     const teacherRefs: string[] = [];
-    if (teacherEmail) {
-      const teacherRef = `csv:teacher:${teacherEmail}`;
+    if (teacherEmail || teacherName) {
+      // Mejladressen är identiteten när den finns — den är stabil även om
+      // namnet stavas om. Saknas den nycklar vi på namnet, vilket är den
+      // situation schemaverktygen faktiskt ger: Royal Schedules export har
+      // bara förnamn, och läraren får kopplas till konto för hand.
+      const teacherRef = teacherEmail
+        ? `csv:teacher:${teacherEmail}`
+        : `csv:teacher:name:${teacherName.toLowerCase()}`;
       if (!teachers.has(teacherRef)) {
         teachers.set(teacherRef, {
           externalRef: teacherRef,
-          displayName: teacherEmail,
-          email: teacherEmail,
+          displayName: teacherName || teacherEmail,
+          email: teacherEmail || null,
         });
       }
       teacherRefs.push(teacherRef);

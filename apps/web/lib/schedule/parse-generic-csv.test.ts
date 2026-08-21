@@ -106,3 +106,36 @@ describe('parseGenericScheduleCsv — avvisar trasiga filer', () => {
     if (!result.ok) expect(result.detail).toContain(expected);
   });
 });
+
+describe('parseGenericScheduleCsv — lärare utan mejladress', () => {
+  const csv = [
+    'course_code,class_name,day,start_time,end_time,teacher_name,teacher_email',
+    'KEM01,Na25,måndag,09:00,10:00,Alfred,',
+    'KEM01,Na25,tisdag,09:00,10:00,Alfred,',
+    'FYS02,Na25,onsdag,09:00,10:00,Anna,anna@skolan.se',
+  ].join('\n');
+
+  it('accepterar en lärare som bara har namn', () => {
+    const result = parseGenericScheduleCsv(csv);
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const alfred = result.schedule.teachers.find((t) => t.displayName === 'Alfred');
+    expect(alfred).toBeDefined();
+    expect(alfred?.email).toBeNull();
+  });
+
+  it('slår ihop samma namn till en lärare över flera rader', () => {
+    const result = parseGenericScheduleCsv(csv);
+    if (!result.ok) throw new Error(result.detail);
+    expect(result.schedule.teachers).toHaveLength(2);
+  });
+
+  // Mejladressen är den stabilare identiteten och ska vinna när båda finns,
+  // så att en omstavning av namnet inte skapar en andra lärare.
+  it('nycklar på mejladressen när den finns', () => {
+    const result = parseGenericScheduleCsv(csv);
+    if (!result.ok) throw new Error(result.detail);
+    const anna = result.schedule.teachers.find((t) => t.email === 'anna@skolan.se');
+    expect(anna?.externalRef).toBe('csv:teacher:anna@skolan.se');
+  });
+});

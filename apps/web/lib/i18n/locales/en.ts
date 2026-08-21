@@ -405,7 +405,7 @@ const en: Dictionary = {
             'Upload a CSV of lessons (course, class, day, start time, end time, room).',
           uploadLabel: 'Choose CSV file',
           uploadHint:
-            'Headers: course_code, class_name, day, start_time, end_time, room',
+            'Headers: course_code, class_name, day, start_time, end_time. Optional: course_name, room, teacher_name, teacher_email',
           uploadSubmit: 'Upload',
           uploading: 'Uploading…',
           termStartLabel: 'Term starts',
@@ -417,6 +417,9 @@ const en: Dictionary = {
             'Teachers without an Elevante account — their lessons stay hidden in the teacher app until linked:',
           errorInvalid: 'The CSV is malformed. Check the header row.',
           errorGeneric: 'Something went wrong during upload.',
+          includeNonRecordableLabel: 'Include lunch, mentor time and meetings',
+          includeNonRecordableHint:
+            'Off by default. They become slots but can never be recorded.',
           teacherMapTitle: 'Teachers in the schedule',
           teacherMapEmpty: 'No teachers in the schedule yet. Upload a schedule first.',
           teacherMapHint:

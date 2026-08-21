@@ -423,6 +423,8 @@ export type Dictionary = {
           unmappedTeachers: string;
           errorInvalid: string;
           errorGeneric: string;
+          includeNonRecordableLabel: string;
+          includeNonRecordableHint: string;
           teacherMapTitle: string;
           teacherMapEmpty: string;
           teacherMapHint: string;

@@ -40,6 +40,20 @@ export function ScheduleUploadForm({ labels }: Props) {
         </Field>
       </div>
 
+      <label className="flex items-start gap-3 text-sm text-[var(--color-primary)]">
+        <input
+          type="checkbox"
+          name="include_non_recordable"
+          className="mt-0.5 h-4 w-4 rounded border-[var(--color-border)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
+        />
+        <span>
+          {labels.includeNonRecordableLabel}
+          <span className="block text-xs text-[var(--color-ink-subtle)]">
+            {labels.includeNonRecordableHint}
+          </span>
+        </span>
+      </label>
+
       {state.status === 'success' ? (
         <div role="status" className="space-y-2 text-sm">
           <p className="text-[var(--color-success)]">

@@ -405,7 +405,7 @@ const sv: Dictionary = {
             'Ladda upp en CSV med lektioner (kurs, klass, dag, starttid, sluttid, sal).',
           uploadLabel: 'Välj CSV-fil',
           uploadHint:
-            'Rubriker: course_code, class_name, day, start_time, end_time, room',
+            'Rubriker: course_code, class_name, day, start_time, end_time. Valfritt: course_name, room, teacher_name, teacher_email',
           uploadSubmit: 'Ladda upp',
           uploading: 'Laddar upp…',
           termStartLabel: 'Terminen börjar',
@@ -417,6 +417,9 @@ const sv: Dictionary = {
             'Lärare utan konto i Elevante — deras pass syns inte i lärarappen förrän de kopplats:',
           errorInvalid: 'CSV-filen är felformaterad. Kolla rubrikraden.',
           errorGeneric: 'Något gick fel vid uppladdning.',
+          includeNonRecordableLabel: 'Ta med lunch, mentorstid och möten',
+          includeNonRecordableHint:
+            'Normalt av. De blir pass i schemat men går aldrig att spela in.',
           teacherMapTitle: 'Lärare i schemat',
           teacherMapEmpty: 'Inga lärare i schemat än. Ladda upp ett schema först.',
           teacherMapHint:
